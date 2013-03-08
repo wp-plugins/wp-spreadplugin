@@ -1,0 +1,114 @@
+#main ul {
+	margin: 0;
+	padding: 0
+}
+.spreadshirt-article {
+	float: left;
+	margin-top: 20px;
+	margin-right: 2px;
+	width: 200px;
+	padding: 5px;
+	display: block;
+	z-index: auto
+}
+.spreadshirt-article img, .spreadshirt-article h3 {
+	display: block;
+	text-align: center;
+	margin: 0 auto;
+}
+.spreadshirt-article .image-wrapper {
+	min-height: 200px;
+}
+.spreadshirt-article h3 {
+	min-height: 25px
+}
+.spreadshirt-article div {
+	text-align: left;
+	clear: both
+}
+.spreadshirt-article ul, .spreadshirt-items .colors li, .spreadshirt-article ul li, .spreadshirt-article #size-select, .spreadshirt-article p, .spreadshirt-article input {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.spreadshirt-article ul li {
+	border: 1px solid #e8e8e8
+}
+.spreadshirt-article input[type=text] {
+	clear: both;
+	width: 30px;
+	margin-right: 10px;
+}
+.spreadshirt-items .colors {
+	min-height: 30px;
+}
+.spreadshirt-items .colors li {
+	float: left;
+	width: 13px;
+	height: 13px;
+	margin: 0 2px 2px 0;
+	cursor: pointer;
+}
+.spreadshirt-items #checkout {
+	position: absolute;
+	right: 10px;
+	top: 0;
+	margin-top: 20px;
+	padding: 20px;
+	background-color: #666;
+	z-index: 100;
+}
+.spreadshirt-items #checkout a {
+	color: #fff
+}
+.spreadshirt-items #navigation {
+	float: left;
+}
+.spreadshirt-items #copyright {
+	clear: both;
+	padding-top: 20px;
+	z-index: 0;
+}
+.spreadshirt-items #copyright, .spreadshirt-items #copyright a {
+	color: #ccc;
+	font-size: x-small;
+}
+.spreadshirt-items .description-wrapper .header a {
+	cursor: pointer;
+}
+.spreadshirt-items .description-wrapper .description {
+	display: none
+}
+.spreadshirt-items .separator {
+	clear: both;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+.spreadshirt-items #infscr-loading {
+	background: #fff;
+	z-index: 1000;
+	position: absolute;
+	clear: both;
+	bottom: 5px;
+	width: 200px;
+	overflow: hidden;
+	padding: 15px;
+	left: 50%;
+	margin-left: -100px;
+	border: 1px solid #eee;
+	text-align: center;
+	box-shadow: 0 0px 9px 0px rgba(0,0,0,0.1);
+	-moz-box-shadow: 0 0px 9px 0px rgba(0,0,0,0.1);
+	-webkit-box-shadow: 0 0px 9px 0px rgba(0,0,0,0.1);
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+}
+.spreadshirt-items #infscr-loading img {
+	position: absolute;
+	top: 19px;
+	left: 20px;
+	border-radius:0;
+	box-shadow:none;
+	
+}
