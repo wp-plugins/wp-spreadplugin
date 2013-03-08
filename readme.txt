@@ -16,6 +16,7 @@ A small plugin for Wordpress which uses the Spreadshirt API.
 Just with a shortcut you can list all your products on one page. The pagination is done via infinity scroll.
 
 Features:
+
 * Infinity Scrolling
 * uses Spreadshirt-Basket (A click on the basket opens the spreadshirt own basket)
 * Price listing
@@ -26,6 +27,7 @@ See it in action:
 http://www.pr3ss-play.de/shop-en/ (in german)
 
 What do you need:
+
 * Wordpress most recent Version
 * Spreadshirt shop
 * Spreadshirt API key and secret (US/NA From: https://www.spreadshirt.com/-C6840, EU From: https://www.spreadshirt.de/-C7120)
@@ -52,5 +54,5 @@ What do you need:
 
 == Screenshots ==
 
-1. screenshot1.jpg
+1. /assets/screenshot1.jpg
 
