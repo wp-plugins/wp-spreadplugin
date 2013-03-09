@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: spreadshirt,wordpress,plugin,shop
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 1.0.0.2
+Stable tag: 1.0.0.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -39,10 +39,13 @@ What do you need:
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Create a new site or edit an existing site
 4. Insert shortcode
+
 **US/NA**
 `[spreadplugin shop_id="414192" shop_limit="20" shop_locale="" shop_source="com" shop_api="" shop_secret=""]`
+
 **EU/DE**
 `[spreadplugin shop_id="732552" shop_limit="20" shop_locale="de_DE" shop_source="net" shop_api="" shop_secret=""]`
+
 5. Insert Shop ID, Shop API (Spreadshirt API Key) and Shop secret (Spreadshirt Secret)
 6. Done (you may modify the layout using the separate css file in the spreadplugin Folder)
 
