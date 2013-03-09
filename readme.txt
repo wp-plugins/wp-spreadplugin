@@ -1,19 +1,20 @@
 === Spreadplugin ===
 Contributors: Thimo Grauerholz
-Donate link: http://www.pr3ss-play.de/
-Tags: spreadshirt,wordpress,plugin
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EZLKTKW8UR6PQ
+Tags: spreadshirt,wordpress,plugin,shop
 Requires at least: 3.3
 Tested up to: 3.5.1
 Stable tag: 1.0.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-This plugin uses the Spreadshirt API to display all articles of a shop in a site. With a click on the Basket you'll be redirected to the spreadshirt basket!
+This plugin uses the Spreadshirt API to display all articles. Add the articles to the Spreadshirt Basket with a single click.
 
 == Description ==
 
 A small plugin for Wordpress which uses the Spreadshirt API.
-Just with a shortcut you can list all your products on one page. The pagination is done via infinity scroll.
+Just with a shortcode you can list all your products on one page and add them to the Spreadshirt basket. 
+The pagination is done via infinity scroll.
 
 Features:
 
@@ -38,21 +39,18 @@ What do you need:
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Create a new site or edit an existing site
 4. Insert shortcode
-
 **US/NA**
-[spreadplugin shop_id="414192" shop_limit="20" shop_locale="" shop_source="com" shop_api="" shop_secret=""]
-
+`[spreadplugin shop_id="414192" shop_limit="20" shop_locale="" shop_source="com" shop_api="" shop_secret=""]`
 **EU/DE**
-[spreadplugin shop_id="732552" shop_limit="20" shop_locale="de_DE" shop_source="net" shop_api="" shop_secret=""]
-
+`[spreadplugin shop_id="732552" shop_limit="20" shop_locale="de_DE" shop_source="net" shop_api="" shop_secret=""]`
 5. Insert Shop ID, Shop API (Spreadshirt API Key) and Shop secret (Spreadshirt Secret)
 6. Done (you may modify the layout using the separate css file in the spreadplugin Folder)
 
 == Frequently asked questions ==
 
-
+none
 
 == Screenshots ==
 
-1. /assets/screenshot1.jpg
+1. The Output
 
