@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: spreadshirt,wordpress,plugin,shop
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 1.0.0.4
+Stable tag: 1.0.0.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -25,7 +25,7 @@ Features:
 * Language support (de_DE, en_GB based on Wordpress installation)
 
 See it in action:
-http://www.pr3ss-play.de/shop-en/ (in german)
+http://www.pr3ss-play.de/shop/ (in german)
 
 What do you need:
 
