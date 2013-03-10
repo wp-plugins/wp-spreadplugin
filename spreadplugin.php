@@ -209,6 +209,9 @@ if(!class_exists('WP_Spreadplugin')) {
 					//print_r($article);
 					$stringXmlArticle = wp_remote_retrieve_body(wp_remote_get($article->product->productType->attributes('xlink', true)));
 					$objArticleData = new SimpleXmlElement($stringXmlArticle);
+					$stringXmlCurreny = wp_remote_retrieve_body(wp_remote_get($article->price->currency->attributes('http://www.w3.org/1999/xlink')));
+					$objCurrencyData = new SimpleXmlElement($stringXmlCurreny);
+
 
 					/*
 					 * get the productType resource
@@ -258,8 +261,8 @@ if(!class_exists('WP_Spreadplugin')) {
 					$output .= '<input type="hidden" value="'. $article['id'] .'" id="article" name="article" />';
 					$output .= '<div class="separator"></div>';
 					$output .= '<div class="price-wrapper">';
-					$output .= __('Price (without tax):', $this->stringTextdomain)." ".$article->price->vatExcluded." ".$article->price->currency."<br />";
-					$output .= __('Price (with tax):', $this->stringTextdomain)." ".$article->price->vatIncluded." ".$article->price->currency."<br />";
+					$output .= __('Price (without tax):', $this->stringTextdomain)." ".$article->price->vatExcluded." ".$objCurrencyData->isoCode."<br />";
+					$output .= __('Price (with tax):', $this->stringTextdomain)." ".$article->price->vatIncluded." ".$objCurrencyData->isoCode."<br />";
 					$output .= '</div>';
 					$output .= '<input type="text" value="1" id="quantity" name="quantity" maxlength="4" />';
 					$output .= '<input type="submit" name="submit" value="'.__('Add to basket', $this->stringTextdomain).'" />';
