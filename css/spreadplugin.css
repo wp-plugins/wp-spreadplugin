@@ -115,3 +115,15 @@
 	box-shadow:none;
 	
 }
+
+/* display or hide prices */
+.spreadshirt-article #price-without-tax {
+/*	display:none; */
+}
+.spreadshirt-article #price-with-tax {
+/*	display:none; */
+}
+
+
+
+

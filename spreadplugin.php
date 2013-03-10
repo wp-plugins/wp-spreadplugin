@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://www.pr3ss-play.de/spreadshirt-wordpress-plugin-uber-api/
  * Description: Use a shortcut to display your Spreadshirt articles and add them to your Spreadshirt Basket using the API
- * Version: 1.1.2
+ * Version: 1.1.3
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
  */
@@ -261,8 +261,8 @@ if(!class_exists('WP_Spreadplugin')) {
 					$output .= '<input type="hidden" value="'. $article['id'] .'" id="article" name="article" />';
 					$output .= '<div class="separator"></div>';
 					$output .= '<div class="price-wrapper">';
-					$output .= __('Price (without tax):', $this->stringTextdomain)." ".$article->price->vatExcluded." ".$objCurrencyData->isoCode."<br />";
-					$output .= __('Price (with tax):', $this->stringTextdomain)." ".$article->price->vatIncluded." ".$objCurrencyData->isoCode."<br />";
+					$output .= '<span id="price-without-tax">'.__('Price (without tax):', $this->stringTextdomain)." ".$article->price->vatExcluded." ".$objCurrencyData->isoCode."<br /></span>";
+					$output .= '<span id="price-with-tax">'.__('Price (with tax):', $this->stringTextdomain)." ".$article->price->vatIncluded." ".$objCurrencyData->isoCode."<br /></span>";
 					$output .= '</div>';
 					$output .= '<input type="text" value="1" id="quantity" name="quantity" maxlength="4" />';
 					$output .= '<input type="submit" name="submit" value="'.__('Add to basket', $this->stringTextdomain).'" />';
