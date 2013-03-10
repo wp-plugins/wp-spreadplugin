@@ -1,0 +1,57 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Spreadplugin\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-03-10 02:29+0100\n"
+"PO-Revision-Date: 2013-03-10 02:29+0100\n"
+"Last-Translator: Thimo Grauerholz <info@pr3ss-play.de>\n"
+"Language-Team: \n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-Basepath: ../\n"
+"X-Textdomain-Support: yes\n"
+"X-Generator: Poedit 1.5.5\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: spreadplugin.php:254 spreadplugin.php:561
+msgid "Show description"
+msgstr "Afficher la description"
+
+#: spreadplugin.php:261
+msgid "Price (without tax):"
+msgstr "Montant HT:"
+
+#: spreadplugin.php:262
+msgid "Price (with tax):"
+msgstr "Montant TTC:"
+
+#: spreadplugin.php:265
+msgid "Add to basket"
+msgstr "Ajouter au panier"
+
+#: spreadplugin.php:284 spreadplugin.php:286
+msgid "Basket"
+msgstr "Panier"
+
+#: spreadplugin.php:286
+msgid "Basket is empty"
+msgstr "Panier est vide"
+
+#: spreadplugin.php:293
+msgid "next"
+msgstr "suivant"
+
+#: spreadplugin.php:557
+msgid "Hide description"
+msgstr "Masquer la description"
+
+#, fuzzy
+#~ msgid "Preis (with tax):"
+#~ msgstr "Preis (with Tax):"
+
+#~ msgid "Preis (ohne MwSt.):"
+#~ msgstr "Price (without Tax):"
