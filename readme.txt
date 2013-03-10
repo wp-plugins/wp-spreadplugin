@@ -61,6 +61,11 @@ Change padding-top and padding-bottom to a value you like.
 
 The currency bases on the currency you're using for your Spreadshirt Shop. So if you want to use DKK instead of EUR, change the currency in the Shop options of your Spreadshirt Shop. But be sure to not have any products in your shop, because Spreadshirt doesn't allow changing it, when you've already products in it. (The solution would be to create a new shop)
 
+= I just want to display one price. What to do? =
+
+Please have look at the file `/wp-content/plugins/wp-spreadplugin/css/spreadplugin.css` and search for `.spreadshirt-article #price-`.
+Depending on what kind of price you want to hide, remove the `/* */` from the style.
+
 == Screenshots ==
 
 1. The Output
