@@ -51,7 +51,11 @@ What do you need:
 
 == Frequently asked questions ==
 
-none
+= How can I reduce the space between color selection and price? =
+
+I added a spacer div to give you the ability to change the space/appearance.
+You can reduce the space by editing the style css in following folder: `/wp-content/plugins/spreadplugin/css/spreadplugin.css` on line 82. 
+Change padding-top and padding-bottom to a value you like.
 
 == Screenshots ==
 
