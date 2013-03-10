@@ -64,7 +64,7 @@ The currency bases on the currency you're using for your Spreadshirt Shop. So if
 = I just want to display one price. What to do? =
 
 Please have look at the file `/wp-content/plugins/wp-spreadplugin/css/spreadplugin.css` and search for `.spreadshirt-article #price-`.
-Depending on what kind of price you want to hide, remove the `/* */` from the style.
+Depending on what kind of price you want to hide uncomment the line.
 
 == Screenshots ==
 
