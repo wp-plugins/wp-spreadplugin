@@ -80,9 +80,12 @@
 	display: none
 }
 .spreadshirt-items .separator {
+	margin:0;
+	padding:0;
 	clear: both;
 	padding-top: 5px;
 	padding-bottom: 5px;
+	background-color:transparent
 }
 .spreadshirt-items #infscr-loading {
 	background: #fff;
