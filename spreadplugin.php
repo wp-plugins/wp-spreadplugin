@@ -521,9 +521,9 @@ if(!class_exists('WP_Spreadplugin')) {
 		function spreadpluginHead() {
 			echo "<script>
 						
-jQuery(document).ready(function($) {
+jQuery(document).ready(function() {
 	
-	var saheight = $('.spreadshirt-article').css('height');
+	var saheight = jQuery('.spreadshirt-article').css('height');
 	var par = '';
 	
 	
@@ -533,32 +533,32 @@ jQuery(document).ready(function($) {
 	*/
 	function bindClick() {
 		// avoid double firing events
-		$('.colors li').unbind();
-		$('.description-wrapper div.header').unbind();
+		jQuery('.colors li').unbind();
+		jQuery('.description-wrapper div.header').unbind();
 		
 		
-		$('.colors li').click(function(){
-			var id = '#' + $(this).closest('.spreadshirt-article').attr('id');
-			var appearance = $(this).attr('value');
-			var src = $(id + ' img.preview').attr('src');
-			$(id + ' img.preview').attr('src', src + ',appearanceId='+appearance);
-			$(id + ' #appearance').attr('value', appearance);
+		jQuery('.colors li').click(function(){
+			var id = '#' + jQuery(this).closest('.spreadshirt-article').attr('id');
+			var appearance = jQuery(this).attr('value');
+			var src = jQuery(id + ' img.preview').attr('src');
+			jQuery(id + ' img.preview').attr('src', src + ',appearanceId='+appearance);
+			jQuery(id + ' #appearance').attr('value', appearance);
 		});
 		
 		
-		$('.description-wrapper div.header').click(function(){
-			var par = $(this).parent().parent().parent();
-			var field = $(this).next();
+		jQuery('.description-wrapper div.header').click(function(){
+			var par = jQuery(this).parent().parent().parent();
+			var field = jQuery(this).next();
 
 			if (field.is(':hidden')) {
 				par.css('height','');
 				par.removeAttr('style');
 				field.show();
-				$(this).children('a').html('".__('Hide description', $this->stringTextdomain)."');
+				jQuery(this).children('a').html('".__('Hide description', $this->stringTextdomain)."');
 			} else {
-				$('.spreadshirt-article').css('height',saheight);
-				$('.description-wrapper div.description').hide();
-				$('.description-wrapper div.header a').html('".__('Show description', $this->stringTextdomain)."');
+				jQuery('.spreadshirt-article').css('height',saheight);
+				jQuery('.description-wrapper div.description').hide();
+				jQuery('.description-wrapper div.header a').html('".__('Show description', $this->stringTextdomain)."');
 			}
 		});
 	
@@ -568,27 +568,27 @@ jQuery(document).ready(function($) {
 	
 	
 	function bindHover() {
-		$('img.preview').mouseenter(function(){
-			var id = $(this).attr('id');
+		jQuery('img.preview').mouseenter(function(){
+			var id = jQuery(this).attr('id');
 			id = '#' + id.replace('previewimg','compositeimg');
 			
-			if ($(this).is(':visible')) {
-				$(this).hide();
-				$(id).show();
+			if (jQuery(this).is(':visible')) {
+				jQuery(this).hide();
+				jQuery(id).show();
 			} 
 		});
 		
-		$('.spreadshirt-article').mouseleave(function(){
-			var id = $(this).attr('id');
+		jQuery('.spreadshirt-article').mouseleave(function(){
+			var id = jQuery(this).attr('id');
 			id = id.replace('article','');
 		
-			$('#' + 'compositeimg' + id).hide();
-			$('#' + 'previewimg' + id).show();
+			jQuery('#' + 'compositeimg' + id).hide();
+			jQuery('#' + 'previewimg' + id).show();
 		});
 		
 	/*
-		$('.fb-like').mouseover(function(){
-			$('meta[property=\"og:image\"]').attr('content',$(this).parent().parent().find('.preview').attr('src'));
+		jQuery('.fb-like').mouseover(function(){
+			jQuery('meta[property=\"og:image\"]').attr('content',jQuery(this).parent().parent().find('.preview').attr('src'));
 		});
 		*/
 	}
@@ -598,7 +598,7 @@ jQuery(document).ready(function($) {
 	
 	
 	
-	$('#spreadshirt-list').infinitescroll({
+	jQuery('#spreadshirt-list').infinitescroll({
 		nextSelector:'#navigation a',
 		navSelector:'#navigation',
 		itemSelector:'.spreadshirt-article',
@@ -617,10 +617,10 @@ jQuery(document).ready(function($) {
 	
 	
 	
-	var scrollingDiv = $('#checkout');
+	var scrollingDiv = jQuery('#checkout');
 	
-	$(window).scroll(function(){			
-		scrollingDiv.stop().animate({'marginTop': ($(window).scrollTop() + 30) + 'px'}, 'slow');			
+	jQuery(window).scroll(function(){			
+		scrollingDiv.stop().animate({'marginTop': (jQuery(window).scrollTop() + 30) + 'px'}, 'slow');			
 	});
 	
 	
