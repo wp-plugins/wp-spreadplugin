@@ -1,10 +1,10 @@
-=== Spreadplugin ===
+=== WP-Spreadplugin ===
 Contributors: Thimo Grauerholz
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EZLKTKW8UR6PQ
 Tags: spreadshirt,wordpress,plugin,shop
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 1.0.1.2
+Stable tag: 1.0.1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -35,7 +35,7 @@ What do you need:
 
 == Installation ==
 
-1. Upload the spreadplugin directory to the `/wp-content/plugins/spreadplugin` Directory (if not exists please create) or install using wordpress plugin installer
+1. Upload the spreadplugin directory to the `/wp-content/plugins/wp-spreadplugin` Directory (if not exists please create) or install using wordpress plugin installer
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Create a new site or edit an existing site
 4. Insert shortcode
@@ -54,8 +54,12 @@ What do you need:
 = How can I reduce the space between color selection and price? =
 
 I added a spacer div to give you the ability to change the space/appearance.
-You can reduce the space by editing the style css in following folder: `/wp-content/plugins/spreadplugin/css/spreadplugin.css` on line 82. 
+You can reduce the space by editing the style css in following folder: `/wp-content/plugins/wp-spreadplugin/css/spreadplugin.css` on line 82. 
 Change padding-top and padding-bottom to a value you like.
+
+= I want to use a different currency. Is this possible? =
+
+The currency bases on the currency you're using for your Spreadshirt Shop. So if you want to use DKK instead of EUR, change the currency in the Shop options of your Spreadshirt Shop. But be sure to not have any products in your shop, because Spreadshirt doesn't allow changing it, when you've already products in it. (The solution would be to create a new shop)
 
 == Screenshots ==
 
