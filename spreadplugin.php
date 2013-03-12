@@ -192,9 +192,11 @@ if(!class_exists('WP_Spreadplugin')) {
 
 				$stringApiUrl='http://api.spreadshirt.'.self::$stringApiUrl.'/api/v1/shops/' . self::$intShopId . '/articles?'.(!empty(self::$stringShopLocale)?'locale=' . self::$stringShopLocale . '&':'').'fullData=true&limit='.self::$stringShopLimit.'&offset='.$offset;
 
-				$stringXmlShop = wp_remote_retrieve_body(wp_remote_get($stringApiUrl));
-				$objArticles = new SimpleXmlElement($stringXmlShop);
 
+				$stringXmlShop = wp_remote_get($stringApiUrl);
+				if (count($stringXmlShop->errors)>0) die('Error getting articles');
+				$stringXmlShop = wp_remote_retrieve_body($stringXmlShop);
+				$objArticles = new SimpleXmlElement($stringXmlShop);
 				if (!is_object($objArticles)) die('Articles not loaded');
 
 
