@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://www.pr3ss-play.de/spreadshirt-wordpress-plugin-uber-api/
  * Description: Use a shortcut to display your Spreadshirt articles and add them to your Spreadshirt Basket using the API
- * Version: 1.1.3
+ * Version: 1.2
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
  */
@@ -207,11 +207,11 @@ if(!class_exists('WP_Spreadplugin')) {
 
 				foreach ($objArticles->article as $article) {
 					//print_r($article);
+					
 					$stringXmlArticle = wp_remote_retrieve_body(wp_remote_get($article->product->productType->attributes('xlink', true)));
 					$objArticleData = new SimpleXmlElement($stringXmlArticle);
 					$stringXmlCurreny = wp_remote_retrieve_body(wp_remote_get($article->price->currency->attributes('http://www.w3.org/1999/xlink')));
 					$objCurrencyData = new SimpleXmlElement($stringXmlCurreny);
-
 
 					/*
 					 * get the productType resource
@@ -244,7 +244,9 @@ if(!class_exists('WP_Spreadplugin')) {
 					$output .= '<ul class="colors" name="color">';
 
 					foreach($objArticleData->appearances->appearance as $appearance) {
-						$output .= '<li value="'.$appearance['id'].'"><img src="'. $appearance->resources->resource->attributes('xlink', true) .'" alt="" /></li>';
+						if ($article->product->restrictions->freeColorSelection == 'true' || (int)$article->product->appearance['id'] == (int)$appearance['id']) {
+							$output .= '<li value="'.$appearance['id'].'"><img src="'. $appearance->resources->resource->attributes('xlink', true) .'" alt="" /></li>';
+						}
 					}
 
 					$output .= '</ul>';

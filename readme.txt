@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: spreadshirt,wordpress,plugin,shop
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 1.1.3.3
+Stable tag: 1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -71,6 +71,9 @@ Depending on what kind of price you want to hide uncomment the line.
 1. The Output
 
 == Changelog ==
+
+= 1.2 =
+* Spreadshirts "Free Color Selection"/Color limitation is now processed
 
 = 1.1.3 =
 * Show hide prices using stylesheet
