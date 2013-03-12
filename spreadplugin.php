@@ -194,7 +194,7 @@ if(!class_exists('WP_Spreadplugin')) {
 
 
 				$stringXmlShop = wp_remote_get($stringApiUrl);
-				if (count($stringXmlShop->errors)>0) die('Error getting articles');
+				if (count($stringXmlShop->errors)>0) die('Error getting articles. Please check Shop-ID, API and secret.');
 				$stringXmlShop = wp_remote_retrieve_body($stringXmlShop);
 				$objArticles = new SimpleXmlElement($stringXmlShop);
 				if (!is_object($objArticles)) die('Articles not loaded');
