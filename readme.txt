@@ -53,7 +53,7 @@ What do you need:
 
 = It shows "No articles in Shop", but there are articles in the Spreadshirt-Shop =
 
-Check if your Spreadshirt Shop has a language and country setting. If you haven't set one, please remove the `shop_locale="xx_XX"` value.
+Check if your Spreadshirt Shop has a language and country setting. If you haven't set one, please remove `xx_XX` from the `shop_locale="xx_XX"` value.
 
 = How can I reduce the space between color selection and price? =
 
