@@ -51,6 +51,10 @@ What do you need:
 
 == Frequently asked questions ==
 
+= It shows "No articles in Shop", but there are articles in the Spreadshirt-Shop =
+
+Sometimes it takes some time to refresh the API-cache of Spreadshirt. In most cases it's done within 8 hours :(
+
 = How can I reduce the space between color selection and price? =
 
 I added a spacer div to give you the ability to change the space/appearance.
