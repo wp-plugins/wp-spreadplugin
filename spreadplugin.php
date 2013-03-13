@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://www.pr3ss-play.de/spreadshirt-wordpress-plugin-uber-api/
  * Description: Use a shortcut to display your Spreadshirt articles and add them to your Spreadshirt Basket using the API
- * Version: 1.2.3
+ * Version: 1.2.4
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
  */
@@ -136,7 +136,6 @@ if(!class_exists('WP_Spreadplugin')) {
 						*/
 						$stringXmlShop = wp_remote_retrieve_body(wp_remote_get('http://api.spreadshirt.'.self::$stringApiUrl.'/api/v1/shops/' . self::$intShopId));
 						$objShop = new SimpleXmlElement($stringXmlShop);
-
 
 						/*
 						 * create the basket
@@ -301,7 +300,6 @@ if(!class_exists('WP_Spreadplugin')) {
 					echo $output;
 
 					echo "
-					</div>
 					<div id=\"navigation\"><a href=\"".get_pagenum_link($paged + 1)."\">".__('next', $this->stringTextdomain)."</a></div>
 					<!-- <div id=\"copyright\">Copyright (c) Thimo Grauerholz - <a href=\"http://www.pr3ss-play.de\">pr3ss-play - Online Shop für deinen persönlichen Party-Style!</a></div> -->
 					</div>";
