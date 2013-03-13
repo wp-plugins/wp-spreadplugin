@@ -76,6 +76,9 @@ Depending on what kind of price you want to hide uncomment the line.
 
 == Changelog ==
 
+= 1.2.4 =
+* HTML Bugfixes
+
 = 1.2.2 =
 * Enabled some error messages
 
