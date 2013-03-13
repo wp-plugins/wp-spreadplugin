@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://www.pr3ss-play.de/spreadshirt-wordpress-plugin-uber-api/
  * Description: Use a shortcut to display your Spreadshirt articles and add them to your Spreadshirt Basket using the API
- * Version: 1.2
+ * Version: 1.2.2
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
  */
@@ -34,7 +34,7 @@ if(!function_exists('add_action')) {
 	header('HTTP/1.1 403 Forbidden');
 
 	exit();
-} 
+}
 
 
 /**
@@ -79,11 +79,11 @@ if(!class_exists('WP_Spreadplugin')) {
 		function plugin_init() {
 			/**
 			 * Language file not yet available
-			*/ 
+			 */
 			if(function_exists('load_plugin_textdomain')) {
 				load_plugin_textdomain($this->stringTextdomain, false, dirname(plugin_basename( __FILE__ )) . '/translation');
 			}
-			
+				
 		}
 
 
@@ -108,7 +108,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			'shop_source' => 'net',
 			'shop_secret' => '',
 			'shop_limit' => ''
-			), $atts));
+					), $atts));
 
 			self::$intShopId = $shop_id;
 			self::$stringShopApi = $shop_api;
@@ -192,115 +192,121 @@ if(!class_exists('WP_Spreadplugin')) {
 
 				$stringApiUrl='http://api.spreadshirt.'.self::$stringApiUrl.'/api/v1/shops/' . self::$intShopId . '/articles?'.(!empty(self::$stringShopLocale)?'locale=' . self::$stringShopLocale . '&':'').'fullData=true&limit='.self::$stringShopLimit.'&offset='.$offset;
 
-
 				$stringXmlShop = wp_remote_get($stringApiUrl);
 				if (count($stringXmlShop->errors)>0) die('Error getting articles. Please check Shop-ID, API and secret.');
 				$stringXmlShop = wp_remote_retrieve_body($stringXmlShop);
 				$objArticles = new SimpleXmlElement($stringXmlShop);
 				if (!is_object($objArticles)) die('Articles not loaded');
 
-
 				//facebook header
 				self::facebookhead();
 				
-				
-				$output = '<div id="spreadshirt-items" class="spreadshirt-items clearfix">';
-				$output .= '<div id="spreadshirt-list">';
 
-				foreach ($objArticles->article as $article) {
-					//print_r($article);
+				if ($objArticles['count'] == 0) {
 					
-					$stringXmlArticle = wp_remote_retrieve_body(wp_remote_get($article->product->productType->attributes('xlink', true)));
-					$objArticleData = new SimpleXmlElement($stringXmlArticle);
-					$stringXmlCurreny = wp_remote_retrieve_body(wp_remote_get($article->price->currency->attributes('http://www.w3.org/1999/xlink')));
-					$objCurrencyData = new SimpleXmlElement($stringXmlCurreny);
-
-					/*
-					 * get the productType resource
-					*/
-					$output .= '<div class="spreadshirt-article clearfix" id="article_'.$article['id'].'" style="height:400px">';
-					$output .= '<a name="anchor_'.$article['id'].'"></a>';
-					$output .= '<h3>'.$article->name.'</h3>';
-					$output .= '<form method="post">';
-					$output .= '<div class="image-wrapper">';
-					$output .= '<img src="' . (string)$article->resources->resource->attributes('xlink', true) . ',width='.self::$stringShopImgSize.',height='.self::$stringShopImgSize.'" class="preview" alt="' . $article->name . '" id="previewimg_'.$article['id'].'" />';
-					$output .= '<img src="' . (string)$article->resources->resource[2]->attributes('xlink', true) . ',width='.self::$stringShopImgSize.',height='.self::$stringShopImgSize.'" class="compositions" style="display:none;" alt="' . $article->name . '" id="compositeimg_'.$article['id'].'" />';
-					$output .= '</div>';
+					echo 'No articles in Shop';
 					
-					/*
-					 * add a select with available sizes
-					*/
-					$output .= '<select id="size-select" name="size">';
+				} else {
 
-					foreach($objArticleData->sizes->size as $val) {
-						$output .= '<option value="'.$val['id'].'">'.$val->name.'</option>';
+					$output = '<div id="spreadshirt-items" class="spreadshirt-items clearfix">';
+					$output .= '<div id="spreadshirt-list">';
+
+
+					foreach ($objArticles->article as $article) {
+						//print_r($article);
+							
+						$stringXmlArticle = wp_remote_retrieve_body(wp_remote_get($article->product->productType->attributes('xlink', true)));
+						$objArticleData = new SimpleXmlElement($stringXmlArticle);
+						$stringXmlCurreny = wp_remote_retrieve_body(wp_remote_get($article->price->currency->attributes('http://www.w3.org/1999/xlink')));
+						$objCurrencyData = new SimpleXmlElement($stringXmlCurreny);
+
+						/*
+						 * get the productType resource
+						*/
+						$output .= '<div class="spreadshirt-article clearfix" id="article_'.$article['id'].'" style="height:400px">';
+						$output .= '<a name="anchor_'.$article['id'].'"></a>';
+						$output .= '<h3>'.$article->name.'</h3>';
+						$output .= '<form method="post">';
+						$output .= '<div class="image-wrapper">';
+						$output .= '<img src="' . (string)$article->resources->resource->attributes('xlink', true) . ',width='.self::$stringShopImgSize.',height='.self::$stringShopImgSize.'" class="preview" alt="' . $article->name . '" id="previewimg_'.$article['id'].'" />';
+						$output .= '<img src="' . (string)$article->resources->resource[2]->attributes('xlink', true) . ',width='.self::$stringShopImgSize.',height='.self::$stringShopImgSize.'" class="compositions" style="display:none;" alt="' . $article->name . '" id="compositeimg_'.$article['id'].'" />';
+						$output .= '</div>';
+							
+						/*
+						 * add a select with available sizes
+						*/
+						$output .= '<select id="size-select" name="size">';
+
+						foreach($objArticleData->sizes->size as $val) {
+							$output .= '<option value="'.$val['id'].'">'.$val->name.'</option>';
+						}
+
+						$output .= '</select>';
+							
+						$output .= '<div class="separator"></div>';
+							
+						/*
+						 * add a list with availabel product colors
+						*/
+						$output .= '<ul class="colors" name="color">';
+
+						foreach($objArticleData->appearances->appearance as $appearance) {
+							if ($article->product->restrictions->freeColorSelection == 'true' || (int)$article->product->appearance['id'] == (int)$appearance['id']) {
+								$output .= '<li value="'.$appearance['id'].'"><img src="'. $appearance->resources->resource->attributes('xlink', true) .'" alt="" /></li>';
+							}
+						}
+
+						$output .= '</ul>';
+							
+						/**
+						 * Show description link if not empty
+						 */
+						if (!empty($article->description)) {
+							$output .= '<div class="separator"></div>';
+							$output .= '<div class="description-wrapper"><div class="header"><a>'.__('Show description', $this->stringTextdomain).'</a></div><div class="description">'.$article->description.'</div></div>';
+						}
+							
+						$output .= '<input type="hidden" value="'. $article->product->appearance['id'] .'" id="appearance" name="appearance" />';
+						$output .= '<input type="hidden" value="'. $article['id'] .'" id="article" name="article" />';
+						$output .= '<div class="separator"></div>';
+						$output .= '<div class="price-wrapper">';
+						$output .= '<span id="price-without-tax">'.__('Price (without tax):', $this->stringTextdomain)." ".$article->price->vatExcluded." ".$objCurrencyData->isoCode."<br /></span>";
+						$output .= '<span id="price-with-tax">'.__('Price (with tax):', $this->stringTextdomain)." ".$article->price->vatIncluded." ".$objCurrencyData->isoCode."<br /></span>";
+						$output .= '</div>';
+						$output .= '<input type="text" value="1" id="quantity" name="quantity" maxlength="4" />';
+						$output .= '<input type="submit" name="submit" value="'.__('Add to basket', $this->stringTextdomain).'" />';
+						//$output .= '<div class="fb-like" data-href="http://www.pr3ss-play.de/shop/#anchor_'.$article['id'].'" data-send="false" data-layout="button_count" data-width="40" data-show-faces="false"></div>';
+						$output .= '</form></div>';
+
 					}
 
-					$output .= '</select>';
-					
-					$output .= '<div class="separator"></div>';
-					
-					/*
-					 * add a list with availabel product colors
-					*/
-					$output .= '<ul class="colors" name="color">';
+					$output .= '</div>';
 
-					foreach($objArticleData->appearances->appearance as $appearance) {
-						if ($article->product->restrictions->freeColorSelection == 'true' || (int)$article->product->appearance['id'] == (int)$appearance['id']) {
-							$output .= '<li value="'.$appearance['id'].'"><img src="'. $appearance->resources->resource->attributes('xlink', true) .'" alt="" /></li>';
+
+					$intInBasket=0;
+					$basketItems=self::getBasket($_SESSION['basketUrl']);
+
+					if(!empty($basketItems)) {
+						foreach($basketItems->basketItems->basketItem as $item) {
+							$intInBasket += $item->quantity;
 						}
 					}
 
-					$output .= '</ul>';
-					
-					/**
-					* Show description link if not empty
-					*/
-					if (!empty($article->description)) {
-						$output .= '<div class="separator"></div>';
-						$output .= '<div class="description-wrapper"><div class="header"><a>'.__('Show description', $this->stringTextdomain).'</a></div><div class="description">'.$article->description.'</div></div>';
+					if (isset($_SESSION['checkoutUrl']) && $intInBasket>0) {
+						$output .= '<div id="checkout">'.$intInBasket." <a href=".$_SESSION['checkoutUrl']." target=\"_blank\">".__('Basket', $this->stringTextdomain)."</a></div>";
+					} else {
+						$output .= '<div id="checkout">'.$intInBasket." <a title=\"".__('Basket is empty', $this->stringTextdomain)."\">".__('Basket', $this->stringTextdomain)."</a></div>";
 					}
-					
-					$output .= '<input type="hidden" value="'. $article->product->appearance['id'] .'" id="appearance" name="appearance" />';
-					$output .= '<input type="hidden" value="'. $article['id'] .'" id="article" name="article" />';
-					$output .= '<div class="separator"></div>';
-					$output .= '<div class="price-wrapper">';
-					$output .= '<span id="price-without-tax">'.__('Price (without tax):', $this->stringTextdomain)." ".$article->price->vatExcluded." ".$objCurrencyData->isoCode."<br /></span>";
-					$output .= '<span id="price-with-tax">'.__('Price (with tax):', $this->stringTextdomain)." ".$article->price->vatIncluded." ".$objCurrencyData->isoCode."<br /></span>";
-					$output .= '</div>';
-					$output .= '<input type="text" value="1" id="quantity" name="quantity" maxlength="4" />';
-					$output .= '<input type="submit" name="submit" value="'.__('Add to basket', $this->stringTextdomain).'" />';
-					//$output .= '<div class="fb-like" data-href="http://www.pr3ss-play.de/shop/#anchor_'.$article['id'].'" data-send="false" data-layout="button_count" data-width="40" data-show-faces="false"></div>';
-					$output .= '</form></div>';
+
+					echo $output;
+
+					echo "
+					</div>
+					<div id=\"navigation\"><a href=\"".get_pagenum_link($paged + 1)."\">".__('next', $this->stringTextdomain)."</a></div>
+					<!-- <div id=\"copyright\">Copyright (c) Thimo Grauerholz - <a href=\"http://www.pr3ss-play.de\">pr3ss-play - Online Shop für deinen persönlichen Party-Style!</a></div> -->
+					</div>";
 
 				}
-
-				$output .= '</ul>';
-
-				
-				$intInBasket=0;
-				$basketItems=self::getBasket($_SESSION['basketUrl']);
-
-				if(!empty($basketItems)) {
-					foreach($basketItems->basketItems->basketItem as $item) {
-						$intInBasket += $item->quantity;
-					}
-				}
-
-				if (isset($_SESSION['checkoutUrl']) && $intInBasket>0) {
-					$output .= '<div id="checkout">'.$intInBasket." <a href=".$_SESSION['checkoutUrl']." target=\"_blank\">".__('Basket', $this->stringTextdomain)."</a></div>";
-				} else {
-					$output .= '<div id="checkout">'.$intInBasket." <a title=\"".__('Basket is empty', $this->stringTextdomain)."\">".__('Basket', $this->stringTextdomain)."</a></div>";
-				}
-
-				echo $output;
-
-				echo "
-				</div>
-				<div id=\"navigation\"><a href=\"".get_pagenum_link($paged + 1)."\">".__('next', $this->stringTextdomain)."</a></div>
-				<!-- <div id=\"copyright\">Copyright (c) Thimo Grauerholz - <a href=\"http://www.pr3ss-play.de\">pr3ss-play - Online Shop für deinen persönlichen Party-Style!</a></div> -->
-				</div>";
-
 			}
 		}
 
@@ -527,115 +533,111 @@ if(!class_exists('WP_Spreadplugin')) {
 
 		function spreadpluginHead() {
 			echo "<script>
-						
-jQuery(document).ready(function() {
-	
-	var saheight = jQuery('.spreadshirt-article').css('height');
-	var par = '';
-	
-	
-	
-	/*
-	* change article color
-	*/
-	function bindClick() {
-		// avoid double firing events
-		jQuery('.colors li').unbind();
-		jQuery('.description-wrapper div.header').unbind();
-		
-		
-		jQuery('.colors li').click(function(){
-			var id = '#' + jQuery(this).closest('.spreadshirt-article').attr('id');
-			var appearance = jQuery(this).attr('value');
-			var src = jQuery(id + ' img.preview').attr('src');
-			jQuery(id + ' img.preview').attr('src', src + ',appearanceId='+appearance);
-			jQuery(id + ' #appearance').attr('value', appearance);
-		});
-		
-		
-		jQuery('.description-wrapper div.header').click(function(){
-			var par = jQuery(this).parent().parent().parent();
-			var field = jQuery(this).next();
 
-			if (field.is(':hidden')) {
-				par.css('height','');
-				par.removeAttr('style');
-				field.show();
-				jQuery(this).children('a').html('".__('Hide description', $this->stringTextdomain)."');
-			} else {
-				jQuery('.spreadshirt-article').css('height',saheight);
-				jQuery('.description-wrapper div.description').hide();
-				jQuery('.description-wrapper div.header a').html('".__('Show description', $this->stringTextdomain)."');
-			}
-		});
+jQuery(document).ready(function() {
+
+var saheight = jQuery('.spreadshirt-article').css('height');
+var par = '';
+
+
+
+/*
+* change article color
+*/
+function bindClick() {
+	// avoid double firing events
+	jQuery('.colors li').unbind();
+	jQuery('.description-wrapper div.header').unbind();
 	
 	
-	}
-	
-	
-	
-	function bindHover() {
-		jQuery('img.preview').mouseenter(function(){
-			var id = jQuery(this).attr('id');
-			id = '#' + id.replace('previewimg','compositeimg');
-			
-			if (jQuery(this).is(':visible')) {
-				jQuery(this).hide();
-				jQuery(id).show();
-			} 
-		});
-		
-		jQuery('.spreadshirt-article').mouseleave(function(){
-			var id = jQuery(this).attr('id');
-			id = id.replace('article','');
-		
-			jQuery('#' + 'compositeimg' + id).hide();
-			jQuery('#' + 'previewimg' + id).show();
-		});
-		
-	/*
-		jQuery('.fb-like').mouseover(function(){
-			jQuery('meta[property=\"og:image\"]').attr('content',jQuery(this).parent().parent().find('.preview').attr('src'));
-		});
-		*/
-	}
-	
-	
-	
-	
-	
-	
-	jQuery('#spreadshirt-list').infinitescroll({
-		nextSelector:'#navigation a',
-		navSelector:'#navigation',
-		itemSelector:'.spreadshirt-article',
-		loading: {
-			img: '".plugins_url('/img/loading.gif', __FILE__)."',
-			msgText: 'Loading new articles...'
-		},
-		animate: true,
-		debug: false,
-		bufferPx: 40
-		}, function(arrayOfNewElems){
-			bindClick();
-			bindHover();
-		}
-	);
-	
-	
-	
-	var scrollingDiv = jQuery('#checkout');
-	
-	jQuery(window).scroll(function(){			
-		scrollingDiv.stop().animate({'marginTop': (jQuery(window).scrollTop() + 30) + 'px'}, 'slow');			
+	jQuery('.colors li').click(function(){
+		var id = '#' + jQuery(this).closest('.spreadshirt-article').attr('id');
+		var appearance = jQuery(this).attr('value');
+		var src = jQuery(id + ' img.preview').attr('src');
+		jQuery(id + ' img.preview').attr('src', src + ',appearanceId='+appearance);
+		jQuery(id + ' #appearance').attr('value', appearance);
 	});
 	
 	
+	jQuery('.description-wrapper div.header').click(function(){
+		var par = jQuery(this).parent().parent().parent();
+		var field = jQuery(this).next();
+		
+		if (field.is(':hidden')) {
+			par.css('height','');
+			par.removeAttr('style');
+			field.show();
+			jQuery(this).children('a').html('".__('Hide description', $this->stringTextdomain)."');
+		} else {
+			jQuery('.spreadshirt-article').css('height',saheight);
+			jQuery('.description-wrapper div.description').hide();
+			jQuery('.description-wrapper div.header a').html('".__('Show description', $this->stringTextdomain)."');
+		}
+	});
+
+}
+
+
+
+function bindHover() {
+	jQuery('img.preview').mouseenter(function(){
+	var id = jQuery(this).attr('id');
+	id = '#' + id.replace('previewimg','compositeimg');
 	
+	if (jQuery(this).is(':visible')) {
+		jQuery(this).hide();
+		jQuery(id).show();
+	}
+	});
 	
-	
+	jQuery('.spreadshirt-article').mouseleave(function(){
+		var id = jQuery(this).attr('id');
+		id = id.replace('article','');
+		
+		jQuery('#' + 'compositeimg' + id).hide();
+		jQuery('#' + 'previewimg' + id).show();
+	});
+
+	/*
+	jQuery('.fb-like').mouseover(function(){
+	jQuery('meta[property=\"og:image\"]').attr('content',jQuery(this).parent().parent().find('.preview').attr('src'));
+	});
+	*/
+}
+
+
+
+
+
+
+jQuery('#spreadshirt-list').infinitescroll({
+	nextSelector:'#navigation a',
+	navSelector:'#navigation',
+	itemSelector:'.spreadshirt-article',
+	loading: {
+	img: '".plugins_url('/img/loading.gif', __FILE__)."',
+	msgText: 'Loading new articles...'
+	},
+	animate: true,
+	debug: false,
+	bufferPx: 40
+	}, function(arrayOfNewElems){
 	bindClick();
 	bindHover();
+});
+
+
+
+var scrollingDiv = jQuery('#checkout');
+
+jQuery(window).scroll(function(){
+	scrollingDiv.stop().animate({'marginTop': (jQuery(window).scrollTop() + 30) + 'px'}, 'slow');
+});
+
+
+
+bindClick();
+bindHover();
 
 });
 
@@ -644,17 +646,17 @@ jQuery(document).ready(function() {
 		}
 
 
-		
+
 		function facebookhead() {
-		/*	echo '<div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/de_DE/all.js#xfbml=1";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, \'script\', \'facebook-jssdk\'));</script>';	
-*/
+			/*	echo '<div id="fb-root"></div>
+			 <script>(function(d, s, id) {
+			 		var js, fjs = d.getElementsByTagName(s)[0];
+			 		if (d.getElementById(id)) return;
+			 		js = d.createElement(s); js.id = id;
+			 		js.src = "//connect.facebook.net/de_DE/all.js#xfbml=1";
+			 		fjs.parentNode.insertBefore(js, fjs);
+			 		}(document, \'script\', \'facebook-jssdk\'));</script>';
+			*/
 		}
 
 
