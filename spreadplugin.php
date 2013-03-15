@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://www.pr3ss-play.de/spreadshirt-wordpress-plugin-uber-api/
  * Description: Use a shortcut to display your Spreadshirt articles and add them to your Spreadshirt Basket using the API
- * Version: 1.2.6
+ * Version: 1.2.7
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
  */
@@ -277,7 +277,7 @@ if(!class_exists('WP_Spreadplugin')) {
 						$output .= '<input type="text" value="1" id="quantity" name="quantity" maxlength="4" />';
 						$output .= '<input type="submit" name="submit" value="'.__('Add to basket', $this->stringTextdomain).'" />';
 						$output .= '<div class="fb-like" data-href="'.get_page_link().'#'.$article['id'].'" data-send="false" data-layout="button_count" data-width="200" data-show-faces="false" style="width:200px; height:30px"></div>';
-						$output .= '<a href="https://twitter.com/share" class="twitter-share-button" data-url="'.get_page_link().'#'.$article['id'].'" data-count="none" data-text="'.(!empty($article->description)?$article->description:'Product').'" data-lang="de">Tweet</a>';
+						$output .= '<a href="https://twitter.com/share" class="twitter-share-button" data-url="'.get_page_link().'#'.$article['id'].'" data-count="none" data-text="'.(!empty($article->description)?$article->description:'Product').'" data-lang="'.(!empty(self::$stringShopLocale)?substr(self::$stringShopLocale,0,2):'en').'">Tweet</a>';
 						$output .= '</form></div>';
 
 					}
@@ -747,7 +747,7 @@ bindHover();
 		}
 		
 		function socialFooter() {
-				echo '<script src="//connect.facebook.net/de_DE/all.js#xfbml=1"></script><script src="//platform.twitter.com/widgets.js"></script>';
+				echo '<script src="//connect.facebook.net/'.(!empty(self::$stringShopLocale)?self::$stringShopLocale:'en_US').'/all.js#xfbml=1"></script><script src="//platform.twitter.com/widgets.js"></script>';
 		}
 
 

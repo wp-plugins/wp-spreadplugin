@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: spreadshirt,wordpress,plugin,shop
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 1.2.6.2
+Stable tag: 1.2.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -77,6 +77,9 @@ Depending on what kind of price you want to hide uncomment the line.
 1. The Output
 
 == Changelog ==
+
+= 1.2.7 =
+* I missed the multi language features of Twitter and Facebook, so sorry!
 
 = 1.2.6 =
 * Added Twitter share button. It pushes description text if available, else it just says 'Product'. Additionally, it says @URL to product. 
