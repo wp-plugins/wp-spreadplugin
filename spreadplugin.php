@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://www.pr3ss-play.de/spreadshirt-wordpress-plugin-uber-api/
  * Description: Use a shortcut to display your Spreadshirt articles and add them to your Spreadshirt Basket using the API
- * Version: 1.2.4
+ * Version: 1.2.5
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
  */
@@ -62,11 +62,25 @@ if(!class_exists('WP_Spreadplugin')) {
 			add_action('wp_login', array($this,'myEndSession'));
 
 			add_shortcode('spreadplugin', array($this,'ScSpreadplugin'));
-			//add_action('wp_head', function() { echo '<meta property="og:image" content="http://image.spreadshirt.net/image-server/v1/products/109779934/views/1" />'; });
 			add_action('wp_head', array($this,'spreadpluginHead'));
 
 			add_action('wp_enqueue_scripts', array($this,'myStyleMethod'));
 			add_action('wp_enqueue_scripts', array($this,'myScriptMethod'));
+
+
+			// These informations will be replaced on like button hovering
+			add_action('wp_head', function() { 
+				echo '
+				
+				<meta property="og:title" content="Online Shop" />
+				<meta property="og:url" content="http://www.pr3ss-play.de/shop/" />
+				<meta property="og:image" content="http://image.spreadshirt.net/image-server/v1/products/110098765/views/1,width=200,height=200" />
+				
+				';
+			});
+			add_action('wp_footer', function() { 
+				echo '<script src="//connect.facebook.net/de_DE/all.js#xfbml=1"></script>';
+			});
 
 		}
 
@@ -108,7 +122,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			'shop_source' => 'net',
 			'shop_secret' => '',
 			'shop_limit' => ''
-					), $atts));
+			), $atts));
 
 			self::$intShopId = $shop_id;
 			self::$stringShopApi = $shop_api;
@@ -196,9 +210,6 @@ if(!class_exists('WP_Spreadplugin')) {
 				$stringXmlShop = wp_remote_retrieve_body($stringXmlShop);
 				$objArticles = new SimpleXmlElement($stringXmlShop);
 				if (!is_object($objArticles)) die('Articles not loaded');
-
-				//facebook header
-				self::facebookhead();
 				
 
 				if ($objArticles['count'] == 0) {
@@ -207,6 +218,7 @@ if(!class_exists('WP_Spreadplugin')) {
 					
 				} else {
 
+					
 					$output = '<div id="spreadshirt-items" class="spreadshirt-items clearfix">';
 					$output .= '<div id="spreadshirt-list">';
 
@@ -222,7 +234,7 @@ if(!class_exists('WP_Spreadplugin')) {
 						/*
 						 * get the productType resource
 						*/
-						$output .= '<div class="spreadshirt-article clearfix" id="article_'.$article['id'].'" style="height:400px">';
+						$output .= '<div class="spreadshirt-article clearfix" id="article_'.$article['id'].'" style="height:450px">';
 						$output .= '<a name="anchor_'.$article['id'].'"></a>';
 						$output .= '<h3>'.$article->name.'</h3>';
 						$output .= '<form method="post">';
@@ -274,7 +286,7 @@ if(!class_exists('WP_Spreadplugin')) {
 						$output .= '</div>';
 						$output .= '<input type="text" value="1" id="quantity" name="quantity" maxlength="4" />';
 						$output .= '<input type="submit" name="submit" value="'.__('Add to basket', $this->stringTextdomain).'" />';
-						//$output .= '<div class="fb-like" data-href="http://www.pr3ss-play.de/shop/#anchor_'.$article['id'].'" data-send="false" data-layout="button_count" data-width="40" data-show-faces="false"></div>';
+						$output .= '<div class="fb-like" data-href="'.get_page_link().'#like='.$article['id'].'" data-send="false" data-layout="button_count" data-width="200" data-show-faces="false" style="width:200px; height:30px"></div>';
 						$output .= '</form></div>';
 
 					}
@@ -302,6 +314,7 @@ if(!class_exists('WP_Spreadplugin')) {
 					echo "
 					<div id=\"navigation\"><a href=\"".get_pagenum_link($paged + 1)."\">".__('next', $this->stringTextdomain)."</a></div>
 					<!-- <div id=\"copyright\">Copyright (c) Thimo Grauerholz - <a href=\"http://www.pr3ss-play.de\">pr3ss-play - Online Shop für deinen persönlichen Party-Style!</a></div> -->
+					<div id=\"fb-root\"></div>
 					</div>";
 
 				}
@@ -596,12 +609,15 @@ function bindHover() {
 		jQuery('#' + 'previewimg' + id).show();
 	});
 
-	/*
-	jQuery('.fb-like').mouseover(function(){
-	jQuery('meta[property=\"og:image\"]').attr('content',jQuery(this).parent().parent().find('.preview').attr('src'));
+	
+	jQuery('.fb-like').hover(function(){
+		jQuery('meta[property=\"og:title\"]').attr('content',jQuery(this).parent().parent().find('h3').html());
+		jQuery('meta[property=\"og:url\"]').attr('content',jQuery(this).attr('data-href'));
+		jQuery('meta[property=\"og:image\"]').attr('content',jQuery(this).parent().parent().find('.preview').attr('src'));
 	});
-	*/
+	
 }
+
 
 
 
@@ -622,6 +638,8 @@ jQuery('#spreadshirt-list').infinitescroll({
 	}, function(arrayOfNewElems){
 	bindClick();
 	bindHover();
+	
+	FB.XFBML.parse();
 });
 
 
@@ -641,20 +659,6 @@ bindHover();
 
 
 </script>";
-		}
-
-
-
-		function facebookhead() {
-			/*	echo '<div id="fb-root"></div>
-			 <script>(function(d, s, id) {
-			 		var js, fjs = d.getElementsByTagName(s)[0];
-			 		if (d.getElementById(id)) return;
-			 		js = d.createElement(s); js.id = id;
-			 		js.src = "//connect.facebook.net/de_DE/all.js#xfbml=1";
-			 		fjs.parentNode.insertBefore(js, fjs);
-			 		}(document, \'script\', \'facebook-jssdk\'));</script>';
-			*/
 		}
 
 
@@ -735,7 +739,7 @@ bindHover();
 		}
 
 		function myEndSession() {
-			session_destroy ();
+			session_destroy();
 		}
 
 
