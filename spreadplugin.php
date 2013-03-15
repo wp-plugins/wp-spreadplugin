@@ -69,18 +69,8 @@ if(!class_exists('WP_Spreadplugin')) {
 
 
 			// These informations will be replaced on like button hovering
-			add_action('wp_head', function() { 
-				echo '
-				
-				<meta property="og:title" content="Online Shop" />
-				<meta property="og:url" content="http://www.pr3ss-play.de/shop/" />
-				<meta property="og:image" content="http://image.spreadshirt.net/image-server/v1/products/110098765/views/1,width=200,height=200" />
-				
-				';
-			});
-			add_action('wp_footer', function() { 
-				echo '<script src="//connect.facebook.net/de_DE/all.js#xfbml=1"></script>';
-			});
+			add_action('wp_head', array($this,'fbHead'));
+			add_action('wp_footer', array($this,'fbFooter'));
 
 		}
 
@@ -742,6 +732,20 @@ bindHover();
 			session_destroy();
 		}
 
+
+		function fbHead() {
+				echo '
+				
+				<meta property="og:title" content="Online Shop" />
+				<meta property="og:url" content="http://www.pr3ss-play.de/shop/" />
+				<meta property="og:image" content="http://image.spreadshirt.net/image-server/v1/products/110098765/views/1,width=200,height=200" />
+				
+				';
+		}
+		
+		function fbFooter() {
+				echo '<script src="//connect.facebook.net/de_DE/all.js#xfbml=1"></script>';
+		}
 
 
 	} // END class WP_Spreadplugin
