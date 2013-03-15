@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://www.pr3ss-play.de/spreadshirt-wordpress-plugin-uber-api/
  * Description: Use a shortcut to display your Spreadshirt articles and add them to your Spreadshirt Basket using the API
- * Version: 1.2.5.2
+ * Version: 1.2.6
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
  */
@@ -69,8 +69,8 @@ if(!class_exists('WP_Spreadplugin')) {
 
 
 			// These informations will be replaced on like button hovering
-			add_action('wp_head', array($this,'fbHead'));
-			add_action('wp_footer', array($this,'fbFooter'));
+			add_action('wp_head', array($this,'socialHead'));
+			add_action('wp_footer', array($this,'socialFooter'));
 
 		}
 
@@ -224,7 +224,7 @@ if(!class_exists('WP_Spreadplugin')) {
 						/*
 						 * get the productType resource
 						*/
-						$output .= '<div class="spreadshirt-article clearfix" id="article_'.$article['id'].'" style="height:450px">';
+						$output .= '<div class="spreadshirt-article clearfix" id="article_'.$article['id'].'" style="height:550px">';
 						$output .= '<a name="anchor_'.$article['id'].'"></a>';
 						$output .= '<h3>'.$article->name.'</h3>';
 						$output .= '<form method="post">';
@@ -277,6 +277,7 @@ if(!class_exists('WP_Spreadplugin')) {
 						$output .= '<input type="text" value="1" id="quantity" name="quantity" maxlength="4" />';
 						$output .= '<input type="submit" name="submit" value="'.__('Add to basket', $this->stringTextdomain).'" />';
 						$output .= '<div class="fb-like" data-href="'.get_page_link().'#like='.$article['id'].'" data-send="false" data-layout="button_count" data-width="200" data-show-faces="false" style="width:200px; height:30px"></div>';
+						$output .= '<a href="https://twitter.com/share" class="twitter-share-button" data-url="'.get_page_link().'#like='.$article['id'].'" data-text="'.(!empty($article->description)?$article->description:'Product').' @'.get_page_link().'#like='.$article['id'].'" data-lang="de">Tweet</a>';
 						$output .= '</form></div>';
 
 					}
@@ -630,6 +631,7 @@ jQuery('#spreadshirt-list').infinitescroll({
 	bindHover();
 	
 	FB.XFBML.parse();
+	twttr.widgets.load();
 });
 
 
@@ -733,7 +735,8 @@ bindHover();
 		}
 
 
-		function fbHead() {
+		// gets replaced on facebook button hover
+		function socialHead() {
 				echo '
 				
 				<meta property="og:title" content="Online Shop" />
@@ -743,8 +746,8 @@ bindHover();
 				';
 		}
 		
-		function fbFooter() {
-				echo '<script src="//connect.facebook.net/de_DE/all.js#xfbml=1"></script>';
+		function socialFooter() {
+				echo '<script src="//connect.facebook.net/de_DE/all.js#xfbml=1"></script><script src="//platform.twitter.com/widgets.js"></script>';
 		}
 
 
