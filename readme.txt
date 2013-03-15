@@ -19,10 +19,12 @@ The pagination is done via infinity scroll.
 Features:
 
 * Infinity Scrolling
-* uses Spreadshirt-Basket (A click on the basket opens the spreadshirt own basket)
+* Uses Spreadshirt-Basket (A click on the basket opens the spreadshirt own basket)
 * Price listing
 * Choose color and sizes
 * Language support (de_DE, en_GB, fr_FR based on Wordpress installation)
+* Social buttons
+* Zoomed article preview
 
 See it in action:
 http://www.pr3ss-play.de/shop/ (in german)
