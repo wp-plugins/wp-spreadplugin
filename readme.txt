@@ -33,7 +33,7 @@ What do you need:
 * Spreadshirt shop
 * Spreadshirt API key and secret (US/NA From: https://www.spreadshirt.com/-C6840, EU From: https://www.spreadshirt.de/-C7120)
 
-Feel free to contact me everytime, if you've problems, questions or feature requests.
+Feel free to contact me.
 
 == Installation ==
 
