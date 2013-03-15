@@ -225,7 +225,7 @@ if(!class_exists('WP_Spreadplugin')) {
 						 * get the productType resource
 						*/
 						$output .= '<div class="spreadshirt-article clearfix" id="article_'.$article['id'].'" style="height:550px">';
-						$output .= '<a name="anchor_'.$article['id'].'"></a>';
+						$output .= '<a name="'.$article['id'].'"></a>';
 						$output .= '<h3>'.$article->name.'</h3>';
 						$output .= '<form method="post">';
 						$output .= '<div class="image-wrapper">';
@@ -276,8 +276,8 @@ if(!class_exists('WP_Spreadplugin')) {
 						$output .= '</div>';
 						$output .= '<input type="text" value="1" id="quantity" name="quantity" maxlength="4" />';
 						$output .= '<input type="submit" name="submit" value="'.__('Add to basket', $this->stringTextdomain).'" />';
-						$output .= '<div class="fb-like" data-href="'.get_page_link().'#like='.$article['id'].'" data-send="false" data-layout="button_count" data-width="200" data-show-faces="false" style="width:200px; height:30px"></div>';
-						$output .= '<a href="https://twitter.com/share" class="twitter-share-button" data-url="'.get_page_link().'#like='.$article['id'].'" data-text="'.(!empty($article->description)?$article->description:'Product').' @'.get_page_link().'#like='.$article['id'].'" data-lang="de">Tweet</a>';
+						$output .= '<div class="fb-like" data-href="'.get_page_link().'#'.$article['id'].'" data-send="false" data-layout="button_count" data-width="200" data-show-faces="false" style="width:200px; height:30px"></div>';
+						$output .= '<a href="https://twitter.com/share" class="twitter-share-button" data-url="'.get_page_link().'#'.$article['id'].'" data-count="none" data-text="'.(!empty($article->description)?$article->description:'Product').'" data-lang="de">Tweet</a>';
 						$output .= '</form></div>';
 
 					}
