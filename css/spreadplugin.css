@@ -130,7 +130,10 @@
 /*	display:none; */
 }
 
-.spreadshirt-article .fb-like {
+.spreadshirt-article .fb-like, .spreadshirt-article .twitter-share-button {
+/*	display:none; */
 	float:left;
 }
+
+
 
