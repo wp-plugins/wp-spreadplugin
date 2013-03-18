@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://www.pr3ss-play.de/spreadshirt-wordpress-plugin-uber-api/
  * Description: Use a shortcut to display your Spreadshirt articles and add them to your Spreadshirt Basket using the API
- * Version: 1.2.7.2
+ * Version: 1.2.7.3
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
  */
@@ -62,11 +62,11 @@ if(!class_exists('WP_Spreadplugin')) {
 			add_action('wp_login', array($this,'myEndSession'));
 
 			add_shortcode('spreadplugin', array($this,'ScSpreadplugin'));
-			add_action('wp_head', array($this,'spreadpluginHead'));
 
 			add_action('wp_enqueue_scripts', array($this,'myStyleMethod'));
 			add_action('wp_enqueue_scripts', array($this,'myScriptMethod'));
 
+			add_action('wp_footer', array($this,'spreadpluginHead'));
 
 			// These informations will be replaced on like button hovering
 			add_action('wp_head', array($this,'socialHead'));
@@ -536,11 +536,9 @@ if(!class_exists('WP_Spreadplugin')) {
 		function spreadpluginHead() {
 			echo "<script>
 
-jQuery(document).ready(function() {
-
 var saheight = jQuery('.spreadshirt-article').css('height');
 var par = '';
-
+var scrollingDiv = jQuery('#checkout');
 
 
 /*
@@ -611,6 +609,14 @@ function bindHover() {
 
 
 
+bindClick();
+bindHover();
+
+
+jQuery(window).scroll(function(){
+	scrollingDiv.stop().animate({'marginTop': (jQuery(window).scrollTop() + 30) + 'px'}, 'slow');
+});
+
 
 
 
@@ -636,18 +642,9 @@ jQuery('#spreadshirt-list').infinitescroll({
 
 
 
-var scrollingDiv = jQuery('#checkout');
-
-jQuery(window).scroll(function(){
-	scrollingDiv.stop().animate({'marginTop': (jQuery(window).scrollTop() + 30) + 'px'}, 'slow');
-});
 
 
 
-bindClick();
-bindHover();
-
-});
 
 
 </script>";
