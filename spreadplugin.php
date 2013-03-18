@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://www.pr3ss-play.de/spreadshirt-wordpress-plugin-uber-api/
  * Description: Use a shortcut to display your Spreadshirt articles and add them to your Spreadshirt Basket using the API
- * Version: 1.2.7.1
+ * Version: 1.2.7.2
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
  */
@@ -738,11 +738,9 @@ bindHover();
 		// gets replaced on facebook button hover
 		function socialHead() {
 				echo '
-				
-				<meta property="og:title" content="Online Shop" />
-				<meta property="og:url" content="http://www.pr3ss-play.de/shop/" />
-				<meta property="og:image" content="http://image.spreadshirt.net/image-server/v1/products/110098765/views/1,width=200,height=200" />
-				
+				<meta property="og:title" content="" />
+				<meta property="og:url" content="" />
+				<meta property="og:image" content="" />
 				';
 		}
 		
