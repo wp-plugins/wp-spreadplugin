@@ -38,7 +38,7 @@ What do you need:
 
 * Wordpress most recent Version
 * Spreadshirt shop
-* Spreadshirt API key and secret (US/NA From: https://www.spreadshirt.com/-C6840, EU From: https://www.spreadshirt.de/-C7120)
+* Spreadshirt API key and secret ( US/NA From: https://www.spreadshirt.com/-C6840 , EU From: https://www.spreadshirt.de/-C7120 )
 
 Feel free to contact me.
 
