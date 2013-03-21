@@ -8,12 +8,16 @@ Stable tag: 1.2.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-This plugin uses the Spreadshirt API to display all articles. Add the articles to the Spreadshirt Basket with a single click.
+This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
 
 == Description ==
 
-A small plugin for Wordpress which uses the Spreadshirt API.
-Just with a shortcode you can list all your products on one page and add them to the Spreadshirt basket. 
+This is a small Wordpress plugin for displaying the articles of your Spreadshirt-Shop in Wordpress. The plugin uses the Spreadshirt API to display and don't uses iframes!
+If you add an article to the cart and then click on the cart link, you will be redirected to the usual Spreadshirt basket. The whole payment and order process is handeled by Spreadshirt.
+
+Using the plugin is quite easy!
+You only need to add the shortcode to your new or existing page and you're done! 
+
 The pagination is done via infinity scroll.
 
 Features:
@@ -25,6 +29,7 @@ Features:
 * Language support (de_DE, en_GB, fr_FR based on Wordpress installation)
 * Social buttons
 * Zoomed article preview
+* Display article descriptions
 
 See it in action:
 http://www.pr3ss-play.de/shop/ (in german)
