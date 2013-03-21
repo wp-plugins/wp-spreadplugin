@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: spreadshirt,wordpress,plugin,shop
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 1.2.8
+Stable tag: 1.2.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -85,6 +85,9 @@ Depending on what kind of price you want to hide uncomment the line.
 2. Screenshot 2
 
 == Changelog ==
+
+= 1.2.9 =
+* Skipping some errors when spreadshirt articles are no more readable (link dead?)
 
 = 1.2.8 =
 * Removed some error messages when in Wordpress debug mode
