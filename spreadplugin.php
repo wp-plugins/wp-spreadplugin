@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://www.pr3ss-play.de/spreadshirt-wordpress-plugin-uber-api/
  * Description: Use a shortcut to display your Spreadshirt articles and add them to your Spreadshirt Basket using the API
- * Version: 1.2.7.3
+ * Version: 1.2.8
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
  */
@@ -286,14 +286,17 @@ if(!class_exists('WP_Spreadplugin')) {
 
 
 					$intInBasket=0;
-					$basketItems=self::getBasket($_SESSION['basketUrl']);
-
-					if(!empty($basketItems)) {
-						foreach($basketItems->basketItems->basketItem as $item) {
-							$intInBasket += $item->quantity;
+					
+					if (isset($_SESSION['basketUrl'])) {
+						$basketItems=self::getBasket($_SESSION['basketUrl']);
+	
+						if(!empty($basketItems)) {
+							foreach($basketItems->basketItems->basketItem as $item) {
+								$intInBasket += $item->quantity;
+							}
 						}
 					}
-
+					
 					if (isset($_SESSION['checkoutUrl']) && $intInBasket>0) {
 						$output .= '<div id="checkout">'.$intInBasket." <a href=".$_SESSION['checkoutUrl']." target=\"_blank\">".__('Basket', $this->stringTextdomain)."</a></div>";
 					} else {
@@ -517,6 +520,7 @@ if(!class_exists('WP_Spreadplugin')) {
 		function getBasket($basketUrl) {
 
 			$header = array();
+			$basket = "";
 
 			if (!empty($basketUrl)) {
 				$header[] = self::createAuthHeader("GET", $basketUrl);
