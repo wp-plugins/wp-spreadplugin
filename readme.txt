@@ -76,7 +76,8 @@ Depending on what kind of price you want to hide uncomment the line.
 
 == Screenshots ==
 
-1. The Output
+1. The Output 1
+2. Screenshot 2
 
 == Changelog ==
 
