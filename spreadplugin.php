@@ -629,12 +629,12 @@ if(!class_exists('WP_Spreadplugin')) {
 
 		function myStartSession() {
 			if(!session_id()) {
-				session_start();
+				@session_start();
 			}
 		}
 
 		function myEndSession() {
-			session_destroy();
+			@session_destroy();
 		}
 
 
