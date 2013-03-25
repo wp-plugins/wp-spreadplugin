@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spreadplugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-05 12:16+0100\n"
-"PO-Revision-Date: 2013-03-10 15:52+0100\n"
+"POT-Creation-Date: 2013-03-25 21:41+0100\n"
+"PO-Revision-Date: 2013-03-25 21:41+0100\n"
 "Last-Translator: Thimo Grauerholz <info@pr3ss-play.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -17,37 +17,45 @@ msgstr ""
 "X-Generator: Poedit 1.5.5\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: spreadplugin.php:249 spreadplugin.php:556
+#: spreadplugin.php:269 spreadplugin.php:549
 msgid "Show description"
 msgstr "Zeige Beschreibung"
 
-#: spreadplugin.php:257
+#: spreadplugin.php:276
 msgid "Price (without tax):"
 msgstr "Preis (ohne MwSt.):"
 
-#: spreadplugin.php:258
+#: spreadplugin.php:277
 msgid "Price (with tax):"
 msgstr "Preis (mit MwSt.):"
 
-#: spreadplugin.php:260
+#: spreadplugin.php:280
 msgid "Add to basket"
 msgstr "In den Warenkorb"
 
-#: spreadplugin.php:279 spreadplugin.php:281
+#: spreadplugin.php:303 spreadplugin.php:305
 msgid "Basket"
 msgstr "Warenkorb"
 
-#: spreadplugin.php:281
+#: spreadplugin.php:305
 msgid "Basket is empty"
 msgstr "Warenkorb ist leer"
 
-#: spreadplugin.php:288
+#: spreadplugin.php:311
 msgid "next"
 msgstr "weiter"
 
-#: spreadplugin.php:552
+#: spreadplugin.php:548
 msgid "Hide description"
 msgstr "Verstecke Beschreibung"
+
+#: spreadplugin.php:551
+msgid "Loading new articles..."
+msgstr "Artikel werden geladen..."
+
+#: spreadplugin.php:552
+msgid "You have reached the end"
+msgstr "Keine weiteren Artikel verfügbar"
 
 #, fuzzy
 #~ msgid "Preis (with tax):"

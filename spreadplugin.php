@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://www.pr3ss-play.de/spreadshirt-wordpress-plugin-uber-api/
  * Description: Use a shortcut to display your Spreadshirt articles and add them to your Spreadshirt Basket using the API
- * Version: 1.2.9
+ * Version: 1.3
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
  */
@@ -541,119 +541,19 @@ if(!class_exists('WP_Spreadplugin')) {
 
 		function spreadpluginHead() {
 			echo "<script>
-
-var saheight = jQuery('.spreadshirt-article').css('height');
-var par = '';
-var scrollingDiv = jQuery('#checkout');
-
-
-/*
-* change article color
-*/
-function bindClick() {
-	// avoid double firing events
-	jQuery('.colors li').unbind();
-	jQuery('.description-wrapper div.header').unbind();
-	
-	
-	jQuery('.colors li').click(function(){
-		var id = '#' + jQuery(this).closest('.spreadshirt-article').attr('id');
-		var appearance = jQuery(this).attr('value');
-		var src = jQuery(id + ' img.preview').attr('src');
-		jQuery(id + ' img.preview').attr('src', src + ',appearanceId='+appearance);
-		jQuery(id + ' #appearance').attr('value', appearance);
-	});
-	
-	
-	jQuery('.description-wrapper div.header').click(function(){
-		var par = jQuery(this).parent().parent().parent();
-		var field = jQuery(this).next();
-		
-		if (field.is(':hidden')) {
-			par.css('height','');
-			par.removeAttr('style');
-			field.show();
-			jQuery(this).children('a').html('".__('Hide description', $this->stringTextdomain)."');
-		} else {
-			jQuery('.spreadshirt-article').css('height',saheight);
-			jQuery('.description-wrapper div.description').hide();
-			jQuery('.description-wrapper div.header a').html('".__('Show description', $this->stringTextdomain)."');
-		}
-	});
-
-}
-
-
-
-function bindHover() {
-	jQuery('img.preview').mouseenter(function(){
-	var id = jQuery(this).attr('id');
-	id = '#' + id.replace('previewimg','compositeimg');
-	
-	if (jQuery(this).is(':visible')) {
-		jQuery(this).hide();
-		jQuery(id).show();
-	}
-	});
-	
-	jQuery('.spreadshirt-article').mouseleave(function(){
-		var id = jQuery(this).attr('id');
-		id = id.replace('article','');
-		
-		jQuery('#' + 'compositeimg' + id).hide();
-		jQuery('#' + 'previewimg' + id).show();
-	});
-
-	
-	jQuery('.fb-like').hover(function(){
-		jQuery('meta[property=\"og:title\"]').attr('content',jQuery(this).parent().parent().find('h3').html());
-		jQuery('meta[property=\"og:url\"]').attr('content',jQuery(this).attr('data-href'));
-		jQuery('meta[property=\"og:image\"]').attr('content',jQuery(this).parent().parent().find('.preview').attr('src'));
-	});
-	
-}
-
-
-
-bindClick();
-bindHover();
-
-
-jQuery(window).scroll(function(){
-	scrollingDiv.stop().animate({'marginTop': (jQuery(window).scrollTop() + 30) + 'px'}, 'slow');
-});
-
-
-
-
-
-jQuery('#spreadshirt-list').infinitescroll({
-	nextSelector:'#navigation a',
-	navSelector:'#navigation',
-	itemSelector:'.spreadshirt-article',
-	loading: {
-	img: '".plugins_url('/img/loading.gif', __FILE__)."',
-	msgText: 'Loading new articles...'
-	},
-	animate: true,
-	debug: false,
-	bufferPx: 40
-	}, function(arrayOfNewElems){
-	bindClick();
-	bindHover();
-	
-	FB.XFBML.parse();
-	twttr.widgets.load();
-});
-
-
-
-
-
-
-
-
-</script>";
+			/**
+			* Spreadplugin vars
+			*/
+			
+			var textHideDesc = '".__('Hide description', $this->stringTextdomain)."';
+			var textShowDesc = '".__('Show description', $this->stringTextdomain)."';
+			var loadingImage = '".plugins_url('/img/loading.gif', __FILE__)."';
+			var loadingMessage = '".__('Loading new articles...', $this->stringTextdomain)."';
+			var loadingFinishedMessage = '".__('You have reached the end', $this->stringTextdomain)."';
+			
+			</script>";
+			
+			echo "<script src='".plugins_url('/js/spreadplugin.js', __FILE__)."'></script>";
 		}
 
 

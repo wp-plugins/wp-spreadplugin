@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spreadplugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-10 15:47+0100\n"
-"PO-Revision-Date: 2013-03-10 15:47+0100\n"
+"POT-Creation-Date: 2013-03-25 21:42+0100\n"
+"PO-Revision-Date: 2013-03-25 21:42+0100\n"
 "Last-Translator: Thimo Grauerholz <info@pr3ss-play.de>\n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -17,37 +17,45 @@ msgstr ""
 "X-Generator: Poedit 1.5.5\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: spreadplugin.php:257 spreadplugin.php:564
+#: spreadplugin.php:269 spreadplugin.php:549
 msgid "Show description"
 msgstr "Afficher la description"
 
-#: spreadplugin.php:264
+#: spreadplugin.php:276
 msgid "Price (without tax):"
 msgstr "Montant sans taxes:"
 
-#: spreadplugin.php:265
+#: spreadplugin.php:277
 msgid "Price (with tax):"
 msgstr "Montant avec taxes:"
 
-#: spreadplugin.php:268
+#: spreadplugin.php:280
 msgid "Add to basket"
 msgstr "Ajouter au panier"
 
-#: spreadplugin.php:287 spreadplugin.php:289
+#: spreadplugin.php:303 spreadplugin.php:305
 msgid "Basket"
 msgstr "Panier"
 
-#: spreadplugin.php:289
+#: spreadplugin.php:305
 msgid "Basket is empty"
 msgstr "Panier est vide"
 
-#: spreadplugin.php:296
+#: spreadplugin.php:311
 msgid "next"
 msgstr "suivant"
 
-#: spreadplugin.php:560
+#: spreadplugin.php:548
 msgid "Hide description"
 msgstr "Masquer la description"
+
+#: spreadplugin.php:551
+msgid "Loading new articles..."
+msgstr "Chargement des autres articles..."
+
+#: spreadplugin.php:552
+msgid "You have reached the end"
+msgstr "Félicitations, vous avez atteint la fin des Internets"
 
 #, fuzzy
 #~ msgid "Preis (with tax):"
