@@ -18,10 +18,10 @@ function bindClick() {
 		var id = '#' + jQuery(this).closest('.spreadshirt-article').attr('id');
 		var appearance = jQuery(this).attr('value');
 		var src = jQuery(id + ' img.preview').attr('src');
+		var srccomp = jQuery(id + ' img.compositions').attr('src');
+		
 		jQuery(id + ' img.preview').attr('src', src.replace(/\,appearanceId=(\d+)/g,'').replace(/\,viewId=(\d+)/g,'') + ',appearanceId='+appearance);
-
-		// just the one composition image available?
-		// jQuery(id + ' img.compositions').attr('src', jQuery(id + ' img.compositions').attr('src') + ',appearanceId='+appearance);
+		jQuery(id + ' img.compositions').attr('src', srccomp.replace(/\,appearanceId=(\d+)/g,'').replace(/\,viewId=(\d+)/g,'') + ',appearanceId='+appearance);
 		
 		jQuery(id + ' img.previewview').each(function () {
 			var originalsrc = jQuery(this).attr('src');
@@ -31,11 +31,15 @@ function bindClick() {
 		jQuery(id + ' #appearance').attr('value', appearance);
 	});
 	
+	
 	jQuery('.views li').click(function(){
 		var id = '#' + jQuery(this).closest('.spreadshirt-article').attr('id');
 		var view = jQuery(this).attr('value');
 		var src = jQuery(id + ' img.previewview').attr('src');
+		var srccomp = jQuery(id + ' img.compositions').attr('src');
+		
 		jQuery(id + ' img.preview').attr('src', src.replace(/\,viewId=(\d+)/g,'').replace(/\,width=(\d+)\,height=(\d+)/g,'') + ',viewId='+view);
+		jQuery(id + ' img.compositions').attr('src', srccomp.replace(/\,viewId=(\d+)/g,'') + ',viewId='+view);
 		jQuery(id + ' #view').attr('value', view);
 	});
 
