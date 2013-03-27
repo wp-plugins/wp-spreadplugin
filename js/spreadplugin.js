@@ -35,7 +35,7 @@ function bindClick() {
 		var id = '#' + jQuery(this).closest('.spreadshirt-article').attr('id');
 		var view = jQuery(this).attr('value');
 		var src = jQuery(id + ' img.previewview').attr('src');
-		jQuery(id + ' img.preview').attr('src', src.replace(/\,viewId=(\d+)/g,'') + ',viewId='+view);
+		jQuery(id + ' img.preview').attr('src', src.replace(/\,viewId=(\d+)/g,'').replace(/\,width=(\d+)\,height=(\d+)/g,'') + ',viewId='+view);
 		jQuery(id + ' #view').attr('value', view);
 	});
 

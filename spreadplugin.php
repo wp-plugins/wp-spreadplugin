@@ -2,8 +2,8 @@
 /**
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://www.pr3ss-play.de/spreadshirt-wordpress-plugin-uber-api/
- * Description: Use a shortcut to display your Spreadshirt articles and add them to your Spreadshirt Basket using the API
- * Version: 1.4
+ * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process. 
+ * Version: 1.4.1
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
  */
@@ -269,7 +269,7 @@ if(!class_exists('WP_Spreadplugin')) {
 						$output .= '<ul class="views" name="views">';
 
 						foreach($objArticleData->views->view as $view) {
-							$output .= '<li value="'.$view['id'].'"><img src="'. $article->resources->resource->attributes('xlink', true)  .',viewId='.$view['id'].'" class="previewview" alt="" id="viewimg_'.$article['id'].'" /></li>';
+							$output .= '<li value="'.$view['id'].'"><img src="'. $article->resources->resource->attributes('xlink', true)  .',viewId='.$view['id'].',width=42,height=42" class="previewview" alt="" id="viewimg_'.$article['id'].'" /></li>';
 						}
 
 						$output .= '</ul>';
