@@ -46,15 +46,20 @@
 	margin-right: 10px;
 }
 .spreadshirt-items .colors {
-	min-height: 30px;
+	min-height: 35px;
 }
-.spreadshirt-items .colors li {
+.spreadshirt-items .colors li, .spreadshirt-items .views li{
 	float: left;
 	width: 13px;
 	height: 13px;
 	margin: 0 2px 2px 0;
 	cursor: pointer;
 }
+.spreadshirt-items .views li {
+	width: 26px;
+	height: 26px;
+}
+
 .spreadshirt-items #checkout {
 	position: absolute;
 	right: 10px;

@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://www.pr3ss-play.de/spreadshirt-wordpress-plugin-uber-api/
  * Description: Use a shortcut to display your Spreadshirt articles and add them to your Spreadshirt Basket using the API
- * Version: 1.3
+ * Version: 1.4
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
  */
@@ -226,7 +226,7 @@ if(!class_exists('WP_Spreadplugin')) {
 						/*
 						 * get the productType resource
 						*/
-						$output .= '<div class="spreadshirt-article clearfix" id="article_'.$article['id'].'" style="height:550px">';
+						$output .= '<div class="spreadshirt-article clearfix" id="article_'.$article['id'].'" style="height:570px">';
 						$output .= '<a name="'.$article['id'].'"></a>';
 						$output .= '<h3>'.$article->name.'</h3>';
 						$output .= '<form method="post">';
@@ -260,6 +260,22 @@ if(!class_exists('WP_Spreadplugin')) {
 						}
 
 						$output .= '</ul>';
+
+
+
+						/*
+						 * add a list with availabel product views
+						*/
+						$output .= '<ul class="views" name="views">';
+
+						foreach($objArticleData->views->view as $view) {
+							$output .= '<li value="'.$view['id'].'"><img src="'. $article->resources->resource->attributes('xlink', true)  .',viewId='.$view['id'].'" class="previewview" alt="" id="viewimg_'.$article['id'].'" /></li>';
+						}
+
+						$output .= '</ul>';
+
+
+
 							
 						/**
 						 * Show description link if not empty
@@ -270,6 +286,7 @@ if(!class_exists('WP_Spreadplugin')) {
 						}
 							
 						$output .= '<input type="hidden" value="'. $article->product->appearance['id'] .'" id="appearance" name="appearance" />';
+						$output .= '<input type="hidden" value="'. $article->product->defaultValues->defaultView['id'] .'" id="view" name="view" />';
 						$output .= '<input type="hidden" value="'. $article['id'] .'" id="article" name="article" />';
 						$output .= '<div class="separator"></div>';
 						$output .= '<div class="price-wrapper">';
