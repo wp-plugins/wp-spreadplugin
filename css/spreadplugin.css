@@ -45,6 +45,11 @@
 	width: 30px;
 	margin-right: 10px;
 }
+.spreadshirt-article input[type="submit"],.spreadshirt-article #quantity {
+padding:5px;
+margin:5px;
+margin-bottom:10px;
+}
 .spreadshirt-items .colors {
 	min-height: 35px;
 }
