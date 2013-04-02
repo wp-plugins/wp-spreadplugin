@@ -59,7 +59,6 @@ function bindClick() {
 			jQuery('.description-wrapper div.header a').html(textShowDesc);
 		}
 	});
-
 }
 
 

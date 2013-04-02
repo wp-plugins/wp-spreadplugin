@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: spreadshirt,wordpress,plugin,shop
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 1.4.3
+Stable tag: 1.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -86,6 +86,9 @@ Depending on what kind of price you want to hide uncomment the line.
 3. Screenshot 3
 
 == Changelog ==
+
+= 1.5 =
+* Shows detailed product description when hovering the article image
 
 = 1.4.2 =
 * Zoom image now shows right color of views

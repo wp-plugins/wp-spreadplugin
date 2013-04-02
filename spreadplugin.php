@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://www.pr3ss-play.de/spreadshirt-wordpress-plugin-uber-api/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process. 
- * Version: 1.4.2
+ * Version: 1.5
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
  */
@@ -97,6 +97,7 @@ if(!class_exists('WP_Spreadplugin')) {
 		 * Shortcode function
 		 */
 		function ScSpreadplugin($atts) {
+			global $paged;
 
 			$shop_id = '';
 			$shop_api = '';
@@ -186,9 +187,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				/*
 				 * print article list with size and color options
 				*/
-
-				// get pagination value from wordpress
-				global $paged;
+				// use pagination value from wordpress
 				if(empty($paged)) $paged = 1;
 
 				$offset=($paged-1)*self::$stringShopLimit;
@@ -215,8 +214,8 @@ if(!class_exists('WP_Spreadplugin')) {
 
 					foreach ($objArticles->article as $article) {
 						//print_r($article);
-							
-						$stringXmlArticle = wp_remote_retrieve_body(wp_remote_get($article->product->productType->attributes('xlink', true)));
+													
+						$stringXmlArticle = wp_remote_retrieve_body(wp_remote_get($article->product->productType->attributes('xlink', true).'?'.(!empty(self::$stringShopLocale)?'locale=' . self::$stringShopLocale:'')));
 						if(substr($stringXmlArticle, 0, 5) !== "<?xml") continue;
 						$objArticleData = new SimpleXmlElement($stringXmlArticle);
 						$stringXmlCurreny = wp_remote_retrieve_body(wp_remote_get($article->price->currency->attributes('http://www.w3.org/1999/xlink')));
@@ -232,7 +231,7 @@ if(!class_exists('WP_Spreadplugin')) {
 						$output .= '<form method="post">';
 						$output .= '<div class="image-wrapper">';
 						$output .= '<img src="' . (string)$article->resources->resource->attributes('xlink', true) . ',width='.self::$stringShopImgSize.',height='.self::$stringShopImgSize.'" class="preview" alt="' . $article->name . '" id="previewimg_'.$article['id'].'" />';
-						$output .= '<img src="' . (string)$article->resources->resource[2]->attributes('xlink', true) . ',width='.self::$stringShopImgSize.',height='.self::$stringShopImgSize.'" class="compositions" style="display:none;" alt="' . $article->name . '" id="compositeimg_'.$article['id'].'" />';
+						$output .= '<img src="' . (string)$article->resources->resource[2]->attributes('xlink', true) . ',width='.self::$stringShopImgSize.',height='.self::$stringShopImgSize.'" class="compositions" style="display:none;" alt="' . $article->name . '" id="compositeimg_'.$article['id'].'" title="'.addslashes($objArticleData->description).'" />';
 						$output .= '</div>';
 							
 						/*
@@ -275,8 +274,7 @@ if(!class_exists('WP_Spreadplugin')) {
 						$output .= '</ul>';
 
 
-
-							
+					
 						/**
 						 * Show description link if not empty
 						 */
