@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: spreadshirt,wordpress,plugin,shop
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 1.5
+Stable tag: 1.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -50,10 +50,10 @@ Feel free to contact me.
 4. Insert shortcode
 
 **US/NA**
-`[spreadplugin shop_id="414192" shop_limit="20" shop_locale="" shop_source="com" shop_api="" shop_secret=""]`
+`[spreadplugin shop_id="414192" shop_limit="20" shop_locale="" shop_source="com" shop_category="" shop_api="" shop_secret=""]`
 
 **EU/DE/FR**
-`[spreadplugin shop_id="732552" shop_limit="20" shop_locale="de_DE" shop_source="net" shop_api="" shop_secret=""]`
+`[spreadplugin shop_id="732552" shop_limit="20" shop_locale="de_DE" shop_source="net" shop_category="" shop_api="" shop_secret=""]`
 
 5. Insert Shop ID, Shop API (Spreadshirt API Key) and Shop secret (Spreadshirt Secret)
 6. Done (you may modify the layout using the separate css file in the spreadplugin Folder)
@@ -79,6 +79,16 @@ The currency bases on the currency you're using for your Spreadshirt Shop. So if
 Please have look at the file `/wp-content/plugins/wp-spreadplugin/css/spreadplugin.css` and search for `.spreadshirt-article #price-`.
 Depending on what kind of price you want to hide uncomment the line.
 
+= How do I get the category Id? =
+
+1. You must have already created a category in your spreadshirt shop, if not, please do so, now. Please refer to spreadshirt, if you don't know how.
+2. Please open your normal spreadshirt shop (shopid.spreadshirt.net). In my case: http://pr3ss-play.spreadshirt.de/
+3. Choose a category from the category selection.
+4. The url of your shop has changed to `http://pr3ss-play.spreadshirt.de/winter-C269237` in my case
+5. The category Id in this case is `269237` (the numbers after the "-C" part)
+6. Paste this number in the `shop_category=""` variable.
+7. Save and done.
+
 == Screenshots ==
 
 1. The Output 1
@@ -87,8 +97,11 @@ Depending on what kind of price you want to hide uncomment the line.
 
 == Changelog ==
 
+= 1.6 =
+* Define a category to display with `shop_category=""`. Please have a look at the faq for getting the category id. In v2 I hope to have an admin interface which will help you with the configuration.
+
 = 1.5 =
-* Shows detailed product description when hovering the article image
+* Shows detailed product description when hovering the article image (mouseover)
 
 = 1.4.2 =
 * Zoom image now shows right color of views

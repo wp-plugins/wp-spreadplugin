@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://www.pr3ss-play.de/spreadshirt-wordpress-plugin-uber-api/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process. 
- * Version: 1.5
+ * Version: 1.6
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
  */
@@ -14,10 +14,10 @@
  * Api Key gibts hier: https://www.spreadshirt.de/-C7120 für EU/DE / for US/NA https://www.spreadshirt.com/-C6840
  *
  * Shortcode
- * [spreadplugin shop_id="732552" shop_limit="20" shop_locale="de_DE" shop_api="" shop_secret="" shop_source="net"]
+ * [spreadplugin shop_id="732552" shop_limit="20" shop_locale="de_DE" shop_api="" shop_secret="" shop_category="" shop_source="net"]
  *
  * US/NA
- * [spreadplugin shop_id="414192" shop_limit="20" shop_locale="" shop_api="" shop_secret="" shop_source="com"]
+ * [spreadplugin shop_id="414192" shop_limit="20" shop_locale="" shop_api="" shop_secret="" shop_category="" shop_source="com"]
  *
  * Put your API and secret in the fields above
  **/
@@ -50,6 +50,7 @@ if(!class_exists('WP_Spreadplugin')) {
 		private static $stringShopApi = '';
 		private static $stringShopSecret = '';
 		private static $stringShopImgSize = '190';
+		private static $stringShopCategoryId = '';
 
 		function WP_Spreadplugin() {
 			WP_Spreadplugin::__construct();
@@ -105,6 +106,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			$shop_limit = '';
 			$shop_locale = '';
 			$shop_source = '';
+			$shop_category = '';
 
 			extract(shortcode_atts(array(
 			'shop_id' => '',
@@ -112,15 +114,17 @@ if(!class_exists('WP_Spreadplugin')) {
 			'shop_api' => '',
 			'shop_source' => 'net',
 			'shop_secret' => '',
-			'shop_limit' => ''
+			'shop_limit' => '',
+			'shop_category' => ''
 			), $atts));
 
-			self::$intShopId = $shop_id;
+			self::$intShopId = intval($shop_id);
 			self::$stringShopApi = $shop_api;
 			self::$stringShopSecret = $shop_secret;
-			self::$stringShopLimit = $shop_limit;
+			self::$stringShopLimit = intval($shop_limit);
 			self::$stringShopLocale = $shop_locale;
 			self::$stringApiUrl = $shop_source;
+			self::$stringShopCategoryId = intval($shop_category);
 
 
 			if(!empty(self::$intShopId) && !empty(self::$stringShopApi) && !empty(self::$stringShopSecret)) {
@@ -192,7 +196,9 @@ if(!class_exists('WP_Spreadplugin')) {
 
 				$offset=($paged-1)*self::$stringShopLimit;
 
-				$stringApiUrl='http://api.spreadshirt.'.self::$stringApiUrl.'/api/v1/shops/' . self::$intShopId . '/articles?'.(!empty(self::$stringShopLocale)?'locale=' . self::$stringShopLocale . '&':'').'fullData=true&limit='.self::$stringShopLimit.'&offset='.$offset;
+				$stringApiUrl = 'http://api.spreadshirt.'.self::$stringApiUrl.'/api/v1/shops/' . self::$intShopId;
+				$stringApiUrl .= (!empty(self::$stringShopCategoryId)?'/articleCategories/'.self::$stringShopCategoryId:'');
+				$stringApiUrl .= '/articles?'.(!empty(self::$stringShopLocale)?'locale=' . self::$stringShopLocale . '&':'').'fullData=true&limit='.self::$stringShopLimit.'&offset='.$offset;
 
 				$stringXmlShop = wp_remote_get($stringApiUrl);
 				if (count($stringXmlShop->errors)>0) die('Error getting articles. Please check Shop-ID, API and secret.');
