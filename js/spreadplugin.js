@@ -83,12 +83,13 @@ function bindHover() {
 	});
 
 	
-	jQuery('.fb-like').hover(function(){
-		jQuery('meta[property=\"og:title\"]').attr('content',jQuery(this).parent().parent().find('h3').html());
-		jQuery('meta[property=\"og:url\"]').attr('content',jQuery(this).attr('data-href'));
-		jQuery('meta[property=\"og:image\"]').attr('content',jQuery(this).parent().parent().find('.preview').attr('src'));
-	});
-	
+	if (socialButtonsEnabled==true) {
+		jQuery('.fb-like').hover(function(){
+			jQuery('meta[property=\"og:title\"]').attr('content',jQuery(this).parent().parent().find('h3').html());
+			jQuery('meta[property=\"og:url\"]').attr('content',jQuery(this).attr('data-href'));
+			jQuery('meta[property=\"og:image\"]').attr('content',jQuery(this).parent().parent().find('.preview').attr('src'));
+		});
+	}
 }
 
 
@@ -110,19 +111,21 @@ jQuery('#spreadshirt-list').infinitescroll({
 	navSelector:'#navigation',
 	itemSelector:'.spreadshirt-article',
 	loading: {
-	img: loadingImage,
-	msgText: loadingMessage,
-	finishedMsg: loadingFinishedMessage
+		img: loadingImage,
+		msgText: loadingMessage,
+		finishedMsg: loadingFinishedMessage
 	},
 	animate: true,
 	debug: false,
 	bufferPx: 40
 	}, function(arrayOfNewElems){
-	bindClick();
-	bindHover();
-	
-	FB.XFBML.parse();
-	twttr.widgets.load();
+		bindClick();
+		bindHover();
+		
+		if (socialButtonsEnabled==true) {
+			FB.XFBML.parse();
+			twttr.widgets.load();
+		}
 });
 
 

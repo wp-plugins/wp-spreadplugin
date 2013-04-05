@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: spreadshirt,wordpress,plugin,shop
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 1.6
+Stable tag: 1.6.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -96,6 +96,9 @@ Depending on what kind of price you want to hide uncomment the line.
 3. Screenshot 3
 
 == Changelog ==
+
+= 1.6.1 =
+* Added a new shortcode variable to disable social media buttons. Enable ` shop_social="1"` / Disable `shop_social="0"`
 
 = 1.6 =
 * Define a category to display with `shop_category=""`. Please have a look at the faq for getting the category id. In v2 I hope to have an admin interface which will help you with the configuration.

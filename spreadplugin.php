@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://www.pr3ss-play.de/spreadshirt-wordpress-plugin-uber-api/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process. 
- * Version: 1.6
+ * Version: 1.6.1
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
  */
@@ -14,10 +14,10 @@
  * Api Key gibts hier: https://www.spreadshirt.de/-C7120 für EU/DE / for US/NA https://www.spreadshirt.com/-C6840
  *
  * Shortcode
- * [spreadplugin shop_id="732552" shop_limit="20" shop_locale="de_DE" shop_api="" shop_secret="" shop_category="" shop_source="net"]
+ * [spreadplugin shop_id="732552" shop_limit="20" shop_locale="de_DE" shop_api="" shop_secret="" shop_category="" shop_source="net" shop_social="1"]
  *
  * US/NA
- * [spreadplugin shop_id="414192" shop_limit="20" shop_locale="" shop_api="" shop_secret="" shop_category="" shop_source="com"]
+ * [spreadplugin shop_id="414192" shop_limit="20" shop_locale="" shop_api="" shop_secret="" shop_category="" shop_source="com" shop_social="1"]
  *
  * Put your API and secret in the fields above
  **/
@@ -51,6 +51,7 @@ if(!class_exists('WP_Spreadplugin')) {
 		private static $stringShopSecret = '';
 		private static $stringShopImgSize = '190';
 		private static $stringShopCategoryId = '';
+		private static $stringShopSocialEnabled = '';
 
 		function WP_Spreadplugin() {
 			WP_Spreadplugin::__construct();
@@ -107,6 +108,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			$shop_locale = '';
 			$shop_source = '';
 			$shop_category = '';
+			$shop_social = '';
 
 			extract(shortcode_atts(array(
 			'shop_id' => '',
@@ -115,7 +117,8 @@ if(!class_exists('WP_Spreadplugin')) {
 			'shop_source' => 'net',
 			'shop_secret' => '',
 			'shop_limit' => '',
-			'shop_category' => ''
+			'shop_category' => '',
+			'shop_social' => 1
 			), $atts));
 
 			self::$intShopId = intval($shop_id);
@@ -125,6 +128,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			self::$stringShopLocale = $shop_locale;
 			self::$stringApiUrl = $shop_source;
 			self::$stringShopCategoryId = intval($shop_category);
+			self::$stringShopSocialEnabled = intval($shop_social);
 
 
 			if(!empty(self::$intShopId) && !empty(self::$stringShopApi) && !empty(self::$stringShopSecret)) {
@@ -299,8 +303,12 @@ if(!class_exists('WP_Spreadplugin')) {
 						$output .= '</div>';
 						$output .= '<input type="text" value="1" id="quantity" name="quantity" maxlength="4" />';
 						$output .= '<input type="submit" name="submit" value="'.__('Add to basket', $this->stringTextdomain).'" />';
-						$output .= '<div class="fb-like" data-href="'.get_page_link().'#'.$article['id'].'" data-send="false" data-layout="button_count" data-width="200" data-show-faces="false" style="width:200px; height:30px"></div>';
-						$output .= '<a href="https://twitter.com/share" class="twitter-share-button" data-url="'.get_page_link().'#'.$article['id'].'" data-count="none" data-text="'.(!empty($article->description)?$article->description:'Product').'" data-lang="'.(!empty(self::$stringShopLocale)?substr(self::$stringShopLocale,0,2):'en').'">Tweet</a>';
+						
+						if (self::$stringShopSocialEnabled==true) {
+							$output .= '<div class="fb-like" data-href="'.get_page_link().'#'.$article['id'].'" data-send="false" data-layout="button_count" data-width="200" data-show-faces="false" style="width:200px; height:30px"></div>';
+							$output .= '<a href="https://twitter.com/share" class="twitter-share-button" data-url="'.get_page_link().'#'.$article['id'].'" data-count="none" data-text="'.(!empty($article->description)?$article->description:'Product').'" data-lang="'.(!empty(self::$stringShopLocale)?substr(self::$stringShopLocale,0,2):'en').'">Tweet</a>';
+						}
+						
 						$output .= '</form></div>';
 
 					}
@@ -571,6 +579,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			var loadingImage = '".plugins_url('/img/loading.gif', __FILE__)."';
 			var loadingMessage = '".__('Loading new articles...', $this->stringTextdomain)."';
 			var loadingFinishedMessage = '".__('You have reached the end', $this->stringTextdomain)."';
+			var socialButtonsEnabled = ".self::$stringShopSocialEnabled.";
 			
 			</script>";
 			
@@ -661,7 +670,7 @@ if(!class_exists('WP_Spreadplugin')) {
 
 		// gets replaced on facebook button hover
 		function socialHead() {
-				echo '
+				if (self::$stringShopSocialEnabled==true) echo '
 				<meta property="og:title" content="" />
 				<meta property="og:url" content="" />
 				<meta property="og:image" content="" />
@@ -669,7 +678,7 @@ if(!class_exists('WP_Spreadplugin')) {
 		}
 		
 		function socialFooter() {
-				echo '<script src="//connect.facebook.net/'.(!empty(self::$stringShopLocale)?self::$stringShopLocale:'en_US').'/all.js#xfbml=1"></script><script src="//platform.twitter.com/widgets.js"></script>';
+				if (self::$stringShopSocialEnabled==true) echo '<script src="//connect.facebook.net/'.(!empty(self::$stringShopLocale)?self::$stringShopLocale:'en_US').'/all.js#xfbml=1"></script><script src="//platform.twitter.com/widgets.js"></script>';
 		}
 
 
