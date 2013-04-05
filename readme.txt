@@ -50,10 +50,10 @@ Feel free to contact me.
 4. Insert shortcode
 
 **US/NA**
-`[spreadplugin shop_id="414192" shop_limit="20" shop_locale="" shop_source="com" shop_category="" shop_api="" shop_secret=""]`
+`[spreadplugin shop_id="414192" shop_limit="20" shop_locale="" shop_source="com" shop_category="" shop_social="1" shop_api="" shop_secret=""]`
 
 **EU/DE/FR**
-`[spreadplugin shop_id="732552" shop_limit="20" shop_locale="de_DE" shop_source="net" shop_category="" shop_api="" shop_secret=""]`
+`[spreadplugin shop_id="732552" shop_limit="20" shop_locale="de_DE" shop_source="net" shop_category="" shop_social="1" shop_api="" shop_secret=""]`
 
 5. Insert Shop ID, Shop API (Spreadshirt API Key) and Shop secret (Spreadshirt Secret)
 6. Done (you may modify the layout using the separate css file in the spreadplugin Folder)
