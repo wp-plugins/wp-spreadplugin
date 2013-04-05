@@ -97,6 +97,9 @@ Depending on what kind of price you want to hide uncomment the line.
 
 == Changelog ==
 
+= 1.6.2 =
+* Enabled some error messages
+
 = 1.6.1 =
 * Added a new shortcode variable to disable social media buttons. Enable ` shop_social="1"` / Disable `shop_social="0"`
 
