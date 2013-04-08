@@ -106,7 +106,7 @@ Add or change in the [spreadplugin] code the value from `shop_enablelink="1"` to
 == Changelog ==
 
 = 1.6.4 =
-* Added a new shortcode variable to disable the links under each article image. Enable ` shop_enablelink="1"` / Disable `shop_enablelink="0"` (default is enabled)
+* Each article image is now linked to it's spreadshirt product details website. Use the shortcode to enable ` shop_enablelink="1"` or disable `shop_enablelink="0"` this behaviour (default is enabled).
 
 = 1.6.3 =
 * Version push
