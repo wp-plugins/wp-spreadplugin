@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://www.pr3ss-play.de/spreadshirt-wordpress-plugin-uber-api/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process. 
- * Version: 1.6.3
+ * Version: 1.6.4
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
  */
@@ -52,6 +52,7 @@ if(!class_exists('WP_Spreadplugin')) {
 		private static $stringShopImgSize = '190';
 		private static $stringShopCategoryId = '';
 		private static $stringShopSocialEnabled = '';
+		private static $stringShopLinkEnabled = '';
 
 		function WP_Spreadplugin() {
 			WP_Spreadplugin::__construct();
@@ -109,6 +110,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			$shop_source = '';
 			$shop_category = '';
 			$shop_social = '';
+			$shop_enablelink = '';
 
 			extract(shortcode_atts(array(
 			'shop_id' => '',
@@ -118,7 +120,8 @@ if(!class_exists('WP_Spreadplugin')) {
 			'shop_secret' => '',
 			'shop_limit' => '',
 			'shop_category' => '',
-			'shop_social' => 1
+			'shop_social' => 1,
+			'shop_enablelink' => 1
 			), $atts));
 
 			self::$intShopId = intval($shop_id);
@@ -129,6 +132,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			self::$stringApiUrl = $shop_source;
 			self::$stringShopCategoryId = intval($shop_category);
 			self::$stringShopSocialEnabled = intval($shop_social);
+			self::$stringShopLinkEnabled = intval($shop_enablelink);
 
 
 			if(!empty(self::$intShopId) && !empty(self::$stringShopApi) && !empty(self::$stringShopSecret)) {
@@ -217,14 +221,12 @@ if(!class_exists('WP_Spreadplugin')) {
 					echo 'No articles in Shop';
 					
 				} else {
-
-					
+			
 					$output = '<div id="spreadshirt-items" class="spreadshirt-items clearfix">';
 					$output .= '<div id="spreadshirt-list">';
 
 
 					foreach ($objArticles->article as $article) {
-						//print_r($article);
 													
 						$stringXmlArticle = wp_remote_retrieve_body(wp_remote_get($article->product->productType->attributes('xlink', true).'?'.(!empty(self::$stringShopLocale)?'locale=' . self::$stringShopLocale:'')));
 						if(substr($stringXmlArticle, 0, 5) !== "<?xml") continue;
@@ -232,6 +234,7 @@ if(!class_exists('WP_Spreadplugin')) {
 						$stringXmlCurreny = wp_remote_retrieve_body(wp_remote_get($article->price->currency->attributes('http://www.w3.org/1999/xlink')));
 						if(substr($stringXmlArticle, 0, 5) !== "<?xml") continue;
 						$objCurrencyData = new SimpleXmlElement($stringXmlCurreny);
+
 
 						/*
 						 * get the productType resource
@@ -241,8 +244,10 @@ if(!class_exists('WP_Spreadplugin')) {
 						$output .= '<h3>'.$article->name.'</h3>';
 						$output .= '<form method="post">';
 						$output .= '<div class="image-wrapper">';
+						$output .= (self::$stringShopLinkEnabled==1?'<a href="http://'.self::$intShopId.'.spreadshirt.'.self::$stringApiUrl.'/-A'.$article['id'].'" target="_blank">':'');
 						$output .= '<img src="' . (string)$article->resources->resource->attributes('xlink', true) . ',width='.self::$stringShopImgSize.',height='.self::$stringShopImgSize.'" class="preview" alt="' . $article->name . '" id="previewimg_'.$article['id'].'" />';
 						$output .= '<img src="' . (string)$article->resources->resource[2]->attributes('xlink', true) . ',width='.self::$stringShopImgSize.',height='.self::$stringShopImgSize.'" class="compositions" style="display:none;" alt="' . $article->name . '" id="compositeimg_'.$article['id'].'" title="'.addslashes($objArticleData->description).'" />';
+						$output .= (self::$stringShopLinkEnabled==1?'</a>':'');
 						$output .= '</div>';
 							
 						/*

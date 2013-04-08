@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: spreadshirt,wordpress,plugin,shop
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 1.6.3
+Stable tag: 1.6.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -91,7 +91,11 @@ Depending on what kind of price you want to hide uncomment the line.
 
 = How to disable the social buttons? =
 
-Change in the [spreadplugin] code the value from `shop_social="1"` to `shop_social="0"`
+Add or change in the [spreadplugin] code the value from `shop_social="1"` to `shop_social="0"`
+
+= How to disable the product links? =
+
+Add or change in the [spreadplugin] code the value from `shop_enablelink="1"` to `shop_enablelink="0"`
 
 == Screenshots ==
 
@@ -100,6 +104,9 @@ Change in the [spreadplugin] code the value from `shop_social="1"` to `shop_soci
 3. Screenshot 3
 
 == Changelog ==
+
+= 1.6.4 =
+* Added a new shortcode variable to disable the links under each article image. Enable ` shop_enablelink="1"` / Disable `shop_enablelink="0"` (default is enabled)
 
 = 1.6.3 =
 * Version push
