@@ -139,7 +139,6 @@ if(!class_exists('WP_Spreadplugin')) {
 
 				if (empty(self::$stringShopLimit)) self::$stringShopLimit=20;
 
-
 				/*
 				 * add an article to the basket
 				*/
@@ -151,25 +150,26 @@ if(!class_exists('WP_Spreadplugin')) {
 						/*
 						 * get shop xml
 						*/
-						$stringXmlShop = wp_remote_retrieve_body(wp_remote_get('http://api.spreadshirt.'.self::$stringApiUrl.'/api/v1/shops/' . self::$intShopId));
+						$stringApiUrl = 'http://api.spreadshirt.'.self::$stringApiUrl.'/api/v1/shops/' . self::$intShopId;
+						$stringXmlShop = wp_remote_get($stringApiUrl);
+						if (count($stringXmlShop->errors)>0) die('Error getting basket.');
+						if ($stringXmlShop['body'][0]!='<') die($stringXmlShop['body']);
+						$stringXmlShop = wp_remote_retrieve_body($stringXmlShop);
 						$objShop = new SimpleXmlElement($stringXmlShop);
-
+						if (!is_object($objShop)) die('Basket not loaded');
+				
 						/*
 						 * create the basket
 						*/
 						$namespaces = $objShop->getNamespaces(true);
-
 						$basketUrl = self::createBasket('net', $objShop, $namespaces);
-						//print_r($basketUrl);
-
 						$_SESSION['basketUrl'] = $basketUrl;
-
 						$_SESSION['namespaces'] = $namespaces;
+
 						/*
 						 * get the checkout url
 						*/
 						$checkoutUrl = self::checkout($_SESSION['basketUrl'], $_SESSION['namespaces']);
-
 						$_SESSION['checkoutUrl'] = $checkoutUrl;
 
 					}
@@ -405,9 +405,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			*/
 
 			$header[] = self::createAuthHeader("POST", $basketItemsUrl);
-
 			$header[] = "Content-Type: application/xml";
-
 			$result = self::oldHttpRequest($basketItemsUrl, $header, 'POST', $basketItem->asXML());
 
 		}
@@ -421,15 +419,12 @@ if(!class_exists('WP_Spreadplugin')) {
 
 		function createBasket($platform, $shop, $namespaces) {
 
-
 			$basket = new SimpleXmlElement('<basket xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://api.spreadshirt.net">
 					<shop id="' . $shop['id'] . '"/>
 					</basket>');
 
 			$attributes = $shop->baskets->attributes($namespaces['xlink']);
-
 			$basketsUrl = $attributes->href;
-
 			$header = array();
 
 			/*
@@ -446,15 +441,9 @@ if(!class_exists('WP_Spreadplugin')) {
 			);
 			*/
 
-
 			$header[] = self::createAuthHeader("POST", $basketsUrl);
-
 			$header[] = "Content-Type: application/xml";
-
 			$result = self::oldHttpRequest($basketsUrl, $header, 'POST', $basket->asXML());
-
-
-
 			$basketUrl = self::parseHttpHeaders($result, "Location");
 
 			return $basketUrl;
@@ -469,7 +458,6 @@ if(!class_exists('WP_Spreadplugin')) {
 		function checkout($basketUrl, $namespaces) {
 
 			$basketCheckoutUrl = $basketUrl . "/checkout";
-
 			$header = array();
 
 			/*
@@ -489,15 +477,10 @@ if(!class_exists('WP_Spreadplugin')) {
 			*/
 
 			$header[] = self::createAuthHeader("GET", $basketCheckoutUrl);
-
 			$header[] = "Content-Type: application/xml";
-
 			$result = self::oldHttpRequest($basketCheckoutUrl, $header, 'GET');
-
 			$checkoutRef = new SimpleXMLElement($result);
-
 			$refAttributes = $checkoutRef->attributes($namespaces['xlink']);
-
 			$checkoutUrl = (string)$refAttributes->href;
 
 			return $checkoutUrl;
@@ -508,12 +491,11 @@ if(!class_exists('WP_Spreadplugin')) {
 		 * functions to build headers
 		*/
 
-		/*function createAuthHeader($method, $url) {
+		/*
+		function createAuthHeader($method, $url) {
 
 		$time = time() *1000;
-
 		$data = "$method $url $time";
-
 		$sig = sha1("$data ".self::$stringShopSecret);
 
 		return "SprdAuth apiKey=\"".self::$stringShopApi."\", data=\"$data\", sig=\"$sig\"";
@@ -523,11 +505,9 @@ if(!class_exists('WP_Spreadplugin')) {
 		function createAuthHeader($method, $url) {
 
 			$time = time() *1000;
-
 			$data = "$method $url $time";
-
 			$sig = sha1("$data ".self::$stringShopSecret);
-
+			
 			return "Authorization: SprdAuth apiKey=\"".self::$stringShopApi."\", data=\"$data\", sig=\"$sig\"";
 
 		}
@@ -536,15 +516,12 @@ if(!class_exists('WP_Spreadplugin')) {
 		function parseHttpHeaders($header, $headername) {
 
 			$retVal = array();
-
 			$fields = explode("\r\n", preg_replace('/\x0D\x0A[\x09\x20]+/', ' ', $header));
 
 			foreach($fields as $field) {
 
 				if (preg_match('/(' . $headername . '): (.+)/m', $field, $match)) {
-
 					return $match[2];
-
 				}
 
 			}
@@ -560,13 +537,11 @@ if(!class_exists('WP_Spreadplugin')) {
 
 			if (!empty($basketUrl)) {
 				$header[] = self::createAuthHeader("GET", $basketUrl);
-
 				$header[] = "Content-Type: application/xml";
-
 				$result = self::oldHttpRequest($basketUrl, $header, 'GET');
-
 				$basket = new SimpleXMLElement($result);
 			}
+			
 			return $basket;
 
 		}
@@ -601,13 +576,9 @@ if(!class_exists('WP_Spreadplugin')) {
 				case 'GET':
 
 					$ch = curl_init($url);
-
 					curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
-
 					curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
 					curl_setopt($ch, CURLOPT_HEADER, false);
-
 					curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
 
 					break;
@@ -615,17 +586,11 @@ if(!class_exists('WP_Spreadplugin')) {
 				case 'POST':
 
 					$ch = curl_init($url);
-
 					curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
-
 					curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
 					curl_setopt($ch, CURLOPT_HEADER, true);
-
 					curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-
 					curl_setopt($ch, CURLOPT_POST, true); //not createBasket but addBasketItem
-
 					curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 
 					break;
@@ -633,7 +598,6 @@ if(!class_exists('WP_Spreadplugin')) {
 			}
 
 			$result = curl_exec($ch);
-
 			curl_close($ch);
 
 			return $result;
@@ -650,15 +614,13 @@ if(!class_exists('WP_Spreadplugin')) {
 			array('jquery')
 			);
 
-
 			wp_enqueue_script('infinite_scroll');
-
 		}
+		
 		function myStyleMethod() {
 			// Respects SSL, Style.css is relative to the current file
 			wp_register_style( 'spreadplugin', plugins_url('/css/spreadplugin.css', __FILE__) );
 			wp_enqueue_style( 'spreadplugin' );
-
 		}
 
 
