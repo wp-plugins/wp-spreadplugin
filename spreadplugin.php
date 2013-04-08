@@ -14,10 +14,10 @@
  * Api Key gibts hier: https://www.spreadshirt.de/-C7120 für EU/DE / for US/NA https://www.spreadshirt.com/-C6840
  *
  * Shortcode
- * [spreadplugin shop_id="732552" shop_limit="20" shop_locale="de_DE" shop_api="" shop_secret="" shop_category="" shop_source="net" shop_social="1"]
+ * [spreadplugin shop_id="732552" shop_limit="20" shop_locale="de_DE" shop_api="" shop_secret="" shop_category="" shop_source="net" shop_social="1"  shop_enablelink="1"]
  *
  * US/NA
- * [spreadplugin shop_id="414192" shop_limit="20" shop_locale="" shop_api="" shop_secret="" shop_category="" shop_source="com" shop_social="1"]
+ * [spreadplugin shop_id="414192" shop_limit="20" shop_locale="" shop_api="" shop_secret="" shop_category="" shop_source="com" shop_social="1"  shop_enablelink="1"]
  *
  * Put your API and secret in the fields above
  **/
