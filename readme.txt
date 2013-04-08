@@ -89,6 +89,10 @@ Depending on what kind of price you want to hide uncomment the line.
 6. Paste this number in the `shop_category=""` variable.
 7. Save and done.
 
+= How to disable the social buttons? =
+
+Change in the [spreadplugin] code the value from `shop_social="1"` to `shop_social="0"`
+
 == Screenshots ==
 
 1. The Output 1

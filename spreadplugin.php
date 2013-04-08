@@ -489,7 +489,6 @@ if(!class_exists('WP_Spreadplugin')) {
 
 			$result = self::oldHttpRequest($basketCheckoutUrl, $header, 'GET');
 
-
 			$checkoutRef = new SimpleXMLElement($result);
 
 			$refAttributes = $checkoutRef->attributes($namespaces['xlink']);
