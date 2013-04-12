@@ -2,7 +2,7 @@
 /**
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://www.pr3ss-play.de/spreadshirt-wordpress-plugin-uber-api/
- * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process. 
+ * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
  * Version: 1.6.5
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
@@ -90,7 +90,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			if(function_exists('load_plugin_textdomain')) {
 				load_plugin_textdomain($this->stringTextdomain, false, dirname(plugin_basename( __FILE__ )) . '/translation');
 			}
-				
+
 		}
 
 
@@ -157,7 +157,7 @@ if(!class_exists('WP_Spreadplugin')) {
 						$stringXmlShop = wp_remote_retrieve_body($stringXmlShop);
 						$objShop = new SimpleXmlElement($stringXmlShop);
 						if (!is_object($objShop)) die('Basket not loaded');
-				
+
 						/*
 						 * create the basket
 						*/
@@ -214,20 +214,20 @@ if(!class_exists('WP_Spreadplugin')) {
 				$stringXmlShop = wp_remote_retrieve_body($stringXmlShop);
 				$objArticles = new SimpleXmlElement($stringXmlShop);
 				if (!is_object($objArticles)) die('Articles not loaded');
-				
+
 
 				if ($objArticles['count'] == 0) {
-					
+						
 					echo 'No articles in Shop';
-					
+						
 				} else {
-			
+						
 					$output = '<div id="spreadshirt-items" class="spreadshirt-items clearfix">';
 					$output .= '<div id="spreadshirt-list">';
 
 
 					foreach ($objArticles->article as $article) {
-													
+							
 						$stringXmlArticle = wp_remote_retrieve_body(wp_remote_get($article->product->productType->attributes('xlink', true).'?'.(!empty(self::$stringShopLocale)?'locale=' . self::$stringShopLocale:'')));
 						if(substr($stringXmlArticle, 0, 5) !== "<?xml") continue;
 						$objArticleData = new SimpleXmlElement($stringXmlArticle);
@@ -290,7 +290,7 @@ if(!class_exists('WP_Spreadplugin')) {
 						$output .= '</ul>';
 
 
-					
+							
 						/**
 						 * Show description link if not empty
 						 */
@@ -309,12 +309,12 @@ if(!class_exists('WP_Spreadplugin')) {
 						$output .= '</div>';
 						$output .= '<input type="text" value="1" id="quantity" name="quantity" maxlength="4" />';
 						$output .= '<input type="submit" name="submit" value="'.__('Add to basket', $this->stringTextdomain).'" />';
-						
+
 						if (self::$stringShopSocialEnabled==true) {
 							$output .= '<div class="fb-like" data-href="'.get_page_link().'#'.$article['id'].'" data-send="false" data-layout="button_count" data-width="200" data-show-faces="false" style="width:200px; height:30px"></div>';
 							$output .= '<a href="https://twitter.com/share" class="twitter-share-button" data-url="'.get_page_link().'#'.$article['id'].'" data-count="none" data-text="'.(!empty($article->description)?$article->description:'Product').'" data-lang="'.(!empty(self::$stringShopLocale)?substr(self::$stringShopLocale,0,2):'en').'">Tweet</a>';
 						}
-						
+
 						$output .= '</form></div>';
 
 					}
@@ -323,17 +323,17 @@ if(!class_exists('WP_Spreadplugin')) {
 
 
 					$intInBasket=0;
-					
+						
 					if (isset($_SESSION['basketUrl'])) {
 						$basketItems=self::getBasket($_SESSION['basketUrl']);
-	
+
 						if(!empty($basketItems)) {
 							foreach($basketItems->basketItems->basketItem as $item) {
 								$intInBasket += $item->quantity;
 							}
 						}
 					}
-					
+						
 					if (isset($_SESSION['checkoutUrl']) && $intInBasket>0) {
 						$output .= '<div id="checkout">'.$intInBasket." <a href=".$_SESSION['checkoutUrl']." target=\"_blank\">".__('Basket', $this->stringTextdomain)."</a></div>";
 					} else {
@@ -343,10 +343,10 @@ if(!class_exists('WP_Spreadplugin')) {
 					echo $output;
 
 					echo "
-					<div id=\"navigation\"><a href=\"".get_pagenum_link($paged + 1)."\">".__('next', $this->stringTextdomain)."</a></div>
-					<!-- <div id=\"copyright\">Copyright (c) Thimo Grauerholz - <a href=\"http://www.pr3ss-play.de\">pr3ss-play - Online Shop für deinen persönlichen Party-Style!</a></div> -->
-					<div id=\"fb-root\"></div>
-					</div>";
+							<div id=\"navigation\"><a href=\"".get_pagenum_link($paged + 1)."\">".__('next', $this->stringTextdomain)."</a></div>
+									<!-- <div id=\"copyright\">Copyright (c) Thimo Grauerholz - <a href=\"http://www.pr3ss-play.de\">pr3ss-play - Online Shop für deinen persönlichen Party-Style!</a></div> -->
+									<div id=\"fb-root\"></div>
+									</div>";
 
 				}
 			}
@@ -492,7 +492,7 @@ if(!class_exists('WP_Spreadplugin')) {
 		*/
 
 		/*
-		function createAuthHeader($method, $url) {
+		 function createAuthHeader($method, $url) {
 
 		$time = time() *1000;
 		$data = "$method $url $time";
@@ -507,7 +507,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			$time = time() *1000;
 			$data = "$method $url $time";
 			$sig = sha1("$data ".self::$stringShopSecret);
-			
+				
 			return "Authorization: SprdAuth apiKey=\"".self::$stringShopApi."\", data=\"$data\", sig=\"$sig\"";
 
 		}
@@ -541,7 +541,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				$result = self::oldHttpRequest($basketUrl, $header, 'GET');
 				$basket = new SimpleXMLElement($result);
 			}
-			
+				
 			return $basket;
 
 		}
@@ -550,19 +550,19 @@ if(!class_exists('WP_Spreadplugin')) {
 
 		function spreadpluginHead() {
 			echo "<script>
-			/**
-			* Spreadplugin vars
-			*/
-			
-			var textHideDesc = '".__('Hide description', $this->stringTextdomain)."';
-			var textShowDesc = '".__('Show description', $this->stringTextdomain)."';
-			var loadingImage = '".plugins_url('/img/loading.gif', __FILE__)."';
-			var loadingMessage = '".__('Loading new articles...', $this->stringTextdomain)."';
-			var loadingFinishedMessage = '".__('You have reached the end', $this->stringTextdomain)."';
-			var socialButtonsEnabled = ".self::$stringShopSocialEnabled.";
-			
-			</script>";
-			
+					/**
+					* Spreadplugin vars
+					*/
+						
+					var textHideDesc = '".__('Hide description', $this->stringTextdomain)."';
+					var textShowDesc = '".__('Show description', $this->stringTextdomain)."';
+					var loadingImage = '".plugins_url('/img/loading.gif', __FILE__)."';
+					var loadingMessage = '".__('Loading new articles...', $this->stringTextdomain)."';
+					var loadingFinishedMessage = '".__('You have reached the end', $this->stringTextdomain)."';
+					var socialButtonsEnabled = ".self::$stringShopSocialEnabled.";
+																		
+					</script>";
+				
 			echo "<script src='".plugins_url('/js/spreadplugin.js', __FILE__)."'></script>";
 		}
 
@@ -616,7 +616,7 @@ if(!class_exists('WP_Spreadplugin')) {
 
 			wp_enqueue_script('infinite_scroll');
 		}
-		
+
 		function myStyleMethod() {
 			// Respects SSL, Style.css is relative to the current file
 			wp_register_style( 'spreadplugin', plugins_url('/css/spreadplugin.css', __FILE__) );
@@ -637,15 +637,15 @@ if(!class_exists('WP_Spreadplugin')) {
 
 		// gets replaced on facebook button hover
 		function socialHead() {
-				if (self::$stringShopSocialEnabled==true) echo '
-				<meta property="og:title" content="" />
-				<meta property="og:url" content="" />
-				<meta property="og:image" content="" />
-				';
+			if (self::$stringShopSocialEnabled==true) echo '
+					<meta property="og:title" content="" />
+					<meta property="og:url" content="" />
+					<meta property="og:image" content="" />
+					';
 		}
-		
+
 		function socialFooter() {
-				if (self::$stringShopSocialEnabled==true) echo '<script src="//connect.facebook.net/'.(!empty(self::$stringShopLocale)?self::$stringShopLocale:'en_US').'/all.js#xfbml=1"></script><script src="//platform.twitter.com/widgets.js"></script>';
+			if (self::$stringShopSocialEnabled==true) echo '<script src="//connect.facebook.net/'.(!empty(self::$stringShopLocale)?self::$stringShopLocale:'en_US').'/all.js#xfbml=1"></script><script src="//platform.twitter.com/widgets.js"></script>';
 		}
 
 
