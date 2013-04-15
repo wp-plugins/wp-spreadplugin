@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://www.pr3ss-play.de/spreadshirt-wordpress-plugin-uber-api/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 1.7.1
+ * Version: 1.7.2
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
  */
@@ -383,9 +383,11 @@ if(!class_exists('WP_Spreadplugin')) {
 
 			if($articleData === false) {
 
-				$stringApiUrl = 'http://api.spreadshirt.'.self::$stringApiUrl.'/api/v1/shops/' . self::$intShopId;
-				$stringApiUrl .= (!empty(self::$stringShopCategoryId)?'/articleCategories/'.self::$stringShopCategoryId:'');
-				$stringApiUrl .= '/articles?'.(!empty(self::$stringShopLocale)?'locale=' . self::$stringShopLocale . '&':'').'fullData=true&limit=1'; # &limit='.self::$stringShopLimit.'&offset='.$offset
+				$stringApiUrlBase = 'http://api.spreadshirt.'.self::$stringApiUrl.'/api/v1/shops/' . self::$intShopId;
+				$stringApiUrlBase .= (!empty(self::$stringShopCategoryId)?'/articleCategories/'.self::$stringShopCategoryId:'');
+				$stringApiUrlBase .= '/articles?'.(!empty(self::$stringShopLocale)?'locale=' . self::$stringShopLocale . '&':'').'fullData=true';
+
+				$stringApiUrl = $stringApiUrlBase . '&limit=1'; # &limit='.self::$stringShopLimit.'&offset='.$offset
 
 				$stringXmlShop = wp_remote_get($stringApiUrl);
 				if (count($stringXmlShop->errors)>0) die('Error getting articles. Please check Shop-ID, API and secret.');
@@ -396,7 +398,7 @@ if(!class_exists('WP_Spreadplugin')) {
 
 
 				// erneuter call, weil sonst limit bei 50
-				$stringApiUrl .= '&limit='.$objArticles['count']; # &limit='.self::$stringShopLimit.'&offset='.$offset
+				$stringApiUrl = $stringApiUrlBase . '&limit='.$objArticles['count']; # &limit='.self::$stringShopLimit.'&offset='.$offset
 
 				$stringXmlShop = wp_remote_get($stringApiUrl);
 				if (count($stringXmlShop->errors)>0) die('Error getting articles. Please check Shop-ID, API and secret.');
