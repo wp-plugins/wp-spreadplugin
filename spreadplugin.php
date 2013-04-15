@@ -62,14 +62,14 @@ if(!class_exists('WP_Spreadplugin')) {
 
 		function __construct() {
 			add_action('init', array($this,'plugin_init'));
-			add_action('init', array($this,'myStartSession'), 1);
-			add_action('wp_logout', array($this,'myEndSession'));
-			add_action('wp_login', array($this,'myEndSession'));
+			add_action('init', array($this,'startSession'), 1);
+			add_action('wp_logout', array($this,'endSession'));
+			add_action('wp_login', array($this,'endSession'));
 
 			add_shortcode('spreadplugin', array($this,'ScSpreadplugin'));
 
-			add_action('wp_enqueue_scripts', array($this,'myStyleMethod'));
-			add_action('wp_enqueue_scripts', array($this,'myScriptMethod'));
+			add_action('wp_enqueue_scripts', array($this,'styleMethod'));
+			add_action('wp_enqueue_scripts', array($this,'scriptMethod'));
 
 			add_action('wp_footer', array($this,'spreadpluginHead'));
 
@@ -603,19 +603,19 @@ if(!class_exists('WP_Spreadplugin')) {
 
 		function spreadpluginHead() {
 			echo "<script>
-					/**
-					* Spreadplugin vars
-					*/
+			/**
+			* Spreadplugin vars
+			*/
 
-					var textHideDesc = '".__('Hide description', $this->stringTextdomain)."';
-							var textShowDesc = '".__('Show description', $this->stringTextdomain)."';
-									var loadingImage = '".plugins_url('/img/loading.gif', __FILE__)."';
-											var loadingMessage = '".__('Loading new articles...', $this->stringTextdomain)."';
-													var loadingFinishedMessage = '".__('You have reached the end', $this->stringTextdomain)."';
-															var socialButtonsEnabled = ".self::$stringShopSocialEnabled.";
-																	var pageLink = '".get_page_link()."';
-
-																			</script>";
+			var textHideDesc = '".__('Hide description', $this->stringTextdomain)."';
+			var textShowDesc = '".__('Show description', $this->stringTextdomain)."';
+			var loadingImage = '".plugins_url('/img/loading.gif', __FILE__)."';
+			var loadingMessage = '".__('Loading new articles...', $this->stringTextdomain)."';
+			var loadingFinishedMessage = '".__('You have reached the end', $this->stringTextdomain)."';
+			var socialButtonsEnabled = ".self::$stringShopSocialEnabled.";
+			var pageLink = '".get_page_link()."';
+			
+			</script>";
 
 			echo "<script src='".plugins_url('/js/spreadplugin.js', __FILE__)."'></script>";
 		}
@@ -661,7 +661,7 @@ if(!class_exists('WP_Spreadplugin')) {
 
 
 
-		function myScriptMethod() {
+		function scriptMethod() {
 			wp_enqueue_script(
 			'infinite_scroll',
 			plugins_url('/js/jquery.infinitescroll.min.js', __FILE__),
@@ -671,20 +671,20 @@ if(!class_exists('WP_Spreadplugin')) {
 			wp_enqueue_script('infinite_scroll');
 		}
 
-		function myStyleMethod() {
+		function styleMethod() {
 			// Respects SSL, Style.css is relative to the current file
 			wp_register_style( 'spreadplugin', plugins_url('/css/spreadplugin.css', __FILE__) );
 			wp_enqueue_style( 'spreadplugin' );
 		}
 
 
-		function myStartSession() {
+		function startSession() {
 			if(!session_id()) {
 				@session_start();
 			}
 		}
 
-		function myEndSession() {
+		function endSession() {
 			@session_destroy();
 		}
 
