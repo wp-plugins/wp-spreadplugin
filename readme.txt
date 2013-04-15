@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: spreadshirt,wordpress,plugin,shop
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 1.6.5
+Stable tag: 1.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -30,6 +30,8 @@ Features:
 * Social buttons
 * Zoomed article preview
 * Display article descriptions
+* Cache
+* Choose or direct link to the product category
 
 See it in action:
 http://www.pr3ss-play.de/shop/ (in german)
@@ -50,10 +52,10 @@ Feel free to contact me.
 4. Insert shortcode
 
 **US/NA**
-`[spreadplugin shop_id="414192" shop_limit="20" shop_locale="" shop_source="com" shop_category="" shop_social="1" shop_enablelink="1" shop_api="" shop_secret=""]`
+`[spreadplugin shop_id="414192" shop_limit="20" shop_locale="" shop_source="com" shop_category="" shop_social="1" shop_enablelink="1" shop_productcategory="" shop_api="" shop_secret=""]`
 
 **EU/DE/FR**
-`[spreadplugin shop_id="732552" shop_limit="20" shop_locale="de_DE" shop_source="net" shop_category="" shop_social="1" shop_enablelink="1" shop_api="" shop_secret=""]`
+`[spreadplugin shop_id="732552" shop_limit="20" shop_locale="de_DE" shop_source="net" shop_category="" shop_social="1" shop_enablelink="1" shop_productcategory="" shop_api="" shop_secret=""]`
 
 5. Insert Shop ID, Shop API (Spreadshirt API Key) and Shop secret (Spreadshirt Secret)
 6. Done (you may modify the layout using the separate css file in the spreadplugin Folder)
@@ -104,6 +106,11 @@ Add or change in the [spreadplugin] code the value from `shop_enablelink="1"` to
 3. Screenshot 3
 
 == Changelog ==
+
+= 1.7 =
+* Own cache added (updates every 8 hours) - speed improvements.
+* Product category now accessable
+* Shortcode added for direct calls of a category. Add ` shop_productcategory=""` and fill with field value e.g. Women => ` shop_productcategory="Women"`
 
 = 1.6.5 =
 * Debugging things, no need to update

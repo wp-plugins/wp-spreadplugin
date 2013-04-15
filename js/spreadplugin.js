@@ -1,6 +1,6 @@
 var saheight = jQuery('.spreadshirt-article').css('height');
 var par = '';
-var scrollingDiv = jQuery('#checkout');
+var scrollingDiv = jQuery('.spreadshirt-items #checkout');
 
 /*
  * change article color and view
@@ -146,3 +146,10 @@ jQuery('#spreadshirt-list').infinitescroll({
 		twttr.widgets.load();
 	}
 });
+
+jQuery('#productCategory').change(function() {
+	var sep;
+	if (pageLink[pageLink.length-1]=='/') { sep='?'; } else { sep='&'; }
+	document.location = pageLink + sep + 'productCategory='+jQuery(this).val();
+});
+

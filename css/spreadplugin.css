@@ -2,6 +2,9 @@
 	margin: 0;
 	padding: 0
 }
+.spreadshirt-items {
+	position:relative;
+}
 .spreadshirt-article {
 	float: left;
 	margin-top: 20px;
@@ -67,7 +70,6 @@
 .spreadshirt-items #checkout {
 	position: absolute;
 	right: 10px;
-	top: 0;
 	margin-top: 20px;
 	padding: 20px;
 	background-color: #666;
@@ -105,7 +107,7 @@
 .spreadshirt-items #infscr-loading {
 	background: #fff;
 	z-index: 1000;
-	position: absolute;
+	position: fixed;
 	clear: both;
 	bottom: 5px;
 	width: 200px;
