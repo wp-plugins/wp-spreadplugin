@@ -1,30 +1,13 @@
 <?php
 /**
  * Plugin Name: WP-Spreadplugin
- * Plugin URI: http://www.pr3ss-play.de/spreadshirt-wordpress-plugin-uber-api/
+ * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 1.7.2
+ * Version: 1.7.3
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
  */
-
-
-
-/**
- * Api Key gibts hier: https://www.spreadshirt.de/-C7120 für EU/DE / for US/NA https://www.spreadshirt.com/-C6840
- *
- * Shortcode
- * [spreadplugin shop_id="732552" shop_limit="20" shop_locale="de_DE" shop_api="" shop_secret="" shop_category="" shop_source="net" shop_social="1" shop_enablelink="1" shop_productcategory="" shop_linktarget=""]
- *
- * US/NA
- * [spreadplugin shop_id="414192" shop_limit="20" shop_locale="" shop_api="" shop_secret="" shop_category="" shop_source="com" shop_social="1"  shop_enablelink="1" shop_productcategory="" shop_linktarget=""]
- *
- * Put your API and secret in the fields above
- **/
-
-
-
-
+ 
 
 /**
  * Avoid direct calls to this file
@@ -43,18 +26,19 @@ if(!function_exists('add_action')) {
 if(!class_exists('WP_Spreadplugin')) {
 	class WP_Spreadplugin {
 		private $stringTextdomain = 'spreadplugin';
-		private static $intShopId = '';
-		private static $stringApiUrl = '';
-		private static $stringShopLocale = '';
-		private static $stringShopLimit = '';
-		private static $stringShopApi = '';
-		private static $stringShopSecret = '';
-		private static $stringShopImgSize = '190';
-		private static $stringShopCategoryId = '';
-		private static $stringShopSocialEnabled = 1;
-		private static $stringShopLinkEnabled = 1;
-		private static $stringShopProductCategory = '';
-		private static $stringShopLinkTarget = '_blank';
+		private static $shopId = '';
+		private static $apiUrl = '';
+		private static $shopLocale = '';
+		private static $shopLimit = '';
+		private static $shopApi = '';
+		private static $shopSecret = '';
+		private static $shopImgSize = '190';
+		private static $shopCategoryId = '';
+		private static $shopSocialEnabled = 1;
+		private static $shopLinkEnabled = 1;
+		private static $shopProductCategory = '';
+		private static $shopLinkTarget = '_blank';
+		private static $shopCheckoutIframe = 0;
 
 		function WP_Spreadplugin() {
 			WP_Spreadplugin::__construct();
@@ -116,29 +100,31 @@ if(!class_exists('WP_Spreadplugin')) {
 					'shop_enablelink' => 1,
 					'shop_productcategory' => '',
 					'shop_linktarget' => '_blank',
+					'shop_checkoutiframe' => 0,
 			), $atts);
 
-			self::$intShopId = intval($sc['shop_id']);
-			self::$stringShopApi = $sc['shop_api'];
-			self::$stringShopSecret = $sc['shop_secret'];
-			self::$stringShopLimit = intval($sc['shop_limit']);
-			self::$stringShopLocale = $sc['shop_locale'];
-			self::$stringApiUrl = $sc['shop_source'];
-			self::$stringShopCategoryId = intval($sc['shop_category']);
-			self::$stringShopSocialEnabled = intval($sc['shop_social']);
-			self::$stringShopLinkEnabled = intval($sc['shop_enablelink']);
-			self::$stringShopProductCategory = $sc['shop_productcategory'];
-			self::$stringShopLinkTarget = $sc['shop_linktarget'];
+			self::$shopId = intval($sc['shop_id']);
+			self::$shopApi = $sc['shop_api'];
+			self::$shopSecret = $sc['shop_secret'];
+			self::$shopLimit = intval($sc['shop_limit']);
+			self::$shopLocale = $sc['shop_locale'];
+			self::$apiUrl = $sc['shop_source'];
+			self::$shopCategoryId = intval($sc['shop_category']);
+			self::$shopSocialEnabled = intval($sc['shop_social']);
+			self::$shopLinkEnabled = intval($sc['shop_enablelink']);
+			self::$shopProductCategory = $sc['shop_productcategory'];
+			self::$shopLinkTarget = $sc['shop_linktarget'];
+			self::$shopCheckoutIframe = $sc['shop_checkoutiframe'];
 
 			if (isset($_GET['productCategory'])) {
 				$c = urldecode($_GET['productCategory']);
-				if (!empty($c)) self::$stringShopProductCategory = $c;
+				self::$shopProductCategory = $c;
 			}
 
 
-			if(!empty(self::$intShopId) && !empty(self::$stringShopApi) && !empty(self::$stringShopSecret)) {
+			if(!empty(self::$shopId) && !empty(self::$shopApi) && !empty(self::$shopSecret)) {
 
-				if (empty(self::$stringShopLimit)) self::$stringShopLimit=20;
+				if (empty(self::$shopLimit)) self::$shopLimit=20;
 
 				/*
 				 * add an article to the basket
@@ -151,8 +137,8 @@ if(!class_exists('WP_Spreadplugin')) {
 						/*
 						 * get shop xml
 						*/
-						$stringApiUrl = 'http://api.spreadshirt.'.self::$stringApiUrl.'/api/v1/shops/' . self::$intShopId;
-						$stringXmlShop = wp_remote_get($stringApiUrl);
+						$apiUrl = 'http://api.spreadshirt.'.self::$apiUrl.'/api/v1/shops/' . self::$shopId;
+						$stringXmlShop = wp_remote_get($apiUrl);
 						if (count($stringXmlShop->errors)>0) die('Error getting basket.');
 						if ($stringXmlShop['body'][0]!='<') die($stringXmlShop['body']);
 						$stringXmlShop = wp_remote_retrieve_body($stringXmlShop);
@@ -183,7 +169,7 @@ if(!class_exists('WP_Spreadplugin')) {
 							'size' => intval($_POST['size']),
 							'appearance' => intval($_POST['appearance']),
 							'quantity' => intval($_POST['quantity']),
-							'shopId' => self::$intShopId
+							'shopId' => self::$shopId
 
 					);
 
@@ -203,7 +189,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				// use pagination value from wordpress
 				if(empty($paged)) $paged = 1;
 
-				$offset=($paged-1)*self::$stringShopLimit;
+				$offset=($paged-1)*self::$shopLimit;
 
 				$articleData=self::getArticleData();
 				$typesData=$articleData['types'];
@@ -212,7 +198,7 @@ if(!class_exists('WP_Spreadplugin')) {
 
 				// filter
 				foreach ($articleData as $id => $article) {
-					if (!empty(self::$stringShopProductCategory)&&isset($typesData[self::$stringShopProductCategory])&&!in_array($article['type'],$typesData[self::$stringShopProductCategory])) {
+					if (!empty(self::$shopProductCategory)&&isset($typesData[self::$shopProductCategory])&&!in_array($article['type'],$typesData[self::$shopProductCategory])) {
 						unset($articleData[$id]);
 					}
 				}
@@ -220,8 +206,8 @@ if(!class_exists('WP_Spreadplugin')) {
 
 
 				// pagination
-				if (!empty(self::$stringShopLimit)) {
-					$articleData = array_slice($articleData, $offset, self::$stringShopLimit, true);
+				if (!empty(self::$shopLimit)) {
+					$articleData = array_slice($articleData, $offset, self::$shopLimit, true);
 				}
 
 
@@ -232,6 +218,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				$intInBasket=0;
 
 				if (isset($_SESSION['basketUrl'])) {
+					
 					$basketItems=self::getBasket($_SESSION['basketUrl']);
 
 					if(!empty($basketItems)) {
@@ -242,7 +229,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				}
 
 				if (isset($_SESSION['checkoutUrl']) && $intInBasket>0) {
-					$output .= '<div id="checkout">'.$intInBasket." <a href=".$_SESSION['checkoutUrl']." target=\"".self::$stringShopLinkTarget."\">".__('Basket', $this->stringTextdomain)."</a></div>";
+					$output .= '<div id="checkout">'.$intInBasket." <a href=".$_SESSION['checkoutUrl']." target=\"".self::$shopLinkTarget."\">".__('Basket', $this->stringTextdomain)."</a></div>";
 				} else {
 					$output .= '<div id="checkout">'.$intInBasket." <a title=\"".__('Basket is empty', $this->stringTextdomain)."\">".__('Basket', $this->stringTextdomain)."</a></div>";
 				}
@@ -252,7 +239,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				$output .= '<option value="">'.__('Product category', $this->stringTextdomain).'</option>';
 				if (isset($typesData)) {
 					foreach ($typesData as $t => $v) {
-						$output .= '<option value="'.urlencode($t).'"'.($t==self::$stringShopProductCategory?' selected':'').'>'.$t.'</option>';
+						$output .= '<option value="'.urlencode($t).'"'.($t==self::$shopProductCategory?' selected':'').'>'.$t.'</option>';
 					}
 				}
 				$output .= '</select>';
@@ -278,10 +265,10 @@ if(!class_exists('WP_Spreadplugin')) {
 						$output .= '<h3>'.$article['name'].'</h3>';
 						$output .= '<form method="post">';
 						$output .= '<div class="image-wrapper">';
-						$output .= (self::$stringShopLinkEnabled==1?'<a href="http://'.self::$intShopId.'.spreadshirt.'.self::$stringApiUrl.'/-A'.$id.'" target="'.self::$stringShopLinkTarget.'">':'');
-						$output .= '<img src="' . $article['resource0'] . ',width='.self::$stringShopImgSize.',height='.self::$stringShopImgSize.'" class="preview" alt="' . $article['name'] . '" id="previewimg_'.$id.'" />';
-						$output .= '<img src="' . $article['resource2'] . ',width='.self::$stringShopImgSize.',height='.self::$stringShopImgSize.'" class="compositions" style="display:none;" alt="' . $article['name'] . '" id="compositeimg_'.$id.'" title="'.addslashes($article['productdescription']).'" />';
-						$output .= (self::$stringShopLinkEnabled==1?'</a>':'');
+						$output .= (self::$shopLinkEnabled==1?'<a href="http://'.self::$shopId.'.spreadshirt.'.self::$apiUrl.'/-A'.$id.'" target="'.self::$shopLinkTarget.'">':'');
+						$output .= '<img src="' . $article['resource0'] . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="preview" alt="' . $article['name'] . '" id="previewimg_'.$id.'" />';
+						$output .= '<img src="' . $article['resource2'] . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="compositions" style="display:none;" alt="' . $article['name'] . '" id="compositeimg_'.$id.'" title="'.addslashes($article['productdescription']).'" />';
+						$output .= (self::$shopLinkEnabled==1?'</a>':'');
 						$output .= '</div>';
 							
 						/*
@@ -342,9 +329,9 @@ if(!class_exists('WP_Spreadplugin')) {
 						$output .= '<input type="text" value="1" id="quantity" name="quantity" maxlength="4" />';
 						$output .= '<input type="submit" name="submit" value="'.__('Add to basket', $this->stringTextdomain).'" />';
 
-						if (self::$stringShopSocialEnabled==true) {
+						if (self::$shopSocialEnabled==true) {
 							$output .= '<div class="fb-like" data-href="'.get_page_link().'#'.$id.'" data-send="false" data-layout="button_count" data-width="200" data-show-faces="false" style="width:200px; height:30px"></div>';
-							$output .= '<a href="https://twitter.com/share" class="twitter-share-button" data-url="'.get_page_link().'#'.$id.'" data-count="none" data-text="'.(!empty($article['description'])?$article['description']:'Product').'" data-lang="'.(!empty(self::$stringShopLocale)?substr(self::$stringShopLocale,0,2):'en').'">Tweet</a>';
+							$output .= '<a href="https://twitter.com/share" class="twitter-share-button" data-url="'.get_page_link().'#'.$id.'" data-count="none" data-text="'.(!empty($article['description'])?$article['description']:'Product').'" data-lang="'.(!empty(self::$shopLocale)?substr(self::$shopLocale,0,2):'en').'">Tweet</a>';
 						}
 
 						$output .= '</form></div>';
@@ -383,13 +370,13 @@ if(!class_exists('WP_Spreadplugin')) {
 
 			if($articleData === false) {
 
-				$stringApiUrlBase = 'http://api.spreadshirt.'.self::$stringApiUrl.'/api/v1/shops/' . self::$intShopId;
-				$stringApiUrlBase .= (!empty(self::$stringShopCategoryId)?'/articleCategories/'.self::$stringShopCategoryId:'');
-				$stringApiUrlBase .= '/articles?'.(!empty(self::$stringShopLocale)?'locale=' . self::$stringShopLocale . '&':'').'fullData=true';
+				$apiUrlBase = 'http://api.spreadshirt.'.self::$apiUrl.'/api/v1/shops/' . self::$shopId;
+				$apiUrlBase .= (!empty(self::$shopCategoryId)?'/articleCategories/'.self::$shopCategoryId:'');
+				$apiUrlBase .= '/articles?'.(!empty(self::$shopLocale)?'locale=' . self::$shopLocale . '&':'').'fullData=true';
 
-				$stringApiUrl = $stringApiUrlBase . '&limit=1'; # &limit='.self::$stringShopLimit.'&offset='.$offset
+				$apiUrl = $apiUrlBase . '&limit=1'; # &limit='.self::$shopLimit.'&offset='.$offset
 
-				$stringXmlShop = wp_remote_get($stringApiUrl);
+				$stringXmlShop = wp_remote_get($apiUrl);
 				if (count($stringXmlShop->errors)>0) die('Error getting articles. Please check Shop-ID, API and secret.');
 				if ($stringXmlShop['body'][0]!='<') die($stringXmlShop['body']);
 				$stringXmlShop = wp_remote_retrieve_body($stringXmlShop);
@@ -398,9 +385,9 @@ if(!class_exists('WP_Spreadplugin')) {
 
 
 				// erneuter call, weil sonst limit bei 50
-				$stringApiUrl = $stringApiUrlBase . '&limit='.$objArticles['count']; # &limit='.self::$stringShopLimit.'&offset='.$offset
+				$apiUrl = $apiUrlBase . '&limit='.$objArticles['count']; # &limit='.self::$shopLimit.'&offset='.$offset
 
-				$stringXmlShop = wp_remote_get($stringApiUrl);
+				$stringXmlShop = wp_remote_get($apiUrl);
 				if (count($stringXmlShop->errors)>0) die('Error getting articles. Please check Shop-ID, API and secret.');
 				if ($stringXmlShop['body'][0]!='<') die($stringXmlShop['body']);
 				$stringXmlShop = wp_remote_retrieve_body($stringXmlShop);
@@ -411,7 +398,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				if ($objArticles['count']>0) {
 
 					// ProductTypeDepartments
-					$stringTypeApiUrl = 'http://api.spreadshirt.'.self::$stringApiUrl.'/api/v1/shops/' . self::$intShopId.'/productTypeDepartments?'.(!empty(self::$stringShopLocale)?'locale=' . self::$stringShopLocale . '&':'').'fullData=true';
+					$stringTypeApiUrl = 'http://api.spreadshirt.'.self::$apiUrl.'/api/v1/shops/' . self::$shopId.'/productTypeDepartments?'.(!empty(self::$shopLocale)?'locale=' . self::$shopLocale . '&':'').'fullData=true';
 					$stringTypeXml = wp_remote_get($stringTypeApiUrl);
 					$stringTypeXml = wp_remote_retrieve_body($stringTypeXml);
 					$objTypes = new SimpleXmlElement($stringTypeXml);
@@ -436,7 +423,7 @@ if(!class_exists('WP_Spreadplugin')) {
 					// artikel lesen
 					foreach ($objArticles->article as $article) {
 
-						$stringXmlArticle = wp_remote_retrieve_body(wp_remote_get($article->product->productType->attributes('xlink', true).'?'.(!empty(self::$stringShopLocale)?'locale=' . self::$stringShopLocale:'')));
+						$stringXmlArticle = wp_remote_retrieve_body(wp_remote_get($article->product->productType->attributes('xlink', true).'?'.(!empty(self::$shopLocale)?'locale=' . self::$shopLocale:'')));
 						if(substr($stringXmlArticle, 0, 5) !== "<?xml") continue;
 						$objArticleData = new SimpleXmlElement($stringXmlArticle);
 						$stringXmlCurreny = wp_remote_retrieve_body(wp_remote_get($article->price->currency->attributes('http://www.w3.org/1999/xlink')));
@@ -490,15 +477,15 @@ if(!class_exists('WP_Spreadplugin')) {
 			$basketItem = new SimpleXmlElement('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 					<basketItem xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://api.spreadshirt.net">
 					<quantity>' . $data['quantity'] . '</quantity>
-					<element id="' . $data['articleId'] . '" type="sprd:article" xlink:href="http://api.spreadshirt.'.self::$stringApiUrl.'/api/v1/shops/' . $data['shopId'] . '/articles/' . $data['articleId'] . '">
+					<element id="' . $data['articleId'] . '" type="sprd:article" xlink:href="http://api.spreadshirt.'.self::$apiUrl.'/api/v1/shops/' . $data['shopId'] . '/articles/' . $data['articleId'] . '">
 					<properties>
 					<property key="appearance">' . $data['appearance'] . '</property>
 					<property key="size">' . $data['size'] . '</property>
 					</properties>
 					</element>
 					<links>
-					<link type="edit" xlink:href="http://' . $data['shopId'] .'.spreadshirt.' .self::$stringApiUrl.'/-A' . $data['articleId'] . '"/>
-					<link type="continueShopping" xlink:href="http://' . $data['shopId'].'.spreadshirt.'.self::$stringApiUrl.'"/>
+					<link type="edit" xlink:href="http://' . $data['shopId'] .'.spreadshirt.' .self::$apiUrl.'/-A' . $data['articleId'] . '"/>
+					<link type="continueShopping" xlink:href="http://' . $data['shopId'].'.spreadshirt.'.self::$apiUrl.'"/>
 					</links>
 					</basketItem>');
 
@@ -561,9 +548,9 @@ if(!class_exists('WP_Spreadplugin')) {
 
 			$time = time() *1000;
 			$data = "$method $url $time";
-			$sig = sha1("$data ".self::$stringShopSecret);
+			$sig = sha1("$data ".self::$shopSecret);
 
-			return "Authorization: SprdAuth apiKey=\"".self::$stringShopApi."\", data=\"$data\", sig=\"$sig\"";
+			return "Authorization: SprdAuth apiKey=\"".self::$shopApi."\", data=\"$data\", sig=\"$sig\"";
 
 		}
 
@@ -594,7 +581,9 @@ if(!class_exists('WP_Spreadplugin')) {
 				$header[] = self::createAuthHeader("GET", $basketUrl);
 				$header[] = "Content-Type: application/xml";
 				$result = self::oldHttpRequest($basketUrl, $header, 'GET');
-				$basket = new SimpleXMLElement($result);
+				if ($result[0]=='<') {
+					$basket = new SimpleXMLElement($result);
+				}
 			}
 
 			return $basket;
@@ -614,8 +603,9 @@ if(!class_exists('WP_Spreadplugin')) {
 			var loadingImage = '".plugins_url('/img/loading.gif', __FILE__)."';
 			var loadingMessage = '".__('Loading new articles...', $this->stringTextdomain)."';
 			var loadingFinishedMessage = '".__('You have reached the end', $this->stringTextdomain)."';
-			var socialButtonsEnabled = ".self::$stringShopSocialEnabled.";
+			var socialButtonsEnabled = ".self::$shopSocialEnabled.";
 			var pageLink = '".get_page_link()."';
+			var pageCheckoutUseIframe = ".self::$shopCheckoutIframe.";
 			
 			</script>";
 
@@ -693,7 +683,7 @@ if(!class_exists('WP_Spreadplugin')) {
 
 		// gets replaced on facebook button hover
 		function socialHead() {
-			if (self::$stringShopSocialEnabled==true) echo '
+			if (self::$shopSocialEnabled==true) echo '
 					<meta property="og:title" content="" />
 					<meta property="og:url" content="" />
 					<meta property="og:image" content="" />
@@ -701,7 +691,10 @@ if(!class_exists('WP_Spreadplugin')) {
 		}
 
 		function socialFooter() {
-			if (self::$stringShopSocialEnabled==true) echo '<script src="//connect.facebook.net/'.(!empty(self::$stringShopLocale)?self::$stringShopLocale:'en_US').'/all.js#xfbml=1"></script><script src="//platform.twitter.com/widgets.js"></script>';
+			if (self::$shopSocialEnabled==true) echo '
+			<script src="//connect.facebook.net/'.(!empty(self::$shopLocale)?self::$shopLocale:'en_US').'/all.js#xfbml=1"></script>
+			<script src="//platform.twitter.com/widgets.js"></script>
+			';
 		}
 
 

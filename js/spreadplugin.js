@@ -153,3 +153,28 @@ jQuery('#productCategory').change(function() {
 	document.location = pageLink + sep + 'productCategory='+jQuery(this).val();
 });
 
+
+
+// checkout in an iframe
+if (pageCheckoutUseIframe == true) {
+	jQuery('#checkout a').click(function(event) {
+		event.preventDefault();
+		
+		var checkoutLink = jQuery('#checkout a').attr('href');
+		
+		if (typeof checkoutLink !== "undefined" && checkoutLink.length>0) {
+		
+			jQuery('#navigation').remove();
+			jQuery('#checkout').remove();
+			jQuery(window).unbind('.infscr');
+			
+			jQuery('#spreadshirt-list').html('<iframe style="z-index:10002" id="checkoutFrame" frameborder="0" width="900" height="2000" scroll="yes">');
+			jQuery('#spreadshirt-list #checkoutFrame').attr('src',checkoutLink);
+			
+			jQuery('html, body').animate({scrollTop: jQuery("#checkoutFrame").offset().top}, 2000);
+		
+		}
+	});
+}
+
+

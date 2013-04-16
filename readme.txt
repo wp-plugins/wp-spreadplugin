@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: spreadshirt,wordpress,plugin,shop
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 1.7.2
+Stable tag: 1.7.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -52,10 +52,10 @@ Feel free to contact me.
 4. Insert shortcode
 
 **US/NA**
-`[spreadplugin shop_id="414192" shop_limit="20" shop_locale="" shop_source="com" shop_category="" shop_social="1" shop_enablelink="1" shop_productcategory="" shop_api="" shop_secret=""]`
+`[spreadplugin shop_id="414192" shop_limit="20" shop_locale="" shop_source="com" shop_category="" shop_social="1" shop_enablelink="1" shop_productcategory="" shop_checkoutiframe="0" shop_api="" shop_secret=""]`
 
 **EU/DE/FR**
-`[spreadplugin shop_id="732552" shop_limit="20" shop_locale="de_DE" shop_source="net" shop_category="" shop_social="1" shop_enablelink="1" shop_productcategory="" shop_api="" shop_secret=""]`
+`[spreadplugin shop_id="732552" shop_limit="20" shop_locale="de_DE" shop_source="net" shop_category="" shop_social="1" shop_enablelink="1" shop_productcategory="" shop_checkoutiframe="0" shop_api="" shop_secret=""]`
 
 5. Insert Shop ID, Shop API (Spreadshirt API Key) and Shop secret (Spreadshirt Secret)
 6. Done (you may modify the layout using the separate css file in the spreadplugin Folder)
@@ -103,6 +103,10 @@ Add or change in the [spreadplugin] code the value from `shop_enablelink="1"` to
 
 Add or change in the [spreadplugin] code the value from `shop_linktarget=""` to shop_linktarget="YOUR_IFRAME_NAME"` or whatever it is
 
+= I want my checkout page display in an iframe, what to do? =
+
+Add or change in the [spreadplugin] code the value from `shop_checkoutiframe="0"` to `shop_checkoutiframe="1"`. Note: shop_linktarget will be ignored.
+
 == Screenshots ==
 
 1. The Output 1
@@ -110,6 +114,10 @@ Add or change in the [spreadplugin] code the value from `shop_linktarget=""` to 
 3. Screenshot 3
 
 == Changelog ==
+
+= 1.7.3 =
+* Added a new shortcode variable to open the checkout window in an iframe. To enable change shop_checkoutiframe="0"` to shop_checkoutiframe="1"`.
+* Bugfix
 
 = 1.7.2 =
 Bugfix

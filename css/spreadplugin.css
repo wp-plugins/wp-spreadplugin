@@ -70,7 +70,6 @@
 .spreadshirt-items #checkout {
 	position: absolute;
 	right: 10px;
-	margin-top: 20px;
 	padding: 20px;
 	background-color: #666;
 	z-index: 100;
