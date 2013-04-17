@@ -149,15 +149,9 @@ jQuery('#spreadshirt-list').infinitescroll({
 
 jQuery('#productCategory').change(function() {
 	
-	var sep;
+	var sep = '?';
 	
-	if (pageLink.indexOf('?')) {
-		sep='&';
-	} else if (pageLink[pageLink.length-1]=='/') {
-		sep='?';
-	} else {
-		sep='/?';	
-	}
+	if (pageLink.indexOf('?') > -1) { sep='&'; }
 
 	document.location = pageLink + sep + 'productCategory='+jQuery(this).val();
 });
