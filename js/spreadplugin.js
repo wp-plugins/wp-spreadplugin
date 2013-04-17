@@ -148,8 +148,17 @@ jQuery('#spreadshirt-list').infinitescroll({
 });
 
 jQuery('#productCategory').change(function() {
+	
 	var sep;
-	if (pageLink[pageLink.length-1]=='/') { sep='?'; } else { sep='&'; }
+	
+	if (pageLink.indexOf('?')) {
+		sep='&';
+	} else if (pageLink[pageLink.length-1]=='/') {
+		sep='?';
+	} else {
+		sep='/?';	
+	}
+
 	document.location = pageLink + sep + 'productCategory='+jQuery(this).val();
 });
 
