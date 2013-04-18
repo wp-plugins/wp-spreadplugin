@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 1.7.4a
+ * Version: 1.7.4b
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
  */
@@ -183,9 +183,6 @@ if(!class_exists('WP_Spreadplugin')) {
 
 
 
-				/*
-				 * print article list with size and color options
-				*/
 				// use pagination value from wordpress
 				if(empty($paged)) $paged = 1;
 
@@ -197,19 +194,20 @@ if(!class_exists('WP_Spreadplugin')) {
 
 
 				// filter
-				foreach ($articleData as $id => $article) {
-					if (!empty(self::$shopProductCategory)&&isset($typesData[self::$shopProductCategory])&&!in_array($article['type'],$typesData[self::$shopProductCategory])) {
-						unset($articleData[$id]);
+				if (is_array($articleData)) {
+					foreach ($articleData as $id => $article) {
+						if (!empty(self::$shopProductCategory)&&isset($typesData[self::$shopProductCategory])&&!in_array($article['type'],$typesData[self::$shopProductCategory])) {
+							unset($articleData[$id]);
+						}
 					}
 				}
 
 
 
 				// pagination
-				if (!empty(self::$shopLimit)) {
+				if (!empty(self::$shopLimit) && is_array($articleData)) {
 					$articleData = array_slice($articleData, $offset, self::$shopLimit, true);
 				}
-
 
 
 				$output = '<div id="spreadshirt-items" class="spreadshirt-items clearfix">';
@@ -246,7 +244,7 @@ if(!class_exists('WP_Spreadplugin')) {
 
 
 				// anzeige
-				if (count($articleData) == 0) {
+				if (count($articleData) == 0 || $articleData==false) {
 
 					$output .= '<br>No articles in Shop';
 
@@ -374,7 +372,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				$apiUrlBase .= (!empty(self::$shopCategoryId)?'/articleCategories/'.self::$shopCategoryId:'');
 				$apiUrlBase .= '/articles?'.(!empty(self::$shopLocale)?'locale=' . self::$shopLocale . '&':'').'fullData=true';
 
-				$apiUrl = $apiUrlBase . '&limit=1'; # &limit='.self::$shopLimit.'&offset='.$offset
+				$apiUrl = $apiUrlBase . '&limit=2'; # &limit='.self::$shopLimit.'&offset='.$offset
 
 				$stringXmlShop = wp_remote_get($apiUrl);
 				if (count($stringXmlShop->errors)>0) die('Error getting articles. Please check Shop-ID, API and secret.');
@@ -385,7 +383,8 @@ if(!class_exists('WP_Spreadplugin')) {
 
 
 				// erneuter call, weil sonst limit bei 50
-				$apiUrl = $apiUrlBase . '&limit='.$objArticles['count']; # &limit='.self::$shopLimit.'&offset='.$offset
+				// limit bei max 1000 durch Spreadshirt-Limitierung
+				$apiUrl = $apiUrlBase . '&limit='.($objArticles['count']==1?2:($objArticles['count']<1000?$objArticles['count']:1000)); # &limit='.self::$shopLimit.'&offset='.$offset
 
 				$stringXmlShop = wp_remote_get($apiUrl);
 				if (count($stringXmlShop->errors)>0) die('Error getting articles. Please check Shop-ID, API and secret.');

@@ -115,6 +115,9 @@ Add or change in the [spreadplugin] code the value from `shop_checkoutiframe="0"
 
 == Changelog ==
 
+= 1.7.4b =
+Bugfix
+
 = 1.7.4a =
 Bugfix
 
