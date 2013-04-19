@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 1.8
+ * Version: 1.8.1
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
  */
@@ -263,10 +263,10 @@ if(!class_exists('WP_Spreadplugin')) {
 				$output .= '</select>';
 
 				$output .= '<select name="articleSortBy" id="articleSortBy">';
-				$output .= '<option value="">'.__('Product sorting', $this->stringTextdomain).'</option>';
-				foreach (self::$shopArticleSortOptions as $v) {
-					$output .= '<option value="'.$v.'"'.($v==self::$shopArticleSort?' selected':'').'>'.__($v, $this->stringTextdomain).'</option>';
-				}
+				$output .= '<option value="">'.__('Sort by', $this->stringTextdomain).'</option>';
+				$output .= '<option value="name"'.($v==self::$shopArticleSort?' selected':'').'>'.__('name', $this->stringTextdomain).'</option>';
+				$output .= '<option value="price"'.($v==self::$shopArticleSort?' selected':'').'>'.__('price', $this->stringTextdomain).'</option>';
+				$output .= '<option value="recent"'.($v==self::$shopArticleSort?' selected':'').'>'.__('recent', $this->stringTextdomain).'</option>';
 				$output .= '</select>';
 
 

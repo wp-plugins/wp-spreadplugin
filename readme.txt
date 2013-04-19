@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: spreadshirt,wordpress,plugin,shop
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 1.8
+Stable tag: 1.8.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -118,6 +118,9 @@ Add or change in the [spreadplugin] code the value from `shop_sortby=""` to `sho
 3. Screenshot 3
 
 == Changelog ==
+
+= 1.8.1 =
+Translation for sorting added
 
 = 1.8 =
 * Added a new shortcode variable to sort the articles by default. To enable change shop_sortby=""` to shop_sortby="[name, price, recent]"`.

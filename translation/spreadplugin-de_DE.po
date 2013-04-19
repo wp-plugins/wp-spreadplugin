@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spreadplugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-15 03:25+0100\n"
-"PO-Revision-Date: 2013-04-15 03:26+0100\n"
+"POT-Creation-Date: 2013-04-19 11:26+0100\n"
+"PO-Revision-Date: 2013-04-19 11:27+0100\n"
 "Last-Translator: Thimo Grauerholz <info@pr3ss-play.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -17,55 +17,74 @@ msgstr ""
 "X-Generator: Poedit 1.5.5\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: spreadplugin.php:242 spreadplugin.php:244 _beta/spreadplugin.php:279
+#: spreadplugin.php:250 spreadplugin.php:252 _beta/spreadplugin.php:279
 #: _beta/spreadplugin.php:281
 msgid "Basket"
 msgstr "Warenkorb"
 
-#: spreadplugin.php:244 _beta/spreadplugin.php:281
+#: spreadplugin.php:252 _beta/spreadplugin.php:281
 msgid "Basket is empty"
 msgstr "Warenkorb ist leer"
 
-#: spreadplugin.php:249
+#: spreadplugin.php:257
 msgid "Product category"
 msgstr "Produkt Kategorie"
 
-#: spreadplugin.php:328 spreadplugin.php:608 _beta/spreadplugin.php:240
+#: spreadplugin.php:266
+msgid "Sort by"
+msgstr "Sortieren"
+
+#: spreadplugin.php:267
+msgid "name"
+msgstr "Name"
+
+#: spreadplugin.php:268
+msgid "price"
+msgstr "Preis"
+
+#: spreadplugin.php:269
+msgid "recent"
+msgstr "Erschienen"
+
+#: spreadplugin.php:343 spreadplugin.php:628 _beta/spreadplugin.php:240
 #: _beta/spreadplugin.php:436
 msgid "Show description"
 msgstr "Zeige Beschreibung"
 
-#: spreadplugin.php:336 _beta/spreadplugin.php:248
+#: spreadplugin.php:351 _beta/spreadplugin.php:248
 msgid "Price (without tax):"
 msgstr "Preis (ohne MwSt.):"
 
-#: spreadplugin.php:337 _beta/spreadplugin.php:249
+#: spreadplugin.php:352 _beta/spreadplugin.php:249
 msgid "Price (with tax):"
 msgstr "Preis (mit MwSt.):"
 
-#: spreadplugin.php:340 _beta/spreadplugin.php:252 _beta/spreadplugin.php:441
+#: spreadplugin.php:355 _beta/spreadplugin.php:252 _beta/spreadplugin.php:441
 msgid "Add to basket"
 msgstr "In den Warenkorb"
 
-#: spreadplugin.php:354 _beta/spreadplugin.php:287
+#: spreadplugin.php:369 _beta/spreadplugin.php:287
 msgid "next"
 msgstr "weiter"
 
-#: spreadplugin.php:607 _beta/spreadplugin.php:435
+#: spreadplugin.php:627 _beta/spreadplugin.php:435
 msgid "Hide description"
 msgstr "Verstecke Beschreibung"
 
-#: spreadplugin.php:610 _beta/spreadplugin.php:438
+#: spreadplugin.php:630 _beta/spreadplugin.php:438
 msgid "Loading new articles..."
 msgstr "Artikel werden geladen..."
 
-#: spreadplugin.php:611 _beta/spreadplugin.php:439
+#: spreadplugin.php:631 _beta/spreadplugin.php:439
 msgid "You have reached the end"
 msgstr "Keine weiteren Artikel verfügbar"
 
 #: _beta/spreadplugin.php:442
 msgid "Adding..."
 msgstr ""
+
+#~ msgid "Product sorting"
+#~ msgstr "Sort"
 
 #, fuzzy
 #~ msgid "Preis (with tax):"
