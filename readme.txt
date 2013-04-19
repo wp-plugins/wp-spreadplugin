@@ -26,7 +26,7 @@ Features:
 * Uses Spreadshirt-Basket (A click on the basket opens the spreadshirt own basket)
 * Price listing
 * Choose color and sizes
-* Language support (de_DE, en_GB, fr_FR based on Wordpress installation)
+* Language support (de_DE, en_GB, fr_FR, nl_NL based on Wordpress installation)
 * Social buttons
 * Zoomed article preview
 * Display article descriptions
@@ -121,7 +121,7 @@ Add or change in the [spreadplugin] code the value from `shop_sortby=""` to `sho
 == Changelog ==
 
 = 1.8.2a =
-Dutch language added
+Dutch language added (nl_NL)
 
 = 1.8.2 =
 Compatibility update for < PHP 5
