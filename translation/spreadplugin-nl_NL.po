@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Spreadplugin\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-04-19 15:58+0100\n"
-"PO-Revision-Date: 2013-04-19 15:59+0100\n"
+"PO-Revision-Date: 2013-04-19 18:34+0100\n"
 "Last-Translator: Thimo Grauerholz <info@pr3ss-play.de>\n"
 "Language-Team: \n"
 "Language: nl_NL\n"
@@ -61,7 +61,7 @@ msgstr "Prijs (incl. btw):"
 
 #: spreadplugin.php:355 _beta/spreadplugin.php:252 _beta/spreadplugin.php:441
 msgid "Add to basket"
-msgstr "Voeg toe aan winkelmandje"
+msgstr "Plaats in winkelwagen"
 
 #: spreadplugin.php:369 _beta/spreadplugin.php:287
 msgid "next"
