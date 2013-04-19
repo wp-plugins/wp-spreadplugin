@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 1.8.2a
+ * Version: 1.8.2b
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
  */
@@ -158,6 +158,10 @@ if(!class_exists('WP_Spreadplugin')) {
 						*/
 						$namespaces = $objShop->getNamespaces(true);
 						$basketUrl = self::createBasket('net', $objShop, $namespaces);
+						
+						if (empty($namespaces)) die('Namespaces empty');
+						if (empty($basketUrl)) die('Basket Url empty');
+						
 						$_SESSION['basketUrl'] = $basketUrl;
 						$_SESSION['namespaces'] = $namespaces;
 
@@ -414,7 +418,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				$apiUrl = $apiUrlBase . '&limit='.($objArticles['count']==1?2:($objArticles['count']<1000?$objArticles['count']:1000)); # &limit='.self::$shopLimit.'&offset='.$offset
 
 				$stringXmlShop = wp_remote_get($apiUrl);
-				if (count($stringXmlShop->errors)>0) die('Error getting articles. Please check Shop-ID, API and secret.');
+				if (count($stringXmlShop->errors)>0) die('Error getting articles. Please check your Shop-ID.');
 				if ($stringXmlShop['body'][0]!='<') die($stringXmlShop['body']);
 				$stringXmlShop = wp_remote_retrieve_body($stringXmlShop);
 				$objArticles = new SimpleXmlElement($stringXmlShop);
@@ -541,7 +545,11 @@ if(!class_exists('WP_Spreadplugin')) {
 			$header[] = self::createAuthHeader("POST", $basketsUrl);
 			$header[] = "Content-Type: application/xml";
 			$result = self::oldHttpRequest($basketsUrl, $header, 'POST', $basket->asXML());
-			$basketUrl = self::parseHttpHeaders($result, "Location");
+			if ($result[0]=='<') {
+				$basketUrl = self::parseHttpHeaders($result, "Location");
+			} else {
+				die('Basket not yet ready. Please check your Key and Secret. Try again later.');
+			}
 
 			return $basketUrl;
 
@@ -553,16 +561,21 @@ if(!class_exists('WP_Spreadplugin')) {
 
 
 		function checkout($basketUrl, $namespaces) {
+			$checkoutUrl='';
 
 			$basketCheckoutUrl = $basketUrl . "/checkout";
 			$header = array();
 			$header[] = self::createAuthHeader("GET", $basketCheckoutUrl);
 			$header[] = "Content-Type: application/xml";
 			$result = self::oldHttpRequest($basketCheckoutUrl, $header, 'GET');
-			$checkoutRef = new SimpleXMLElement($result);
-			$refAttributes = $checkoutRef->attributes($namespaces['xlink']);
-			$checkoutUrl = (string)$refAttributes->href;
-
+			if ($result[0]=='<') {
+				$checkoutRef = new SimpleXMLElement($result);
+				$refAttributes = $checkoutRef->attributes($namespaces['xlink']);
+				$checkoutUrl = (string)$refAttributes->href;
+			} else {
+				die('Can\'t get checkout url. Please check your Key and Secret. Try again later.');
+			}
+			
 			return $checkoutUrl;
 
 		}
@@ -572,7 +585,7 @@ if(!class_exists('WP_Spreadplugin')) {
 		*/
 		function createAuthHeader($method, $url) {
 
-			$time = time() *1000;
+			$time = time() * 1000;
 			$data = "$method $url $time";
 			$sig = sha1("$data ".self::$shopSecret);
 
