@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 1.8.1
+ * Version: 1.8.2
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
  */
@@ -217,9 +217,9 @@ if(!class_exists('WP_Spreadplugin')) {
 					if (self::$shopArticleSort==="recent") {
 						krsort($articleData);
 					} else if (self::$shopArticleSort==="price") {
-						uasort($articleData, self::buildSorter('pricenet'));
+						uasort($articleData,create_function('$a,$b',"return (\$a[pricenet] < \$b[pricenet])?-1:1;"));
 					} else {
-						uasort($articleData, self::buildSorter(self::$shopArticleSort));
+						uasort($articleData,create_function('$a,$b',"return strnatcmp(\$a[".self::$shopArticleSort."],\$b[".self::$shopArticleSort."]);"));
 					}
 				}
 
@@ -723,18 +723,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			';
 		}
 		
-		
-		/**
-		* Sortierung Multidimensionaler Arrays mittels einer Funktion
-		* 
-		* uasort($array, buildSorter('key_b'));
-		*/
-		function buildSorter($key) {
-			return function ($a, $b) use ($key) {
-				return strnatcmp($a[$key], $b[$key]);
-			};
-		}
-
+	
 
 
 	} // END class WP_Spreadplugin
