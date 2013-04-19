@@ -264,9 +264,9 @@ if(!class_exists('WP_Spreadplugin')) {
 
 				$output .= '<select name="articleSortBy" id="articleSortBy">';
 				$output .= '<option value="">'.__('Sort by', $this->stringTextdomain).'</option>';
-				$output .= '<option value="name"'.($v==self::$shopArticleSort?' selected':'').'>'.__('name', $this->stringTextdomain).'</option>';
-				$output .= '<option value="price"'.($v==self::$shopArticleSort?' selected':'').'>'.__('price', $this->stringTextdomain).'</option>';
-				$output .= '<option value="recent"'.($v==self::$shopArticleSort?' selected':'').'>'.__('recent', $this->stringTextdomain).'</option>';
+				$output .= '<option value="name"'.('name'==self::$shopArticleSort?' selected':'').'>'.__('name', $this->stringTextdomain).'</option>';
+				$output .= '<option value="price"'.('price'==self::$shopArticleSort?' selected':'').'>'.__('price', $this->stringTextdomain).'</option>';
+				$output .= '<option value="recent"'.('recent'==self::$shopArticleSort?' selected':'').'>'.__('recent', $this->stringTextdomain).'</option>';
 				$output .= '</select>';
 
 
