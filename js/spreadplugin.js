@@ -158,12 +158,12 @@ jQuery('#spreadshirt-list').infinitescroll({
 
 jQuery('#spreadshirt-items #productCategory').change(function() {
 	prod = jQuery(this).val();
-	document.location = pageLink + sep + 'productCategory=' + prod + sep + 'articleSortBy=' + sor;
+	document.location = pageLink + sep + 'productCategory=' + prod + '&articleSortBy=' + sor;
 });
 
 jQuery('#spreadshirt-items #articleSortBy').change(function() {
 	sor = jQuery(this).val();
-	document.location = pageLink + sep + 'productCategory=' + prod + sep + 'articleSortBy=' + sor;
+	document.location = pageLink + sep + 'productCategory=' + prod + '&articleSortBy=' + sor;
 });
 
 
