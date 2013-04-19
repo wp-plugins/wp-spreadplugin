@@ -32,6 +32,7 @@ Features:
 * Display article descriptions
 * Cache
 * Choose or direct link to the product category
+* Sorting and filtering
 
 See it in action:
 http://www.pr3ss-play.de/shop/ (in german)
