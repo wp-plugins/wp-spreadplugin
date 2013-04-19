@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 1.7.4b
+ * Version: 1.8
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
  */
@@ -37,8 +37,10 @@ if(!class_exists('WP_Spreadplugin')) {
 		private static $shopSocialEnabled = 1;
 		private static $shopLinkEnabled = 1;
 		private static $shopProductCategory = '';
+		private static $shopArticleSort = '';
 		private static $shopLinkTarget = '_blank';
 		private static $shopCheckoutIframe = 0;
+		private static $shopArticleSortOptions = array("name","price","recent");
 
 		function WP_Spreadplugin() {
 			WP_Spreadplugin::__construct();
@@ -99,6 +101,7 @@ if(!class_exists('WP_Spreadplugin')) {
 					'shop_social' => 1,
 					'shop_enablelink' => 1,
 					'shop_productcategory' => '',
+					'shop_sortby' => '',
 					'shop_linktarget' => '_blank',
 					'shop_checkoutiframe' => 0,
 			), $atts);
@@ -113,12 +116,17 @@ if(!class_exists('WP_Spreadplugin')) {
 			self::$shopSocialEnabled = intval($sc['shop_social']);
 			self::$shopLinkEnabled = intval($sc['shop_enablelink']);
 			self::$shopProductCategory = $sc['shop_productcategory'];
+			self::$shopArticleSort = $sc['shop_sortby'];
 			self::$shopLinkTarget = $sc['shop_linktarget'];
 			self::$shopCheckoutIframe = $sc['shop_checkoutiframe'];
 
 			if (isset($_GET['productCategory'])) {
 				$c = urldecode($_GET['productCategory']);
 				self::$shopProductCategory = $c;
+			}
+			if (isset($_GET['articleSortBy'])) {
+				$c = urldecode($_GET['articleSortBy']);
+				self::$shopArticleSort = $c;
 			}
 
 
@@ -201,7 +209,19 @@ if(!class_exists('WP_Spreadplugin')) {
 						}
 					}
 				}
-
+				
+				
+				
+				// sorting
+				if (!empty(self::$shopArticleSort) && is_array($articleData) && in_array(self::$shopArticleSort,self::$shopArticleSortOptions)) {
+					if (self::$shopArticleSort==="recent") {
+						krsort($articleData);
+					} else if (self::$shopArticleSort==="price") {
+						uasort($articleData, self::buildSorter('pricenet'));
+					} else {
+						uasort($articleData, self::buildSorter(self::$shopArticleSort));
+					}
+				}
 
 
 				// pagination
@@ -239,6 +259,13 @@ if(!class_exists('WP_Spreadplugin')) {
 					foreach ($typesData as $t => $v) {
 						$output .= '<option value="'.urlencode($t).'"'.($t==self::$shopProductCategory?' selected':'').'>'.$t.'</option>';
 					}
+				}
+				$output .= '</select>';
+
+				$output .= '<select name="articleSortBy" id="articleSortBy">';
+				$output .= '<option value="">'.__('Product sorting', $this->stringTextdomain).'</option>';
+				foreach (self::$shopArticleSortOptions as $v) {
+					$output .= '<option value="'.$v.'"'.($v==self::$shopArticleSort?' selected':'').'>'.__($v, $this->stringTextdomain).'</option>';
 				}
 				$output .= '</select>';
 
@@ -695,6 +722,19 @@ if(!class_exists('WP_Spreadplugin')) {
 			<script src="//platform.twitter.com/widgets.js"></script>
 			';
 		}
+		
+		
+		/**
+		* Sortierung Multidimensionaler Arrays mittels einer Funktion
+		* 
+		* uasort($array, buildSorter('key_b'));
+		*/
+		function buildSorter($key) {
+			return function ($a, $b) use ($key) {
+				return strnatcmp($a[$key], $b[$key]);
+			};
+		}
+
 
 
 	} // END class WP_Spreadplugin

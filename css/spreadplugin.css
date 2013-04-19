@@ -130,6 +130,11 @@
 	border-radius: 0;
 	box-shadow: none;
 }
+#spreadshirt-list {
+	padding-top:20px;	
+}
+
+
 /* display or hide prices */
 .spreadshirt-article #price-without-tax {
 /*	display:none; */
@@ -143,3 +148,33 @@
 }
 .spreadshirt-items #size-select {
 }
+#spreadshirt-items #productCategory {
+/*	display:none; */
+	position: absolute;
+	left: 0;
+}
+#spreadshirt-items #articleSortBy {
+/*	display:none; */
+	position: absolute;
+	right: 10px;
+}
+
+
+@media screen and (max-width: 500px) { 
+
+	#spreadshirt-items #articleSortBy {
+		position: relative;
+		left:0;
+	}
+	#spreadshirt-items #productCategory {
+		position: relative;
+		left:0;
+	}
+
+}
+
+
+
+
+
+
