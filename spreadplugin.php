@@ -574,6 +574,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			$header[] = self::createAuthHeader("GET", $basketCheckoutUrl);
 			$header[] = "Content-Type: application/xml";
 			$result = self::oldHttpRequest($basketCheckoutUrl, $header, 'GET');
+			
 			if ($result[0]=='<') {
 				$checkoutRef = new SimpleXMLElement($result);
 				$refAttributes = $checkoutRef->attributes($namespaces['xlink']);
@@ -606,16 +607,14 @@ if(!class_exists('WP_Spreadplugin')) {
 			$fields = explode("\r\n", preg_replace('/\x0D\x0A[\x09\x20]+/', ' ', $header));
 
 			foreach($fields as $field) {
-
 				if (preg_match('/(' . $headername . '): (.+)/m', $field, $match)) {
 					return $match[2];
 				}
-
 			}
 
 			return $retVal;
-
 		}
+		
 
 		function getBasket($basketUrl) {
 

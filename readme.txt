@@ -112,6 +112,10 @@ Add or change in the [spreadplugin] code the value from `shop_checkoutiframe="0"
 
 Add or change in the [spreadplugin] code the value from `shop_sortby=""` to `shop_sortby="name"`. Available sort options are name, price, recent
 
+= I get following error, when I add an article to the basket: "ERROR: Basket not ready yet." =
+
+Please check your server time.
+
 == Screenshots ==
 
 1. The Output 1
