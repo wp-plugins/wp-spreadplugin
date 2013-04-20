@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 1.8.2b
+ * Version: 1.8.2c
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
  */
@@ -524,6 +524,11 @@ if(!class_exists('WP_Spreadplugin')) {
 			$header[] = "Content-Type: application/xml";
 			$result = self::oldHttpRequest($basketItemsUrl, $header, 'POST', $basketItem->asXML());
 
+			if ($result) {
+			} else {
+				die('ERROR: Item not added.');
+			}
+
 		}
 
 
@@ -545,10 +550,11 @@ if(!class_exists('WP_Spreadplugin')) {
 			$header[] = self::createAuthHeader("POST", $basketsUrl);
 			$header[] = "Content-Type: application/xml";
 			$result = self::oldHttpRequest($basketsUrl, $header, 'POST', $basket->asXML());
-			if ($result[0]=='<') {
+			
+			if ($result) {
 				$basketUrl = self::parseHttpHeaders($result, "Location");
 			} else {
-				die('Basket not yet ready. Please check your Key and Secret. Try again later.');
+				die('ERROR: Basket not ready yet.');
 			}
 
 			return $basketUrl;
@@ -573,7 +579,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				$refAttributes = $checkoutRef->attributes($namespaces['xlink']);
 				$checkoutUrl = (string)$refAttributes->href;
 			} else {
-				die('Can\'t get checkout url. Please check your Key and Secret. Try again later.');
+				die('ERROR: Can\'t get checkout url.');
 			}
 			
 			return $checkoutUrl;
@@ -585,7 +591,7 @@ if(!class_exists('WP_Spreadplugin')) {
 		*/
 		function createAuthHeader($method, $url) {
 
-			$time = time() * 1000;
+			$time = time() * 1000; // if time difference error -> strtotime('+2 hours')
 			$data = "$method $url $time";
 			$sig = sha1("$data ".self::$shopSecret);
 
@@ -683,10 +689,16 @@ if(!class_exists('WP_Spreadplugin')) {
 			}
 
 			$result = curl_exec($ch);
-			curl_close($ch);
+			$info = curl_getinfo($ch);
+			$status = isset($info['http_code'])?$info['http_code']:null;
+			@curl_close($ch);
 
-			return $result;
 
+			if (in_array($status,array(200,201,204,406))) {
+				return $result;
+			}
+
+			return false;
 		}
 
 
