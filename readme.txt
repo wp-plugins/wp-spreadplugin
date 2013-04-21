@@ -127,10 +127,6 @@ Please check your server time.
 = 1.8.3 =
 Compatibility update for using with 'Simple Facebook Connect'-Plugin
 
-= 1.8.2c =
-
-= 1.8.2b =
-
 = 1.8.2a =
 Dutch language added (nl_NL)
 
