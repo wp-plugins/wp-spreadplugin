@@ -552,8 +552,17 @@ if(!class_exists('WP_Spreadplugin')) {
 			
 			if ($result) {
 				$basketUrl = self::parseHttpHeaders($result, "Location");
-			} else {
-				die('ERROR: Basket not ready yet.');
+			} else {			
+				$header = array();
+				$header[] = self::createAuthHeader("POST", $basketsUrl,true);
+				$header[] = "Content-Type: application/xml";
+				$result = self::oldHttpRequest($basketsUrl, $header, 'POST', $basket->asXML());
+				
+				if ($result) {
+					$basketUrl = self::parseHttpHeaders($result, "Location");
+				} else {					
+					die('ERROR: Basket not ready yet.');
+				}
 			}
 
 			return $basketUrl;
@@ -583,15 +592,18 @@ if(!class_exists('WP_Spreadplugin')) {
 			}
 			
 			return $checkoutUrl;
-
 		}
+
 
 		/*
 		 * functions to build headers
 		*/
-		function createAuthHeader($method, $url) {
+		function createAuthHeader($method, $url,$rt=false) {
 
-			$time = strtotime('+2 hours') * 1000; // if time difference error -> strtotime('+2 hours')
+			$time = time() * 1000; // if time difference error -> strtotime('+2 hours')
+			
+			if ($rt) $time = strtotime('+3 hours') * 1000;
+			
 			$data = "$method $url $time";
 			$sig = sha1("$data ".self::$shopSecret);
 
