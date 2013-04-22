@@ -561,7 +561,8 @@ if(!class_exists('WP_Spreadplugin')) {
 				if ($result) {
 					$basketUrl = self::parseHttpHeaders($result, "Location");
 				} else {					
-					die('ERROR: Basket not ready yet.');
+				die($result);
+					//die('ERROR: Basket not ready yet.');
 				}
 			}
 
