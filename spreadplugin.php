@@ -549,8 +549,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			$header[] = self::createAuthHeader("POST", $basketsUrl);
 			$header[] = "Content-Type: application/xml";
 			$result = self::oldHttpRequest($basketsUrl, $header, 'POST', $basket->asXML());
-			print_r($header);
-			print_r($result);
+
 			if ($result) {
 				$basketUrl = self::parseHttpHeaders($result, "Location");
 			} else {			
@@ -592,9 +591,7 @@ if(!class_exists('WP_Spreadplugin')) {
 		*/
 		function createAuthHeader($method, $url,$rt=false) {
 
-			$time = time() * 1000; // if time difference error -> strtotime('+2 hours')
-			
-			if ($rt) $time = strtotime('+3 hours') * 1000;
+			$time = time(); // if time difference error -> strtotime('+2 hours') ?
 			
 			$data = "$method $url $time";
 			$sig = sha1("$data ".self::$shopSecret);
@@ -695,7 +692,6 @@ if(!class_exists('WP_Spreadplugin')) {
 			$status = isset($info['http_code'])?$info['http_code']:null;
 			@curl_close($ch);
 
-print_r($status);
 			if (in_array($status,array(200,201,204,403,406))) {
 				return $result;
 			}
