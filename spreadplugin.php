@@ -549,21 +549,12 @@ if(!class_exists('WP_Spreadplugin')) {
 			$header[] = self::createAuthHeader("POST", $basketsUrl);
 			$header[] = "Content-Type: application/xml";
 			$result = self::oldHttpRequest($basketsUrl, $header, 'POST', $basket->asXML());
-			
+			print_r($header);
+			print_r($result);
 			if ($result) {
 				$basketUrl = self::parseHttpHeaders($result, "Location");
 			} else {			
-				$header = array();
-				$header[] = self::createAuthHeader("POST", $basketsUrl,true);
-				$header[] = "Content-Type: application/xml";
-				$result = self::oldHttpRequest($basketsUrl, $header, 'POST', $basket->asXML());
-				
-				if ($result) {
-					$basketUrl = self::parseHttpHeaders($result, "Location");
-				} else {					
-				die($result);
-					//die('ERROR: Basket not ready yet.');
-				}
+				die('ERROR: Basket not ready yet.');
 			}
 
 			return $basketUrl;
@@ -704,7 +695,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			$status = isset($info['http_code'])?$info['http_code']:null;
 			@curl_close($ch);
 
-
+print_r($status);
 			if (in_array($status,array(200,201,204,403,406))) {
 				return $result;
 			}
