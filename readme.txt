@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: spreadshirt,wordpress,plugin,shop
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 1.8.3a
+Stable tag: 1.8.3b
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -114,7 +114,7 @@ Add or change in the [spreadplugin] code the value from `shop_sortby=""` to `sho
 
 = I get following error, when I add an article to the basket: "ERROR: Basket not ready yet." =
 
-Please check your server time.
+Please update to the most recent version
 
 == Screenshots ==
 
@@ -123,6 +123,9 @@ Please check your server time.
 3. Screenshot 3
 
 == Changelog ==
+
+= 1.8.3b =
+Finally fixed "ERROR: Basket not ready".
 
 = 1.8.3a =
 Some CSS things

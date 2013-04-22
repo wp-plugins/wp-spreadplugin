@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 1.8.3a
+ * Version: 1.8.3b
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
  */
@@ -215,13 +215,14 @@ if(!class_exists('WP_Spreadplugin')) {
 				}
 				
 				
-				
 				// sorting
 				if (!empty(self::$shopArticleSort) && is_array($articleData) && in_array(self::$shopArticleSort,self::$shopArticleSortOptions)) {
 					if (self::$shopArticleSort==="recent") {
 						krsort($articleData);
 					} else if (self::$shopArticleSort==="price") {
 						uasort($articleData,create_function('$a,$b',"return (\$a[pricenet] < \$b[pricenet])?-1:1;"));
+					} else if (self::$shopArticleSort==="weight") {
+						uasort($articleData,create_function('$a,$b',"return (\$a[weight] < \$b[weight])?-1:1;"));
 					} else {
 						uasort($articleData,create_function('$a,$b',"return strnatcmp(\$a[".self::$shopArticleSort."],\$b[".self::$shopArticleSort."]);"));
 					}
@@ -271,6 +272,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				$output .= '<option value="name"'.('name'==self::$shopArticleSort?' selected':'').'>'.__('name', $this->stringTextdomain).'</option>';
 				$output .= '<option value="price"'.('price'==self::$shopArticleSort?' selected':'').'>'.__('price', $this->stringTextdomain).'</option>';
 				$output .= '<option value="recent"'.('recent'==self::$shopArticleSort?' selected':'').'>'.__('recent', $this->stringTextdomain).'</option>';
+				//$output .= '<option value="weight"'.('weight'==self::$shopArticleSort?' selected':'').'>'.__('weight', $this->stringTextdomain).'</option>';
 				$output .= '</select>';
 
 
@@ -464,12 +466,13 @@ if(!class_exists('WP_Spreadplugin')) {
 						$articleData[(int)$article['id']]['appearance']=(int)$article->product->appearance['id'];
 						$articleData[(int)$article['id']]['view']=(int)$article->product->defaultValues->defaultView['id'];
 						$articleData[(int)$article['id']]['type']=(int)$article->product->productType['id'];
-						$articleData[(int)$article['id']]['pricenet']=(string)$article->price->vatExcluded;
-						$articleData[(int)$article['id']]['pricebrut']=(string)$article->price->vatIncluded;
+						$articleData[(int)$article['id']]['pricenet']=(float)$article->price->vatExcluded;
+						$articleData[(int)$article['id']]['pricebrut']=(float)$article->price->vatIncluded;
 						$articleData[(int)$article['id']]['currencycode']=(string)$objCurrencyData->isoCode;
 						$articleData[(int)$article['id']]['resource0']=(string)$article->resources->resource->attributes('xlink', true);
 						$articleData[(int)$article['id']]['resource2']=(string)$article->resources->resource[2]->attributes('xlink', true);
 						$articleData[(int)$article['id']]['productdescription']=(string)$objArticleData->description;
+						$articleData[(int)$article['id']]['weight']=(float)$article['weight'];
 
 						foreach($objArticleData->sizes->size as $val) {
 							$articleData[(int)$article['id']]['sizes'][(int)$val['id']]=(string)$val->name;
@@ -591,7 +594,7 @@ if(!class_exists('WP_Spreadplugin')) {
 		*/
 		function createAuthHeader($method, $url,$rt=false) {
 
-			$time = time(); // if time difference error -> strtotime('+2 hours') ?
+			$time = microtime(); // time() auch möglich
 			
 			$data = "$method $url $time";
 			$sig = sha1("$data ".self::$shopSecret);
