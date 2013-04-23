@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 1.8.3b
+ * Version: 1.8.4
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
  */
@@ -120,6 +120,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			self::$shopLinkTarget = $sc['shop_linktarget'];
 			self::$shopCheckoutIframe = $sc['shop_checkoutiframe'];
 
+			
 			if (isset($_GET['productCategory'])) {
 				$c = urldecode($_GET['productCategory']);
 				self::$shopProductCategory = $c;
@@ -354,8 +355,8 @@ if(!class_exists('WP_Spreadplugin')) {
 						$output .= '<input type="hidden" value="'. $id .'" id="article" name="article" />';
 						$output .= '<div class="separator"></div>';
 						$output .= '<div class="price-wrapper">';
-						$output .= '<span id="price-without-tax">'.__('Price (without tax):', $this->stringTextdomain)." ".$article['pricenet']." ".$article['currencycode']."<br /></span>";
-						$output .= '<span id="price-with-tax">'.__('Price (with tax):', $this->stringTextdomain)." ".$article['pricebrut']." ".$article['currencycode']."<br /></span>";
+						$output .= '<span id="price-without-tax">'.__('Price (without tax):', $this->stringTextdomain)." ".(empty(self::$shopLocale) || self::$shopLocale=='en_US' || self::$shopLocale=='en_GB'?number_format($article['pricenet'],2,'.',''):number_format($article['pricenet'],2,',','.'))." ".$article['currencycode']."<br /></span>";
+						$output .= '<span id="price-with-tax">'.__('Price (with tax):', $this->stringTextdomain)." ".(empty(self::$shopLocale) || self::$shopLocale=='en_US' || self::$shopLocale=='en_GB'?number_format($article['pricenet'],2,'.',''):number_format($article['pricebrut'],2,',','.'))." ".$article['currencycode']."<br /></span>";
 						$output .= '</div>';
 						$output .= '<input type="text" value="1" id="quantity" name="quantity" maxlength="4" />';
 						$output .= '<input type="submit" name="submit" value="'.__('Add to basket', $this->stringTextdomain).'" />';

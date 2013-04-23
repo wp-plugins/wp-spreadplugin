@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: spreadshirt,wordpress,plugin,shop
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 1.8.3b
+Stable tag: 1.8.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -123,6 +123,9 @@ Please update to the most recent version
 3. Screenshot 3
 
 == Changelog ==
+
+= 1.8.4 =
+Price formatting added
 
 = 1.8.3b =
 Finally fixed "ERROR: Basket not ready".
