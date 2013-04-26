@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: spreadshirt,wordpress,plugin,shop
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 1.9
+Stable tag: 1.9.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -33,7 +33,7 @@ Features:
 * Cache
 * Choose or direct link to the product category
 * Sorting and filtering
-* Ajax driven shop (Add products to the basket without reloading the whole content)
+* Adding the products to the basket without reloading the page
 
 See it in action:
 http://www.pr3ss-play.de/shop/ (in german)
@@ -54,10 +54,10 @@ Feel free to contact me.
 4. Insert shortcode
 
 **US/NA**
-`[spreadplugin shop_id="414192" shop_limit="20" shop_locale="" shop_source="com" shop_category="" shop_social="1" shop_enablelink="1" shop_productcategory="" shop_checkoutiframe="0" shop_sortby="" shop_api="" shop_secret=""]`
+`[spreadplugin shop_id="414192" shop_limit="20" shop_locale="" shop_source="com" shop_category="" shop_social="1" shop_enablelink="1" shop_productcategory="" shop_checkoutiframe="2" shop_sortby="" shop_api="" shop_secret=""]`
 
 **EU/DE/FR**
-`[spreadplugin shop_id="732552" shop_limit="20" shop_locale="de_DE" shop_source="net" shop_category="" shop_social="1" shop_enablelink="1" shop_productcategory="" shop_checkoutiframe="0" shop_sortby="" shop_api="" shop_secret=""]`
+`[spreadplugin shop_id="732552" shop_limit="20" shop_locale="de_DE" shop_source="net" shop_category="" shop_social="1" shop_enablelink="1" shop_productcategory="" shop_checkoutiframe="2" shop_sortby="" shop_api="" shop_secret=""]`
 
 5. Insert Shop ID, Shop API (Spreadshirt API Key) and Shop secret (Spreadshirt Secret)
 6. Done (you may modify the layout using the separate css file in the spreadplugin Folder)
@@ -105,9 +105,12 @@ Add or change in the [spreadplugin] code the value from `shop_enablelink="1"` to
 
 Add or change in the [spreadplugin] code the value from `shop_linktarget=""` to shop_linktarget="YOUR_IFRAME_NAME"` or whatever it is
 
-= I want my checkout page display in an iframe, what to do? =
+= I want my checkout page display in an iframe, what is to do? =
 
-Add or change in the [spreadplugin] code the value from `shop_checkoutiframe="0"` to `shop_checkoutiframe="1"`. Note: shop_linktarget will be ignored.
+Add or change in the [spreadplugin] code the value from `shop_checkoutiframe="0"` to `shop_checkoutiframe="1"` or `shop_checkoutiframe="2"`. Note: shop_linktarget will be ignored.
+* `shop_checkoutiframe="0"` opens basket in separate window
+* `shop_checkoutiframe="1"` opens basket in an iframe in the page content
+* `shop_checkoutiframe="2"` opens basket in an iframe in a modal window (fancybox)
 
 = How to default sort? =
 
@@ -124,6 +127,9 @@ Please update to the most recent version
 3. Screenshot 3
 
 == Changelog ==
+
+= 1.9.1 =
+Fancybox added to display checkout in a modal window. Activate by adding or changing `shop_checkoutiframe="0"` to `shop_checkoutiframe="2"`
 
 = 1.9 =
 * Ajax driven shop (Add products to the basket without reloading the whole content)

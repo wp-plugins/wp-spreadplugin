@@ -188,8 +188,8 @@ jQuery('#spreadshirt-items #articleSortBy').change(
 					+ '&articleSortBy=' + sor;
 		});
 
-// checkout in an iframe
-if (pageCheckoutUseIframe == true) {
+// checkout in an iframe in page
+if (pageCheckoutUseIframe == 1) {
 	jQuery('#spreadshirt-items #checkout a')
 			.click(
 					function(event) {
@@ -221,6 +221,20 @@ if (pageCheckoutUseIframe == true) {
 
 						}
 					});
+
+}
+
+// checkout in an iframe with modal window (fancybox)
+if (pageCheckoutUseIframe == 2) {
+
+	jQuery('#spreadshirt-items #checkout a').fancybox({
+		type : 'iframe',
+		afterClose : function() {
+			location.reload();
+			return;
+		}
+	});
+
 }
 
 function getParameterByName(name) {

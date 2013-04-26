@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 1.9
+ * Version: 1.9.1
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
  */
@@ -69,10 +69,16 @@ if(!class_exists('WP_Spreadplugin')) {
 			// Scrolling
 			wp_register_script('infinite_scroll', plugins_url('/js/jquery.infinitescroll.min.js', __FILE__),array('jquery'));
 			wp_enqueue_script('infinite_scroll');
+			
+			// Fancybox
+			wp_register_script('fancy_box', plugins_url('/js/jquery.fancybox.pack.js', __FILE__),array('jquery'));
+			wp_enqueue_script('fancy_box');
 
 			// Respects SSL, Style.css is relative to the current file
 			wp_register_style('spreadplugin', plugins_url('/css/spreadplugin.css', __FILE__));
 			wp_enqueue_style('spreadplugin');
+			wp_register_style('fancy_box_css', plugins_url('/css/jquery.fancybox.css', __FILE__));
+			wp_enqueue_style('fancy_box_css');
 
 		}
 
@@ -351,7 +357,7 @@ if(!class_exists('WP_Spreadplugin')) {
 
 				// re-call to avaid the limit of 50
 				// read max 1000 articles because of spreadshirt max. limit
-				$apiUrl = $apiUrlBase . '&limit='.($objArticles['count']==1?2:($objArticles['count']<1000?$objArticles['count']:1000)); # &limit='.self::$shopLimit.'&offset='.$offset
+				$apiUrl = $apiUrlBase . '&limit='.($objArticles['count']<=1?2:($objArticles['count']<1000?$objArticles['count']:1000)); # &limit='.self::$shopLimit.'&offset='.$offset
 
 				$stringXmlShop = wp_remote_get($apiUrl);
 				if (count($stringXmlShop->errors)>0) die('Error getting articles. Please check your Shop-ID.');
