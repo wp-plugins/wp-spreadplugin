@@ -12,7 +12,9 @@
 	width: 200px;
 	padding: 5px;
 	display: block;
-	z-index: auto
+	z-index: auto;
+	min-height: 600px; /* fixing the height of each Article */
+	overflow: visible;
 }
 .spreadshirt-article img {
 	padding: 0;
@@ -159,13 +161,15 @@
 	position: absolute;
 	right: 10px;
 }
+
+/* responsive */
  @media screen and (max-width: 500px) {
-#spreadshirt-items #articleSortBy {
-	position: relative;
-	left: 0;
-}
-#spreadshirt-items #productCategory {
-	position: relative;
-	left: 0;
-}
+	#spreadshirt-items #articleSortBy {
+		position: relative;
+		left: 0;
+	}
+	#spreadshirt-items #productCategory {
+		position: relative;
+		left: 0;
+	}
 }

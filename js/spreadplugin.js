@@ -1,15 +1,11 @@
-var saheight = jQuery('.spreadshirt-article').css('height');
-var par = '';
 var scrollingDiv = jQuery('#spreadshirt-items #checkout');
 var sep = '?';
 var prod = getParameterByName('productCategory');
 var sor = getParameterByName('articleSortBy');
 
-
-if (pageLink.indexOf('?') > -1) { sep='&'; }
-
-
-
+if (pageLink.indexOf('?') > -1) {
+	sep = '&';
+}
 
 /*
  * change article color and view
@@ -74,21 +70,43 @@ function bindClick() {
 				jQuery(id + ' #view').attr('value', view);
 			});
 
-	jQuery('#spreadshirt-items .description-wrapper div.header').click(function() {
-		var par = jQuery(this).parent().parent().parent();
-		var field = jQuery(this).next();
+	jQuery('#spreadshirt-items .description-wrapper div.header').click(
+			function() {
+				var par = jQuery(this).parent().parent().parent();
+				var field = jQuery(this).next();
 
-		if (field.is(':hidden')) {
-			par.css('height', '');
-			par.removeAttr('style');
-			field.show();
-			jQuery(this).children('a').html(textHideDesc);
-		} else {
-			jQuery('.spreadshirt-article').css('height', saheight);
-			jQuery('.description-wrapper div.description').hide();
-			jQuery('.description-wrapper div.header a').html(textShowDesc);
-		}
+				if (field.is(':hidden')) {
+					par.addClass('activeDescription');
+					field.show();
+					jQuery(this).children('a').html(textHideDesc);
+				} else {
+					par.removeClass('activeDescription');
+					jQuery('.description-wrapper div.description').hide();
+					jQuery('.description-wrapper div.header a').html(
+							textShowDesc);
+				}
+			});
+
+	jQuery('form').submit(function(event) {
+
+		event.preventDefault();
+		var data = jQuery(this).serialize() + '&action=myAjax';
+		var form = this;
+		var button = jQuery('#' + form.id + ' input[type=submit]');
+
+		button.val(textButtonAdded);
+
+		jQuery.post(ajaxLocation, data, function(json) {
+			button.val(textButtonAdd);
+			jQuery('#spreadshirt-items #checkout a').attr('href', json.c.u);
+			jQuery('#spreadshirt-items #checkout a').removeAttr('title');
+			jQuery('#spreadshirt-items #checkout span').text(json.c.q);
+		}, 'json');
+
+		return false;
+
 	});
+
 }
 
 function bindHover() {
@@ -156,51 +174,64 @@ jQuery('#spreadshirt-list').infinitescroll({
 	}
 });
 
-jQuery('#spreadshirt-items #productCategory').change(function() {
-	prod = jQuery(this).val();
-	document.location = pageLink + sep + 'productCategory=' + prod + '&articleSortBy=' + sor;
-});
+jQuery('#spreadshirt-items #productCategory').change(
+		function() {
+			prod = jQuery(this).val();
+			document.location = pageLink + sep + 'productCategory=' + prod
+					+ '&articleSortBy=' + sor;
+		});
 
-jQuery('#spreadshirt-items #articleSortBy').change(function() {
-	sor = jQuery(this).val();
-	document.location = pageLink + sep + 'productCategory=' + prod + '&articleSortBy=' + sor;
-});
-
-
+jQuery('#spreadshirt-items #articleSortBy').change(
+		function() {
+			sor = jQuery(this).val();
+			document.location = pageLink + sep + 'productCategory=' + prod
+					+ '&articleSortBy=' + sor;
+		});
 
 // checkout in an iframe
 if (pageCheckoutUseIframe == true) {
-	jQuery('#spreadshirt-items #checkout a').click(function(event) {
-		event.preventDefault();
-		
-		var checkoutLink = jQuery('#spreadshirt-items #checkout a').attr('href');
-		
-		if (typeof checkoutLink !== "undefined" && checkoutLink.length>0) {
-		
-			jQuery('#spreadshirt-items #navigation').remove();
-			jQuery('#spreadshirt-items #checkout').remove();
-			jQuery(window).unbind('.infscr');
-			
-			jQuery('#spreadshirt-list').html('<iframe style="z-index:10002" id="checkoutFrame" frameborder="0" width="900" height="2000" scroll="yes">');
-			jQuery('#spreadshirt-list #checkoutFrame').attr('src',checkoutLink);
-			
-			jQuery('html, body').animate({scrollTop: jQuery("#spreadshirt-items #checkoutFrame").offset().top}, 2000);
-		
-		}
-	});
+	jQuery('#spreadshirt-items #checkout a')
+			.click(
+					function(event) {
+						event.preventDefault();
+
+						var checkoutLink = jQuery(
+								'#spreadshirt-items #checkout a').attr('href');
+
+						if (typeof checkoutLink !== "undefined"
+								&& checkoutLink.length > 0) {
+
+							jQuery('#spreadshirt-items #navigation').remove();
+							jQuery('#spreadshirt-items #checkout').remove();
+							jQuery(window).unbind('.infscr');
+
+							jQuery('#spreadshirt-list')
+									.html(
+											'<iframe style="z-index:10002" id="checkoutFrame" frameborder="0" width="900" height="2000" scroll="yes">');
+							jQuery('#spreadshirt-list #checkoutFrame').attr(
+									'src', checkoutLink);
+
+							jQuery('html, body')
+									.animate(
+											{
+												scrollTop : jQuery(
+														"#spreadshirt-items #checkoutFrame")
+														.offset().top
+											}, 2000);
+
+						}
+					});
 }
 
-
-
-function getParameterByName(name){
-  name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
-  var regexS = "[\\?&]" + name + "=([^&#]*)";
-  var regex = new RegExp(regexS);
-  var results = regex.exec(window.location.search);
-  if(results == null) {
-    return "";
-  } else {
-    return encodeURIComponent(decodeURIComponent(results[1].replace(/\+/g, " ")));
-  }
+function getParameterByName(name) {
+	name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+	var regexS = "[\\?&]" + name + "=([^&#]*)";
+	var regex = new RegExp(regexS);
+	var results = regex.exec(window.location.search);
+	if (results == null) {
+		return "";
+	} else {
+		return encodeURIComponent(decodeURIComponent(results[1].replace(/\+/g,
+				" ")));
+	}
 }
-

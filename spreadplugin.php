@@ -3,11 +3,11 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 1.8.4
+ * Version: 1.9
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
  */
- 
+
 
 /**
  * Avoid direct calls to this file
@@ -20,8 +20,9 @@ if(!function_exists('add_action')) {
 }
 
 
+
 /**
- * The class
+ * WP_Spreadplugin class
  */
 if(!class_exists('WP_Spreadplugin')) {
 	class WP_Spreadplugin {
@@ -41,27 +42,37 @@ if(!class_exists('WP_Spreadplugin')) {
 		private static $shopLinkTarget = '_blank';
 		private static $shopCheckoutIframe = 0;
 		private static $shopArticleSortOptions = array("name","price","recent");
+		private static $sc = array();
+		private static $shopCache = 2; // Shop article cache in hours
 
-		function WP_Spreadplugin() {
+		public function WP_Spreadplugin() {
 			WP_Spreadplugin::__construct();
 		}
 
-		function __construct() {
+		public function __construct() {
 			add_action('init', array($this,'plugin_init'));
 			add_action('init', array($this,'startSession'), 1);
 			add_action('wp_logout', array($this,'endSession'));
 			add_action('wp_login', array($this,'endSession'));
 
-			add_shortcode('spreadplugin', array($this,'ScSpreadplugin'));
+			add_shortcode('spreadplugin', array($this,'Spreadplugin'));
 
-			add_action('wp_enqueue_scripts', array($this,'styleMethod'));
-			add_action('wp_enqueue_scripts', array($this,'scriptMethod'));
+			add_action('wp_footer', array($this,'loadScripts'));
 
-			add_action('wp_footer', array($this,'spreadpluginHead'));
-
-			// These informations will be replaced on like button hovering
 			add_action('wp_head', array($this,'socialHead'));
 			add_action('wp_footer', array($this,'socialFooter'));
+
+			// Ajax actions
+			add_action('wp_ajax_nopriv_myAjax',array($this,'doAjax'));
+			add_action('wp_ajax_myAjax',array($this,'doAjax'));
+
+			// Scrolling
+			wp_register_script('infinite_scroll', plugins_url('/js/jquery.infinitescroll.min.js', __FILE__),array('jquery'));
+			wp_enqueue_script('infinite_scroll');
+
+			// Respects SSL, Style.css is relative to the current file
+			wp_register_style('spreadplugin', plugins_url('/css/spreadplugin.css', __FILE__));
+			wp_enqueue_style('spreadplugin');
 
 		}
 
@@ -71,10 +82,9 @@ if(!class_exists('WP_Spreadplugin')) {
 		/**
 		 * Initialize Plugin
 		 */
-		function plugin_init() {
-			/**
-			 * Language file not yet available
-			 */
+		public function plugin_init() {
+			
+			// get translation
 			if(function_exists('load_plugin_textdomain')) {
 				load_plugin_textdomain($this->stringTextdomain, false, dirname(plugin_basename( __FILE__ )) . '/translation');
 			}
@@ -85,9 +95,12 @@ if(!class_exists('WP_Spreadplugin')) {
 
 
 		/**
-		 * Shortcode function
+		 * Function Spreadplugin
+		 *
+		 * @return string article display
+		 *
 		 */
-		function ScSpreadplugin($atts) {
+		public function Spreadplugin($atts) {
 			global $paged;
 
 			$sc = shortcode_atts(array(
@@ -96,7 +109,7 @@ if(!class_exists('WP_Spreadplugin')) {
 					'shop_api' => '',
 					'shop_source' => 'net',
 					'shop_secret' => '',
-					'shop_limit' => '',
+					'shop_limit' => '20',
 					'shop_category' => '',
 					'shop_social' => 1,
 					'shop_enablelink' => 1,
@@ -120,7 +133,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			self::$shopLinkTarget = $sc['shop_linktarget'];
 			self::$shopCheckoutIframe = $sc['shop_checkoutiframe'];
 
-			
+
 			if (isset($_GET['productCategory'])) {
 				$c = urldecode($_GET['productCategory']);
 				self::$shopProductCategory = $c;
@@ -131,77 +144,17 @@ if(!class_exists('WP_Spreadplugin')) {
 			}
 
 
+
 			if(!empty(self::$shopId) && !empty(self::$shopApi) && !empty(self::$shopSecret)) {
-
-				if (empty(self::$shopLimit)) self::$shopLimit=20;
-
-				/*
-				 * add an article to the basket
-				*/
-				if (isset($_POST['size']) && isset($_POST['appearance']) && isset($_POST['quantity'])) {
-					/*
-					 * create an new basket if not exist
-					*/
-					if (!isset($_SESSION['basketUrl'])) {
-						/*
-						 * get shop xml
-						*/
-						$apiUrl = 'http://api.spreadshirt.'.self::$apiUrl.'/api/v1/shops/' . self::$shopId;
-						$stringXmlShop = wp_remote_get($apiUrl);
-						if (count($stringXmlShop->errors)>0) die('Error getting basket.');
-						if ($stringXmlShop['body'][0]!='<') die($stringXmlShop['body']);
-						$stringXmlShop = wp_remote_retrieve_body($stringXmlShop);
-						$objShop = new SimpleXmlElement($stringXmlShop);
-						if (!is_object($objShop)) die('Basket not loaded');
-
-						/*
-						 * create the basket
-						*/
-						$namespaces = $objShop->getNamespaces(true);
-						$basketUrl = self::createBasket('net', $objShop, $namespaces);
-						
-						if (empty($namespaces)) die('Namespaces empty');
-						if (empty($basketUrl)) die('Basket Url empty');
-						
-						$_SESSION['basketUrl'] = $basketUrl;
-						$_SESSION['namespaces'] = $namespaces;
-
-						/*
-						 * get the checkout url
-						*/
-						$checkoutUrl = self::checkout($_SESSION['basketUrl'], $_SESSION['namespaces']);
-						$_SESSION['checkoutUrl'] = $checkoutUrl;
-
-					}
-					/*
-					 * article data to be sent to the basket resource
-					*/
-					$data = array(
-
-							'articleId' => intval($_POST['article']),
-							'size' => intval($_POST['size']),
-							'appearance' => intval($_POST['appearance']),
-							'quantity' => intval($_POST['quantity']),
-							'shopId' => self::$shopId
-
-					);
-
-					/*
-					 * add to basket
-					*/
-					self::addBasketItem($_SESSION['basketUrl'] , $_SESSION['namespaces'] , $data);
-
-				}
-
-
-
 
 				// use pagination value from wordpress
 				if(empty($paged)) $paged = 1;
 
 				$offset=($paged-1)*self::$shopLimit;
-
+				
+				// get article data
 				$articleData=self::getArticleData();
+				// get rid of types in array
 				$typesData=$articleData['types'];
 				unset($articleData['types']);
 
@@ -214,8 +167,8 @@ if(!class_exists('WP_Spreadplugin')) {
 						}
 					}
 				}
-				
-				
+
+
 				// sorting
 				if (!empty(self::$shopArticleSort) && is_array($articleData) && in_array(self::$shopArticleSort,self::$shopArticleSortOptions)) {
 					if (self::$shopArticleSort==="recent") {
@@ -236,29 +189,19 @@ if(!class_exists('WP_Spreadplugin')) {
 				}
 
 
+				// Start output
 				$output = '<div id="spreadshirt-items" class="spreadshirt-items clearfix">';
 
-
-				$intInBasket=0;
-
-				if (isset($_SESSION['basketUrl'])) {
-					
-					$basketItems=self::getBasket($_SESSION['basketUrl']);
-
-					if(!empty($basketItems)) {
-						foreach($basketItems->basketItems->basketItem as $item) {
-							$intInBasket += $item->quantity;
-						}
-					}
-				}
+				// add checkout				
+				$intInBasket=self::getInBasketQuantity();
 
 				if (isset($_SESSION['checkoutUrl']) && $intInBasket>0) {
-					$output .= '<div id="checkout">'.$intInBasket." <a href=".$_SESSION['checkoutUrl']." target=\"".self::$shopLinkTarget."\">".__('Basket', $this->stringTextdomain)."</a></div>";
+					$output .= '<div id="checkout"><span>'.$intInBasket."</span> <a href=".$_SESSION['checkoutUrl']." target=\"".self::$shopLinkTarget."\">".__('Basket', $this->stringTextdomain)."</a></div>";
 				} else {
-					$output .= '<div id="checkout">'.$intInBasket." <a title=\"".__('Basket is empty', $this->stringTextdomain)."\">".__('Basket', $this->stringTextdomain)."</a></div>";
+					$output .= '<div id="checkout"><span>'.$intInBasket."</span> <a title=\"".__('Basket is empty', $this->stringTextdomain)."\">".__('Basket', $this->stringTextdomain)."</a></div>";
 				}
 
-
+				// add product categories
 				$output .= '<select name="productCategory" id="productCategory">';
 				$output .= '<option value="">'.__('Product category', $this->stringTextdomain).'</option>';
 				if (isset($typesData)) {
@@ -268,6 +211,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				}
 				$output .= '</select>';
 
+				// add sorting
 				$output .= '<select name="articleSortBy" id="articleSortBy">';
 				$output .= '<option value="">'.__('Sort by', $this->stringTextdomain).'</option>';
 				$output .= '<option value="name"'.('name'==self::$shopArticleSort?' selected':'').'>'.__('name', $this->stringTextdomain).'</option>';
@@ -277,7 +221,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				$output .= '</select>';
 
 
-				// anzeige
+				// display
 				if (count($articleData) == 0 || $articleData==false) {
 
 					$output .= '<br>No articles in Shop';
@@ -288,14 +232,11 @@ if(!class_exists('WP_Spreadplugin')) {
 
 
 					foreach ($articleData as $id => $article) {
-
-						/*
-						 * get the productType resource
-						*/
-						$output .= '<div class="spreadshirt-article clearfix" id="article_'.$id.'" style="height:600px">'; // fixing the height of each Article
+						
+						$output .= '<div class="spreadshirt-article clearfix" id="article_'.$id.'">';
 						$output .= '<a name="'.$id.'"></a>';
 						$output .= '<h3>'.$article['name'].'</h3>';
-						$output .= '<form method="post">';
+						$output .= '<form method="post" id="form_'.$id.'">';
 						$output .= '<div class="image-wrapper">';
 						$output .= (self::$shopLinkEnabled==1?'<a href="http://'.self::$shopId.'.spreadshirt.'.self::$apiUrl.'/-A'.$id.'" target="'.self::$shopLinkTarget.'">':'');
 						$output .= '<img src="' . $article['resource0'] . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="preview" alt="' . $article['name'] . '" id="previewimg_'.$id.'" />';
@@ -303,9 +244,7 @@ if(!class_exists('WP_Spreadplugin')) {
 						$output .= (self::$shopLinkEnabled==1?'</a>':'');
 						$output .= '</div>';
 							
-						/*
-						 * add a select with available sizes
-						*/
+						// add a select with available sizes
 						$output .= '<select id="size-select" name="size">';
 
 						foreach($article['sizes'] as $k => $v) {
@@ -316,9 +255,7 @@ if(!class_exists('WP_Spreadplugin')) {
 							
 						$output .= '<div class="separator"></div>';
 							
-						/*
-						 * add a list with availabel product colors
-						*/
+						// add a list with availabel product colors
 						$output .= '<ul class="colors" name="color">';
 
 						foreach($article['appearances'] as $k=>$v) {
@@ -327,11 +264,7 @@ if(!class_exists('WP_Spreadplugin')) {
 
 						$output .= '</ul>';
 
-
-
-						/*
-						 * add a list with availabel product views
-						*/
+						// add a list with availabel product views
 						$output .= '<ul class="views" name="views">';
 
 						foreach($article['views'] as $k=>$v) {
@@ -342,9 +275,7 @@ if(!class_exists('WP_Spreadplugin')) {
 
 
 							
-						/**
-						 * Show description link if not empty
-						 */
+						// Show description link if not empty
 						if (!empty($article['description'])) {
 							$output .= '<div class="separator"></div>';
 							$output .= '<div class="description-wrapper"><div class="header"><a>'.__('Show description', $this->stringTextdomain).'</a></div><div class="description">'.$article['description'].'</div></div>';
@@ -366,17 +297,18 @@ if(!class_exists('WP_Spreadplugin')) {
 							$output .= '<a href="https://twitter.com/share" class="twitter-share-button" data-url="'.get_page_link().'#'.$id.'" data-count="none" data-text="'.(!empty($article['description'])?$article['description']:'Product').'" data-lang="'.(!empty(self::$shopLocale)?substr(self::$shopLocale,0,2):'en').'">Tweet</a>';
 						}
 
-						$output .= '</form></div>';
+						$output .= '</form>
+						</div>';
 
 					}
 
 
 
 					$output .= "
-							<div id=\"navigation\"><a href=\"".get_pagenum_link($paged + 1)."\">".__('next', $this->stringTextdomain)."</a></div>
-									<!-- <div id=\"copyright\">Copyright (c) Thimo Grauerholz - <a href=\"http://www.pr3ss-play.de\">pr3ss-play - Online Shop für deinen persönlichen Party-Style!</a></div> -->
-									<div id=\"fb-root\"></div>
-									</div>";
+					<div id=\"navigation\"><a href=\"".get_pagenum_link($paged + 1)."\">".__('next', $this->stringTextdomain)."</a></div>
+					<!-- <div id=\"copyright\">Copyright (c) Thimo Grauerholz - <a href=\"http://www.pr3ss-play.de\">pr3ss-play - Online Shop für deinen persönlichen Party-Style!</a></div> -->
+					<div id=\"fb-root\"></div>
+					</div>";
 				}
 
 
@@ -388,15 +320,17 @@ if(!class_exists('WP_Spreadplugin')) {
 		}
 
 
-
-
-
-
-
-		function getArticleData() {
+		/**
+		 * Function getArticleData
+		 *
+		 * Retrieves article data and save into cache
+		 *
+		 * @return array Article data
+		 */
+		private static function getArticleData() {
 			$arrTypes=array();
 
-			// post id holen und mit zum cache namen speichern, falls code in mehrere seiten eingebunden und unterschiedliche shops benutzt werden
+			// retrieve id of post to save as different content, if shortcode is available in more than one post (more than one shop in the wordpress website)
 			$articleData = get_transient('spreadplugin-article-cache-'.get_the_ID());
 
 			if($articleData === false) {
@@ -415,8 +349,8 @@ if(!class_exists('WP_Spreadplugin')) {
 				if (!is_object($objArticles)) die('Articles not loaded');
 
 
-				// erneuter call, weil sonst limit bei 50
-				// limit bei max 1000 durch Spreadshirt-Limitierung
+				// re-call to avaid the limit of 50
+				// read max 1000 articles because of spreadshirt max. limit
 				$apiUrl = $apiUrlBase . '&limit='.($objArticles['count']==1?2:($objArticles['count']<1000?$objArticles['count']:1000)); # &limit='.self::$shopLimit.'&offset='.$offset
 
 				$stringXmlShop = wp_remote_get($apiUrl);
@@ -452,7 +386,7 @@ if(!class_exists('WP_Spreadplugin')) {
 
 
 
-					// artikel lesen
+					// read articles
 					foreach ($objArticles->article as $article) {
 
 						$stringXmlArticle = wp_remote_retrieve_body(wp_remote_get($article->product->productType->attributes('xlink', true).'?'.(!empty(self::$shopLocale)?'locale=' . self::$shopLocale:'')));
@@ -491,7 +425,7 @@ if(!class_exists('WP_Spreadplugin')) {
 
 					}
 
-					set_transient('spreadplugin-article-cache-'.get_the_ID(), $articleData, 3600);
+					set_transient('spreadplugin-article-cache-'.get_the_ID(), $articleData, self::$shopCache*3600);
 				}
 			}
 
@@ -499,11 +433,15 @@ if(!class_exists('WP_Spreadplugin')) {
 		}
 
 
-
-
-
-		// Additional functions
-		function addBasketItem($basketUrl, $namespaces, $data) {
+		/**
+		 * Function Add basket item
+		 *
+		 * @param $basketUrl
+		 * @param $namespaces
+		 * @param array $data
+		 *
+		 */
+		private static function addBasketItem($basketUrl, $namespaces, $data) {
 
 			$basketItemsUrl = $basketUrl . "/items";
 
@@ -535,13 +473,17 @@ if(!class_exists('WP_Spreadplugin')) {
 		}
 
 
-
-
-
-
-
-
-		function createBasket($platform, $shop, $namespaces) {
+		/**
+		 * Function Create basket
+		 *
+		 * @param $platform
+		 * @param $shop
+		 * @param $namespaces
+		 *
+		 * @return string $basketUrl
+		 *
+		 */
+		private static function createBasket($platform, $shop, $namespaces) {
 
 			$basket = new SimpleXmlElement('<basket xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://api.spreadshirt.net">
 					<shop id="' . $shop['id'] . '"/>
@@ -556,7 +498,7 @@ if(!class_exists('WP_Spreadplugin')) {
 
 			if ($result) {
 				$basketUrl = self::parseHttpHeaders($result, "Location");
-			} else {			
+			} else {
 				die('ERROR: Basket not ready yet.');
 			}
 
@@ -565,11 +507,16 @@ if(!class_exists('WP_Spreadplugin')) {
 		}
 
 
-
-
-
-
-		function checkout($basketUrl, $namespaces) {
+		/**
+		 * Function Checkout
+		 *
+		 * @param $basketUrl
+		 * @param $namespaces
+		 *
+		 * @return string $checkoutUrl
+		 *
+		 */
+		private static function checkout($basketUrl, $namespaces) {
 			$checkoutUrl='';
 
 			$basketCheckoutUrl = $basketUrl . "/checkout";
@@ -577,7 +524,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			$header[] = self::createAuthHeader("GET", $basketCheckoutUrl);
 			$header[] = "Content-Type: application/xml";
 			$result = self::oldHttpRequest($basketCheckoutUrl, $header, 'GET');
-			
+
 			if ($result[0]=='<') {
 				$checkoutRef = new SimpleXMLElement($result);
 				$refAttributes = $checkoutRef->attributes($namespaces['xlink']);
@@ -585,18 +532,26 @@ if(!class_exists('WP_Spreadplugin')) {
 			} else {
 				die('ERROR: Can\'t get checkout url.');
 			}
-			
+
 			return $checkoutUrl;
 		}
 
 
-		/*
-		 * functions to build headers
-		*/
-		function createAuthHeader($method, $url,$rt=false) {
+		/**
+		 * Function createAuthHeader
+		 *
+		 * Creates authentification header
+		 *
+		 * @param string $method [POST,GET]
+		 * @param string $url
+		 *
+		 * @return string
+		 *
+		 */
+		private static function createAuthHeader($method, $url) {
 
-			$time = microtime(); // time() auch möglich
-			
+			$time = microtime();
+
 			$data = "$method $url $time";
 			$sig = sha1("$data ".self::$shopSecret);
 
@@ -605,7 +560,15 @@ if(!class_exists('WP_Spreadplugin')) {
 		}
 
 
-		function parseHttpHeaders($header, $headername) {
+		/**
+		 * Function parseHttpHeaders
+		 *
+		 * @param string $header
+		 * @param string $headername needle
+		 * @return string $retval value
+		 *
+		 */
+		private static function parseHttpHeaders($header, $headername) {
 
 			$retVal = array();
 			$fields = explode("\r\n", preg_replace('/\x0D\x0A[\x09\x20]+/', ' ', $header));
@@ -618,9 +581,18 @@ if(!class_exists('WP_Spreadplugin')) {
 
 			return $retVal;
 		}
-		
 
-		function getBasket($basketUrl) {
+
+		/**
+		 * Function getBasket
+		 *
+		 * retrieves the basket
+		 *
+		 * @param string $basketUrl
+		 * @return object $basket
+		 *
+		 */
+		private static function getBasket($basketUrl) {
 
 			$header = array();
 			$basket = "";
@@ -639,31 +611,44 @@ if(!class_exists('WP_Spreadplugin')) {
 		}
 
 
+		/**
+		 * Function getInBasketQuantity
+		 *
+		 * retrieves quantity of articles in basket
+		 *
+		 * @return int $intInBasket Quantity of articles
+		 *
+		 */
+		private static function getInBasketQuantity() {
+			if (isset($_SESSION['basketUrl'])) {
+					
+				$basketItems=self::getBasket($_SESSION['basketUrl']);
 
-		function spreadpluginHead() {
-			echo "<script>
-			/**
-			* Spreadplugin vars
-			*/
-
-			var textHideDesc = '".__('Hide description', $this->stringTextdomain)."';
-			var textShowDesc = '".__('Show description', $this->stringTextdomain)."';
-			var loadingImage = '".plugins_url('/img/loading.gif', __FILE__)."';
-			var loadingMessage = '".__('Loading new articles...', $this->stringTextdomain)."';
-			var loadingFinishedMessage = '".__('You have reached the end', $this->stringTextdomain)."';
-			var socialButtonsEnabled = ".self::$shopSocialEnabled.";
-			var pageLink = '".get_page_link()."';
-			var pageCheckoutUseIframe = ".self::$shopCheckoutIframe.";
-			
-			</script>";
-
-			echo "<script src='".plugins_url('/js/spreadplugin.js', __FILE__)."'></script>";
+				if(!empty($basketItems)) {
+					foreach($basketItems->basketItems->basketItem as $item) {
+						$intInBasket += $item->quantity;
+					}
+				}
+			}
+			return $intInBasket;
 		}
 
 
-
-
-		function oldHttpRequest($url, $header = null, $method = 'GET', $data = null, $len = null) {
+		/**
+		 * Function oldHttpRequest
+		 *
+		 * creates the curl requests, until I get a fix for the wordpress request problems
+		 *
+		 * @param $url
+		 * @param $header
+		 * @param $method
+		 * @param $data
+		 * @param $len
+		 *
+		 * @return string|bool
+		 *
+		 */
+		private static function oldHttpRequest($url, $header = null, $method = 'GET', $data = null, $len = null) {
 
 			switch ($method) {
 
@@ -704,59 +689,161 @@ if(!class_exists('WP_Spreadplugin')) {
 		}
 
 
+		/**
+		 * Function loadScripts
+		 *
+		 */
+		public function loadScripts() {
+			echo "
+			<script>
+			/**
+			* Spreadplugin vars
+			*/
+			
+			var textHideDesc = '".__('Hide description', $this->stringTextdomain)."';
+			var textShowDesc = '".__('Show description', $this->stringTextdomain)."';
+			var loadingImage = '".plugins_url('/img/loading.gif', __FILE__)."';
+			var loadingMessage = '".__('Loading new articles...', $this->stringTextdomain)."';
+			var loadingFinishedMessage = '".__('You have reached the end', $this->stringTextdomain)."';
+			var socialButtonsEnabled = ".self::$shopSocialEnabled.";
+			var pageLink = '".get_page_link()."';
+			var pageCheckoutUseIframe = ".self::$shopCheckoutIframe.";
+			var textButtonAdd = '".__('Add to basket', $this->stringTextdomain)."';
+			var textButtonAdded = '".__('Adding...', $this->stringTextdomain)."';
+			var ajaxLocation = '".admin_url( 'admin-ajax.php' )."?pageid=".get_the_ID()."&nonce=".wp_create_nonce('spreadplugin')."';
+			
+			</script>";
 
-
-		function scriptMethod() {
-			wp_enqueue_script(
-			'infinite_scroll',
-			plugins_url('/js/jquery.infinitescroll.min.js', __FILE__),
-			array('jquery')
-			);
-
-			wp_enqueue_script('infinite_scroll');
+			echo "
+			<script src='".plugins_url('/js/spreadplugin.js', __FILE__)."'></script>
+			";
 		}
 
-		function styleMethod() {
-			// Respects SSL, Style.css is relative to the current file
-			wp_register_style( 'spreadplugin', plugins_url('/css/spreadplugin.css', __FILE__) );
-			wp_enqueue_style( 'spreadplugin' );
-		}
 
-
-		function startSession() {
+		public function startSession() {
 			if(!session_id()) {
 				@session_start();
 			}
 		}
 
-		function endSession() {
+		public function endSession() {
 			@session_destroy();
 		}
 
 
-		// gets replaced on facebook button hover
-		function socialHead() {
+		/**
+		 * Function socialHead
+		 *
+		 * gets replaced on facebook button hover
+		 *
+		 */
+		public function socialHead() {
 			if (self::$shopSocialEnabled==true) echo '
-					<meta property="og:title" content="" />
-					<meta property="og:url" content="" />
-					<meta property="og:image" content="" />
-					';
+			<meta property="og:title" content="" />
+			<meta property="og:url" content="" />
+			<meta property="og:image" content="" />
+			';
 		}
 
-		function socialFooter() {
+
+		/**
+		 * Function socialFooter
+		 */
+		public function socialFooter() {
 			if (self::$shopSocialEnabled==true) echo '
 			<script src="//connect.facebook.net/'.(!empty(self::$shopLocale)?self::$shopLocale:'en_US').'/all.js#xfbml=1"></script>
 			<script src="//platform.twitter.com/widgets.js"></script>
 			';
 		}
-		
-	
 
+
+		/**
+		 * Function doAjax
+		 *
+		 * does all the ajax
+		 *
+		 * @return string json
+		 *
+		 */
+		public function doAjax() {
+
+			if (!wp_verify_nonce($_GET['nonce'], 'spreadplugin')) die('Security check');
+
+
+			/**
+			 * re-parse the shortcode to get the authentication details
+			 *
+			 * @TODO find a different way
+			 *
+			*/
+			$pageData = get_page(intval($_GET['pageid']));
+			$pageContent = $pageData->post_content;
+			$sc = shortcode_parse_atts(str_replace("[spreadplugin",'',str_replace("]","",$pageContent)));
+
+			self::$shopId = intval($sc['shop_id']);
+			self::$shopApi = $sc['shop_api'];
+			self::$shopSecret = $sc['shop_secret'];
+			self::$shopLimit = intval($sc['shop_limit']);
+			self::$shopLocale = $sc['shop_locale'];
+			self::$apiUrl = (empty($sc['shop_source'])?'net':$sc['shop_source']);
+
+
+			// create an new basket if not exist
+			if (!isset($_SESSION['basketUrl'])) {
+
+				// gets basket
+				$apiUrl = 'http://api.spreadshirt.'.self::$apiUrl.'/api/v1/shops/' . self::$shopId;
+				$stringXmlShop = wp_remote_get($apiUrl);
+				if (count($stringXmlShop->errors)>0) die('Error getting basket.');
+				if ($stringXmlShop['body'][0]!='<') die($stringXmlShop['body']);
+				$stringXmlShop = wp_remote_retrieve_body($stringXmlShop);
+				$objShop = new SimpleXmlElement($stringXmlShop);
+				if (!is_object($objShop)) die('Basket not loaded');
+
+				// create the basket
+				$namespaces = $objShop->getNamespaces(true);
+				$basketUrl = self::createBasket('net', $objShop, $namespaces);
+					
+				if (empty($namespaces)) die('Namespaces empty');
+				if (empty($basketUrl)) die('Basket url empty');
+					
+				// get the checkout url
+				$checkoutUrl = self::checkout($basketUrl, $namespaces);
+
+				// saving to session
+				$_SESSION['basketUrl'] = $basketUrl;
+				$_SESSION['namespaces'] = $namespaces;
+				$_SESSION['checkoutUrl'] = $checkoutUrl;
+
+			}
+
+
+			// add an article to the basket
+			if (isset($_POST['size']) && isset($_POST['appearance']) && isset($_POST['quantity'])) {
+
+				// article data to be sent to the basket resource
+				$data = array(
+						'articleId' => intval($_POST['article']),
+						'size' => intval($_POST['size']),
+						'appearance' => intval($_POST['appearance']),
+						'quantity' => intval($_POST['quantity']),
+						'shopId' => self::$shopId
+				);
+
+				// add to basket
+				self::addBasketItem($_SESSION['basketUrl'] , $_SESSION['namespaces'] , $data);
+
+				$intInBasket=self::getInBasketQuantity();
+
+				echo json_encode(array("c" => array("u" => $_SESSION['checkoutUrl'],"q" => $intInBasket)));
+				die();
+			}
+		}
 
 	} // END class WP_Spreadplugin
 
 	new WP_Spreadplugin();
-} // END if(!class_exists('WP_Spreadplugin'))
+}
 
 
 

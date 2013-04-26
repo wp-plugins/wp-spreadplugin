@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: spreadshirt,wordpress,plugin,shop
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 1.8.4
+Stable tag: 1.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -33,6 +33,7 @@ Features:
 * Cache
 * Choose or direct link to the product category
 * Sorting and filtering
+* Ajax driven shop (Add products to the basket without reloading the whole content)
 
 See it in action:
 http://www.pr3ss-play.de/shop/ (in german)
@@ -123,6 +124,10 @@ Please update to the most recent version
 3. Screenshot 3
 
 == Changelog ==
+
+= 1.9 =
+* Ajax driven shop (Add products to the basket without reloading the whole content)
+* Internal article cache extended to 2 hours. If you want to change, have a look at row 46 in spreadplugin.php and change the value.
 
 = 1.8.4 =
 Price formatting added
