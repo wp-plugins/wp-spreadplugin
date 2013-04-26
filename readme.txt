@@ -108,9 +108,9 @@ Add or change in the [spreadplugin] code the value from `shop_linktarget=""` to 
 = I want my checkout page display in an iframe, what is to do? =
 
 Add or change in the [spreadplugin] code the value from `shop_checkoutiframe="0"` to `shop_checkoutiframe="1"` or `shop_checkoutiframe="2"`. Note: shop_linktarget will be ignored.
-* `shop_checkoutiframe="0"` opens basket in separate window
-* `shop_checkoutiframe="1"` opens basket in an iframe in the page content
-* `shop_checkoutiframe="2"` opens basket in an iframe in a modal window (fancybox)
+`shop_checkoutiframe="0"` opens basket in = separate window =
+`shop_checkoutiframe="1"` opens basket in = an iframe in the page content =
+`shop_checkoutiframe="2"` opens basket in = an iframe in a modal window (fancybox) =
 
 = How to default sort? =
 
