@@ -87,7 +87,7 @@ function bindClick() {
 				}
 			});
 
-	jQuery('form').submit(function(event) {
+	jQuery('.spreadshirt-article form').submit(function(event) {
 
 		event.preventDefault();
 		var data = jQuery(this).serialize() + '&action=myAjax';
@@ -228,8 +228,13 @@ if (pageCheckoutUseIframe == 1) {
 if (pageCheckoutUseIframe == 2) {
 
 	jQuery('#spreadshirt-items #checkout a').fancybox({
-		type : 'iframe',
-		afterClose : function() {
+		type: 'iframe',
+		fitToView: false,
+		autoSize: false,
+		height: 1000,
+		width: 800,
+		preload: true,
+		afterClose: function() {
 			location.reload();
 			return;
 		}
