@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: spreadshirt,wordpress,plugin,shop
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 1.9.1
+Stable tag: 1.9.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -128,6 +128,10 @@ Please update to the most recent version
 3. Screenshot 3
 
 == Changelog ==
+
+= 1.9.2 =
+* Bugfix: JS script took each form to submit an article to the basket :)
+* Style: Changed some styles to fit most environments
 
 = 1.9.1 =
 Fancybox added to display checkout in a modal window. Activate by adding or changing `shop_checkoutiframe="0"` to `shop_checkoutiframe="2"`
