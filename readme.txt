@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: spreadshirt,wordpress,plugin,shop
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 1.9.3
+Stable tag: 1.9.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -133,8 +133,11 @@ Activate by changing shop_designershop="0" to shop_designershop="[DESIGNERSHOPID
 
 == Changelog ==
 
+= 1.9.4 =
+Click on zoom image doesn't open a separate window anymore. The article description is now displayed in a modal window on the website.
+
 = 1.9.3 =
-* Edit for articles added, if you have a designer shop. Activate by changing shop_designershop="0" to shop_designershop="[DESIGNERSHOPID]".
+Edit for articles added, if you have a designer shop. Activate by changing shop_designershop="0" to shop_designershop="[DESIGNERSHOPID]".
 
 = 1.9.2 =
 * Bugfix: JS script took each form to submit an article to the basket :)

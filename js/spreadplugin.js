@@ -120,6 +120,14 @@ function bindClick() {
 		}
 	});
 
+	jQuery('.spreadshirt-article .image-wrapper a').fancybox({
+		type: 'iframe',
+		fitToView: false,
+		autoSize: false,
+		height: 1000,
+		width: 830,
+		preload: true
+	});
 
 }
 
