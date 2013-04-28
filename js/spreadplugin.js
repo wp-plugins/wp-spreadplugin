@@ -106,6 +106,20 @@ function bindClick() {
 		return false;
 
 	});
+	
+	jQuery('.spreadshirt-article #editArticle').fancybox({
+		type: 'iframe',
+		fitToView: false,
+		autoSize: false,
+		height: 1000,
+		width: 830,
+		preload: true,
+		afterClose: function() {
+			location.reload();
+			return;
+		}
+	});
+
 
 }
 
@@ -232,7 +246,7 @@ if (pageCheckoutUseIframe == 2) {
 		fitToView: false,
 		autoSize: false,
 		height: 1000,
-		width: 800,
+		width: 830,
 		preload: true,
 		afterClose: function() {
 			location.reload();

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spreadplugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-26 10:13+0100\n"
-"PO-Revision-Date: 2013-04-26 10:13+0100\n"
+"POT-Creation-Date: 2013-04-28 21:14+0100\n"
+"PO-Revision-Date: 2013-04-28 21:15+0100\n"
 "Last-Translator: Thimo Grauerholz <info@pr3ss-play.de>\n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -17,70 +17,71 @@ msgstr ""
 "X-Generator: Poedit 1.5.5\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: spreadplugin.php:197 spreadplugin.php:199 _beta/spreadplugin.php:279
-#: _beta/spreadplugin.php:281
+#: spreadplugin.php:208 spreadplugin.php:210
 msgid "Basket"
 msgstr "Panier"
 
-#: spreadplugin.php:199 _beta/spreadplugin.php:281
+#: spreadplugin.php:210
 msgid "Basket is empty"
 msgstr "Panier est vide"
 
-#: spreadplugin.php:204
+#: spreadplugin.php:215
 msgid "Product category"
 msgstr "Choisir catégorie"
 
-#: spreadplugin.php:213
+#: spreadplugin.php:225
 msgid "Sort by"
 msgstr "Trier par"
 
-#: spreadplugin.php:214
+#: spreadplugin.php:226
 msgid "name"
 msgstr "Nom"
 
-#: spreadplugin.php:215
+#: spreadplugin.php:227
 msgid "price"
 msgstr "Prix"
 
-#: spreadplugin.php:216
+#: spreadplugin.php:228
 msgid "recent"
 msgstr "Récent"
 
-#: spreadplugin.php:291 spreadplugin.php:649 _beta/spreadplugin.php:240
-#: _beta/spreadplugin.php:436
+#: spreadplugin.php:266
+msgid "Edit article"
+msgstr "Modifier l'article"
+
+#: spreadplugin.php:294 spreadplugin.php:720
 msgid "Show description"
 msgstr "Afficher la description"
 
-#: spreadplugin.php:299 _beta/spreadplugin.php:248
+#: spreadplugin.php:302
 msgid "Price (without tax):"
 msgstr "Montant sans taxes:"
 
-#: spreadplugin.php:300 _beta/spreadplugin.php:249
+#: spreadplugin.php:303
 msgid "Price (with tax):"
 msgstr "Montant avec taxes:"
 
-#: spreadplugin.php:303 spreadplugin.php:656 _beta/spreadplugin.php:252
-#: _beta/spreadplugin.php:441
+#: spreadplugin.php:306 spreadplugin.php:727
 msgid "Add to basket"
 msgstr "Ajouter au panier"
 
-#: spreadplugin.php:317 _beta/spreadplugin.php:287
+#: spreadplugin.php:323
 msgid "next"
 msgstr "suivant"
 
-#: spreadplugin.php:648 _beta/spreadplugin.php:435
+#: spreadplugin.php:719
 msgid "Hide description"
 msgstr "Masquer la description"
 
-#: spreadplugin.php:651 _beta/spreadplugin.php:438
+#: spreadplugin.php:722
 msgid "Loading new articles..."
 msgstr "Chargement des autres articles..."
 
-#: spreadplugin.php:652 _beta/spreadplugin.php:439
+#: spreadplugin.php:723
 msgid "You have reached the end"
 msgstr "Félicitations, vous avez atteint la fin des Internets"
 
-#: spreadplugin.php:657 _beta/spreadplugin.php:442
+#: spreadplugin.php:728
 msgid "Adding..."
 msgstr "Ajouter..."
 

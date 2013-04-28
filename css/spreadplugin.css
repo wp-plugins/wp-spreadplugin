@@ -64,7 +64,7 @@ pre,code {
 	width: auto;
 }
 .spreadshirt-items .colors {
-	min-height: 35px;
+	min-height: 40px;
 }
 .spreadshirt-items .colors li, .spreadshirt-items .views li {
 	float: left;
@@ -155,6 +155,7 @@ pre,code {
 	float: left;
 }
 .spreadshirt-items #size-select {
+	width:80px
 }
 #spreadshirt-items #productCategory {
 	/*	display:none; */

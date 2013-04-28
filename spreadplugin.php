@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 1.9.2
+ * Version: 1.9.3
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
  */
@@ -41,6 +41,7 @@ if(!class_exists('WP_Spreadplugin')) {
 		private static $shopArticleSort = '';
 		private static $shopLinkTarget = '_blank';
 		private static $shopCheckoutIframe = 0;
+		private static $shopDesignerShopId = 0;
 		private static $shopArticleSortOptions = array("name","price","recent");
 		private static $sc = array();
 		private static $shopCache = 2; // Shop article cache in hours
@@ -123,6 +124,7 @@ if(!class_exists('WP_Spreadplugin')) {
 					'shop_sortby' => '',
 					'shop_linktarget' => '_blank',
 					'shop_checkoutiframe' => 0,
+					'shop_designershop' => 0
 			), $atts);
 
 			self::$shopId = intval($sc['shop_id']);
@@ -138,6 +140,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			self::$shopArticleSort = $sc['shop_sortby'];
 			self::$shopLinkTarget = $sc['shop_linktarget'];
 			self::$shopCheckoutIframe = $sc['shop_checkoutiframe'];
+			self::$shopDesignerShopId = intval($sc['shop_designershop']);
 
 
 			if (isset($_GET['productCategory'])) {
@@ -259,6 +262,10 @@ if(!class_exists('WP_Spreadplugin')) {
 
 						$output .= '</select>';
 							
+						if (self::$shopDesignerShopId>0) {
+							$output .= ' <a href="http://'.self::$shopDesignerShopId.'.spreadshirt.'.self::$apiUrl.'/-D1/customize/product/'.$article['productId'].'?noCache=true" target="_blank" id="editArticle">'.__('Edit article', $this->stringTextdomain).'</a>';
+						}
+						
 						$output .= '<div class="separator"></div>';
 							
 						// add a list with availabel product colors
@@ -302,8 +309,10 @@ if(!class_exists('WP_Spreadplugin')) {
 							$output .= '<div class="fb-like" data-href="'.get_page_link().'#'.$id.'" data-send="false" data-layout="button_count" data-width="200" data-show-faces="false" style="width:200px; height:30px"></div>';
 							$output .= '<a href="https://twitter.com/share" class="twitter-share-button" data-url="'.get_page_link().'#'.$id.'" data-count="none" data-text="'.(!empty($article['description'])?$article['description']:'Product').'" data-lang="'.(!empty(self::$shopLocale)?substr(self::$shopLocale,0,2):'en').'">Tweet</a>';
 						}
-
-						$output .= '</form>
+						
+						$output .= '
+						
+						</form>
 						</div>';
 
 					}
@@ -407,6 +416,7 @@ if(!class_exists('WP_Spreadplugin')) {
 						$articleData[(int)$article['id']]['appearance']=(int)$article->product->appearance['id'];
 						$articleData[(int)$article['id']]['view']=(int)$article->product->defaultValues->defaultView['id'];
 						$articleData[(int)$article['id']]['type']=(int)$article->product->productType['id'];
+						$articleData[(int)$article['id']]['productId']=(int)$article->product['id'];
 						$articleData[(int)$article['id']]['pricenet']=(float)$article->price->vatExcluded;
 						$articleData[(int)$article['id']]['pricebrut']=(float)$article->price->vatIncluded;
 						$articleData[(int)$article['id']]['currencycode']=(string)$objCurrencyData->isoCode;
