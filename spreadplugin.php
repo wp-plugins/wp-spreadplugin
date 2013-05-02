@@ -495,7 +495,7 @@ if(!class_exists('WP_Spreadplugin')) {
 
 			// retrieve id of post to save as different content, if shortcode is available in more than one post (more than one shop in the wordpress website)
 			$articleData = get_transient('spreadplugin2-designs-cache-'.get_the_ID());
-$articleData=false;
+
 			if($articleData === false) {
 
 				$apiUrlBase = 'http://api.spreadshirt.'.self::$apiUrl.'/api/v1/shops/' . self::$shopId;
@@ -515,7 +515,7 @@ $articleData=false;
 				// re-call to avaid the limit of 50
 				// read max 1000 articles because of spreadshirt max. limit
 				$apiUrl = $apiUrlBase . '&limit='.($objArticles['count']<=1?2:($objArticles['count']<1000?$objArticles['count']:1000)); # &limit='.self::$shopLimit.'&offset='.$offset
-echo $apiUrl;
+
 				$stringXmlShop = wp_remote_get($apiUrl);
 				if (count($stringXmlShop->errors)>0) die('Error getting articles. Please check your Shop-ID.');
 				if ($stringXmlShop['body'][0]!='<') die($stringXmlShop['body']);
