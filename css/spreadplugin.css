@@ -2,14 +2,14 @@
 	margin: 0;
 	padding: 0
 }
-pre,code {
-	font-family:Arial,Helvetica,Tahoma,sans-serif;
-	font-size:13px;
+pre, code {
+	font-family: Arial, Helvetica, Tahoma, sans-serif;
+	font-size: 13px;
 }
 .spreadshirt-items {
 	position: relative;
 }
-.spreadshirt-article {
+.spreadshirt-article, .spreadshirt-designs {
 	float: left;
 	margin-top: 20px;
 	margin-right: 2px;
@@ -21,13 +21,16 @@ pre,code {
 	overflow: visible;
 	white-space: normal;
 }
+.spreadshirt-designs {
+	min-height: 300px;
+}
 .spreadshirt-article img {
 	padding: 0;
 	border: 0;
 	border-radius: 0;
 	background: none;
 }
-.spreadshirt-article img, .spreadshirt-article h3 {
+.spreadshirt-article img, .spreadshirt-article h3, .spreadshirt-designs h3 {
 	display: block;
 	text-align: center;
 	margin: 0 auto;
@@ -35,8 +38,8 @@ pre,code {
 .spreadshirt-article .image-wrapper {
 	min-height: 200px;
 }
-.spreadshirt-article h3 {
-	min-height: 25px
+.spreadshirt-article h3, .spreadshirt-designs h3 {
+	min-height: 30px
 }
 .spreadshirt-article div {
 	text-align: left;
@@ -105,6 +108,9 @@ pre,code {
 .spreadshirt-items .description-wrapper .description {
 	display: none
 }
+.spreadshirt-items .ul {
+	list-style: none outside none !important;
+}
 .spreadshirt-items .separator {
 	margin: 0;
 	padding: 0;
@@ -150,12 +156,23 @@ pre,code {
 .spreadshirt-article #price-with-tax {
 /*	display:none; */
 }
-.spreadshirt-article .fb-like, .spreadshirt-article .twitter-share-button {
+.spreadshirt-article .fb-like, .spreadshirt-article .twitter-share-button, .spreadshirt-article .pinterest-share-button {
 	/*	display:none; */
 	float: left;
+	margin: 2px;
+}
+.spreadshirt-article .fb-like {
+	/*	display:none; */
+	min-width: 150px;
+}
+.spreadshirt-article .twitter-share-button {
+/*	display:none; */
+}
+.spreadshirt-article .pinterest-share-button {
+/*	display:none; */
 }
 .spreadshirt-items #size-select {
-	width:80px
+	width: 80px
 }
 #spreadshirt-items #productCategory {
 	/*	display:none; */
@@ -163,11 +180,17 @@ pre,code {
 	left: 0;
 	width: 150px;
 }
+#spreadshirt-items #productSubCategory {
+	/*	display:none; */
+	position: absolute;
+	left: 160px;
+	width: 150px;
+}
 #spreadshirt-items #articleSortBy {
 	/*	display:none; */
 	position: absolute;
 	right: 10px;
-	width:100px;
+	width: 100px;
 }
 
 /* responsive */
@@ -180,4 +203,17 @@ pre,code {
 		position: relative;
 		left: 0;
 	}
+}
+.spreadshirt-items .design-container {
+	display: none;
+}
+.spreadshirt-items .active {
+	width: 100%;
+	float: left;
+	clear: both;
+	background-color: #e8e8e8;
+	padding: 2px;
+}
+.spreadshirt-designs .image-wrapper {
+	cursor: pointer;
 }
