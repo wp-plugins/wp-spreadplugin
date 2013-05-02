@@ -561,8 +561,8 @@ if(!class_exists('WP_Spreadplugin')) {
 			$output .= '<form method="post" id="form_'.$id.'">';
 			$output .= '<div class="image-wrapper">';
 			$output .= (self::$shopLinkEnabled==1?'<a href="http://'.self::$shopId.'.spreadshirt.'.self::$apiUrl.'/-A'.$id.'" target="'.self::$shopLinkTarget.'">':'');
-			$output .= '<img src="' . $article['resource0'] . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="preview" alt="' . $article['name'] . '" id="previewimg_'.$id.'" />';
-			$output .= '<img src="' . $article['resource2'] . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="compositions" style="display:none;" alt="' . $article['name'] . '" id="compositeimg_'.$id.'" title="'.addslashes(htmlspecialchars($article['productdescription'],ENT_QUOTES)).'" />';
+			$output .= '<img src="' . $article['resource0'] . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="preview" alt="' . htmlspecialchars($article['name'],ENT_QUOTES) . '" id="previewimg_'.$id.'" />';
+			$output .= '<img src="' . $article['resource2'] . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="compositions" style="display:none;" alt="' . htmlspecialchars($article['name'],ENT_QUOTES) . '" id="compositeimg_'.$id.'" title="'.addslashes(htmlspecialchars($article['productdescription'],ENT_QUOTES)).'" />';
 			$output .= (self::$shopLinkEnabled==1?'</a>':'');
 			$output .= '</div>';
 				
@@ -652,8 +652,8 @@ if(!class_exists('WP_Spreadplugin')) {
 			$output .= '<a name="'.$id.'"></a>';
 			$output .= '<h3>'.htmlentities($designData['name']).'</h3>';
 			$output .= '<div class="image-wrapper">';
-			$output .= '<img src="' . $designData['resource0'] . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="preview" alt="' . $designData['name'] . '" id="previewdesignimg_'.$id.'" />';
-			$output .= '<img src="' . $designData['resource2'] . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="compositions" style="display:none;" alt="' . $designData['name'] . '" id="compositedesignimg_'.$id.'" title="'.addslashes(htmlspecialchars($designData['productdescription'],ENT_QUOTES)).'" />';
+			$output .= '<img src="' . $designData['resource0'] . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="preview" alt="' . htmlspecialchars($designData['name'],ENT_QUOTES) . '" id="previewdesignimg_'.$id.'" />';
+			$output .= '<img src="' . $designData['resource2'] . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="compositions" style="display:none;" alt="' . htmlspecialchars($designData['name'],ENT_QUOTES) . '" id="compositedesignimg_'.$id.'" title="'.addslashes(htmlspecialchars($designData['productdescription'],ENT_QUOTES)).'" />';
 			$output .= '</div>';
 											
 			// Show description link if not empty
