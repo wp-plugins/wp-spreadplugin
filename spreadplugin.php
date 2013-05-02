@@ -495,7 +495,7 @@ if(!class_exists('WP_Spreadplugin')) {
 
 			// retrieve id of post to save as different content, if shortcode is available in more than one post (more than one shop in the wordpress website)
 			$articleData = get_transient('spreadplugin2-designs-cache-'.get_the_ID());
-
+$articleData=false;
 			if($articleData === false) {
 
 				$apiUrlBase = 'http://api.spreadshirt.'.self::$apiUrl.'/api/v1/shops/' . self::$shopId;
@@ -515,7 +515,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				// re-call to avaid the limit of 50
 				// read max 1000 articles because of spreadshirt max. limit
 				$apiUrl = $apiUrlBase . '&limit='.($objArticles['count']<=1?2:($objArticles['count']<1000?$objArticles['count']:1000)); # &limit='.self::$shopLimit.'&offset='.$offset
-
+echo $apiUrl;
 				$stringXmlShop = wp_remote_get($apiUrl);
 				if (count($stringXmlShop->errors)>0) die('Error getting articles. Please check your Shop-ID.');
 				if ($stringXmlShop['body'][0]!='<') die($stringXmlShop['body']);
@@ -559,7 +559,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			
 			$output = '<div class="spreadshirt-article clearfix" id="article_'.$id.'">';
 			$output .= '<a name="'.$id.'"></a>';
-			$output .= '<h3>'.$article['name'].'</h3>';
+			$output .= '<h3>'.htmlentities($article['name']).'</h3>';
 			$output .= '<form method="post" id="form_'.$id.'">';
 			$output .= '<div class="image-wrapper">';
 			$output .= (self::$shopLinkEnabled==1?'<a href="http://'.self::$shopId.'.spreadshirt.'.self::$apiUrl.'/-A'.$id.'" target="'.self::$shopLinkTarget.'">':'');
@@ -613,7 +613,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			// Show description link if not empty
 			if (!empty($article['description'])) {
 				$output .= '<div class="separator"></div>';
-				$output .= '<div class="description-wrapper"><div class="header"><a>'.__('Show description', $this->stringTextdomain).'</a></div><div class="description">'.$article['description'].'</div></div>';
+				$output .= '<div class="description-wrapper"><div class="header"><a>'.__('Show description', $this->stringTextdomain).'</a></div><div class="description">'.htmlentities($article['description']).'</div></div>';
 			}
 			
 			$output .= '<input type="hidden" value="'. $article['appearance'] .'" id="appearance" name="appearance" />';
@@ -652,7 +652,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			
 			$output = '<div class="spreadshirt-designs clearfix" id="design_'.$id.'">';
 			$output .= '<a name="'.$id.'"></a>';
-			$output .= '<h3>'.$designData['name'].'</h3>';
+			$output .= '<h3>'.htmlentities($designData['name']).'</h3>';
 			$output .= '<div class="image-wrapper">';
 			$output .= '<img src="' . $designData['resource0'] . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="preview" alt="' . $designData['name'] . '" id="previewdesignimg_'.$id.'" />';
 			$output .= '<img src="' . $designData['resource2'] . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="compositions" style="display:none;" alt="' . $designData['name'] . '" id="compositedesignimg_'.$id.'" title="'.addslashes(htmlspecialchars($designData['productdescription'],ENT_QUOTES)).'" />';
@@ -661,7 +661,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			// Show description link if not empty
 			if (!empty($designData['description'])) {
 				$output .= '<div class="separator"></div>';
-				$output .= '<div class="description-wrapper"><div class="header"><a>'.__('Show description', $this->stringTextdomain).'</a></div><div class="description">'.$designData['description'].'</div></div>';
+				$output .= '<div class="description-wrapper"><div class="header"><a>'.__('Show description', $this->stringTextdomain).'</a></div><div class="description">'.htmlentities($designData['description']).'</div></div>';
 			}
 			
 			/* Social buttons

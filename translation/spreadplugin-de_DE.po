@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Spreadplugin\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-04-28 21:14+0100\n"
-"PO-Revision-Date: 2013-04-28 21:14+0100\n"
+"PO-Revision-Date: 2013-05-02 20:24+0100\n"
 "Last-Translator: Thimo Grauerholz <info@pr3ss-play.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -55,11 +55,11 @@ msgstr "Zeige Beschreibung"
 
 #: spreadplugin.php:302
 msgid "Price (without tax):"
-msgstr "Preis (ohne MwSt.):"
+msgstr "Preis (exkl. MwSt.):"
 
 #: spreadplugin.php:303
 msgid "Price (with tax):"
-msgstr "Preis (mit MwSt.):"
+msgstr "Preis (inkl. MwSt.):"
 
 #: spreadplugin.php:306 spreadplugin.php:727
 msgid "Add to basket"
