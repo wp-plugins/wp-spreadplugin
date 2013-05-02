@@ -196,11 +196,12 @@ if(!class_exists('WP_Spreadplugin')) {
 				$designsData=self::getDesignsData();
 
 				// built second array with articles for sorting and filtering
-				foreach ($designsData as $designId => $arrDesigns) {
-													
-					if (!empty($articleData[$designId])) {
-						foreach ($articleData[$designId] as $articleId => $arrArticle) {		
-							$articleCleanData[$articleId] = $arrArticle;
+				if (is_array($designsData)) {
+					foreach ($designsData as $designId => $arrDesigns) {
+						if (!empty($articleData[$designId])) {
+							foreach ($articleData[$designId] as $articleId => $arrArticle) {		
+								$articleCleanData[$articleId] = $arrArticle;
+							}
 						}
 					}
 				}
