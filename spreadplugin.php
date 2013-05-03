@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 2.0.4
+ * Version: 2.0.4.1
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
  */
@@ -562,7 +562,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			$output .= '<div class="image-wrapper">';
 			$output .= (self::$shopLinkEnabled==1?'<a href="http://'.self::$shopId.'.spreadshirt.'.self::$apiUrl.'/-A'.$id.'" target="'.self::$shopLinkTarget.'">':'');
 			$output .= '<img src="' . $article['resource0'] . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="preview" alt="' . htmlspecialchars($article['name'],ENT_QUOTES) . '" id="previewimg_'.$id.'" />';
-			$output .= '<img src="' . $article['resource2'] . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="compositions" style="display:none;" alt="' . htmlspecialchars($article['name'],ENT_QUOTES) . '" id="compositeimg_'.$id.'" title="'.addslashes(htmlspecialchars($article['productdescription'],ENT_QUOTES)).'" />';
+			$output .= '<img src="' . $article['resource2'] . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="compositions" style="display:none;" alt="' . htmlspecialchars($article['name'],ENT_QUOTES) . '" id="compositeimg_'.$id.'" title="'.htmlspecialchars($article['productdescription'],ENT_QUOTES).'" />';
 			$output .= (self::$shopLinkEnabled==1?'</a>':'');
 			$output .= '</div>';
 				
@@ -630,8 +630,8 @@ if(!class_exists('WP_Spreadplugin')) {
 
 			// Social buttons
 			if (self::$shopSocialEnabled==true) {
-				$output .= '<a href="//pinterest.com/pin/create/button/?url='.get_page_link().'&media=' . $article['resource0'] . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'&description='.(!empty($article['description'])?$article['description']:'Product').'" target="pinterest" data-pin-do="buttonPin" data-pin-config="beside" class="pinterest-share-button"><img src="//assets.pinterest.com/images/pidgets/pin_it_button.png" /></a>';
-				$output .= '<a href="https://twitter.com/share" class="twitter-share-button" data-url="'.get_page_link().'#'.$id.'" data-count="none" data-text="'.(!empty($article['description'])?$article['description']:'Product').'" data-lang="'.(!empty(self::$shopLocale)?substr(self::$shopLocale,0,2):'en').'">Tweet</a>';
+				$output .= '<a href="//pinterest.com/pin/create/button/?url='.get_page_link().'&media=' . $article['resource0'] . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'&description='.(!empty($article['description'])?htmlspecialchars($article['description'],ENT_QUOTES):'Product').'" target="pinterest" data-pin-do="buttonPin" data-pin-config="beside" class="pinterest-share-button"><img src="//assets.pinterest.com/images/pidgets/pin_it_button.png" /></a>';
+				$output .= '<a href="https://twitter.com/share" class="twitter-share-button" data-url="'.get_page_link().'#'.$id.'" data-count="none" data-text="'.(!empty($article['description'])?htmlspecialchars($article['description'],ENT_QUOTES):'Product').'" data-lang="'.(!empty(self::$shopLocale)?substr(self::$shopLocale,0,2):'en').'">Tweet</a>';
 				$output .= '<div class="fb-like" data-href="'.get_page_link().'#'.$id.'" data-send="false" data-layout="button_count" data-show-faces="false"></div>';
 			}
 			
@@ -653,7 +653,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			$output .= '<h3>'.htmlentities($designData['name']).'</h3>';
 			$output .= '<div class="image-wrapper">';
 			$output .= '<img src="' . $designData['resource0'] . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="preview" alt="' . htmlspecialchars($designData['name'],ENT_QUOTES) . '" id="previewdesignimg_'.$id.'" />';
-			$output .= '<img src="' . $designData['resource2'] . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="compositions" style="display:none;" alt="' . htmlspecialchars($designData['name'],ENT_QUOTES) . '" id="compositedesignimg_'.$id.'" title="'.addslashes(htmlspecialchars($designData['productdescription'],ENT_QUOTES)).'" />';
+			$output .= '<img src="' . $designData['resource2'] . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="compositions" style="display:none;" alt="' . htmlspecialchars($designData['name'],ENT_QUOTES) . '" id="compositedesignimg_'.$id.'" title="'.htmlspecialchars($designData['productdescription'],ENT_QUOTES).'" />';
 			$output .= '</div>';
 											
 			// Show description link if not empty
@@ -661,14 +661,6 @@ if(!class_exists('WP_Spreadplugin')) {
 				$output .= '<div class="separator"></div>';
 				$output .= '<div class="description-wrapper"><div class="header"><a>'.__('Show description', $this->stringTextdomain).'</a></div><div class="description">'.htmlentities($designData['description']).'</div></div>';
 			}
-			
-			/* Social buttons
-			if (self::$shopSocialEnabled==true) {
-				$output .= '<div class="fb-like" data-href="'.get_page_link().'#'.$id.'" data-send="false" data-layout="button_count" data-show-faces="false"></div>';
-				$output .= '<a href="https://twitter.com/share" class="twitter-share-button" data-url="'.get_page_link().'#'.$id.'" data-count="none" data-text="'.(!empty($article['description'])?$article['description']:'Product').'" data-lang="'.(!empty(self::$shopLocale)?substr(self::$shopLocale,0,1):'en').'">Tweet</a>';
-				$output .= '<a href="//pinterest.com/pin/create/button/?url='.get_page_link().'&media=' . $article['resource0'] . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'&description='.(!empty($article['description'])?$article['description']:'Product').'" target="pinterest" data-pin-do="buttonPin" data-pin-config="beside" class="pinterest-share-button"><img src="//assets.pinterest.com/images/pidgets/pin_it_button.png" /></a>';
-			}
-			*/
 			
 			$output .= '
 			</div>';

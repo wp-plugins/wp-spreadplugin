@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: spreadshirt,wordpress,plugin,shop
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 2.0.4
+Stable tag: 2.0.4.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -188,21 +188,12 @@ Translation for sorting added
 * Added a new shortcode variable to sort the articles by default. To enable change shop_sortby=""` to shop_sortby="[name, price, recent]"`.
 * Sorting select box added
 
-= 1.7.4b =
-Bugfix
-
-= 1.7.4a =
-Bugfix
-
 = 1.7.4 =
 * Custom url structures now possible
 
 = 1.7.3 =
 * Added a new shortcode variable to open the checkout window in an iframe. To enable change shop_checkoutiframe="0"` to shop_checkoutiframe="1"`.
 * Bugfix
-
-= 1.7.2 =
-Bugfix
 
 = 1.7.1 =
 * Added a new shortcode variable to change the link targets. To enable change `shop_linktarget=""` to shop_linktarget="YOUR_IFRAME_NAME"`.
@@ -267,14 +258,8 @@ Bugfix
 = 1.2.6 =
 * Added Twitter share button. It pushes description text if available, else it just says 'Product'. Additionally, it says @URL to product. 
 
-= 1.2.5.1 =
-* BUGFIX
-
 = 1.2.5 =
 * Added Facebook like button
-
-= 1.2.4 =
-* HTML Bugfixes
 
 = 1.2.2 =
 * Enabled some error messages
