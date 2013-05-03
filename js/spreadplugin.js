@@ -21,7 +21,7 @@ function bindClick() {
 	jQuery('#spreadshirt-items .colors li').unbind();
 	jQuery('#spreadshirt-items .views li').unbind();
 	jQuery('#spreadshirt-items .description-wrapper div.header').unbind();
-	jQuery('.spreadshirt-designs .image-wrapper').unbind();
+	jQuery('.spreadshirt-design .image-wrapper').unbind();
 
 	jQuery('#spreadshirt-items .colors li').click(
 			function() {
@@ -138,7 +138,7 @@ function bindClick() {
 	
 
 	
-	jQuery('.spreadshirt-designs .image-wrapper').click(function() {
+	jQuery('.spreadshirt-design .image-wrapper').click(function() {
 
 		var id = jQuery(this).parent().attr('id');
 		id = '#' + id.replace('design', 'designContainer');
@@ -161,7 +161,8 @@ function bindClick() {
 function bindHover() {
 	
 	// Designs
-	jQuery('.spreadshirt-designs img.preview').mouseenter(function() {
+	/*
+	jQuery('.spreadshirt-design img.preview').mouseenter(function() {
 		var id = jQuery(this).attr('id');
 		id = '#' + id.replace('previewdesignimg', 'compositedesignimg');
 		if (jQuery(this).is(':visible')) {
@@ -170,14 +171,14 @@ function bindHover() {
 		}
 	});
 
-	jQuery('.spreadshirt-designs').mouseleave(function() {
+	jQuery('.spreadshirt-design').mouseleave(function() {
 		var id = jQuery(this).attr('id');
 		id = id.replace('design_', '');
 
 		jQuery('#' + 'compositedesignimg_' + id).hide();
 		jQuery('#' + 'previewdesignimg_' + id).show();
 	});
-	
+	*/
 	
 
 	

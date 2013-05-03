@@ -332,19 +332,25 @@ if(!class_exists('WP_Spreadplugin')) {
 					// Designs view
 					if (self::$shopDisplay==1) {
 						foreach ($designsData as $designId => $arrDesigns) {
+							$bgc = '';
 							
 							// Display just Designs with products
 							if (!empty($articleData[$designId])) {
 								
-								$output .= $this->displayDesigns($designId,$arrDesigns,$articleData[$designId]);
-								$output .= "<div id=\"designContainer_".$designId."\" class=\"design-container clearfix\">";
+								//@reset($articleData[$designId]);
+								//$bgc=$articleData[$designId][key($articleData[$designId])]['default_bgc'];
+								//$bgc=$this->hex2rgb($bgc);
+								$output .= "<div class=\"spreadshirt-designs\">";
+								$output .= $this->displayDesigns($designId,$arrDesigns,$articleData[$designId],$bgc);
+								$output .= "<div id=\"designContainer_".$designId."\" class=\"design-container clearfix\" style=\"background-color:rgba(".$bgc[0].",".$bgc[1].",".$bgc[2].",0.6);\">";
 							
 								if (!empty($articleData[$designId])) {
-									foreach ($articleData[$designId] as $articleId => $arrArticle) {					
+									foreach ($articleData[$designId] as $articleId => $arrArticle) {	
 										$output .= $this->displayArticles($articleId,$arrArticle);
 									}
 								}
 								
+								$output .= "</div>";
 								$output .= "</div>";
 							}
 						}
@@ -469,6 +475,10 @@ if(!class_exists('WP_Spreadplugin')) {
 						}
 
 						foreach($objArticleData->appearances->appearance as $appearance) {
+							if ((int)$article->product->appearance['id'] == (int)$appearance['id']) {
+								$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['default_bgc'] = (string)$appearance->colors->color;
+							}
+							
 							if ($article->product->restrictions->freeColorSelection == 'true' || (int)$article->product->appearance['id'] == (int)$appearance['id']) {
 								$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['appearances'][(int)$appearance['id']]=(string)$appearance->resources->resource->attributes('xlink', true);
 							}
@@ -656,14 +666,14 @@ if(!class_exists('WP_Spreadplugin')) {
 		}
 
 
-		private function displayDesigns($id,$designData,$articleData) {
-			
-			$output = '<div class="spreadshirt-designs clearfix" id="design_'.$id.'">';
+		private function displayDesigns($id,$designData,$articleData,$bgc='') {
+
+			$output = '<div class="spreadshirt-design clearfix" id="design_'.$id.'">';
 			$output .= '<a name="'.$id.'"></a>';
 			$output .= '<h3>'.htmlspecialchars($designData['name'],ENT_QUOTES).'</h3>';
-			$output .= '<div class="image-wrapper">';
-			$output .= '<img src="' . $designData['resource0'] . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="preview" alt="' . htmlspecialchars($designData['name'],ENT_QUOTES) . '" id="previewdesignimg_'.$id.'" />';
-			$output .= '<img src="' . $designData['resource2'] . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="compositions" style="display:none;" alt="' . htmlspecialchars($designData['name'],ENT_QUOTES) . '" id="compositedesignimg_'.$id.'" title="'.htmlspecialchars($designData['productdescription'],ENT_QUOTES).'" />';
+			$output .= '<div class="image-wrapper">';  //style="background-color:rgba('.$bgc[0].','.$bgc[1].','.$bgc[2].',0.6);"
+			//$output .= '<img src="' . $designData['resource0'] . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="preview" alt="' . htmlspecialchars($designData['name'],ENT_QUOTES) . '" id="previewdesignimg_'.$id.'" />';
+			$output .= '<img src="' . $designData['resource2'] . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="compositions" alt="' . htmlspecialchars($designData['name'],ENT_QUOTES) . '" id="compositedesignimg_'.$id.'" title="'.htmlspecialchars($designData['productdescription'],ENT_QUOTES).'" />'; // style="display:none;"
 			$output .= '</div>';
 											
 			// Show description link if not empty
@@ -674,7 +684,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			
 			$output .= '
 			</div>';
-						
+
 			return $output;	
 
 		}
@@ -1118,7 +1128,7 @@ if(!class_exists('WP_Spreadplugin')) {
 		}
 
 		// Ajax delete the transient
-		function doRegenerateCache() {
+		public function doRegenerateCache() {
 			global $wpdb;
 			$wpdb->query("DELETE FROM `".$wpdb->options."` WHERE `option_name` LIKE '_transient_spreadplugin2-%-cache%'");
 			die();
@@ -1128,7 +1138,7 @@ if(!class_exists('WP_Spreadplugin')) {
 		/**
 		 * Add Settings link to plugin
 		 */
-		 function addPluginSettingsLink($links, $file) {
+		 public function addPluginSettingsLink($links, $file) {
 			static $this_plugin;
 			if (!$this_plugin) $this_plugin = plugin_basename(__FILE__);
 
@@ -1141,6 +1151,22 @@ if(!class_exists('WP_Spreadplugin')) {
 		 }
 
 
+
+		public function hex2rgb($hex) {
+		   $hex = str_replace("#", "", $hex);
+		
+		   if(strlen($hex) == 3) {
+			  $r = hexdec(substr($hex,0,1).substr($hex,0,1));
+			  $g = hexdec(substr($hex,1,1).substr($hex,1,1));
+			  $b = hexdec(substr($hex,2,1).substr($hex,2,1));
+		   } else {
+			  $r = hexdec(substr($hex,0,2));
+			  $g = hexdec(substr($hex,2,2));
+			  $b = hexdec(substr($hex,4,2));
+		   }
+		   $rgb = array($r, $g, $b);
+		   return $rgb; // returns an array with the rgb values
+		}
 
 
 

@@ -9,7 +9,7 @@ pre, code {
 .spreadshirt-items {
 	position: relative;
 }
-.spreadshirt-article, .spreadshirt-designs {
+.spreadshirt-article, .spreadshirt-design {
 	float: left;
 	margin-top: 20px;
 	margin-right: 2px;
@@ -21,7 +21,7 @@ pre, code {
 	overflow: visible;
 	white-space: normal;
 }
-.spreadshirt-designs {
+.spreadshirt-design {
 	min-height: 300px;
 }
 .spreadshirt-article img {
@@ -29,8 +29,9 @@ pre, code {
 	border: 0;
 	border-radius: 0;
 	background: none;
+	margin:0;
 }
-.spreadshirt-article img, .spreadshirt-article h3, .spreadshirt-designs h3 {
+.spreadshirt-article img, .spreadshirt-article h3, .spreadshirt-design h3 {
 	display: block;
 	text-align: center;
 	margin: 0 auto;
@@ -38,7 +39,7 @@ pre, code {
 .spreadshirt-article .image-wrapper {
 	min-height: 200px;
 }
-.spreadshirt-article h3, .spreadshirt-designs h3 {
+.spreadshirt-article h3, .spreadshirt-design h3 {
 	min-height: 30px
 }
 .spreadshirt-article div {
@@ -214,6 +215,13 @@ pre, code {
 	background-color: #e8e8e8;
 	padding: 2px;
 }
-.spreadshirt-designs .image-wrapper {
+.spreadshirt-design .image-wrapper {
 	cursor: pointer;
+	text-align:center;
+	vertical-align:middle;
+	padding:2px;
 }
+
+
+
+
