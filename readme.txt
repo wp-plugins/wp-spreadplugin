@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: spreadshirt,wordpress,plugin,shop
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 2.0.4.1
+Stable tag: 2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -130,6 +130,10 @@ Activate by changing shop_designershop="0" to shop_designershop="[DESIGNERSHOPID
 
 Activate by changing shop_display="0" to shop_display="1".
 
+= It shows old articles =
+
+Please go to the settings page in the admin panel of the plugin and click "Regenerate Cache"
+
 == Screenshots ==
 
 1. The Output 1
@@ -137,6 +141,9 @@ Activate by changing shop_display="0" to shop_display="1".
 3. Screenshot 3
 
 == Changelog ==
+
+= 2.1 =
+* Settings page added to regenerate cache because **Cache doesn't regenerate itself anymore** due to performance
 
 = 2.0 =
 * Added a new shortcode variable to by display designs by default. To enable change shop_display="0"` to shop_display="1"`. 

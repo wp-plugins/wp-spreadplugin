@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 2.0.4.1
+ * Version: 2.1
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
  */
@@ -46,7 +46,7 @@ if(!class_exists('WP_Spreadplugin')) {
 		private static $shopDesignerShopId = 0;
 		private static $shopArticleSortOptions = array("name","price","recent");
 		private static $sc = array();
-		private static $shopCache = 2; // Shop article cache in hours
+		private static $shopCache = 8760; // Shop article cache in hours 24*365 => 1 year
 
 		public function WP_Spreadplugin() {
 			WP_Spreadplugin::__construct();
@@ -68,6 +68,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			// Ajax actions
 			add_action('wp_ajax_nopriv_myAjax',array($this,'doAjax'));
 			add_action('wp_ajax_myAjax',array($this,'doAjax'));
+			add_action('wp_ajax_regenCache',array($this,'doRegenerateCache'));
 
 			// Scrolling
 			wp_register_script('infinite_scroll', plugins_url('/js/jquery.infinitescroll.min.js', __FILE__),array('jquery'));
@@ -83,7 +84,16 @@ if(!class_exists('WP_Spreadplugin')) {
 			wp_register_style('fancy_box_css', plugins_url('/css/jquery.fancybox.css', __FILE__));
 			wp_enqueue_style('fancy_box_css');
 
+
+			if(is_admin()){
+				add_action('admin_init', array($this, 'initPluginPage'));
+				add_action('admin_menu', array($this, 'addPluginPage'));
+				add_filter('plugin_action_links', array($this, 'addPluginSettingsLink'), 10, 2 );
+			}
+
 		}
+
+
 
 
 
@@ -557,7 +567,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			
 			$output = '<div class="spreadshirt-article clearfix" id="article_'.$id.'">';
 			$output .= '<a name="'.$id.'"></a>';
-			$output .= '<h3>'.htmlentities($article['name']).'</h3>';
+			$output .= '<h3>'.htmlspecialchars($article['name'],ENT_QUOTES).'</h3>';
 			$output .= '<form method="post" id="form_'.$id.'">';
 			$output .= '<div class="image-wrapper">';
 			$output .= (self::$shopLinkEnabled==1?'<a href="http://'.self::$shopId.'.spreadshirt.'.self::$apiUrl.'/-A'.$id.'" target="'.self::$shopLinkTarget.'">':'');
@@ -611,7 +621,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			// Show description link if not empty
 			if (!empty($article['description'])) {
 				$output .= '<div class="separator"></div>';
-				$output .= '<div class="description-wrapper"><div class="header"><a>'.__('Show description', $this->stringTextdomain).'</a></div><div class="description">'.htmlentities($article['description']).'</div></div>';
+				$output .= '<div class="description-wrapper"><div class="header"><a>'.__('Show description', $this->stringTextdomain).'</a></div><div class="description">'.htmlspecialchars($article['description'],ENT_QUOTES).'</div></div>';
 			}
 			
 			$output .= '<input type="hidden" value="'. $article['appearance'] .'" id="appearance" name="appearance" />';
@@ -650,7 +660,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			
 			$output = '<div class="spreadshirt-designs clearfix" id="design_'.$id.'">';
 			$output .= '<a name="'.$id.'"></a>';
-			$output .= '<h3>'.htmlentities($designData['name']).'</h3>';
+			$output .= '<h3>'.htmlspecialchars($designData['name'],ENT_QUOTES).'</h3>';
 			$output .= '<div class="image-wrapper">';
 			$output .= '<img src="' . $designData['resource0'] . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="preview" alt="' . htmlspecialchars($designData['name'],ENT_QUOTES) . '" id="previewdesignimg_'.$id.'" />';
 			$output .= '<img src="' . $designData['resource2'] . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="compositions" style="display:none;" alt="' . htmlspecialchars($designData['name'],ENT_QUOTES) . '" id="compositedesignimg_'.$id.'" title="'.htmlspecialchars($designData['productdescription'],ENT_QUOTES).'" />';
@@ -659,7 +669,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			// Show description link if not empty
 			if (!empty($designData['description'])) {
 				$output .= '<div class="separator"></div>';
-				$output .= '<div class="description-wrapper"><div class="header"><a>'.__('Show description', $this->stringTextdomain).'</a></div><div class="description">'.htmlentities($designData['description']).'</div></div>';
+				$output .= '<div class="description-wrapper"><div class="header"><a>'.__('Show description', $this->stringTextdomain).'</a></div><div class="description">'.htmlspecialchars($designData['description'],ENT_QUOTES).'</div></div>';
 			}
 			
 			$output .= '
@@ -1079,6 +1089,64 @@ if(!class_exists('WP_Spreadplugin')) {
 				die();
 			}
 		}
+
+
+
+
+
+		/**
+		* Admin
+		*/
+		public function addPluginPage(){
+			// Create menu tab
+			add_options_page('Set Spreadplugin options', 'Spreadplugin Options', 'manage_options', 'spg_options', array($this, 'pageOptions'));
+		}
+		
+		// register values
+		public function initPluginPage() {
+			// register_setting('spreadplugin-plugin_options', 'test_val');
+		}
+		
+		// call page options
+		public function pageOptions(){
+			if (!current_user_can('manage_options')){
+				wp_die( __('You do not have sufficient permissions to access this page.') );
+			}
+
+			// display options page
+			include(ABSPATH.'wp-content/plugins/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE__)).'options.php');
+		}
+
+		// Ajax delete the transient
+		function doRegenerateCache() {
+			global $wpdb;
+			$wpdb->query("DELETE FROM `".$wpdb->options."` WHERE `option_name` LIKE '_transient_spreadplugin2-%-cache%'");
+			die();
+		}
+
+
+		/**
+		 * Add Settings link to plugin
+		 */
+		 function addPluginSettingsLink($links, $file) {
+			static $this_plugin;
+			if (!$this_plugin) $this_plugin = plugin_basename(__FILE__);
+
+			if ($file == $this_plugin){
+				$settings_link = '<a href="options-general.php?page=spg_options">'.__("Settings", $this->stringTextdomain) .'</a>';
+				array_unshift($links, $settings_link);
+			}
+			
+			return $links;
+		 }
+
+
+
+
+
+
+
+
 
 	} // END class WP_Spreadplugin
 
