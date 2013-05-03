@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 2.1
+ * Version: 2.1.1
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
  */
@@ -507,7 +507,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			if($articleData === false) {
 
 				$apiUrlBase = 'http://api.spreadshirt.'.self::$apiUrl.'/api/v1/shops/' . self::$shopId;
-				$apiUrlBase .= (!empty(self::$shopCategoryId)?'/articleCategories/'.self::$shopCategoryId:'');
+				//$apiUrlBase .= (!empty(self::$shopCategoryId)?'/articleCategories/'.self::$shopCategoryId:'');
 				$apiUrlBase .= '/designs?'.(!empty(self::$shopLocale)?'locale=' . self::$shopLocale . '&':'').'fullData=true';
 
 				$apiUrl = $apiUrlBase . '&limit=2'; # &limit='.self::$shopLimit.'&offset='.$offset
@@ -592,7 +592,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			}
 			
 			$output .= '<div class="separator"></div>';
-				
+
 			// add a list with availabel product colors
 			if (isset($article['appearances'])&&is_array($article['appearances'])) {
 				$output .= '<ul class="colors" name="color">';
@@ -1139,7 +1139,6 @@ if(!class_exists('WP_Spreadplugin')) {
 			
 			return $links;
 		 }
-
 
 
 
