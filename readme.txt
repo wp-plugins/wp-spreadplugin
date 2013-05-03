@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: spreadshirt,wordpress,plugin,shop
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 2.1.1
+Stable tag: 2.1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -141,6 +141,9 @@ Please go to the settings page in the admin panel of the plugin and click "Regen
 3. Screenshot 3
 
 == Changelog ==
+
+= 2.1.2 =
+Bugfix: Infinity scrolling doesn't work sometimes when in designs view
 
 = 2.1 =
 * Settings page added to regenerate cache because **Cache doesn't regenerate itself anymore** due to performance
