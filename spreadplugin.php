@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 2.1.2
+ * Version: 2.1.3
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
  */
@@ -44,6 +44,7 @@ if(!class_exists('WP_Spreadplugin')) {
 		private static $shopLinkTarget = '_blank';
 		private static $shopCheckoutIframe = 0;
 		private static $shopDesignerShopId = 0;
+		private static $shopDesignsBackground = 0;
 		private static $shopArticleSortOptions = array("name","price","recent");
 		private static $sc = array();
 		private static $shopCache = 8760; // Shop article cache in hours 24*365 => 1 year
@@ -143,7 +144,8 @@ if(!class_exists('WP_Spreadplugin')) {
 					'shop_linktarget' => '_blank',
 					'shop_checkoutiframe' => 0,
 					'shop_designershop' => 0,
-					'shop_display' => 0
+					'shop_display' => 0,
+					'shop_designsbackground' => 0
 			), $atts);
 
 			self::$shopId = intval($sc['shop_id']);
@@ -162,6 +164,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			self::$shopCheckoutIframe = $sc['shop_checkoutiframe'];
 			self::$shopDesignerShopId = intval($sc['shop_designershop']);
 			self::$shopDisplay = intval($sc['shop_display']);
+			self::$shopDesignsBackground = intval($sc['shop_designsbackground']);
 
 
 			if (isset($_GET['productCategory'])) {
@@ -332,17 +335,25 @@ if(!class_exists('WP_Spreadplugin')) {
 					// Designs view
 					if (self::$shopDisplay==1) {
 						foreach ($designsData as $designId => $arrDesigns) {
-							$bgc = '';
+							$bgc = false;
+							$addStyle = '';
 							
 							// Display just Designs with products
 							if (!empty($articleData[$designId])) {
 								
-								//@reset($articleData[$designId]);
-								//$bgc=$articleData[$designId][key($articleData[$designId])]['default_bgc'];
-								//$bgc=$this->hex2rgb($bgc);
+								// check if designs background is enabled
+								if (self::$shopDesignsBackground==1) {
+									// fetch first article background color
+									@reset($articleData[$designId]);
+									$bgc=$articleData[$designId][key($articleData[$designId])]['default_bgc'];
+									// calc to hex
+									$bgc=$this->hex2rgb($bgc);
+									$addStyle="style=\"background-color:rgba(".$bgc[0].",".$bgc[1].",".$bgc[2].",0.4);\"";
+								}
+								
 								$output .= "<div class=\"spreadshirt-designs\">";
 								$output .= $this->displayDesigns($designId,$arrDesigns,$articleData[$designId],$bgc);
-								$output .= "<div id=\"designContainer_".$designId."\" class=\"design-container clearfix\" style=\"background-color:rgba(".$bgc[0].",".$bgc[1].",".$bgc[2].",0.6);\">";
+								$output .= "<div id=\"designContainer_".$designId."\" class=\"design-container clearfix\" ".$addStyle.">";
 							
 								if (!empty($articleData[$designId])) {
 									foreach ($articleData[$designId] as $articleId => $arrArticle) {	
@@ -572,7 +583,13 @@ if(!class_exists('WP_Spreadplugin')) {
 
 
 
-
+		/**
+		 * Function displayArticles
+		 *
+		 * Displays the articles
+		 *
+		 * @return html
+		 */
 		private function displayArticles($id,$article) {
 			
 			$output = '<div class="spreadshirt-article clearfix" id="article_'.$id.'">';
@@ -580,9 +597,9 @@ if(!class_exists('WP_Spreadplugin')) {
 			$output .= '<h3>'.htmlspecialchars($article['name'],ENT_QUOTES).'</h3>';
 			$output .= '<form method="post" id="form_'.$id.'">';
 			$output .= '<div class="image-wrapper">';
-			$output .= (self::$shopLinkEnabled==1?'<a href="http://'.self::$shopId.'.spreadshirt.'.self::$apiUrl.'/-A'.$id.'" target="'.self::$shopLinkTarget.'">':'');
-			$output .= '<img src="' . $article['resource0'] . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="preview" alt="' . htmlspecialchars($article['name'],ENT_QUOTES) . '" id="previewimg_'.$id.'" />';
-			$output .= '<img src="' . $article['resource2'] . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="compositions" style="display:none;" alt="' . htmlspecialchars($article['name'],ENT_QUOTES) . '" id="compositeimg_'.$id.'" title="'.htmlspecialchars($article['productdescription'],ENT_QUOTES).'" />';
+			$output .= (self::$shopLinkEnabled==1?'<a href="//'.self::$shopId.'.spreadshirt.'.self::$apiUrl.'/-A'.$id.'" target="'.self::$shopLinkTarget.'">':'');
+			$output .= '<img src="' . $this->cleanURL($article['resource0']) . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="preview" alt="' . htmlspecialchars($article['name'],ENT_QUOTES) . '" id="previewimg_'.$id.'" />';
+			$output .= '<img src="' . $this->cleanURL($article['resource2']) . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="compositions" style="display:none;" alt="' . htmlspecialchars($article['name'],ENT_QUOTES) . '" id="compositeimg_'.$id.'" title="'.htmlspecialchars($article['productdescription'],ENT_QUOTES).'" />';
 			$output .= (self::$shopLinkEnabled==1?'</a>':'');
 			$output .= '</div>';
 				
@@ -598,7 +615,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			}
 				
 			if (self::$shopDesignerShopId>0) {
-				$output .= ' <a href="http://'.self::$shopDesignerShopId.'.spreadshirt.'.self::$apiUrl.'/-D1/customize/product/'.$article['productId'].'?noCache=true" target="_blank" id="editArticle">'.__('Edit article', $this->stringTextdomain).'</a>';
+				$output .= ' <a href="//'.self::$shopDesignerShopId.'.spreadshirt.'.self::$apiUrl.'/-D1/customize/product/'.$article['productId'].'?noCache=true" target="_blank" id="editArticle">'.__('Edit article', $this->stringTextdomain).'</a>';
 			}
 			
 			$output .= '<div class="separator"></div>';
@@ -608,7 +625,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				$output .= '<ul class="colors" name="color">';
 
 				foreach($article['appearances'] as $k=>$v) {
-					$output .= '<li value="'.$k.'"><img src="'. $v .'" alt="" /></li>';
+					$output .= '<li value="'.$k.'"><img src="'. $this->cleanURL($v) .'" alt="" /></li>';
 				}
 
 				$output .= '</ul>';
@@ -620,7 +637,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				$output .= '<ul class="views" name="views">';
 
 				foreach($article['views'] as $k=>$v) {
-					$output .= '<li value="'.$k.'"><img src="'. $v  .',viewId='.$k.',width=42,height=42" class="previewview" alt="" id="viewimg_'.$id.'" /></li>';
+					$output .= '<li value="'.$k.'"><img src="'. $this->cleanURL($v)  .',viewId='.$k.',width=42,height=42" class="previewview" alt="" id="viewimg_'.$id.'" /></li>';
 				}
 
 				$output .= '</ul>';
@@ -651,7 +668,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			// Social buttons
 			if (self::$shopSocialEnabled==true) {
 				$output .= '<a href="//pinterest.com/pin/create/button/?url='.get_page_link().'&media=' . $article['resource0'] . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'&description='.(!empty($article['description'])?htmlspecialchars($article['description'],ENT_QUOTES):'Product').'" target="pinterest" data-pin-do="buttonPin" data-pin-config="beside" class="pinterest-share-button"><img src="//assets.pinterest.com/images/pidgets/pin_it_button.png" /></a>';
-				$output .= '<a href="https://twitter.com/share" class="twitter-share-button" data-url="'.get_page_link().'#'.$id.'" data-count="none" data-text="'.(!empty($article['description'])?htmlspecialchars($article['description'],ENT_QUOTES):'Product').'" data-lang="'.(!empty(self::$shopLocale)?substr(self::$shopLocale,0,2):'en').'">Tweet</a>';
+				$output .= '<a href="//twitter.com/share" class="twitter-share-button" data-url="'.get_page_link().'#'.$id.'" data-count="none" data-text="'.(!empty($article['description'])?htmlspecialchars($article['description'],ENT_QUOTES):'Product').'" data-lang="'.(!empty(self::$shopLocale)?substr(self::$shopLocale,0,2):'en').'">Tweet</a>';
 				$output .= '<div class="fb-like" data-href="'.get_page_link().'#'.$id.'" data-send="false" data-layout="button_count" data-show-faces="false"></div>';
 			}
 			
@@ -666,20 +683,34 @@ if(!class_exists('WP_Spreadplugin')) {
 		}
 
 
-		private function displayDesigns($id,$designData,$articleData,$bgc='') {
+		/**
+		 * Function displayDesigns
+		 *
+		 * Displays the designs
+		 *
+		 * @return html
+		 */
+		private function displayDesigns($id,$designData,$articleData,$bgc=false) {
+			
+			$addStyle = '';
+			if ($bgc) $addStyle='style="background-color:rgba('.$bgc[0].','.$bgc[1].','.$bgc[2].',0.4);"';
 
 			$output = '<div class="spreadshirt-design clearfix" id="design_'.$id.'">';
 			$output .= '<a name="'.$id.'"></a>';
 			$output .= '<h3>'.htmlspecialchars($designData['name'],ENT_QUOTES).'</h3>';
-			$output .= '<div class="image-wrapper">';  //style="background-color:rgba('.$bgc[0].','.$bgc[1].','.$bgc[2].',0.6);"
+			$output .= '<div class="image-wrapper" '.$addStyle.'>';
+			// hovering disabled
 			//$output .= '<img src="' . $designData['resource0'] . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="preview" alt="' . htmlspecialchars($designData['name'],ENT_QUOTES) . '" id="previewdesignimg_'.$id.'" />';
-			$output .= '<img src="' . $designData['resource2'] . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="compositions" alt="' . htmlspecialchars($designData['name'],ENT_QUOTES) . '" id="compositedesignimg_'.$id.'" title="'.htmlspecialchars($designData['productdescription'],ENT_QUOTES).'" />'; // style="display:none;"
+			$output .= '<img src="' . $this->cleanURL($designData['resource2']) . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="compositions" alt="' . htmlspecialchars($designData['name'],ENT_QUOTES) . '" id="compositedesignimg_'.$id.'" title="'.htmlspecialchars($designData['productdescription'],ENT_QUOTES).'" />'; // style="display:none;"
 			$output .= '</div>';
-											
+										
 			// Show description link if not empty
 			if (!empty($designData['description'])) {
 				$output .= '<div class="separator"></div>';
-				$output .= '<div class="description-wrapper"><div class="header"><a>'.__('Show description', $this->stringTextdomain).'</a></div><div class="description">'.htmlspecialchars($designData['description'],ENT_QUOTES).'</div></div>';
+				$output .= '<div class="description-wrapper">
+				<div class="header"><a>'.__('Show description', $this->stringTextdomain).'</a></div>
+				<div class="description">'.htmlspecialchars($designData['description'],ENT_QUOTES).'</div>
+				</div>';
 			}
 			
 			$output .= '
@@ -971,7 +1002,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			var textButtonAdded = '".__('Adding...', $this->stringTextdomain)."';
 			var ajaxLocation = '".admin_url( 'admin-ajax.php' )."?pageid=".get_the_ID()."&nonce=".wp_create_nonce('spreadplugin')."';
 			var display = ".self::$shopDisplay.";
-			
+			var imageCaption = '".__('Click to view the articles', $this->stringTextdomain)."';
 			</script>";
 
 			echo "
@@ -989,7 +1020,13 @@ if(!class_exists('WP_Spreadplugin')) {
 		public function endSession() {
 			@session_destroy();
 		}
-
+		
+		// prepare for https
+		private function cleanURL($url) {
+			return str_replace('http:','',$url);
+		}
+		
+		
 
 		/**
 		 * Function socialHead
@@ -1052,7 +1089,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			if (!isset($_SESSION['basketUrl'])) {
 
 				// gets basket
-				$apiUrl = 'http://api.spreadshirt.'.self::$apiUrl.'/api/v1/shops/' . self::$shopId;
+				$apiUrl = '//api.spreadshirt.'.self::$apiUrl.'/api/v1/shops/' . self::$shopId;
 				$stringXmlShop = wp_remote_get($apiUrl);
 				if (count($stringXmlShop->errors)>0) die('Error getting basket.');
 				if ($stringXmlShop['body'][0]!='<') die($stringXmlShop['body']);
@@ -1151,7 +1188,7 @@ if(!class_exists('WP_Spreadplugin')) {
 		 }
 
 
-
+		// Convert hex to rgb values
 		public function hex2rgb($hex) {
 		   $hex = str_replace("#", "", $hex);
 		

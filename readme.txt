@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: spreadshirt,wordpress,plugin,shop
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 2.1.2
+Stable tag: 2.1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,8 +20,7 @@ You only need to add the shortcode to your new or existing page and you're done!
 
 The pagination is done via infinity scroll.
 
-Features:
-
+**Current features**
 * Infinity Scrolling
 * Uses Spreadshirt-Basket (A click on the basket opens the spreadshirt own basket)
 * Price listing
@@ -33,19 +32,25 @@ Features:
 * Cache
 * Choose or direct link to the product category
 * Sorting and filtering
-* Adding the products to the basket without reloading the page
-* Designs view (Show designs, onclick show articles)
+* Adding the products to the basket without page reload
+* Choose between article or designs display (click on a design shows the articles)
 
 See it in action:
 http://www.pr3ss-play.de/shop/ (in german)
 
 What do you need:
-
 * Wordpress most recent Version
 * Spreadshirt shop
 * Spreadshirt API key and secret ( US/NA From: https://www.spreadshirt.com/-C6840 , EU From: https://www.spreadshirt.de/-C7120 )
 
-Feel free to contact me.
+If you have suggestions, feel free to email me at info@spreadplugin.de.
+Want regular updates? Become a fan of my sites on Facebook!
+
+http://www.facebook.com/pr3ss.play
+
+Or follow my sites on Twitter!
+
+https://twitter.com/Pr3ssplay_de
 
 == Installation ==
 
@@ -132,15 +137,22 @@ Activate by changing shop_display="0" to shop_display="1".
 
 = It shows old articles =
 
-Please go to the settings page in the admin panel of the plugin and click "Regenerate Cache"
+Please go to the settings page in the admin panel of the plugin and click "Clear cache"
 
 == Screenshots ==
 
 1. The Output 1
 2. Screenshot 2
 3. Screenshot 3
+4. Design view
+5. Article view
 
 == Changelog ==
+
+= 2.1.3 =
+* Updated the design view
+* SSL improvements - thanks goes to Marcus from sozenshirts.de for that note
+* Minor bugfixes
 
 = 2.1.2 =
 Bugfix: Infinity scrolling doesn't work sometimes when in designs view
@@ -175,12 +187,6 @@ Fancybox added to display checkout in a modal window. Activate by adding or chan
 
 = 1.8.4 =
 Price formatting added
-
-= 1.8.3b =
-Finally fixed "ERROR: Basket not ready".
-
-= 1.8.3a =
-Some CSS things
 
 = 1.8.3 =
 Compatibility update for using with 'Simple Facebook Connect'-Plugin
@@ -220,12 +226,6 @@ Translation for sorting added
 = 1.6.4 =
 * Each article image has now a link to it's spreadshirt product details website. Use the shortcode to enable ` shop_enablelink="1"` or disable `shop_enablelink="0"` this behaviour (default is enabled).
 
-= 1.6.3 =
-* Version push
-
-= 1.6.2 =
-* Enabled some error messages
-
 = 1.6.1 =
 * Added a new shortcode variable to disable social media buttons. Enable ` shop_social="1"` / Disable `shop_social="0"`
 
@@ -252,15 +252,6 @@ Translation for sorting added
 
 = 1.2.8 =
 * Removed some error messages when in Wordpress debug mode
-
-= 1.2.7.3 =
-* Compatibility update
-
-= 1.2.7.2 =
-* Facebook drives me crazy!
-
-= 1.2.7.1 =
-* CSS fixes
 
 = 1.2.7 =
 * I missed the multi language features of Twitter and Facebook, so sorry!

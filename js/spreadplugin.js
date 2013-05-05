@@ -5,7 +5,7 @@ var prod2 = getParameterByName('productSubCategory');
 var sor = getParameterByName('articleSortBy');
 var infiniteItemSel = '.spreadshirt-article';
 
-if (display==1) {
+if (display == 1) {
 	infiniteItemSel = '.spreadshirt-designs';
 }
 
@@ -113,75 +113,100 @@ function bindClick() {
 		return false;
 
 	});
-	
+
 	jQuery('.spreadshirt-article #editArticle').fancybox({
-		type: 'iframe',
-		fitToView: false,
-		autoSize: false,
-		height: 1000,
-		width: 830,
-		preload: true,
-		afterClose: function() {
+		type : 'iframe',
+		fitToView : false,
+		autoSize : false,
+		height : 1000,
+		width : 830,
+		preload : true,
+		afterClose : function() {
 			location.reload();
 			return;
 		}
 	});
 
 	jQuery('.spreadshirt-article .image-wrapper a').fancybox({
-		type: 'iframe',
-		fitToView: false,
-		autoSize: false,
-		height: 1000,
-		width: 830,
-		preload: true
+		type : 'iframe',
+		fitToView : false,
+		autoSize : false,
+		height : 1000,
+		width : 830,
+		preload : true
 	});
-	
 
-	
-	jQuery('.spreadshirt-design .image-wrapper').click(function() {
+	jQuery('.spreadshirt-design .image-wrapper').click(
+			function() {
 
-		var id = jQuery(this).parent().attr('id');
-		id = '#' + id.replace('design', 'designContainer');
+				var id = jQuery(this).parent().attr('id');
+				id = '#' + id.replace('design', 'designContainer');
 
-		if (jQuery(id).is(':hidden')) {
-			jQuery(id).addClass('active');
-			jQuery(id).slideDown('slow');			
-		} else {
-			jQuery('#spreadshirt-list .design-container').slideUp('slow', function() {
-				jQuery(this).removeClass('active');
+				if (jQuery(id).is(':hidden')) {
+					jQuery(id).addClass('active');
+					jQuery(id).slideDown('slow');
+				} else {
+					jQuery('#spreadshirt-list .design-container').slideUp(
+							'slow', function() {
+								jQuery(this).removeClass('active');
+							});
+					// jQuery(id).hide();
+					// jQuery(id).removeClass('active');
+				}
+
 			});
-			// jQuery(id).hide();
-			// jQuery(id).removeClass('active');
-		}
-		
-	});
 
 }
 
 function bindHover() {
-	
+
 	// Designs
+	// hovering disabled for designs
 	/*
-	jQuery('.spreadshirt-design img.preview').mouseenter(function() {
-		var id = jQuery(this).attr('id');
-		id = '#' + id.replace('previewdesignimg', 'compositedesignimg');
-		if (jQuery(this).is(':visible')) {
-			jQuery(this).hide();
-			jQuery(id).show();
-		}
-	});
+	 * jQuery('.spreadshirt-design img.preview').mouseenter(function() { var id =
+	 * jQuery(this).attr('id'); id = '#' + id.replace('previewdesignimg',
+	 * 'compositedesignimg'); if (jQuery(this).is(':visible')) {
+	 * jQuery(this).hide(); jQuery(id).show(); } });
+	 * 
+	 * jQuery('.spreadshirt-design').mouseleave(function() { var id =
+	 * jQuery(this).attr('id'); id = id.replace('design_', '');
+	 * 
+	 * jQuery('#' + 'compositedesignimg_' + id).hide(); jQuery('#' +
+	 * 'previewdesignimg_' + id).show(); });
+	 */
 
-	jQuery('.spreadshirt-design').mouseleave(function() {
-		var id = jQuery(this).attr('id');
-		id = id.replace('design_', '');
+	// display image caption on top of image
+	jQuery(".spreadshirt-design div.image-wrapper").each(
+			function() {
 
-		jQuery('#' + 'compositedesignimg_' + id).hide();
-		jQuery('#' + 'previewdesignimg_' + id).show();
-	});
-	*/
-	
+				if (imageCaption != '') {
 
-	
+					jQuery(this)
+							.hover(
+									function() {
+
+										var imgHeight = jQuery(this).height();
+										var imgWidth = jQuery(this).width();
+										var position = jQuery(this).position();
+
+										var positionTop = (position.top + imgHeight - 100);
+										var positionLeft = position.left;
+
+										jQuery(this).append(
+												"<span class='img-caption' style='position:absolute;top:" + positionTop + ";left:"
+														+ positionLeft
+														+ "px;width:"
+														+ imgWidth + "px'><em>"
+														+ imageCaption
+														+ "</em></span>");
+										jQuery(".img-caption").stop(true).animate({ 'top': positionTop + 50 }, { queue: false, duration: 100 });
+
+									}, function() {
+										jQuery(".img-caption").remove();
+									});
+				}
+			});
+
 	// Articles
 	jQuery('#spreadshirt-items img.preview').mouseenter(function() {
 		var id = jQuery(this).attr('id');
@@ -214,11 +239,7 @@ function bindHover() {
 									.attr('src'));
 				});
 	}
-	
-	
-	
-	
-	
+
 }
 
 bindClick();
@@ -228,6 +249,10 @@ jQuery(window).scroll(function() {
 	scrollingDiv.stop().animate({
 		'marginTop' : (jQuery(window).scrollTop() + 30) + 'px'
 	}, 'slow');
+});
+
+jQuery(window).resize(function() {
+	jQuery(".img-caption").remove();
 });
 
 jQuery('#spreadshirt-list').infinitescroll({
@@ -252,8 +277,6 @@ jQuery('#spreadshirt-list').infinitescroll({
 	}
 });
 
-
-
 jQuery('#spreadshirt-items #productCategory').change(
 		function() {
 			prod = jQuery(this).val();
@@ -264,16 +287,14 @@ jQuery('#spreadshirt-items #productSubCategory').change(
 		function() {
 			prod2 = jQuery(this).val();
 			document.location = pageLink + sep + 'productCategory=' + prod
-					+ '&productSubCategory=' + prod2
-					+ '&articleSortBy=' + sor;
+					+ '&productSubCategory=' + prod2 + '&articleSortBy=' + sor;
 		});
 
 jQuery('#spreadshirt-items #articleSortBy').change(
 		function() {
 			sor = jQuery(this).val();
 			document.location = pageLink + sep + 'productCategory=' + prod
-					+ '&productSubCategory=' + prod2
-					+ '&articleSortBy=' + sor;
+					+ '&productSubCategory=' + prod2 + '&articleSortBy=' + sor;
 		});
 
 // checkout in an iframe in page
@@ -316,13 +337,13 @@ if (pageCheckoutUseIframe == 1) {
 if (pageCheckoutUseIframe == 2) {
 
 	jQuery('#spreadshirt-items #checkout a').fancybox({
-		type: 'iframe',
-		fitToView: false,
-		autoSize: false,
-		height: 1000,
-		width: 830,
-		preload: true,
-		afterClose: function() {
+		type : 'iframe',
+		fitToView : false,
+		autoSize : false,
+		height : 1000,
+		width : 830,
+		preload : true,
+		afterClose : function() {
 			location.reload();
 			return;
 		}

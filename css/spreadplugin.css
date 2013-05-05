@@ -17,19 +17,27 @@ pre, code {
 	padding: 5px;
 	display: block;
 	z-index: auto;
-	min-height: 600px; /* fixing the height of each Article */
+	min-height: 620px; /* fixing the height of each Article */
 	overflow: visible;
 	white-space: normal;
 }
+.spreadshirt-article, .spreadshirt-design, .spreadshirt-article a, .spreadshirt-design a {
+	color:#000;	
+}
+.spreadshirt-article a:hover, .spreadshirt-design a:hover {
+	text-decoration:underline;	
+}
 .spreadshirt-design {
 	min-height: 300px;
+	text-align: center;
+	width: 190px;
 }
 .spreadshirt-article img {
 	padding: 0;
 	border: 0;
 	border-radius: 0;
 	background: none;
-	margin:0;
+	margin: 0;
 }
 .spreadshirt-article img, .spreadshirt-article h3, .spreadshirt-design h3 {
 	display: block;
@@ -40,7 +48,7 @@ pre, code {
 	min-height: 200px;
 }
 .spreadshirt-article h3, .spreadshirt-design h3 {
-	min-height: 30px
+	min-height: 55px
 }
 .spreadshirt-article div {
 	text-align: left;
@@ -52,7 +60,7 @@ pre, code {
 	padding: 0;
 }
 .spreadshirt-article ul li {
-	border: 1px solid #e8e8e8
+/* border: 1px solid #e8e8e8 */
 }
 .spreadshirt-article input[type=text] {
 	clear: both;
@@ -195,7 +203,7 @@ pre, code {
 }
 
 /* responsive */
- @media screen and (max-width: 500px) {
+@media screen and (max-width: 500px) {
 	#spreadshirt-items #articleSortBy {
 		position: relative;
 		left: 0;
@@ -217,11 +225,26 @@ pre, code {
 }
 .spreadshirt-design .image-wrapper {
 	cursor: pointer;
-	text-align:center;
-	vertical-align:middle;
-	padding:2px;
+	text-align: center;
+	vertical-align: middle;
+	height: 190px;
+	width: 190px;
 }
-
+.img-caption {
+	background: #fff;
+	color: #000;
+	display: block;
+	position: absolute;
+	left: 0;
+	font-size: 14px;
+	height: 50px;
+	line-height: 26px;
+	/* opacity setting */
+	filter: alpha(opacity=80);    /* ie  */
+	-moz-opacity: 0.8;    /* old mozilla browser like netscape  */
+	-khtml-opacity: 0.8;    /* for really really old safari */
+	opacity: 0.8;    /* css standard, currently it works in most modern browsers like firefox,  */
+}
 
 
 

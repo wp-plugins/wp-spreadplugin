@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spreadplugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-03 18:29+0100\n"
-"PO-Revision-Date: 2013-05-03 18:30+0100\n"
+"POT-Creation-Date: 2013-05-05 00:44+0100\n"
+"PO-Revision-Date: 2013-05-05 00:44+0100\n"
 "Last-Translator: Thimo Grauerholz <info@pr3ss-play.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -18,88 +18,98 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 
 #: options.php:9
-msgid "Regenerate Cache"
-msgstr "Cache neu erstellen"
-
-#: options.php:19
 msgid "Successfull cleared cache"
-msgstr "Cache erfolgreich gelöscht"
+msgstr "Cache erfolgreich geleert"
 
-#: spreadplugin.php:283 spreadplugin.php:285
+#: options.php:21
+msgid "Clear cache"
+msgstr "Cache leeren"
+
+#: spreadplugin.php:286 spreadplugin.php:288
 msgid "Basket"
 msgstr "Warenkorb"
 
-#: spreadplugin.php:285
+#: spreadplugin.php:288
 msgid "Basket is empty"
 msgstr "Warenkorb ist leer"
 
-#: spreadplugin.php:290
+#: spreadplugin.php:293
 msgid "Product category"
 msgstr "Produkt Kategorie"
 
-#: spreadplugin.php:315
+#: spreadplugin.php:318
 msgid "Sort by"
 msgstr "Sortieren"
 
-#: spreadplugin.php:316
+#: spreadplugin.php:319
 msgid "name"
 msgstr "Name"
 
-#: spreadplugin.php:317
+#: spreadplugin.php:320
 msgid "price"
 msgstr "Preis"
 
-#: spreadplugin.php:318
+#: spreadplugin.php:321
 msgid "recent"
 msgstr "Erschienen"
 
-#: spreadplugin.php:362
+#: spreadplugin.php:379
 msgid "next"
 msgstr "weiter"
 
-#: spreadplugin.php:591
+#: spreadplugin.php:612
 msgid "Edit article"
 msgstr "Artikel anpassen"
 
-#: spreadplugin.php:624 spreadplugin.php:672 spreadplugin.php:953
+#: spreadplugin.php:645 spreadplugin.php:698 spreadplugin.php:981
 msgid "Show description"
 msgstr "Zeige Beschreibung"
 
-#: spreadplugin.php:633
+#: spreadplugin.php:654
 msgid "Price (without tax):"
 msgstr "Preis (exkl. MwSt.):"
 
-#: spreadplugin.php:634
+#: spreadplugin.php:655
 msgid "Price (with tax):"
 msgstr "Preis (inkl. MwSt.):"
 
-#: spreadplugin.php:639 spreadplugin.php:960
+#: spreadplugin.php:660 spreadplugin.php:988
 msgid "Add to basket"
 msgstr "In den Warenkorb"
 
-#: spreadplugin.php:952
+#: spreadplugin.php:980
 msgid "Hide description"
 msgstr "Verstecke Beschreibung"
 
-#: spreadplugin.php:955
+#: spreadplugin.php:983
 msgid "Loading new articles..."
 msgstr "Artikel werden geladen..."
 
-#: spreadplugin.php:956
+#: spreadplugin.php:984
 msgid "You have reached the end"
 msgstr "Keine weiteren Artikel verfügbar"
 
-#: spreadplugin.php:961
+#: spreadplugin.php:989
 msgid "Adding..."
 msgstr "Füge ein..."
 
-#: spreadplugin.php:1113
+#: spreadplugin.php:992
+msgid "Click to view the articles"
+msgstr "Klicken Sie hier, um die Artikel anzusehen"
+
+#: spreadplugin.php:1147
 msgid "You do not have sufficient permissions to access this page."
 msgstr ""
 
-#: spreadplugin.php:1136
+#: spreadplugin.php:1170
 msgid "Settings"
 msgstr "Einstellungen"
+
+#~ msgid "Rebuild cache"
+#~ msgstr "Cache neu erstellen"
+
+#~ msgid "Regenerate Cache"
+#~ msgstr "Cache neu erstellen"
 
 #~ msgid "Product sorting"
 #~ msgstr "Sort"
