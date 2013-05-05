@@ -661,7 +661,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			$output .= '<div class="separator"></div>';
 			$output .= '<div class="price-wrapper">';
 			$output .= '<span id="price-without-tax">'.__('Price (without tax):', $this->stringTextdomain)." ".(empty(self::$shopLocale) || self::$shopLocale=='en_US' || self::$shopLocale=='en_GB'?number_format($article['pricenet'],2,'.',''):number_format($article['pricenet'],2,',','.'))." ".$article['currencycode']."<br /></span>";
-			$output .= '<span id="price-with-tax">'.__('Price (with tax):', $this->stringTextdomain)." ".(empty(self::$shopLocale) || self::$shopLocale=='en_US' || self::$shopLocale=='en_GB'?number_format($article['pricenet'],2,'.',''):number_format($article['pricebrut'],2,',','.'))." ".$article['currencycode']."<br /></span>";
+			$output .= '<span id="price-with-tax">'.__('Price (with tax):', $this->stringTextdomain)." ".(empty(self::$shopLocale) || self::$shopLocale=='en_US' || self::$shopLocale=='en_GB'?number_format($article['pricebrut'],2,'.',''):number_format($article['pricebrut'],2,',','.'))." ".$article['currencycode']."<br /></span>";
 			$output .= '</div>';
 			
 			// order buttons
