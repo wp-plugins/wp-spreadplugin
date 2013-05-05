@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 2.1.3
+ * Version: 2.2
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
  */
@@ -198,7 +198,7 @@ if(!class_exists('WP_Spreadplugin')) {
 
 				$offset=($paged-1)*self::$shopLimit;
 				
-				
+
 				// get article data
 				$articleData=self::getArticleData();
 				// get rid of types in array
@@ -207,6 +207,8 @@ if(!class_exists('WP_Spreadplugin')) {
 
 				// get designs data
 				$designsData=self::getDesignsData();
+				
+				$intInBasket=self::getInBasketQuantity();
 
 				// built second array with articles for sorting and filtering
 				if (is_array($designsData)) {
@@ -279,15 +281,9 @@ if(!class_exists('WP_Spreadplugin')) {
 				// Start output
 				$output = '<div id="spreadshirt-items" class="spreadshirt-items clearfix">';
 
-				// add checkout				
-				$intInBasket=self::getInBasketQuantity();
-
-				if (isset($_SESSION['checkoutUrl']) && $intInBasket>0) {
-					$output .= '<div id="checkout"><span>'.$intInBasket."</span> <a href=".$_SESSION['checkoutUrl']." target=\"".self::$shopLinkTarget."\">".__('Basket', $this->stringTextdomain)."</a></div>";
-				} else {
-					$output .= '<div id="checkout"><span>'.$intInBasket."</span> <a title=\"".__('Basket is empty', $this->stringTextdomain)."\">".__('Basket', $this->stringTextdomain)."</a></div>";
-				}
-
+				// add spreadshirt-menu				
+				$output .= '<div id="spreadshirt-menu" class="spreadshirt-menu">';
+				
 				// add product categories
 				$output .= '<select name="productCategory" id="productCategory">';
 				$output .= '<option value="">'.__('Product category', $this->stringTextdomain).'</option>';
@@ -296,7 +292,7 @@ if(!class_exists('WP_Spreadplugin')) {
 						$output .= '<option value="'.urlencode($t).'"'.($t==self::$shopProductCategory?' selected':'').'>'.$t.'</option>';
 					}
 				}
-				$output .= '</select>';
+				$output .= '</select> ';
 				
 				// simple sub categories
 				// @TODO Javascript
@@ -310,7 +306,7 @@ if(!class_exists('WP_Spreadplugin')) {
 							$output .= '<option value="'.urlencode($t).'"'.($t==self::$shopProductSubCategory?' selected':'').'>'.$t.'</option>';
 						}
 					}
-					$output .= '</select>';
+					$output .= '</select> ';
 				}
 
 				// add sorting
@@ -321,7 +317,14 @@ if(!class_exists('WP_Spreadplugin')) {
 				$output .= '<option value="recent"'.('recent'==self::$shopArticleSort?' selected':'').'>'.__('recent', $this->stringTextdomain).'</option>';
 				//$output .= '<option value="weight"'.('weight'==self::$shopArticleSort?' selected':'').'>'.__('weight', $this->stringTextdomain).'</option>';
 				$output .= '</select>';
+				
+				if (isset($_SESSION['checkoutUrl']) && $intInBasket>0) {
+					$output .= ' <div id="checkout"><span>'.$intInBasket."</span> <a href=".$_SESSION['checkoutUrl']." target=\"".self::$shopLinkTarget."\">".__('Basket', $this->stringTextdomain)."</a></div>";
+				} else {
+					$output .= ' <div id="checkout"><span>'.$intInBasket."</span> <a title=\"".__('Basket is empty', $this->stringTextdomain)."\">".__('Basket', $this->stringTextdomain)."</a></div>";
+				}
 
+				$output .= '</div>';
 
 				// display
 				if (count($articleData) == 0 || $articleData==false) {
@@ -376,7 +379,7 @@ if(!class_exists('WP_Spreadplugin')) {
 
 
 					$output .= "
-					<div id=\"navigation\"><a href=\"".get_pagenum_link($paged + 1)."\">".__('next', $this->stringTextdomain)."</a></div>
+					<div id=\"pagination\"><a href=\"".get_pagenum_link($paged + 1)."\">".__('next', $this->stringTextdomain)."</a></div>
 					<!-- <div id=\"copyright\">Copyright (c) Thimo Grauerholz - <a href=\"http://www.pr3ss-play.de\">pr3ss-play - Dein Shirt-Shop für geile Party T-shirts!</a></div> -->
 					<div id=\"fb-root\"></div>
 					</div>";
@@ -702,6 +705,8 @@ if(!class_exists('WP_Spreadplugin')) {
 			// hovering disabled
 			//$output .= '<img src="' . $designData['resource0'] . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="preview" alt="' . htmlspecialchars($designData['name'],ENT_QUOTES) . '" id="previewdesignimg_'.$id.'" />';
 			$output .= '<img src="' . $this->cleanURL($designData['resource2']) . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="compositions" alt="' . htmlspecialchars($designData['name'],ENT_QUOTES) . '" id="compositedesignimg_'.$id.'" title="'.htmlspecialchars($designData['productdescription'],ENT_QUOTES).'" />'; // style="display:none;"
+			
+			$output .= '<span class="img-caption">'.__('Click to view the articles', $this->stringTextdomain).'</em></span>';
 			$output .= '</div>';
 										
 			// Show description link if not empty
@@ -1002,7 +1007,6 @@ if(!class_exists('WP_Spreadplugin')) {
 			var textButtonAdded = '".__('Adding...', $this->stringTextdomain)."';
 			var ajaxLocation = '".admin_url( 'admin-ajax.php' )."?pageid=".get_the_ID()."&nonce=".wp_create_nonce('spreadplugin')."';
 			var display = ".self::$shopDisplay.";
-			var imageCaption = '".__('Click to view the articles', $this->stringTextdomain)."';
 			</script>";
 
 			echo "
@@ -1089,7 +1093,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			if (!isset($_SESSION['basketUrl'])) {
 
 				// gets basket
-				$apiUrl = '//api.spreadshirt.'.self::$apiUrl.'/api/v1/shops/' . self::$shopId;
+				$apiUrl = 'http://api.spreadshirt.'.self::$apiUrl.'/api/v1/shops/' . self::$shopId;
 				$stringXmlShop = wp_remote_get($apiUrl);
 				if (count($stringXmlShop->errors)>0) die('Error getting basket.');
 				if ($stringXmlShop['body'][0]!='<') die($stringXmlShop['body']);

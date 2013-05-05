@@ -1,4 +1,3 @@
-var scrollingDiv = jQuery('#spreadshirt-items #checkout');
 var sep = '?';
 var prod = getParameterByName('productCategory');
 var prod2 = getParameterByName('productSubCategory');
@@ -105,9 +104,9 @@ function bindClick() {
 
 		jQuery.post(ajaxLocation, data, function(json) {
 			button.val(textButtonAdd);
-			jQuery('#spreadshirt-items #checkout a').attr('href', json.c.u);
-			jQuery('#spreadshirt-items #checkout a').removeAttr('title');
-			jQuery('#spreadshirt-items #checkout span').text(json.c.q);
+			jQuery('#spreadshirt-items #spreadshirt-menu #checkout a').attr('href', json.c.u);
+			jQuery('#spreadshirt-items #spreadshirt-menu #checkout a').removeAttr('title');
+			jQuery('#spreadshirt-items #spreadshirt-menu #checkout span').text(json.c.q);
 		}, 'json');
 
 		return false;
@@ -179,32 +178,13 @@ function bindHover() {
 	jQuery(".spreadshirt-design div.image-wrapper").each(
 			function() {
 
-				if (imageCaption != '') {
-
-					jQuery(this)
-							.hover(
-									function() {
-
-										var imgHeight = jQuery(this).height();
-										var imgWidth = jQuery(this).width();
-										var position = jQuery(this).position();
-
-										var positionTop = (position.top + imgHeight - 100);
-										var positionLeft = position.left;
-
-										jQuery(this).append(
-												"<span class='img-caption' style='position:absolute;top:" + positionTop + ";left:"
-														+ positionLeft
-														+ "px;width:"
-														+ imgWidth + "px'><em>"
-														+ imageCaption
-														+ "</em></span>");
-										jQuery(".img-caption").stop(true).animate({ 'top': positionTop + 50 }, { queue: false, duration: 100 });
-
-									}, function() {
-										jQuery(".img-caption").remove();
-									});
-				}
+				jQuery(this)
+						.hover(
+								function() {
+									jQuery(this).find(".img-caption").stop(true).css('display','inline-block').animate({ 'top': -50 }, { queue: false, duration: 400 });
+								}, function() {
+									jQuery(this).find(".img-caption").stop(true).hide().animate({ 'top': 0 });
+								});
 			});
 
 	// Articles
@@ -245,19 +225,46 @@ function bindHover() {
 bindClick();
 bindHover();
 
-jQuery(window).scroll(function() {
-	scrollingDiv.stop().animate({
-		'marginTop' : (jQuery(window).scrollTop() + 30) + 'px'
-	}, 'slow');
+
+
+// Fixed menu bar
+jQuery(function () {
+	var msie6 = jQuery.browser == 'msie' && jQuery.browser.version < 7;
+	if (!msie6 && jQuery('.spreadshirt-menu').length != 0) {
+		var top = jQuery('#spreadshirt-menu').offset().top - parseFloat(jQuery('#spreadshirt-menu').css('margin-top').replace(/auto/, 0));
+		
+		jQuery(window).scroll(function (event) {
+			// what the y position of the scroll is
+			var y = jQuery(this).scrollTop();
+			// whether that's below the form
+			if (y >= top-0) {
+				// if so, ad the fixed class
+				jQuery('#spreadshirt-menu').addClass('fixed');
+				
+				// using wp #main container width and pos for fixed
+				jQuery('#spreadshirt-menu').css('width',jQuery('div.spreadshirt-items').width());
+				//jQuery('#spreadshirt-menu').css('left',jQuery('div.spreadshirt-items').position().left);
+			} else {
+				// otherwise remove it
+				jQuery('#spreadshirt-menu').css('width','');
+				//jQuery('#spreadshirt-menu').css('left','');
+				jQuery('#spreadshirt-menu').removeClass('fixed');
+			}
+		});
+	}
 });
 
+
+// reload caption
 jQuery(window).resize(function() {
-	jQuery(".img-caption").remove();
+	jQuery(".img-caption").hide();
 });
 
+
+// infinity scroll
 jQuery('#spreadshirt-list').infinitescroll({
-	nextSelector : '#spreadshirt-list #navigation a',
-	navSelector : '#spreadshirt-list #navigation',
+	nextSelector : '#spreadshirt-list #pagination a',
+	navSelector : '#spreadshirt-list #pagination',
 	itemSelector : '#spreadshirt-list ' + infiniteItemSel,
 	loading : {
 		img : loadingImage,
@@ -299,19 +306,19 @@ jQuery('#spreadshirt-items #articleSortBy').change(
 
 // checkout in an iframe in page
 if (pageCheckoutUseIframe == 1) {
-	jQuery('#spreadshirt-items #checkout a')
+	jQuery('#spreadshirt-items #spreadshirt-menu a')
 			.click(
 					function(event) {
 						event.preventDefault();
 
 						var checkoutLink = jQuery(
-								'#spreadshirt-items #checkout a').attr('href');
+								'#spreadshirt-items #spreadshirt-menu a').attr('href');
 
 						if (typeof checkoutLink !== "undefined"
 								&& checkoutLink.length > 0) {
 
-							jQuery('#spreadshirt-items #navigation').remove();
-							jQuery('#spreadshirt-items #checkout').remove();
+							jQuery('#spreadshirt-items #pagination').remove();
+							jQuery('#spreadshirt-items #spreadshirt-menu').remove();
 							jQuery(window).unbind('.infscr');
 
 							jQuery('#spreadshirt-list')
@@ -336,7 +343,7 @@ if (pageCheckoutUseIframe == 1) {
 // checkout in an iframe with modal window (fancybox)
 if (pageCheckoutUseIframe == 2) {
 
-	jQuery('#spreadshirt-items #checkout a').fancybox({
+	jQuery('#spreadshirt-items #spreadshirt-menu a').fancybox({
 		type : 'iframe',
 		fitToView : false,
 		autoSize : false,

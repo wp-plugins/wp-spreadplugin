@@ -13,24 +13,24 @@ pre, code {
 	float: left;
 	margin-top: 20px;
 	margin-right: 2px;
-	width: 200px;
+	width: 205px;
 	padding: 5px;
 	display: block;
 	z-index: auto;
 	min-height: 620px; /* fixing the height of each Article */
-	overflow: visible;
+	overflow: hidden;
 	white-space: normal;
 }
-.spreadshirt-article, .spreadshirt-design, .spreadshirt-article a, .spreadshirt-design a {
+.spreadshirt-items a {
 	color:#000;	
 }
-.spreadshirt-article a:hover, .spreadshirt-design a:hover {
+.spreadshirt-items a:hover {
 	text-decoration:underline;	
 }
 .spreadshirt-design {
 	min-height: 300px;
+	height: 300px !important;
 	text-align: center;
-	width: 190px;
 }
 .spreadshirt-article img {
 	padding: 0;
@@ -89,17 +89,7 @@ pre, code {
 	width: 42px;
 	height: 42px;
 }
-.spreadshirt-items #checkout {
-	position: absolute;
-	right: 10px;
-	padding: 20px;
-	background-color: #666;
-	z-index: 100;
-}
-.spreadshirt-items #checkout a {
-	color: #fff !important;
-}
-.spreadshirt-items #navigation {
+.spreadshirt-items #pagination {
 	float: left;
 }
 .spreadshirt-items #copyright {
@@ -183,35 +173,9 @@ pre, code {
 .spreadshirt-items #size-select {
 	width: 80px
 }
-#spreadshirt-items #productCategory {
-	/*	display:none; */
-	position: absolute;
-	left: 0;
-	width: 150px;
-}
-#spreadshirt-items #productSubCategory {
-	/*	display:none; */
-	position: absolute;
-	left: 160px;
-	width: 150px;
-}
-#spreadshirt-items #articleSortBy {
-	/*	display:none; */
-	position: absolute;
-	right: 10px;
-	width: 100px;
-}
 
 /* responsive */
-@media screen and (max-width: 500px) {
-	#spreadshirt-items #articleSortBy {
-		position: relative;
-		left: 0;
-	}
-	#spreadshirt-items #productCategory {
-		position: relative;
-		left: 0;
-	}
+@media screen and (max-width: 550px) {
 }
 .spreadshirt-items .design-container {
 	display: none;
@@ -230,21 +194,53 @@ pre, code {
 	height: 190px;
 	width: 190px;
 }
-.img-caption {
+.spreadshirt-design .img-caption {
 	background: #fff;
-	color: #000;
-	display: block;
-	position: absolute;
-	left: 0;
-	font-size: 14px;
+	color:#000;
+	display:none;
+	padding:2px;
+	width:190px;
+	position:relative;
+	left:0;
+	overflow:hidden;
 	height: 50px;
-	line-height: 26px;
 	/* opacity setting */
 	filter: alpha(opacity=80);    /* ie  */
 	-moz-opacity: 0.8;    /* old mozilla browser like netscape  */
 	-khtml-opacity: 0.8;    /* for really really old safari */
 	opacity: 0.8;    /* css standard, currently it works in most modern browsers like firefox,  */
 }
+
+
+
+
+
+/* spreadshirt-menu */
+.spreadshirt-menu { position: absolute; z-index: 7999; padding: 10px; width: 100%; margin:0; top: 0; background: white; *left: 0; }
+.spreadshirt-menu.fixed { position: fixed; top: 0; width: 100%; max-width: 960px;border: 1px solid #DBDBDB; box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);}
+
+.spreadshirt-menu #productCategory,.spreadshirt-menu #productSubCategory,.spreadshirt-menu #articleSortBy,.spreadshirt-menu #checkout  {
+	position: relative;
+	float:left;
+	margin-right:10px;
+}
+.spreadshirt-menu #productCategory {
+	/*	display:none; */
+	width: 150px;
+	margin-left:10px;
+}
+.spreadshirt-menu #productSubCategory {
+	/*	display:none; */
+	width: 150px;
+}
+.spreadshirt-menu #articleSortBy {
+	/*	display:none; */
+	width: 100px;
+}
+.spreadshirt-menu #checkout {
+	float:right;
+}
+
 
 
 
