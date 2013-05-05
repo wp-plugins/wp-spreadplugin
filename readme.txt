@@ -21,6 +21,7 @@ You only need to add the shortcode to your new or existing page and you're done!
 The pagination is done via infinity scroll.
 
 **Current features**
+
 * Infinity Scrolling
 * Uses Spreadshirt-Basket (A click on the basket opens the spreadshirt own basket)
 * Price listing
@@ -35,10 +36,12 @@ The pagination is done via infinity scroll.
 * Adding the products to the basket without page reload
 * Choose between article or designs display (click on a design shows the articles)
 
-See it in action:
+**See it in action**
+
 http://www.pr3ss-play.de/shop/ (in german)
 
-What do you need:
+**What do you need**
+
 * Wordpress most recent Version
 * Spreadshirt shop
 * Spreadshirt API key and secret ( US/NA From: https://www.spreadshirt.com/-C6840 , EU From: https://www.spreadshirt.de/-C7120 )
