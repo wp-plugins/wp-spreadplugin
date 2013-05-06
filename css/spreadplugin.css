@@ -146,7 +146,10 @@ pre, code {
 	box-shadow: none;
 }
 #spreadshirt-list {
-	padding-top: 20px;
+    display: inline-block;
+    padding-top: 20px;
+    position: relative;
+	width:100%;
 }
 /* display or hide prices */
 .spreadshirt-article #price-without-tax {
@@ -216,7 +219,7 @@ pre, code {
 
 
 /* spreadshirt-menu */
-.spreadshirt-menu { position: absolute; z-index: 999; padding: 10px; width: 100%; margin:0; top: 0; background: white; *left: 0; }
+.spreadshirt-menu { position: relative; z-index: 999; padding: 10px; width: 100%; margin:0; top: 0; background: white; *left: 0; display:inline-block; }
 .spreadshirt-menu.fixed { position: fixed; top: 0; width: 100%; max-width: 960px;border: 1px solid #DBDBDB; box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);}
 
 .spreadshirt-menu #productCategory,.spreadshirt-menu #productSubCategory,.spreadshirt-menu #articleSortBy,.spreadshirt-menu #checkout  {

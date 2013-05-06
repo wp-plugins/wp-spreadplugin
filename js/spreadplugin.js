@@ -3,6 +3,7 @@ var prod = getParameterByName('productCategory');
 var prod2 = getParameterByName('productSubCategory');
 var sor = getParameterByName('articleSortBy');
 var infiniteItemSel = '.spreadshirt-article';
+var fancyBoxWidth = 840;
 
 if (display == 1) {
 	infiniteItemSel = '.spreadshirt-designs';
@@ -118,7 +119,7 @@ function bindClick() {
 		fitToView : false,
 		autoSize : false,
 		height : 1000,
-		width : 830,
+		width : fancyBoxWidth,
 		preload : true,
 		afterClose : function() {
 			location.reload();
@@ -131,7 +132,7 @@ function bindClick() {
 		fitToView : false,
 		autoSize : false,
 		height : 1000,
-		width : 830,
+		width : fancyBoxWidth,
 		preload : true
 	});
 
@@ -348,7 +349,7 @@ if (pageCheckoutUseIframe == 2) {
 		fitToView : false,
 		autoSize : false,
 		height : 1000,
-		width : 830,
+		width : fancyBoxWidth,
 		preload : true,
 		afterClose : function() {
 			location.reload();
