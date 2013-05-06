@@ -216,7 +216,7 @@ pre, code {
 
 
 /* spreadshirt-menu */
-.spreadshirt-menu { position: absolute; z-index: 7999; padding: 10px; width: 100%; margin:0; top: 0; background: white; *left: 0; }
+.spreadshirt-menu { position: absolute; z-index: 999; padding: 10px; width: 100%; margin:0; top: 0; background: white; *left: 0; }
 .spreadshirt-menu.fixed { position: fixed; top: 0; width: 100%; max-width: 960px;border: 1px solid #DBDBDB; box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);}
 
 .spreadshirt-menu #productCategory,.spreadshirt-menu #productSubCategory,.spreadshirt-menu #articleSortBy,.spreadshirt-menu #checkout  {

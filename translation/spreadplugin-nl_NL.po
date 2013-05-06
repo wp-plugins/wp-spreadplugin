@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spreadplugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-05 00:45+0100\n"
-"PO-Revision-Date: 2013-05-05 00:45+0100\n"
+"POT-Creation-Date: 2013-05-06 14:17+0100\n"
+"PO-Revision-Date: 2013-05-06 14:17+0100\n"
 "Last-Translator: Thimo Grauerholz <info@pr3ss-play.de>\n"
 "Language-Team: \n"
 "Language: nl_NL\n"
@@ -21,87 +21,91 @@ msgstr ""
 msgid "Successfull cleared cache"
 msgstr ""
 
-#: options.php:21
+#: options.php:20
 msgid "Clear cache"
 msgstr ""
 
-#: spreadplugin.php:286 spreadplugin.php:288
-msgid "Basket"
-msgstr "Winkelmandje"
-
 #: spreadplugin.php:288
-msgid "Basket is empty"
-msgstr "Winkelmandje is leeg"
-
-#: spreadplugin.php:293
 msgid "Product category"
 msgstr "Product categorie"
 
-#: spreadplugin.php:318
+#: spreadplugin.php:313
 msgid "Sort by"
 msgstr "Sorteer op"
 
-#: spreadplugin.php:319
+#: spreadplugin.php:314
 msgid "name"
 msgstr "Naam"
 
-#: spreadplugin.php:320
+#: spreadplugin.php:315
 msgid "price"
 msgstr "Prijs"
 
-#: spreadplugin.php:321
+#: spreadplugin.php:316
 msgid "recent"
 msgstr "Recent"
 
-#: spreadplugin.php:379
+#: spreadplugin.php:317
+msgid "weight"
+msgstr "Weging"
+
+#: spreadplugin.php:321 spreadplugin.php:323
+msgid "Basket"
+msgstr "Winkelmandje"
+
+#: spreadplugin.php:323
+msgid "Basket is empty"
+msgstr "Winkelmandje is leeg"
+
+#: spreadplugin.php:381
 msgid "next"
 msgstr "volgende"
 
-#: spreadplugin.php:612
+#: spreadplugin.php:620
 msgid "Edit article"
 msgstr "Bewerk artikel"
 
-#: spreadplugin.php:645 spreadplugin.php:698 spreadplugin.php:981
+#: spreadplugin.php:653 spreadplugin.php:715 spreadplugin.php:998
 msgid "Show description"
 msgstr "Geef omschrijving weer"
 
-#: spreadplugin.php:654
+#: spreadplugin.php:662
 msgid "Price (without tax):"
 msgstr "Prijs (excl. btw):"
 
-#: spreadplugin.php:655
+#: spreadplugin.php:663
 msgid "Price (with tax):"
 msgstr "Prijs (incl. btw):"
 
-#: spreadplugin.php:660 spreadplugin.php:988
+#: spreadplugin.php:668 spreadplugin.php:1005
 msgid "Add to basket"
 msgstr "Plaats in winkelwagen"
 
-#: spreadplugin.php:980
-msgid "Hide description"
-msgstr "Verberg omschrijving"
-
-#: spreadplugin.php:983
-msgid "Loading new articles..."
-msgstr "Laadt nieuwe artikelen..."
-
-#: spreadplugin.php:984
-msgid "You have reached the end"
-msgstr "Je hebt het einde bereikt "
-
-#: spreadplugin.php:989
-msgid "Adding..."
-msgstr "Toevoegen..."
-
-#: spreadplugin.php:992
+#: spreadplugin.php:708
 msgid "Click to view the articles"
 msgstr ""
 
-#: spreadplugin.php:1147
+#: spreadplugin.php:997
+msgid "Hide description"
+msgstr "Verberg omschrijving"
+
+#: spreadplugin.php:1000
+msgid "Loading new articles..."
+msgstr "Laadt nieuwe artikelen..."
+
+#: spreadplugin.php:1001
+msgid "You have reached the end"
+msgstr "Je hebt het einde bereikt "
+
+#: spreadplugin.php:1006
+msgid "Adding..."
+msgstr "Toevoegen..."
+
+#: spreadplugin.php:1163
 msgid "You do not have sufficient permissions to access this page."
 msgstr ""
 
-#: spreadplugin.php:1170
+#: spreadplugin.php:1186
 msgid "Settings"
 msgstr ""
 

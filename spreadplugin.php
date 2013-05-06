@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 2.2
+ * Version: 2.2.1
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
  */
@@ -45,7 +45,7 @@ if(!class_exists('WP_Spreadplugin')) {
 		private static $shopCheckoutIframe = 0;
 		private static $shopDesignerShopId = 0;
 		private static $shopDesignsBackground = 0;
-		private static $shopArticleSortOptions = array("name","price","recent");
+		private static $shopArticleSortOptions = array("name","price","recent","weight");
 		private static $sc = array();
 		private static $shopCache = 8760; // Shop article cache in hours 24*365 => 1 year
 
@@ -237,28 +237,27 @@ if(!class_exists('WP_Spreadplugin')) {
 				@krsort($articleData);
 				@krsort($articleCleanData);
 
-
 				// sorting
 				if (self::$shopDisplay==1) {
 					if (!empty(self::$shopArticleSort) && is_array($designsData) && in_array(self::$shopArticleSort,self::$shopArticleSortOptions)) {
-						if (self::$shopArticleSort==="recent") {
+						if (self::$shopArticleSort=="recent") {
 							krsort($designsData);
-						} else if (self::$shopArticleSort==="price") {
+						} else if (self::$shopArticleSort=="price") {
 							uasort($designsData,create_function('$a,$b',"return (\$a[pricenet] < \$b[pricenet])?-1:1;"));
-						} else if (self::$shopArticleSort==="weight") {
-							uasort($designsData,create_function('$a,$b',"return (\$a[weight] < \$b[weight])?-1:1;"));
+						} else if (self::$shopArticleSort=="weight") {
+							uasort($designsData,create_function('$a,$b',"return (\$a[weight] > \$b[weight])?-1:1;"));
 						} else {
 							uasort($designsData,create_function('$a,$b',"return strnatcmp(\$a[".self::$shopArticleSort."],\$b[".self::$shopArticleSort."]);"));
 						}
 					}
 				} else {
 					if (!empty(self::$shopArticleSort) && is_array($articleCleanData) && in_array(self::$shopArticleSort,self::$shopArticleSortOptions)) {
-						if (self::$shopArticleSort==="recent") {
+						if (self::$shopArticleSort=="recent") {
 							krsort($articleCleanData);
-						} else if (self::$shopArticleSort==="price") {
+						} else if (self::$shopArticleSort=="price") {
 							uasort($articleCleanData,create_function('$a,$b',"return (\$a[pricenet] < \$b[pricenet])?-1:1;"));
-						} else if (self::$shopArticleSort==="weight") {
-							uasort($articleCleanData,create_function('$a,$b',"return (\$a[weight] < \$b[weight])?-1:1;"));
+						} else if (self::$shopArticleSort=="weight") {
+							uasort($articleCleanData,create_function('$a,$b',"return (\$a[weight] > \$b[weight])?-1:1;"));
 						} else {
 							uasort($articleCleanData,create_function('$a,$b',"return strnatcmp(\$a[".self::$shopArticleSort."],\$b[".self::$shopArticleSort."]);"));
 						}
@@ -315,7 +314,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				$output .= '<option value="name"'.('name'==self::$shopArticleSort?' selected':'').'>'.__('name', $this->stringTextdomain).'</option>';
 				$output .= '<option value="price"'.('price'==self::$shopArticleSort?' selected':'').'>'.__('price', $this->stringTextdomain).'</option>';
 				$output .= '<option value="recent"'.('recent'==self::$shopArticleSort?' selected':'').'>'.__('recent', $this->stringTextdomain).'</option>';
-				//$output .= '<option value="weight"'.('weight'==self::$shopArticleSort?' selected':'').'>'.__('weight', $this->stringTextdomain).'</option>';
+				$output .= '<option value="weight"'.('weight'==self::$shopArticleSort?' selected':'').'>'.__('weight', $this->stringTextdomain).'</option>';
 				$output .= '</select>';
 				
 				if (isset($_SESSION['checkoutUrl']) && $intInBasket>0) {
