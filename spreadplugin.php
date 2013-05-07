@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 2.2.2
+ * Version: 2.5
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
  */
@@ -27,26 +27,44 @@ if(!function_exists('add_action')) {
 if(!class_exists('WP_Spreadplugin')) {
 	class WP_Spreadplugin {
 		private $stringTextdomain = 'spreadplugin';
-		private static $shopId = '';
-		private static $apiUrl = '';
-		private static $shopDisplay = 0;
-		private static $shopLocale = '';
-		private static $shopLimit = '';
-		private static $shopApi = '';
-		private static $shopSecret = '';
+		private static $shopId;
+		private static $apiUrl;
+		private static $shopDisplay;
+		private static $shopLocale;
+		private static $shopLimit;
+		private static $shopApi;
+		private static $shopSecret;
+		private static $shopCategoryId;
+		private static $shopSocialEnabled;
+		private static $shopLinkEnabled;
+		private static $shopProductCategory;
+		private static $shopProductSubCategory;
+		private static $shopArticleSort;
+		private static $shopLinkTarget;
+		private static $shopCheckoutIframe;
+		private static $shopDesignerShopId;
+		private static $shopDesignsBackground;
 		private static $shopImgSize = '190';
-		private static $shopCategoryId = '';
-		private static $shopSocialEnabled = 1;
-		private static $shopLinkEnabled = 1;
-		private static $shopProductCategory = '';
-		private static $shopProductSubCategory = '';
-		private static $shopArticleSort = '';
-		private static $shopLinkTarget = '_blank';
-		private static $shopCheckoutIframe = 0;
-		private static $shopDesignerShopId = 0;
-		private static $shopDesignsBackground = 0;
 		private static $shopArticleSortOptions = array("name","price","recent","weight");
-		private static $sc = array();
+		public $defaultOptions = array(
+				'shop_id' => '',
+				'shop_locale' => '',
+				'shop_api' => '',
+				'shop_source' => '',
+				'shop_secret' => '',
+				'shop_limit' => '',
+				'shop_category' => '',
+				'shop_subcategory' => '',
+				'shop_social' => '',
+				'shop_enablelink' => '',
+				'shop_productcategory' => '',
+				'shop_sortby' => '',
+				'shop_linktarget' => '',
+				'shop_checkoutiframe' => '',
+				'shop_designershop' => '',
+				'shop_display' => '',
+				'shop_designsbackground' => ''
+		);
 		private static $shopCache = 8760; // Shop article cache in hours 24*365 => 1 year
 
 		public function WP_Spreadplugin() {
@@ -85,12 +103,14 @@ if(!class_exists('WP_Spreadplugin')) {
 			wp_register_style('fancy_box_css', plugins_url('/css/jquery.fancybox.css', __FILE__));
 			wp_enqueue_style('fancy_box_css');
 
-
+			// admin check
 			if(is_admin()){
 				add_action('admin_init', array($this, 'initPluginPage'));
 				add_action('admin_menu', array($this, 'addPluginPage'));
 				add_filter('plugin_action_links', array($this, 'addPluginSettingsLink'), 10, 2 );
 			}
+			
+			register_activation_hook(__FILE__, array($this, 'activate'));
 
 		}
 
@@ -112,6 +132,12 @@ if(!class_exists('WP_Spreadplugin')) {
 		}
 
 
+		/**
+		 * Activate Plugin 
+        function activate() {
+			 update_option("splg_options", $this->getAdminOptions());
+        }
+		*/
 
 
 		/**
@@ -126,45 +152,42 @@ if(!class_exists('WP_Spreadplugin')) {
 			$articleCleanData = array(); // Array with article informations for sorting and filtering
 			$articleData = array();
 			$designsData = array();
+
+
+			// get admin options (default option set on admin page)
+			$conOp = $this->getAdminOptions();
 			
+			// shortcode overwrites admin options (default option set on admin page) if available
+			$arrSc = shortcode_atts($this->defaultOptions, $atts);
+			
+			// replace options by shortcode if set
+			if (!empty($arrSc)) {
+				foreach ($arrSc as $key => $option) {
+					if ($option != '') {
+						$conOp[$key] = $option;
+					}
+				}
+            }
 
-			$sc = shortcode_atts(array(
-					'shop_id' => '',
-					'shop_locale' => 'de_DE',
-					'shop_api' => '',
-					'shop_source' => 'net',
-					'shop_secret' => '',
-					'shop_limit' => '20',
-					'shop_category' => '',
-					'shop_subcategory' => '',
-					'shop_social' => 1,
-					'shop_enablelink' => 1,
-					'shop_productcategory' => '',
-					'shop_sortby' => '',
-					'shop_linktarget' => '_blank',
-					'shop_checkoutiframe' => 0,
-					'shop_designershop' => 0,
-					'shop_display' => 0,
-					'shop_designsbackground' => 0
-			), $atts);
 
-			self::$shopId = intval($sc['shop_id']);
-			self::$shopApi = $sc['shop_api'];
-			self::$shopSecret = $sc['shop_secret'];
-			self::$shopLimit = intval($sc['shop_limit']);
-			self::$shopLocale = $sc['shop_locale'];
-			self::$apiUrl = $sc['shop_source'];
-			self::$shopCategoryId = intval($sc['shop_category']);
-			self::$shopSocialEnabled = intval($sc['shop_social']);
-			self::$shopLinkEnabled = intval($sc['shop_enablelink']);
-			self::$shopProductCategory = $sc['shop_productcategory'];
-			self::$shopProductSubCategory = $sc['shop_productsubcategory'];
-			self::$shopArticleSort = $sc['shop_sortby'];
-			self::$shopLinkTarget = $sc['shop_linktarget'];
-			self::$shopCheckoutIframe = $sc['shop_checkoutiframe'];
-			self::$shopDesignerShopId = intval($sc['shop_designershop']);
-			self::$shopDisplay = intval($sc['shop_display']);
-			self::$shopDesignsBackground = intval($sc['shop_designsbackground']);
+			// setting vars
+			self::$shopId = intval($conOp['shop_id']);
+			self::$shopApi = $conOp['shop_api'];
+			self::$shopSecret = $conOp['shop_secret'];
+			self::$shopLimit = (empty($conOp['shop_limit'])?20:intval($conOp['shop_limit']));
+			self::$shopLocale = (($conOp['shop_locale']=='' || $conOp['shop_locale']=='de_DE') && $conOp['shop_source']=='com'?'us_US':$conOp['shop_locale']); // Workaround for older versions of this plugin
+			self::$apiUrl = $conOp['shop_source'];
+			self::$shopCategoryId = intval($conOp['shop_category']);
+			self::$shopSocialEnabled = intval($conOp['shop_social']);
+			self::$shopLinkEnabled = intval($conOp['shop_enablelink']);
+			self::$shopProductCategory = $conOp['shop_productcategory'];
+			self::$shopProductSubCategory = $conOp['shop_productsubcategory'];
+			self::$shopArticleSort = $conOp['shop_sortby'];
+			self::$shopLinkTarget = $conOp['shop_linktarget'];
+			self::$shopCheckoutIframe = intval($conOp['shop_checkoutiframe']);
+			self::$shopDesignerShopId = intval($conOp['shop_designershop']);
+			self::$shopDisplay = intval($conOp['shop_display']);
+			self::$shopDesignsBackground = intval($conOp['shop_designsbackground']);
 
 
 			if (isset($_GET['productCategory'])) {
@@ -1078,14 +1101,28 @@ if(!class_exists('WP_Spreadplugin')) {
 			*/
 			$pageData = get_page(intval($_GET['pageid']));
 			$pageContent = $pageData->post_content;
-			$sc = shortcode_parse_atts(str_replace("[spreadplugin",'',str_replace("]","",$pageContent)));
+						
+			// get admin options (default option set on admin page)
+			$conOp = $this->getAdminOptions();
+			
+			// shortcode overwrites admin options (default option set on admin page) if available
+			$arrSc = shortcode_parse_atts(str_replace("[spreadplugin",'',str_replace("]","",$pageContent)));
+			
+			// replace options by shortcode if set
+			if (!empty($arrSc)) {
+				foreach ($arrSc as $key => $option) {
+					if ($option != '') {
+						$conOp[$key] = $option;
+					}
+				}
+            }
 
-			self::$shopId = intval($sc['shop_id']);
-			self::$shopApi = $sc['shop_api'];
-			self::$shopSecret = $sc['shop_secret'];
-			self::$shopLimit = intval($sc['shop_limit']);
-			self::$shopLocale = $sc['shop_locale'];
-			self::$apiUrl = (empty($sc['shop_source'])?'net':$sc['shop_source']);
+			self::$shopId = intval($conOp['shop_id']);
+			self::$shopApi = $conOp['shop_api'];
+			self::$shopSecret = $conOp['shop_secret'];
+			self::$shopLimit = intval($conOp['shop_limit']);
+			self::$shopLocale = (($conOp['shop_locale']=='' || $conOp['shop_locale']=='de_DE') && $conOp['shop_source']=='com'?'us_US':$conOp['shop_locale']); // Workaround for older versions of this plugin
+			self::$apiUrl = (empty($conOp['shop_source'])?'net':$conOp['shop_source']);
 
 
 			// create an new basket if not exist
@@ -1149,7 +1186,7 @@ if(!class_exists('WP_Spreadplugin')) {
 		*/
 		public function addPluginPage(){
 			// Create menu tab
-			add_options_page('Set Spreadplugin options', 'Spreadplugin Options', 'manage_options', 'spg_options', array($this, 'pageOptions'));
+			add_options_page('Set Spreadplugin options', 'Spreadplugin Options', 'manage_options', 'splg_options', array($this, 'pageOptions'));
 		}
 		
 		// register values
@@ -1183,7 +1220,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			if (!$this_plugin) $this_plugin = plugin_basename(__FILE__);
 
 			if ($file == $this_plugin){
-				$settings_link = '<a href="options-general.php?page=spg_options">'.__("Settings", $this->stringTextdomain) .'</a>';
+				$settings_link = '<a href="options-general.php?page=splg_options">'.__("Settings", $this->stringTextdomain) .'</a>';
 				array_unshift($links, $settings_link);
 			}
 			
@@ -1209,7 +1246,18 @@ if(!class_exists('WP_Spreadplugin')) {
 		}
 
 
-
+		
+		public function getAdminOptions() {
+			$scOptions = $this->defaultOptions;
+			$splgOptions = get_option('splg_options');
+			if (!empty($splgOptions)) {
+				foreach($splgOptions as $key => $option) {
+					$scOptions[$key] = $option;
+				}
+			}
+			
+			return $scOptions;
+		}
 
 
 

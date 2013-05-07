@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: spreadshirt,wordpress,plugin,shop
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 2.2.2
+Stable tag: 2.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -35,6 +35,7 @@ The pagination is done via infinity scroll.
 * Sorting and filtering
 * Adding the products to the basket without page reload
 * Choose between article or designs display (click on a design shows the articles)
+* Settings page/Admin page for easy configuration
 
 **See it in action**
 
@@ -59,17 +60,23 @@ https://twitter.com/Pr3ssplay_de
 
 1. Upload the spreadplugin directory to the `/wp-content/plugins/wp-spreadplugin` Directory (if not exists please create) or install using wordpress plugin installer
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Create a new site or edit an existing site
-4. Insert shortcode
+3. Edit settings using `http://YOURBLOGURL/wp-admin/options-general.php?page=splg_options`.
+4. Create a new site or edit an existing site
+5. Insert shortcode
 
-**US/NA**
+**Minimum**
+[spreadplugin]
+
+**Extended**
+US/NA:
 `[spreadplugin shop_id="414192" shop_limit="20" shop_locale="" shop_source="com" shop_category="" shop_social="1" shop_enablelink="1" shop_productcategory="" shop_checkoutiframe="2" shop_sortby="" shop_designershop="0" shop_display="0" shop_api="" shop_secret=""]`
 
-**EU/DE/FR**
+EU:
 `[spreadplugin shop_id="732552" shop_limit="20" shop_locale="de_DE" shop_source="net" shop_category="" shop_social="1" shop_enablelink="1" shop_productcategory="" shop_checkoutiframe="2" shop_sortby="" shop_designershop="0" shop_display="0" shop_api="" shop_secret=""]`
 
-5. Insert Shop ID, Shop API (Spreadshirt API Key) and Shop secret (Spreadshirt Secret)
-6. Done (you may modify the layout using the separate css file in the spreadplugin Folder)
+6. When adding default settings, only the minimum shortcode is required. 
+(If you extend the shortcode with additional values, you can overwrite the default settings and use the plugin with a different shop (add the extended shortcode to a different article/site)).
+7. Done (you may modify the layout using the separate css file in the spreadplugin Folder)
 
 == Frequently asked questions ==
 
@@ -124,7 +131,7 @@ Add or change in the [spreadplugin] code the value from `shop_checkoutiframe="0"
 
 = How to default sort? =
 
-Add or change in the [spreadplugin] code the value from `shop_sortby=""` to `shop_sortby="name"`. Available sort options are name, price, recent
+Add or change in the `[spreadplugin]` code the value from `shop_sortby=""` to `shop_sortby="name"`. Available sort options are name, price, recent
 
 = I get following error, when I add an article to the basket: "ERROR: Basket not ready yet." =
 
@@ -136,11 +143,16 @@ Activate by changing shop_designershop="0" to shop_designershop="[DESIGNERSHOPID
 
 = How to active designs view? =
 
-Activate by changing shop_display="0" to shop_display="1".
+Activate by changing shop_display="0" to shop_display="1" or change it in the admin panel.
 
 = It shows old articles =
 
-Please go to the settings page in the admin panel of the plugin and click "Clear cache"
+Please go to the settings page in the admin panel of the plugin and click "Clear cache". 
+
+= I want to use more than one shop on the same website =
+
+Please use the extended shortcode. 
+This will overwrite the default plugin settings just for the page, where you have added this shortcode.
 
 == Screenshots ==
 
@@ -149,8 +161,16 @@ Please go to the settings page in the admin panel of the plugin and click "Clear
 3. Screenshot 3
 4. Design view
 5. Article view
+6. Settings page
 
 == Changelog ==
+
+= 2.5 =
+* Settings page will now be used for all default settings. If you configure default settings, you'll just need the minimum shortcode `[spreadplugin]`. 
+If you extend your shortcode with additional settings, they will be used! All existing shortcodes may stay untouched at least your shop_locale is not empty.
+If you receive a locale error, please add shop_locale="us_US" to your shortcode. Please refer `http://wordpress.org/extend/plugins/wp-spreadplugin/installation/`.
+* Bugfix
+* Please save your old css file. If it's from Version 2.2.x you can reuse it in 2.5.
 
 = 2.2.1 =
 * Sorting added 'weight'

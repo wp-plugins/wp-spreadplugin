@@ -22,6 +22,7 @@ function bindClick() {
 	jQuery('#spreadshirt-items .views li').unbind();
 	jQuery('#spreadshirt-items .description-wrapper div.header').unbind();
 	jQuery('.spreadshirt-design .image-wrapper').unbind();
+	jQuery('.spreadshirt-article form').unbind();
 
 	jQuery('#spreadshirt-items .colors li').click(
 			function() {
