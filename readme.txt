@@ -71,7 +71,7 @@ https://twitter.com/Pr3ssplay_de
 **Extended**
 
 US/NA:
-`[spreadplugin shop_id="414192" shop_limit="20" shop_locale="" shop_source="com" shop_category="" shop_social="1" shop_enablelink="1" shop_productcategory="" shop_checkoutiframe="2" shop_sortby="" shop_designershop="0" shop_display="0" shop_api="" shop_secret=""]`
+`[spreadplugin shop_id="414192" shop_limit="20" shop_locale="us_US" shop_source="com" shop_category="" shop_social="1" shop_enablelink="1" shop_productcategory="" shop_checkoutiframe="2" shop_sortby="" shop_designershop="0" shop_display="0" shop_api="" shop_secret=""]`
 
 EU:
 `[spreadplugin shop_id="732552" shop_limit="20" shop_locale="de_DE" shop_source="net" shop_category="" shop_social="1" shop_enablelink="1" shop_productcategory="" shop_checkoutiframe="2" shop_sortby="" shop_designershop="0" shop_display="0" shop_api="" shop_secret=""]`
