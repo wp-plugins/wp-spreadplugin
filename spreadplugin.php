@@ -109,8 +109,6 @@ if(!class_exists('WP_Spreadplugin')) {
 				add_action('admin_menu', array($this, 'addPluginPage'));
 				add_filter('plugin_action_links', array($this, 'addPluginSettingsLink'), 10, 2 );
 			}
-			
-			register_activation_hook(__FILE__, array($this, 'activate'));
 
 		}
 
@@ -1207,7 +1205,7 @@ if(!class_exists('WP_Spreadplugin')) {
 		// Ajax delete the transient
 		public function doRegenerateCache() {
 			global $wpdb;
-			$wpdb->query("DELETE FROM `".$wpdb->options."` WHERE `option_name` LIKE '_transient_spreadplugin2-%-cache%'");
+			$wpdb->query("DELETE FROM `".$wpdb->options."` WHERE `option_name` LIKE '_transient_%spreadplugin2-%-cache%");
 			die();
 		}
 

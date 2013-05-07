@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Spreadplugin\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-05-07 18:25+0100\n"
-"PO-Revision-Date: 2013-05-07 18:26+0100\n"
+"PO-Revision-Date: 2013-05-07 22:16+0100\n"
 "Last-Translator: Thimo Grauerholz <info@pr3ss-play.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -111,7 +111,7 @@ msgstr "Standardanzeige:"
 
 #: options.php:128
 msgid "Articles"
-msgstr "Artikel anpassen"
+msgstr "Artikel"
 
 #: options.php:131
 msgid "Designs"
