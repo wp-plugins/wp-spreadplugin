@@ -103,7 +103,16 @@ if (is_user_logged_in() && is_admin()) {
     </tr>
     <tr>
       <td valign="top"><?php _e('Default sorting:','spreadplugin'); ?></td>
-      <td><input type="text" name="shop_sortby" value="<?php echo $adminOptions['shop_sortby']; ?>" /></td>
+      <td><select name="shop_sortby" id="shop_sortby">
+          <option></option>
+          <?php if (!empty(self::$shopArticleSortOptions)) {
+		  foreach (self::$shopArticleSortOptions as $val) {
+			  ?>
+          <option value="<?php echo $val; ?>"<?php echo ($adminOptions['shop_sortby']==$val?" selected":"") ?>><?php echo $val; ?></option>
+          <?php }
+	  }
+	  ?>
+        </select></td>
     </tr>
     <tr>
       <td valign="top"><?php _e('Target of links:','spreadplugin'); ?></td>
@@ -112,9 +121,11 @@ if (is_user_logged_in() && is_admin()) {
     <tr>
       <td valign="top"><?php _e('Use iframe for checkout:','spreadplugin'); ?></td>
       <td><input type="radio" name="shop_checkoutiframe" value="0"<?php echo ($adminOptions['shop_checkoutiframe']==0?" checked":"") ?> />
-        <?php _e('Opens in separate window','spreadplugin'); ?><br />
+        <?php _e('Opens in separate window','spreadplugin'); ?>
+        <br />
         <input type="radio" name="shop_checkoutiframe" value="1"<?php echo ($adminOptions['shop_checkoutiframe']==1?" checked":"") ?> />
-        <?php _e('Opens an iframe in the page content','spreadplugin'); ?><br />
+        <?php _e('Opens an iframe in the page content','spreadplugin'); ?>
+        <br />
         <input type="radio" name="shop_checkoutiframe" value="2"<?php echo ($adminOptions['shop_checkoutiframe']==2?" checked":"") ?> />
         <?php _e('Opens an iframe in a modal window (fancybox)','spreadplugin'); ?></td>
     </tr>
@@ -151,7 +162,9 @@ if (is_user_logged_in() && is_admin()) {
   <h4>
     <?php _e('Extended sample shortcode','spreadplugin'); ?>
   </h4>
-  <p><?php _e('The extended shortcodes will overwrite the default settings.'); ?></p>
+  <p>
+    <?php _e('The extended shortcodes will overwrite the default settings.'); ?>
+  </p>
   <p><strong>US/NA</strong><br />
     [spreadplugin shop_id=&quot;414192&quot; shop_limit=&quot;20&quot; shop_locale=&quot;us_US&quot; shop_source=&quot;com&quot; shop_category=&quot;&quot; shop_social=&quot;1&quot; shop_enablelink=&quot;1&quot; shop_productcategory=&quot;&quot; shop_checkoutiframe=&quot;2&quot; shop_sortby=&quot;&quot; shop_designershop=&quot;0&quot; shop_display=&quot;0&quot; shop_api=&quot;&quot; shop_secret=&quot;&quot;]</p>
   <p><strong>EU (DE,...)</strong><br />

@@ -45,7 +45,7 @@ if(!class_exists('WP_Spreadplugin')) {
 		private static $shopDesignerShopId;
 		private static $shopDesignsBackground;
 		private static $shopImgSize = '190';
-		private static $shopArticleSortOptions = array("name","price","recent","weight");
+		public static $shopArticleSortOptions = array("name","price","recent","weight");
 		public $defaultOptions = array(
 				'shop_id' => '',
 				'shop_locale' => '',
