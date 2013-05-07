@@ -151,8 +151,6 @@ function bindClick() {
 							'slow', function() {
 								jQuery(this).removeClass('active');
 							});
-					// jQuery(id).hide();
-					// jQuery(id).removeClass('active');
 				}
 
 			});
@@ -160,21 +158,6 @@ function bindClick() {
 }
 
 function bindHover() {
-
-	// Designs
-	// hovering disabled for designs
-	/*
-	 * jQuery('.spreadshirt-design img.preview').mouseenter(function() { var id =
-	 * jQuery(this).attr('id'); id = '#' + id.replace('previewdesignimg',
-	 * 'compositedesignimg'); if (jQuery(this).is(':visible')) {
-	 * jQuery(this).hide(); jQuery(id).show(); } });
-	 * 
-	 * jQuery('.spreadshirt-design').mouseleave(function() { var id =
-	 * jQuery(this).attr('id'); id = id.replace('design_', '');
-	 * 
-	 * jQuery('#' + 'compositedesignimg_' + id).hide(); jQuery('#' +
-	 * 'previewdesignimg_' + id).show(); });
-	 */
 
 	// display image caption on top of image
 	jQuery(".spreadshirt-design div.image-wrapper").each(
@@ -207,20 +190,6 @@ function bindHover() {
 		jQuery('#' + 'compositeimg' + id).hide();
 		jQuery('#' + 'previewimg' + id).show();
 	});
-
-	if (socialButtonsEnabled == true) {
-		jQuery('#spreadshirt-items .fb-like').hover(
-				function() {
-					jQuery('meta[property=\"og:title\"]').attr('content',
-							jQuery(this).parent().parent().find('h3').html());
-					jQuery('meta[property=\"og:url\"]').attr('content',
-							jQuery(this).attr('data-href'));
-					jQuery('meta[property=\"og:image\"]').attr(
-							'content',
-							jQuery(this).parent().parent().find('.preview')
-									.attr('src'));
-				});
-	}
 
 }
 
@@ -279,11 +248,6 @@ jQuery('#spreadshirt-list').infinitescroll({
 }, function(arrayOfNewElems) {
 	bindClick();
 	bindHover();
-
-	if (socialButtonsEnabled == true) {
-		FB.XFBML.parse();
-		twttr.widgets.load();
-	}
 });
 
 jQuery('#spreadshirt-items #productCategory').change(

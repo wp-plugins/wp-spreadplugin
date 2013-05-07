@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 2.5
+ * Version: 2.6
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
  */
@@ -81,9 +81,6 @@ if(!class_exists('WP_Spreadplugin')) {
 
 			add_action('wp_footer', array($this,'loadScripts'));
 
-			add_action('wp_head', array($this,'socialHead'));
-			add_action('wp_footer', array($this,'socialFooter'));
-
 			// Ajax actions
 			add_action('wp_ajax_nopriv_myAjax',array($this,'doAjax'));
 			add_action('wp_ajax_myAjax',array($this,'doAjax'));
@@ -105,7 +102,6 @@ if(!class_exists('WP_Spreadplugin')) {
 
 			// admin check
 			if(is_admin()){
-				add_action('admin_init', array($this, 'initPluginPage'));
 				add_action('admin_menu', array($this, 'addPluginPage'));
 				add_filter('plugin_action_links', array($this, 'addPluginSettingsLink'), 10, 2 );
 			}
@@ -128,14 +124,6 @@ if(!class_exists('WP_Spreadplugin')) {
 			}
 
 		}
-
-
-		/**
-		 * Activate Plugin 
-        function activate() {
-			 update_option("splg_options", $this->getAdminOptions());
-        }
-		*/
 
 
 		/**
@@ -401,7 +389,6 @@ if(!class_exists('WP_Spreadplugin')) {
 					$output .= "
 					<div id=\"pagination\"><a href=\"".get_pagenum_link($paged + 1)."\">".__('next', $this->stringTextdomain)."</a></div>
 					<!-- <div id=\"copyright\">Copyright (c) Thimo Grauerholz - <a href=\"http://www.pr3ss-play.de\">pr3ss-play - Dein Shirt-Shop für geile Party T-shirts!</a></div> -->
-					<div id=\"fb-root\"></div>
 					</div>";
 				}
 
@@ -690,9 +677,12 @@ if(!class_exists('WP_Spreadplugin')) {
 
 			// Social buttons
 			if (self::$shopSocialEnabled==true) {
-				$output .= '<a href="//pinterest.com/pin/create/button/?url='.get_page_link().'&media=' . $article['resource0'] . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'&description='.(!empty($article['description'])?htmlspecialchars($article['description'],ENT_QUOTES):'Product').'" target="pinterest" data-pin-do="buttonPin" data-pin-config="beside" class="pinterest-share-button"><img src="//assets.pinterest.com/images/pidgets/pin_it_button.png" /></a>';
-				$output .= '<a href="//twitter.com/share" class="twitter-share-button" data-url="'.get_page_link().'#'.$id.'" data-count="none" data-text="'.(!empty($article['description'])?htmlspecialchars($article['description'],ENT_QUOTES):'Product').'" data-lang="'.(!empty(self::$shopLocale)?substr(self::$shopLocale,0,2):'en').'">Tweet</a>';
-				$output .= '<div class="fb-like" data-href="'.get_page_link().'#'.$id.'" data-send="false" data-layout="button_count" data-show-faces="false"></div>';
+				$output .= '<ul class="social-buttons">';
+				$output .= '<li><a href="//www.facebook.com/sharer.php?u='.urlencode(get_page_link().'#'.$id).'&t='.rawurlencode(get_the_title()).'" target="_blank" title="Facebook"><img src="'.plugins_url('/img/facebook.png', __FILE__).'"></a></li>';
+				$output .= '<li><a href="//twitter.com/home?status='.rawurlencode(get_the_title()).' - '.urlencode(get_page_link().'#'.$id).'" target="_blank" title="Twitter"><img src="'.plugins_url('/img/twitter.png', __FILE__).'"></a></li>';
+				$output .= '<li><a href="//pinterest.com/pin/create/button/?url='.get_page_link().'&media=' . $article['resource0'] . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'&description='.(!empty($article['description'])?htmlspecialchars($article['description'],ENT_QUOTES):'Product').'" target="pinterest" data-pin-do="buttonPin" data-pin-config="beside"><img src="'.plugins_url('/img/pinterest.png', __FILE__).'"></a></li>';
+				$output .= '<li><a href="mailto:?subject=Artikel auf '.rawurlencode(get_bloginfo('url')).': '.rawurlencode(get_the_title()).'&body='.urlencode(get_page_link().'#'.$id).'" title="Per E-Mail weiterleiten"><img src="'.plugins_url('/img/email.png', __FILE__).'"></a></li>';
+				$output .= '</ul>';
 			}
 			
 			$output .= '
@@ -1020,7 +1010,6 @@ if(!class_exists('WP_Spreadplugin')) {
 			var loadingImage = '".plugins_url('/img/loading.gif', __FILE__)."';
 			var loadingMessage = '".__('Loading new articles...', $this->stringTextdomain)."';
 			var loadingFinishedMessage = '".__('You have reached the end', $this->stringTextdomain)."';
-			var socialButtonsEnabled = ".self::$shopSocialEnabled.";
 			var pageLink = '".get_page_link()."';
 			var pageCheckoutUseIframe = ".self::$shopCheckoutIframe.";
 			var textButtonAdd = '".__('Add to basket', $this->stringTextdomain)."';
@@ -1050,33 +1039,6 @@ if(!class_exists('WP_Spreadplugin')) {
 			return str_replace('http:','',$url);
 		}
 		
-		
-
-		/**
-		 * Function socialHead
-		 *
-		 * gets replaced on facebook button hover
-		 *
-		 */
-		public function socialHead() {
-			if (self::$shopSocialEnabled==true) echo '
-			<meta property="og:title" content="" />
-			<meta property="og:url" content="" />
-			<meta property="og:image" content="" />
-			';
-		}
-
-
-		/**
-		 * Function socialFooter
-		 */
-		public function socialFooter() {
-			if (self::$shopSocialEnabled==true) echo '
-			<script src="//connect.facebook.net/'.(!empty(self::$shopLocale)?self::$shopLocale:'en_US').'/all.js#xfbml=1"></script>
-			<script src="//platform.twitter.com/widgets.js"></script>
-			';
-		}
-
 
 		/**
 		 * Function doAjax
@@ -1187,11 +1149,6 @@ if(!class_exists('WP_Spreadplugin')) {
 			add_options_page('Set Spreadplugin options', 'Spreadplugin Options', 'manage_options', 'splg_options', array($this, 'pageOptions'));
 		}
 		
-		// register values
-		public function initPluginPage() {
-			// register_setting('spreadplugin-plugin_options', 'test_val');
-		}
-		
 		// call page options
 		public function pageOptions(){
 			if (!current_user_can('manage_options')){
@@ -1244,7 +1201,7 @@ if(!class_exists('WP_Spreadplugin')) {
 		}
 
 
-		
+		// read admin options
 		public function getAdminOptions() {
 			$scOptions = $this->defaultOptions;
 			$splgOptions = get_option('splg_options');

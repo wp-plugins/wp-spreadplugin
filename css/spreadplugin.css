@@ -158,21 +158,6 @@ pre, code {
 .spreadshirt-article #price-with-tax {
 /*	display:none; */
 }
-.spreadshirt-article .fb-like, .spreadshirt-article .twitter-share-button, .spreadshirt-article .pinterest-share-button {
-	/*	display:none; */
-	float: left;
-	margin: 2px;
-}
-.spreadshirt-article .fb-like {
-	/*	display:none; */
-	min-width: 150px;
-}
-.spreadshirt-article .twitter-share-button {
-/*	display:none; */
-}
-.spreadshirt-article .pinterest-share-button {
-/*	display:none; */
-}
 .spreadshirt-items #size-select {
 	width: 80px
 }
@@ -253,3 +238,13 @@ pre, code {
 .spreadshirt-menu #checkout {
 	float: right;
 }
+.spreadshirt-items .social-buttons li {
+	list-style: none outside none;
+	float:left;
+	display: inline;
+	padding: 0;
+	margin-left: 4px;
+}
+
+
+
