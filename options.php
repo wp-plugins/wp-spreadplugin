@@ -112,11 +112,11 @@ if (is_user_logged_in() && is_admin()) {
     <tr>
       <td valign="top"><?php _e('Use iframe for checkout:','spreadplugin'); ?></td>
       <td><input type="radio" name="shop_checkoutiframe" value="0"<?php echo ($adminOptions['shop_checkoutiframe']==0?" checked":"") ?> />
-        Opens in separate window<br />
+        <?php _e('Opens in separate window','spreadplugin'); ?><br />
         <input type="radio" name="shop_checkoutiframe" value="1"<?php echo ($adminOptions['shop_checkoutiframe']==1?" checked":"") ?> />
-        Opens an iframe in the page content<br />
+        <?php _e('Opens an iframe in the page content','spreadplugin'); ?><br />
         <input type="radio" name="shop_checkoutiframe" value="2"<?php echo ($adminOptions['shop_checkoutiframe']==2?" checked":"") ?> />
-        Opens an iframe in a modal window (fancybox)</td>
+        <?php _e('Opens an iframe in a modal window (fancybox)','spreadplugin'); ?></td>
     </tr>
     <tr>
       <td valign="top"><?php _e('Designer Shop id:','spreadplugin'); ?></td>

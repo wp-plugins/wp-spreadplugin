@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spreadplugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-07 17:39+0100\n"
-"PO-Revision-Date: 2013-05-07 17:39+0100\n"
+"POT-Creation-Date: 2013-05-07 18:25+0100\n"
+"PO-Revision-Date: 2013-05-07 18:26+0100\n"
 "Last-Translator: Thimo Grauerholz <info@pr3ss-play.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -65,11 +65,11 @@ msgstr "Artikel Kategorie:"
 msgid "Social plugins:"
 msgstr "Social Pugins:"
 
-#: options.php:91 options.php:99 options.php:136
+#: options.php:91 options.php:99 options.php:137
 msgid "Disabled"
 msgstr "Deaktivieren"
 
-#: options.php:94 options.php:102 options.php:139
+#: options.php:94 options.php:102 options.php:140
 msgid "Enabled"
 msgstr "Aktivieren"
 
@@ -89,6 +89,18 @@ msgstr "Link Ziel:"
 msgid "Use iframe for checkout:"
 msgstr "Iframe für Warenkorb benutzen:"
 
+#: options.php:115
+msgid "Opens in separate window"
+msgstr "Im separaten Fenster öffnen"
+
+#: options.php:117
+msgid "Opens an iframe in the page content"
+msgstr "Im Iframe innerhalb der Seite öffnen"
+
+#: options.php:119
+msgid "Opens an iframe in a modal window (fancybox)"
+msgstr "In einem Modal-Fenster öffnen (fancybox)"
+
 #: options.php:122
 msgid "Designer Shop id:"
 msgstr "Designer-Shop ID:"
@@ -105,41 +117,41 @@ msgstr "Artikel anpassen"
 msgid "Designs"
 msgstr "Motive"
 
-#: options.php:134
+#: options.php:135
 msgid "Designs with background:"
 msgstr "Motive mit Hintergrund:"
 
-#: options.php:143
+#: options.php:145
 msgid "Update settings"
 msgstr "Einstellungen aktualisieren"
 
-#: options.php:146
+#: options.php:148
 msgid "Minimum required shortcode"
 msgstr "Minimal erforderlicher Shortcode"
 
-#: options.php:150
+#: options.php:152
 msgid "Extended sample shortcode"
 msgstr "Beispiel erweiterter Shortcode"
 
-#: options.php:152
+#: options.php:154
 msgid "The extended shortcodes will overwrite the default settings."
 msgstr ""
 "Der erweiterte Shortcode überschreibt die Standardeinstellungen nur für die "
 "Seite, wo dieser eingegeben wurde."
 
-#: options.php:161
+#: options.php:163
 msgid "Options"
 msgstr "Optionen"
 
-#: options.php:164
+#: options.php:166
 msgid "Clear cache"
 msgstr "Cache leeren"
 
-#: options.php:186
+#: options.php:188
 msgid "Successfully cleared the cache"
 msgstr "Cache erfolgreich geleert"
 
-#: options.php:212
+#: options.php:214
 msgid "Successfully saved settings"
 msgstr "Einstellungen gespeichert"
 

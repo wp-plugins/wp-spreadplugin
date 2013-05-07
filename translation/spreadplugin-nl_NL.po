@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spreadplugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-07 17:39+0100\n"
-"PO-Revision-Date: 2013-05-07 17:40+0100\n"
+"POT-Creation-Date: 2013-05-07 18:26+0100\n"
+"PO-Revision-Date: 2013-05-07 18:26+0100\n"
 "Last-Translator: Thimo Grauerholz <info@pr3ss-play.de>\n"
 "Language-Team: \n"
 "Language: nl_NL\n"
@@ -63,11 +63,11 @@ msgstr ""
 msgid "Social plugins:"
 msgstr ""
 
-#: options.php:91 options.php:99 options.php:136
+#: options.php:91 options.php:99 options.php:137
 msgid "Disabled"
 msgstr ""
 
-#: options.php:94 options.php:102 options.php:139
+#: options.php:94 options.php:102 options.php:140
 msgid "Enabled"
 msgstr ""
 
@@ -87,6 +87,18 @@ msgstr ""
 msgid "Use iframe for checkout:"
 msgstr ""
 
+#: options.php:115
+msgid "Opens in separate window"
+msgstr ""
+
+#: options.php:117
+msgid "Opens an iframe in the page content"
+msgstr ""
+
+#: options.php:119
+msgid "Opens an iframe in a modal window (fancybox)"
+msgstr ""
+
 #: options.php:122
 msgid "Designer Shop id:"
 msgstr ""
@@ -103,39 +115,39 @@ msgstr ""
 msgid "Designs"
 msgstr ""
 
-#: options.php:134
+#: options.php:135
 msgid "Designs with background:"
 msgstr ""
 
-#: options.php:143
+#: options.php:145
 msgid "Update settings"
 msgstr ""
 
-#: options.php:146
+#: options.php:148
 msgid "Minimum required shortcode"
 msgstr ""
 
-#: options.php:150
+#: options.php:152
 msgid "Extended sample shortcode"
 msgstr ""
 
-#: options.php:152
+#: options.php:154
 msgid "The extended shortcodes will overwrite the default settings."
 msgstr ""
 
-#: options.php:161
+#: options.php:163
 msgid "Options"
 msgstr ""
 
-#: options.php:164
+#: options.php:166
 msgid "Clear cache"
 msgstr ""
 
-#: options.php:186
+#: options.php:188
 msgid "Successfully cleared the cache"
 msgstr ""
 
-#: options.php:212
+#: options.php:214
 msgid "Successfully saved settings"
 msgstr ""
 
