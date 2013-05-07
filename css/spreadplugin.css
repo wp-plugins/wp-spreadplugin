@@ -22,10 +22,10 @@ pre, code {
 	white-space: normal;
 }
 .spreadshirt-items a {
-	color:#000;	
+	color: #000;
 }
 .spreadshirt-items a:hover {
-	text-decoration:underline;	
+	text-decoration: underline;
 }
 .spreadshirt-design {
 	min-height: 300px;
@@ -146,10 +146,10 @@ pre, code {
 	box-shadow: none;
 }
 #spreadshirt-list {
-    display: inline-block;
-    padding-top: 20px;
-    position: relative;
-	width:100%;
+	display: inline-block;
+	padding-top: 20px;
+	position: relative;
+	width: 100%;
 }
 /* display or hide prices */
 .spreadshirt-article #price-without-tax {
@@ -199,13 +199,13 @@ pre, code {
 }
 .spreadshirt-design .img-caption {
 	background: #fff;
-	color:#000;
-	display:none;
-	padding:2px;
-	width:190px;
-	position:relative;
-	left:0;
-	overflow:hidden;
+	color: #000;
+	display: none;
+	padding: 2px;
+	width: 190px;
+	position: relative;
+	left: 0;
+	overflow: hidden;
 	height: 50px;
 	/* opacity setting */
 	filter: alpha(opacity=80);    /* ie  */
@@ -213,24 +213,34 @@ pre, code {
 	-khtml-opacity: 0.8;    /* for really really old safari */
 	opacity: 0.8;    /* css standard, currently it works in most modern browsers like firefox,  */
 }
-
-
-
-
-
 /* spreadshirt-menu */
-.spreadshirt-menu { position: relative; z-index: 999; padding: 10px; width: 100%; margin:0; top: 0; background: white; *left: 0; display:inline-block; }
-.spreadshirt-menu.fixed { position: fixed; top: 0; width: 100%; max-width: 960px;border: 1px solid #DBDBDB; box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);}
-
-.spreadshirt-menu #productCategory,.spreadshirt-menu #productSubCategory,.spreadshirt-menu #articleSortBy,.spreadshirt-menu #checkout  {
+.spreadshirt-menu {
 	position: relative;
-	float:left;
-	margin-right:10px;
+	z-index: 999;
+	padding: 10px;
+	width: 100%;
+	margin: 0;
+	top: 0;
+	background: white;
+*left: 0;
+	display: inline-block;
+}
+.spreadshirt-menu.fixed {
+	position: fixed;
+	top: 0;
+	width: 100%;
+	border: 1px solid #DBDBDB;
+	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+.spreadshirt-menu #productCategory, .spreadshirt-menu #productSubCategory, .spreadshirt-menu #articleSortBy, .spreadshirt-menu #checkout {
+	position: relative;
+	float: left;
+	margin-right: 10px;
 }
 .spreadshirt-menu #productCategory {
 	/*	display:none; */
 	width: 150px;
-	margin-left:10px;
+	margin-left: 10px;
 }
 .spreadshirt-menu #productSubCategory {
 	/*	display:none; */
@@ -241,9 +251,5 @@ pre, code {
 	width: 100px;
 }
 .spreadshirt-menu #checkout {
-	float:right;
+	float: right;
 }
-
-
-
-
