@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: spreadshirt,wordpress,plugin,shop
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 2.6.2
+Stable tag: 2.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -171,6 +171,11 @@ Please replace them with your own by locating the spreadplugin-plugin directory 
 6. Settings page
 
 == Changelog ==
+
+= 2.7 =
+* New kick-ass retina social buttons
+* Clean-up release
+* Maybe the last release
 
 = 2.6.2 =
 * Bugfixes (Sorting reverted, can't solve it yet)

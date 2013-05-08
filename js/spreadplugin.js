@@ -95,25 +95,38 @@ function bindClick() {
 				}
 			});
 
-	jQuery('.spreadshirt-article form').submit(function(event) {
+	jQuery('.spreadshirt-article form')
+			.submit(
+					function(event) {
 
-		event.preventDefault();
-		var data = jQuery(this).serialize() + '&action=myAjax';
-		var form = this;
-		var button = jQuery('#' + form.id + ' input[type=submit]');
+						event.preventDefault();
+						var data = jQuery(this).serialize() + '&action=myAjax';
+						var form = this;
+						var button = jQuery('#' + form.id
+								+ ' input[type=submit]');
 
-		button.val(textButtonAdded);
+						button.val(textButtonAdded);
 
-		jQuery.post(ajaxLocation, data, function(json) {
-			button.val(textButtonAdd);
-			jQuery('#spreadshirt-items #spreadshirt-menu #checkout a').attr('href', json.c.u);
-			jQuery('#spreadshirt-items #spreadshirt-menu #checkout a').removeAttr('title');
-			jQuery('#spreadshirt-items #spreadshirt-menu #checkout span').text(json.c.q);
-		}, 'json');
+						jQuery
+								.post(
+										ajaxLocation,
+										data,
+										function(json) {
+											button.val(textButtonAdd);
+											jQuery(
+													'#spreadshirt-items #spreadshirt-menu #checkout a')
+													.attr('href', json.c.u);
+											jQuery(
+													'#spreadshirt-items #spreadshirt-menu #checkout a')
+													.removeAttr('title');
+											jQuery(
+													'#spreadshirt-items #spreadshirt-menu #checkout span')
+													.text(json.c.q);
+										}, 'json');
 
-		return false;
+						return false;
 
-	});
+					});
 
 	jQuery('.spreadshirt-article #editArticle').fancybox({
 		type : 'iframe',
@@ -163,13 +176,22 @@ function bindHover() {
 	jQuery(".spreadshirt-design div.image-wrapper").each(
 			function() {
 
-				jQuery(this)
-						.hover(
-								function() {
-									jQuery(this).find(".img-caption").stop(true).css('display','inline-block').animate({ 'top': -50 }, { queue: false, duration: 400 });
-								}, function() {
-									jQuery(this).find(".img-caption").stop(true).hide().animate({ 'top': 0 });
-								});
+				jQuery(this).hover(
+						function() {
+							jQuery(this).find(".img-caption").stop(true).css(
+									'display', 'inline-block').animate({
+								'top' : -50
+							}, {
+								queue : false,
+								duration : 400
+							});
+						},
+						function() {
+							jQuery(this).find(".img-caption").stop(true).hide()
+									.animate({
+										'top' : 0
+									});
+						});
 			});
 
 	// Articles
@@ -191,46 +213,54 @@ function bindHover() {
 		jQuery('#' + 'previewimg' + id).show();
 	});
 
+	jQuery('.spreadshirt-items ul.soc-icons a').hover(
+			function() {
+				jQuery(this).parent().css('background-color',
+						jQuery(this).attr('data-color'));
+			}, function() {
+				jQuery(this).parent().removeAttr('style');
+			});
+
 }
 
 bindClick();
 bindHover();
 
-
-
 // Fixed menu bar
-jQuery(function () {
+jQuery(function() {
 	var msie6 = jQuery.browser == 'msie' && jQuery.browser.version < 7;
 	if (!msie6 && jQuery('.spreadshirt-menu').length != 0) {
-		var top = jQuery('#spreadshirt-menu').offset().top - parseFloat(jQuery('#spreadshirt-menu').css('margin-top').replace(/auto/, 0));
-		
-		jQuery(window).scroll(function (event) {
-			// what the y position of the scroll is
-			var y = jQuery(this).scrollTop();
-			// whether that's below the form
-			if (y >= top-0) {
-				// if so, ad the fixed class
-				jQuery('#spreadshirt-menu').addClass('fixed');
-				
-				// using wp #main container width and pos for fixed
-				jQuery('#spreadshirt-menu').css('width',jQuery('div.spreadshirt-items').width());
-				//jQuery('#spreadshirt-menu').css('left',jQuery('div.spreadshirt-items').position().left);
-			} else {
-				// otherwise remove it
-				jQuery('#spreadshirt-menu').css('width','');
-				//jQuery('#spreadshirt-menu').css('left','');
-				jQuery('#spreadshirt-menu').removeClass('fixed');
-			}
-		});
+		var top = jQuery('#spreadshirt-menu').offset().top
+				- parseFloat(jQuery('#spreadshirt-menu').css('margin-top')
+						.replace(/auto/, 0));
+
+		jQuery(window).scroll(
+				function(event) {
+					// what the y position of the scroll is
+					var y = jQuery(this).scrollTop();
+					// whether that's below the form
+					if (y >= top - 0) {
+						// if so, ad the fixed class
+						jQuery('#spreadshirt-menu').addClass('fixed');
+
+						// using wp #main container width and pos for fixed
+						jQuery('#spreadshirt-menu').css('width',
+								jQuery('div.spreadshirt-items').width());
+						// jQuery('#spreadshirt-menu').css('left',jQuery('div.spreadshirt-items').position().left);
+					} else {
+						// otherwise remove it
+						jQuery('#spreadshirt-menu').css('width', '');
+						// jQuery('#spreadshirt-menu').css('left','');
+						jQuery('#spreadshirt-menu').removeClass('fixed');
+					}
+				});
 	}
 });
-
 
 // reload caption
 jQuery(window).resize(function() {
 	jQuery(".img-caption").hide();
 });
-
 
 // infinity scroll
 jQuery('#spreadshirt-list').infinitescroll({
@@ -278,13 +308,15 @@ if (pageCheckoutUseIframe == 1) {
 						event.preventDefault();
 
 						var checkoutLink = jQuery(
-								'#spreadshirt-items #spreadshirt-menu a').attr('href');
+								'#spreadshirt-items #spreadshirt-menu a').attr(
+								'href');
 
 						if (typeof checkoutLink !== "undefined"
 								&& checkoutLink.length > 0) {
 
 							jQuery('#spreadshirt-items #pagination').remove();
-							jQuery('#spreadshirt-items #spreadshirt-menu').remove();
+							jQuery('#spreadshirt-items #spreadshirt-menu')
+									.remove();
 							jQuery(window).unbind('.infscr');
 
 							jQuery('#spreadshirt-list')

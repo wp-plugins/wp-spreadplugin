@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 2.6.2
+ * Version: 2.7
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
  */
@@ -45,7 +45,12 @@ if(!class_exists('WP_Spreadplugin')) {
 		private static $shopDesignerShopId;
 		private static $shopDesignsBackground;
 		private static $shopImgSize = '190';
-		public static $shopArticleSortOptions = array("name","price","recent","weight");
+		public static $shopArticleSortOptions = array(
+				'name',
+				'price',
+				'recent',
+				'weight'
+		);
 		public $defaultOptions = array(
 				'shop_id' => '',
 				'shop_locale' => '',
@@ -89,7 +94,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			// Scrolling
 			wp_register_script('infinite_scroll', plugins_url('/js/jquery.infinitescroll.min.js', __FILE__),array('jquery'));
 			wp_enqueue_script('infinite_scroll');
-			
+				
 			// Fancybox
 			wp_register_script('fancy_box', plugins_url('/js/jquery.fancybox.pack.js', __FILE__),array('jquery'));
 			wp_enqueue_script('fancy_box');
@@ -104,7 +109,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			if(is_admin()){
 				// Regenerate cache after activation of the plugin
 				register_activation_hook(__FILE__, array($this, 'setRegenerateCacheQuery'));
-				
+
 				// add Admin menu
 				add_action('admin_menu', array($this, 'addPluginPage'));
 				// add Plugin settings link
@@ -122,7 +127,7 @@ if(!class_exists('WP_Spreadplugin')) {
 		 * Initialize Plugin
 		 */
 		public function plugin_init() {
-			
+				
 			// get translation
 			if(function_exists('load_plugin_textdomain')) {
 				load_plugin_textdomain($this->stringTextdomain, false, dirname(plugin_basename( __FILE__ )) . '/translation');
@@ -139,7 +144,7 @@ if(!class_exists('WP_Spreadplugin')) {
 		 */
 		public function Spreadplugin($atts) {
 			global $paged;
-			
+				
 			$articleCleanData = array(); // Array with article informations for sorting and filtering
 			$articleData = array();
 			$designsData = array();
@@ -147,10 +152,10 @@ if(!class_exists('WP_Spreadplugin')) {
 
 			// get admin options (default option set on admin page)
 			$conOp = $this->getAdminOptions();
-			
+				
 			// shortcode overwrites admin options (default option set on admin page) if available
 			$arrSc = shortcode_atts($this->defaultOptions, $atts);
-			
+				
 			// replace options by shortcode if set
 			if (!empty($arrSc)) {
 				foreach ($arrSc as $key => $option) {
@@ -158,7 +163,7 @@ if(!class_exists('WP_Spreadplugin')) {
 						$conOp[$key] = $option;
 					}
 				}
-            }
+			}
 
 
 			// setting vars
@@ -185,7 +190,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				$c = urldecode($_GET['productCategory']);
 				self::$shopProductCategory = $c;
 				self::$shopProductSubCategory = 'all';
-				
+
 				if (!empty($_GET['productSubCategory'])) {
 					$c = urldecode($_GET['productSubCategory']);
 					self::$shopProductSubCategory = $c;
@@ -200,7 +205,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			// At filtering articles don't use designs view
 			if (self::$shopDisplay==1 && self::$shopProductCategory=='') {
 			} else {
-				self::$shopDisplay=0;				
+				self::$shopDisplay=0;
 			}
 
 
@@ -211,24 +216,24 @@ if(!class_exists('WP_Spreadplugin')) {
 				if(empty($paged)) $paged = 1;
 
 				$offset=($paged-1)*self::$shopLimit;
-				
+
 
 				// get article data
 				$articleData=self::getArticleData();
 				// get rid of types in array
 				$typesData=$articleData['types'];
-				unset($articleData['types']);				
+				unset($articleData['types']);
 
 				// get designs data
 				$designsData=self::getDesignsData();
-				
+
 				$intInBasket=self::getInBasketQuantity();
 
 				// built second array with articles for sorting and filtering
 				if (is_array($designsData)) {
 					foreach ($designsData as $designId => $arrDesigns) {
 						if (!empty($articleData[$designId])) {
-							foreach ($articleData[$designId] as $articleId => $arrArticle) {		
+							foreach ($articleData[$designId] as $articleId => $arrArticle) {
 								$articleCleanData[$articleId] = $arrArticle;
 							}
 						}
@@ -246,7 +251,7 @@ if(!class_exists('WP_Spreadplugin')) {
 					}
 				}
 
-				
+
 				@krsort($designsData);
 				@krsort($articleData);
 				@krsort($articleCleanData);
@@ -283,20 +288,20 @@ if(!class_exists('WP_Spreadplugin')) {
 				if (self::$shopDisplay==1) {
 					if (!empty(self::$shopLimit) && is_array($designsData)) {
 						$designsData = array_slice($designsData, $offset, self::$shopLimit, true);
-					}					
+					}
 				} else {
 					if (!empty(self::$shopLimit) && is_array($articleCleanData)) {
 						$articleCleanData = array_slice($articleCleanData, $offset, self::$shopLimit, true);
 					}
 				}
-				
+
 
 				// Start output
 				$output = '<div id="spreadshirt-items" class="spreadshirt-items clearfix">';
 
-				// add spreadshirt-menu				
+				// add spreadshirt-menu
 				$output .= '<div id="spreadshirt-menu" class="spreadshirt-menu">';
-				
+
 				// add product categories
 				$output .= '<select name="productCategory" id="productCategory">';
 				$output .= '<option value="">'.__('Product category', $this->stringTextdomain).'</option>';
@@ -306,14 +311,14 @@ if(!class_exists('WP_Spreadplugin')) {
 					}
 				}
 				$output .= '</select> ';
-				
+
 				// simple sub categories
 				// @TODO Javascript
 				if (isset($_GET['productCategory'])) {
 					$output .= '<select name="productSubCategory" id="productSubCategory">';
 					$output .= '<option value="all"></option>';
 					if (isset($typesData[self::$shopProductCategory])) {
-						@ksort($typesData[self::$shopProductCategory]);				
+						@ksort($typesData[self::$shopProductCategory]);
 						unset($typesData[self::$shopProductCategory]['all']);
 						foreach ($typesData[self::$shopProductCategory] as $t => $v) {
 							$output .= '<option value="'.urlencode($t).'"'.($t==self::$shopProductSubCategory?' selected':'').'>'.$t.'</option>';
@@ -330,7 +335,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				$output .= '<option value="recent"'.('recent'==self::$shopArticleSort?' selected':'').'>'.__('recent', $this->stringTextdomain).'</option>';
 				$output .= '<option value="weight"'.('weight'==self::$shopArticleSort?' selected':'').'>'.__('weight', $this->stringTextdomain).'</option>';
 				$output .= '</select>';
-				
+
 				if (isset($_SESSION['checkoutUrl']) && $intInBasket>0) {
 					$output .= ' <div id="checkout"><span>'.$intInBasket."</span> <a href=".$_SESSION['checkoutUrl']." target=\"".self::$shopLinkTarget."\">".__('Basket', $this->stringTextdomain)."</a></div>";
 				} else {
@@ -353,10 +358,10 @@ if(!class_exists('WP_Spreadplugin')) {
 						foreach ($designsData as $designId => $arrDesigns) {
 							$bgc = false;
 							$addStyle = '';
-							
+								
 							// Display just Designs with products
 							if (!empty($articleData[$designId])) {
-								
+
 								// check if designs background is enabled
 								if (self::$shopDesignsBackground==1) {
 									// fetch first article background color
@@ -366,17 +371,17 @@ if(!class_exists('WP_Spreadplugin')) {
 									$bgc=$this->hex2rgb($bgc);
 									$addStyle="style=\"background-color:rgba(".$bgc[0].",".$bgc[1].",".$bgc[2].",0.4);\"";
 								}
-								
+
 								$output .= "<div class=\"spreadshirt-designs\">";
 								$output .= $this->displayDesigns($designId,$arrDesigns,$articleData[$designId],$bgc);
 								$output .= "<div id=\"designContainer_".$designId."\" class=\"design-container clearfix\" ".$addStyle.">";
-							
+									
 								if (!empty($articleData[$designId])) {
-									foreach ($articleData[$designId] as $articleId => $arrArticle) {	
+									foreach ($articleData[$designId] as $articleId => $arrArticle) {
 										$output .= $this->displayArticles($articleId,$arrArticle);
 									}
 								}
-								
+
 								$output .= "</div>";
 								$output .= "</div>";
 							}
@@ -384,7 +389,7 @@ if(!class_exists('WP_Spreadplugin')) {
 					} else {
 						// Article view
 						if (!empty($articleCleanData)) {
-							foreach ($articleCleanData as $articleId => $arrArticle) {					
+							foreach ($articleCleanData as $articleId => $arrArticle) {
 								$output .= $this->displayArticles($articleId,$arrArticle);
 							}
 						}
@@ -392,14 +397,14 @@ if(!class_exists('WP_Spreadplugin')) {
 
 
 					$output .= "
-					<div id=\"pagination\"><a href=\"".get_pagenum_link($paged + 1)."\">".__('next', $this->stringTextdomain)."</a></div>
-					<!-- <div id=\"copyright\">Copyright (c) Thimo Grauerholz - <a href=\"http://www.pr3ss-play.de\">pr3ss-play - Dein Shirt-Shop für geile Party T-shirts!</a></div> -->
-					</div>";
+							<div id=\"pagination\"><a href=\"".get_pagenum_link($paged + 1)."\">".__('next', $this->stringTextdomain)."</a></div>
+									<!-- <div id=\"copyright\">Copyright (c) Thimo Grauerholz - <a href=\"http://www.pr3ss-play.de\">pr3ss-play - Dein Shirt-Shop für geile Party T-shirts!</a></div> -->
+									</div>";
 				}
 
 
 				$output .= '</div>';
-				
+
 				return $output;
 
 			}
@@ -505,7 +510,7 @@ if(!class_exists('WP_Spreadplugin')) {
 							if ((int)$article->product->appearance['id'] == (int)$appearance['id']) {
 								$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['default_bgc'] = (string)$appearance->colors->color;
 							}
-							
+								
 							if ($article->product->restrictions->freeColorSelection == 'true' || (int)$article->product->appearance['id'] == (int)$appearance['id']) {
 								$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['appearances'][(int)$appearance['id']]=(string)$appearance->resources->resource->attributes('xlink', true);
 							}
@@ -607,7 +612,7 @@ if(!class_exists('WP_Spreadplugin')) {
 		 * @return html
 		 */
 		private function displayArticles($id,$article) {
-			
+				
 			$output = '<div class="spreadshirt-article clearfix" id="article_'.$id.'">';
 			$output .= '<a name="'.$id.'"></a>';
 			$output .= '<h3>'.htmlspecialchars($article['name'],ENT_QUOTES).'</h3>';
@@ -618,7 +623,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			$output .= '<img src="' . $this->cleanURL($article['resource2']) . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="compositions" style="display:none;" alt="' . htmlspecialchars($article['name'],ENT_QUOTES) . '" id="compositeimg_'.$id.'" title="'.htmlspecialchars($article['productdescription'],ENT_QUOTES).'" />';
 			$output .= (self::$shopLinkEnabled==1?'</a>':'');
 			$output .= '</div>';
-	
+
 			// add a select with available sizes
 			if (isset($article['sizes'])&&is_array($article['sizes'])) {
 				$output .= '<select id="size-select" name="size">';
@@ -629,11 +634,11 @@ if(!class_exists('WP_Spreadplugin')) {
 
 				$output .= '</select>';
 			}
-				
+
 			if (self::$shopDesignerShopId>0) {
 				$output .= ' <a href="//'.self::$shopDesignerShopId.'.spreadshirt.'.self::$apiUrl.'/-D1/customize/product/'.$article['productId'].'?noCache=true" target="_blank" id="editArticle">'.__('Edit article', $this->stringTextdomain).'</a>';
 			}
-			
+				
 			$output .= '<div class="separator"></div>';
 
 			// add a list with availabel product colors
@@ -647,7 +652,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				$output .= '</ul>';
 			}
 
-			
+				
 			// add a list with available product views
 			if (isset($article['views'])&&is_array($article['views'])) {
 				$output .= '<ul class="views" name="views">';
@@ -664,44 +669,81 @@ if(!class_exists('WP_Spreadplugin')) {
 			$output .= '<div class="product-name">';
 			$output .= htmlspecialchars($article['productname'],ENT_QUOTES);
 			$output .= '</div>';
-				
+
 			// Show description link if not empty
 			if (!empty($article['description'])) {
 				$output .= '<div class="separator"></div>';
 				$output .= '<div class="description-wrapper"><div class="header"><a>'.__('Show description', $this->stringTextdomain).'</a></div><div class="description">'.htmlspecialchars($article['description'],ENT_QUOTES).'</div></div>';
 			}
-			
+				
 			$output .= '<input type="hidden" value="'. $article['appearance'] .'" id="appearance" name="appearance" />';
 			$output .= '<input type="hidden" value="'. $article['view'] .'" id="view" name="view" />';
 			$output .= '<input type="hidden" value="'. $id .'" id="article" name="article" />';
-			
+				
 			$output .= '<div class="separator"></div>';
 			$output .= '<div class="price-wrapper">';
 			$output .= '<span id="price-without-tax">'.__('Price (without tax):', $this->stringTextdomain)." ".(empty(self::$shopLocale) || self::$shopLocale=='en_US' || self::$shopLocale=='en_GB'?number_format($article['pricenet'],2,'.',''):number_format($article['pricenet'],2,',','.'))." ".$article['currencycode']."<br /></span>";
 			$output .= '<span id="price-with-tax">'.__('Price (with tax):', $this->stringTextdomain)." ".(empty(self::$shopLocale) || self::$shopLocale=='en_US' || self::$shopLocale=='en_GB'?number_format($article['pricebrut'],2,'.',''):number_format($article['pricebrut'],2,',','.'))." ".$article['currencycode']."<br /></span>";
 			$output .= '</div>';
-			
+				
 			// order buttons
 			$output .= '<input type="text" value="1" id="quantity" name="quantity" maxlength="4" />';
 			$output .= '<input type="submit" name="submit" value="'.__('Add to basket', $this->stringTextdomain).'" /><br>';
 
 			// Social buttons
 			if (self::$shopSocialEnabled==true) {
-				$output .= '<ul class="social-buttons">';
-				$output .= '<li><a href="//www.facebook.com/sharer.php?u='.urlencode(get_page_link().'#'.$id).'&t='.rawurlencode(get_the_title()).'" target="_blank" title="Facebook"><img src="'.plugins_url('/img/facebook.png', __FILE__).'"></a></li>';
-				$output .= '<li><a href="//twitter.com/home?status='.rawurlencode(get_the_title()).' - '.urlencode(get_page_link().'#'.$id).'" target="_blank" title="Twitter"><img src="'.plugins_url('/img/twitter.png', __FILE__).'"></a></li>';
-				$output .= '<li><a href="//pinterest.com/pin/create/button/?url='.get_page_link().'&media=' . $article['resource0'] . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'&description='.(!empty($article['description'])?htmlspecialchars($article['description'],ENT_QUOTES):'Product').'" target="_blank" title="Pinterest"><img src="'.plugins_url('/img/pinterest.png', __FILE__).'"></a></li>';
-				$output .= '<li><a href="mailto:?subject=Artikel auf '.rawurlencode(get_bloginfo('url')).': '.rawurlencode(get_the_title()).'&body='.urlencode(get_page_link().'#'.$id).'" title="Per E-Mail weiterleiten"><img src="'.plugins_url('/img/email.png', __FILE__).'"></a></li>';
-				$output .= '</ul>';
+				$output .= '
+						<ul class="soc-icons">
+						<li><a target="_blank" data-color="#5481de" class="fb" href="//www.facebook.com/sharer.php?u='.urlencode(get_page_link().'#'.$id).'&t='.rawurlencode(get_the_title()).'" title="Facebook"></a></li>
+								<li><a target="_blank" data-color="#06ad18" class="goog" href="//plus.google.com/share?url='.urlencode(get_page_link().'#'.$id).'" title="Google"></a></li>
+										<li><a target="_blank" data-color="#2cbbea" class="twt" href="//twitter.com/home?status='.rawurlencode(get_the_title()).' - '.urlencode(get_page_link().'#'.$id).'" title="Twitter"></a></li>
+												<li><a target="_blank" data-color="#e84f61" class="pin" href="//pinterest.com/pin/create/button/?url='.get_page_link().'&media=' . $article['resource0'] . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'&description='.(!empty($article['description'])?htmlspecialchars($article['description'],ENT_QUOTES):'Product').'" title="Pinterest"></a></li>
+														</ul>
+														';
+
+				/*
+					<li><a target="_blank" data-color="#459ee9" class="in" href="#" title="LinkedIn"></a></li>
+				<li><a target="_blank" data-color="#ee679b" class="drb" href="#" title="Dribbble"></a></li>
+				<li><a target="_blank" data-color="#4887c2" class="tumb" href="#" title="Tumblr"></a></li>
+				<li><a target="_blank" data-color="#f23a94" class="flick" href="#" title="Flickr"></a></li>
+				<li><a target="_blank" data-color="#74c3dd" class="vim" href="#" title="Vimeo"></a></li>
+				<li><a target="_blank" data-color="#4a79ff" class="delic" href="#" title="Delicious"></a></li>
+				<li><a target="_blank" data-color="#6ea863" class="forr" href="#" title="Forrst"></a></li>
+				<li><a target="_blank" data-color="#f6a502" class="hi5" href="#" title="Hi5"></a></li>
+				<li><a target="_blank" data-color="#e3332a" class="last" href="#" title="Last.fm"></a></li>
+				<li><a target="_blank" data-color="#3c6ccc" class="space" href="#" title="Myspace"></a></li>
+				<li><a target="_blank" data-color="#229150" class="newsv" href="#" title="Newsvine"></a></li>
+				<li><a href="#" class="pica" title="Picasa" data-color="#b163c8" target="_blank"></a></li>
+				<li><a href="#" class="tech" title="Technorati" data-color="#3ac13a" target="_blank"></a></li>
+				<li><a href="#" class="rss" title="RSS" data-color="#f18d3c" target="_blank"></a></li>
+				<li><a href="#" class="rdio" title="Rdio" data-color="#2c7ec7" target="_blank"></a></li>
+				<li><a href="#" class="share" title="ShareThis" data-color="#359949" target="_blank"></a></li>
+				<li><a href="#" class="skyp" title="Skype" data-color="#00adf1" target="_blank"></a></li>
+				<li><a href="#" class="slid" title="SlideShare" data-color="#ef8122" target="_blank"></a></li>
+				<li><a href="#" class="squid" title="Squidoo" data-color="#f87f27" target="_blank"></a></li>
+				<li><a href="#" class="stum" title="StumbleUpon" data-color="#f05c38" target="_blank"></a></li>
+				<li><a href="#" class="what" title="WhatsApp" data-color="#3ebe2b" target="_blank"></a></li>
+				<li><a href="#" class="wp" title="Wordpress" data-color="#3078a9" target="_blank"></a></li>
+				<li><a href="#" class="ytb" title="Youtube" data-color="#df3434" target="_blank"></a></li>
+				<li><a href="#" class="digg" title="Digg" data-color="#326ba0" target="_blank"></a></li>
+				<li><a href="#" class="beh" title="Behance" data-color="#2d9ad2" target="_blank"></a></li>
+				<li><a href="#" class="yah" title="Yahoo" data-color="#883890" target="_blank"></a></li>
+				<li><a href="#" class="blogg" title="Blogger" data-color="#f67928" target="_blank"></a></li>
+				<li><a href="#" class="hype" title="Hype Machine" data-color="#f13d3d" target="_blank"></a></li>
+				<li><a href="#" class="groove" title="Grooveshark" data-color="#498eba" target="_blank"></a></li>
+				<li><a href="#" class="sound" title="SoundCloud" data-color="#f0762c" target="_blank"></a></li>
+				<li><a href="#" class="insta" title="Instagram" data-color="#c2784e" target="_blank"></a></li>
+				<li><a href="#" class="vk" title="Vkontakte" data-color="#5f84ab" target="_blank"></a></li>
+				*/
 			}
-			
+				
 			$output .= '
-			
-			</form>
-			</div>';
-			
-			
-			return $output;	
+						
+					</form>
+					</div>';
+				
+				
+			return $output;
 
 		}
 
@@ -714,7 +756,7 @@ if(!class_exists('WP_Spreadplugin')) {
 		 * @return html
 		 */
 		private function displayDesigns($id,$designData,$articleData,$bgc=false) {
-			
+				
 			$addStyle = '';
 			if ($bgc) $addStyle='style="background-color:rgba('.$bgc[0].','.$bgc[1].','.$bgc[2].',0.4);"';
 
@@ -725,23 +767,23 @@ if(!class_exists('WP_Spreadplugin')) {
 			// hovering disabled
 			//$output .= '<img src="' . $designData['resource0'] . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="preview" alt="' . htmlspecialchars($designData['name'],ENT_QUOTES) . '" id="previewdesignimg_'.$id.'" />';
 			$output .= '<img src="' . $this->cleanURL($designData['resource2']) . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="compositions" alt="' . htmlspecialchars($designData['name'],ENT_QUOTES) . '" id="compositedesignimg_'.$id.'" />'; // style="display:none;" // title="'.htmlspecialchars($designData['productdescription'],ENT_QUOTES).'"
-			
+				
 			$output .= '<span class="img-caption">'.__('Click to view the articles', $this->stringTextdomain).'</em></span>';
 			$output .= '</div>';
-										
+
 			// Show description link if not empty
 			if (!empty($designData['description'])) {
 				$output .= '<div class="separator"></div>';
 				$output .= '<div class="description-wrapper">
-				<div class="header"><a>'.__('Show description', $this->stringTextdomain).'</a></div>
-				<div class="description">'.htmlspecialchars($designData['description'],ENT_QUOTES).'</div>
-				</div>';
+						<div class="header"><a>'.__('Show description', $this->stringTextdomain).'</a></div>
+								<div class="description">'.htmlspecialchars($designData['description'],ENT_QUOTES).'</div>
+										</div>';
 			}
-			
+				
 			$output .= '
-			</div>';
+					</div>';
 
-			return $output;	
+			return $output;
 
 		}
 
@@ -1010,27 +1052,27 @@ if(!class_exists('WP_Spreadplugin')) {
 		 */
 		public function loadScripts() {
 			echo "
-			<script>
-			/**
-			* Spreadplugin vars
-			*/
-			
-			var textHideDesc = '".__('Hide description', $this->stringTextdomain)."';
-			var textShowDesc = '".__('Show description', $this->stringTextdomain)."';
-			var loadingImage = '".plugins_url('/img/loading.gif', __FILE__)."';
-			var loadingMessage = '".__('Loading new articles...', $this->stringTextdomain)."';
-			var loadingFinishedMessage = '".__('You have reached the end', $this->stringTextdomain)."';
-			var pageLink = '".get_page_link()."';
-			var pageCheckoutUseIframe = ".self::$shopCheckoutIframe.";
-			var textButtonAdd = '".__('Add to basket', $this->stringTextdomain)."';
-			var textButtonAdded = '".__('Adding...', $this->stringTextdomain)."';
-			var ajaxLocation = '".admin_url( 'admin-ajax.php' )."?pageid=".get_the_ID()."&nonce=".wp_create_nonce('spreadplugin')."';
-			var display = ".self::$shopDisplay.";
-			</script>";
+					<script>
+					/**
+					* Spreadplugin vars
+					*/
+						
+					var textHideDesc = '".__('Hide description', $this->stringTextdomain)."';
+							var textShowDesc = '".__('Show description', $this->stringTextdomain)."';
+									var loadingImage = '".plugins_url('/img/loading.gif', __FILE__)."';
+											var loadingMessage = '".__('Loading new articles...', $this->stringTextdomain)."';
+													var loadingFinishedMessage = '".__('You have reached the end', $this->stringTextdomain)."';
+															var pageLink = '".get_page_link()."';
+																	var pageCheckoutUseIframe = ".self::$shopCheckoutIframe.";
+																			var textButtonAdd = '".__('Add to basket', $this->stringTextdomain)."';
+																					var textButtonAdded = '".__('Adding...', $this->stringTextdomain)."';
+																							var ajaxLocation = '".admin_url( 'admin-ajax.php' )."?pageid=".get_the_ID()."&nonce=".wp_create_nonce('spreadplugin')."';
+																									var display = ".self::$shopDisplay.";
+																											</script>";
 
 			echo "
-			<script src='".plugins_url('/js/spreadplugin.js', __FILE__)."'></script>
-			";
+					<script src='".plugins_url('/js/spreadplugin.js', __FILE__)."'></script>
+							";
 		}
 
 
@@ -1043,12 +1085,12 @@ if(!class_exists('WP_Spreadplugin')) {
 		public function endSession() {
 			@session_destroy();
 		}
-		
+
 		// prepare for https
 		private function cleanURL($url) {
 			return str_replace('http:','',$url);
 		}
-		
+
 
 		/**
 		 * Function doAjax
@@ -1071,13 +1113,13 @@ if(!class_exists('WP_Spreadplugin')) {
 			*/
 			$pageData = get_page(intval($_GET['pageid']));
 			$pageContent = $pageData->post_content;
-						
+
 			// get admin options (default option set on admin page)
 			$conOp = $this->getAdminOptions();
-			
+				
 			// shortcode overwrites admin options (default option set on admin page) if available
 			$arrSc = shortcode_parse_atts(str_replace("[spreadplugin",'',str_replace("]","",$pageContent)));
-			
+				
 			// replace options by shortcode if set
 			if (!empty($arrSc)) {
 				foreach ($arrSc as $key => $option) {
@@ -1085,7 +1127,7 @@ if(!class_exists('WP_Spreadplugin')) {
 						$conOp[$key] = $option;
 					}
 				}
-            }
+			}
 
 			self::$shopId = intval($conOp['shop_id']);
 			self::$shopApi = $conOp['shop_api'];
@@ -1152,13 +1194,13 @@ if(!class_exists('WP_Spreadplugin')) {
 
 
 		/**
-		* Admin
-		*/
+		 * Admin
+		 */
 		public function addPluginPage(){
 			// Create menu tab
 			add_options_page('Set Spreadplugin options', 'Spreadplugin Options', 'manage_options', 'splg_options', array($this, 'pageOptions'));
 		}
-		
+
 		// call page options
 		public function pageOptions(){
 			if (!current_user_can('manage_options')){
@@ -1177,14 +1219,14 @@ if(!class_exists('WP_Spreadplugin')) {
 		// delete the transient
 		public function setRegenerateCacheQuery() {
 			global $wpdb;
-			$wpdb->query("DELETE FROM `".$wpdb->options."` WHERE `option_name` LIKE '_transient_%spreadplugin%cache%'");	
+			$wpdb->query("DELETE FROM `".$wpdb->options."` WHERE `option_name` LIKE '_transient_%spreadplugin%cache%'");
 		}
 
 
 		/**
 		 * Add Settings link to plugin
 		 */
-		 public function addPluginSettingsLink($links, $file) {
+		public function addPluginSettingsLink($links, $file) {
 			static $this_plugin;
 			if (!$this_plugin) $this_plugin = plugin_basename(__FILE__);
 
@@ -1192,26 +1234,26 @@ if(!class_exists('WP_Spreadplugin')) {
 				$settings_link = '<a href="options-general.php?page=splg_options">'.__("Settings", $this->stringTextdomain) .'</a>';
 				array_unshift($links, $settings_link);
 			}
-			
+				
 			return $links;
-		 }
+		}
 
 
 		// Convert hex to rgb values
 		public function hex2rgb($hex) {
-		   $hex = str_replace("#", "", $hex);
-		
-		   if(strlen($hex) == 3) {
-			  $r = hexdec(substr($hex,0,1).substr($hex,0,1));
-			  $g = hexdec(substr($hex,1,1).substr($hex,1,1));
-			  $b = hexdec(substr($hex,2,1).substr($hex,2,1));
-		   } else {
-			  $r = hexdec(substr($hex,0,2));
-			  $g = hexdec(substr($hex,2,2));
-			  $b = hexdec(substr($hex,4,2));
-		   }
-		   $rgb = array($r, $g, $b);
-		   return $rgb; // returns an array with the rgb values
+			$hex = str_replace("#", "", $hex);
+
+			if(strlen($hex) == 3) {
+				$r = hexdec(substr($hex,0,1).substr($hex,0,1));
+				$g = hexdec(substr($hex,1,1).substr($hex,1,1));
+				$b = hexdec(substr($hex,2,1).substr($hex,2,1));
+			} else {
+				$r = hexdec(substr($hex,0,2));
+				$g = hexdec(substr($hex,2,2));
+				$b = hexdec(substr($hex,4,2));
+			}
+			$rgb = array($r, $g, $b);
+			return $rgb; // returns an array with the rgb values
 		}
 
 
@@ -1224,7 +1266,7 @@ if(!class_exists('WP_Spreadplugin')) {
 					$scOptions[$key] = $option;
 				}
 			}
-			
+				
 			return $scOptions;
 		}
 
