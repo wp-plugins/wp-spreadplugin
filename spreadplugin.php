@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 2.6
+ * Version: 2.6.1
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
  */
@@ -102,8 +102,13 @@ if(!class_exists('WP_Spreadplugin')) {
 
 			// admin check
 			if(is_admin()){
+				// Regenerate cache after activation of the plugin
+				register_activation_hook(__FILE__, array($this, 'setRegenerateCacheQuery'));
+				
+				// add Admin menu
 				add_action('admin_menu', array($this, 'addPluginPage'));
-				add_filter('plugin_action_links', array($this, 'addPluginSettingsLink'), 10, 2 );
+				// add Plugin settings link
+				add_filter('plugin_action_links', array($this, 'addPluginSettingsLink'),10,2);
 			}
 
 		}
@@ -244,7 +249,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				
 				@krsort($designsData);
 				@krsort($articleData);
-				@krsort($articleCleanData);
+				//@krsort($articleCleanData);
 
 				// sorting
 				if (self::$shopDisplay==1) {
@@ -487,6 +492,7 @@ if(!class_exists('WP_Spreadplugin')) {
 						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['currencycode']=(string)$objCurrencyData->isoCode;
 						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['resource0']=(string)$article->resources->resource->attributes('xlink', true);
 						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['resource2']=(string)$article->resources->resource[2]->attributes('xlink', true);
+						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['productname']=(string)$objArticleData->name;
 						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['productdescription']=(string)$objArticleData->description;
 						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['weight']=(float)$article['weight'];
 						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['id']=(int)$article['id'];
@@ -612,7 +618,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			$output .= '<img src="' . $this->cleanURL($article['resource2']) . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="compositions" style="display:none;" alt="' . htmlspecialchars($article['name'],ENT_QUOTES) . '" id="compositeimg_'.$id.'" title="'.htmlspecialchars($article['productdescription'],ENT_QUOTES).'" />';
 			$output .= (self::$shopLinkEnabled==1?'</a>':'');
 			$output .= '</div>';
-				
+	
 			// add a select with available sizes
 			if (isset($article['sizes'])&&is_array($article['sizes'])) {
 				$output .= '<select id="size-select" name="size">';
@@ -653,7 +659,11 @@ if(!class_exists('WP_Spreadplugin')) {
 				$output .= '</ul>';
 			}
 
-
+			// Short product description
+			$output .= '<div class="separator"></div>';
+			$output .= '<div class="product-name">';
+			$output .= htmlspecialchars($article['productname'],ENT_QUOTES);
+			$output .= '</div>';
 				
 			// Show description link if not empty
 			if (!empty($article['description'])) {
@@ -680,7 +690,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				$output .= '<ul class="social-buttons">';
 				$output .= '<li><a href="//www.facebook.com/sharer.php?u='.urlencode(get_page_link().'#'.$id).'&t='.rawurlencode(get_the_title()).'" target="_blank" title="Facebook"><img src="'.plugins_url('/img/facebook.png', __FILE__).'"></a></li>';
 				$output .= '<li><a href="//twitter.com/home?status='.rawurlencode(get_the_title()).' - '.urlencode(get_page_link().'#'.$id).'" target="_blank" title="Twitter"><img src="'.plugins_url('/img/twitter.png', __FILE__).'"></a></li>';
-				$output .= '<li><a href="//pinterest.com/pin/create/button/?url='.get_page_link().'&media=' . $article['resource0'] . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'&description='.(!empty($article['description'])?htmlspecialchars($article['description'],ENT_QUOTES):'Product').'" target="pinterest" data-pin-do="buttonPin" data-pin-config="beside"><img src="'.plugins_url('/img/pinterest.png', __FILE__).'"></a></li>';
+				$output .= '<li><a href="//pinterest.com/pin/create/button/?url='.get_page_link().'&media=' . $article['resource0'] . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'&description='.(!empty($article['description'])?htmlspecialchars($article['description'],ENT_QUOTES):'Product').'" target="_blank" title="Pinterest"><img src="'.plugins_url('/img/pinterest.png', __FILE__).'"></a></li>';
 				$output .= '<li><a href="mailto:?subject=Artikel auf '.rawurlencode(get_bloginfo('url')).': '.rawurlencode(get_the_title()).'&body='.urlencode(get_page_link().'#'.$id).'" title="Per E-Mail weiterleiten"><img src="'.plugins_url('/img/email.png', __FILE__).'"></a></li>';
 				$output .= '</ul>';
 			}
@@ -1161,9 +1171,13 @@ if(!class_exists('WP_Spreadplugin')) {
 
 		// Ajax delete the transient
 		public function doRegenerateCache() {
-			global $wpdb;
-			$wpdb->query("DELETE FROM `".$wpdb->options."` WHERE `option_name` LIKE '_transient_%spreadplugin2-%-cache%");
+			$this->setRegenerateCacheQuery();
 			die();
+		}
+		// delete the transient
+		public function setRegenerateCacheQuery() {
+			global $wpdb;
+			$wpdb->query("DELETE FROM `".$wpdb->options."` WHERE `option_name` LIKE '_transient_%spreadplugin%cache%'");	
 		}
 
 

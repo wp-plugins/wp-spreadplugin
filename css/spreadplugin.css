@@ -240,11 +240,13 @@ pre, code {
 }
 .spreadshirt-items .social-buttons li {
 	list-style: none outside none;
-	float:left;
+	float: left;
 	display: inline;
 	padding: 0;
 	margin-left: 4px;
 }
-
+.spreadshirt-items .product-name {
+	font-size: 90%
+}
 
 

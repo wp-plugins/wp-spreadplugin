@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: spreadshirt,wordpress,plugin,shop
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 2.6
+Stable tag: 2.6.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -171,6 +171,10 @@ Please replace them with your own by locating the spreadplugin-plugin directory 
 6. Settings page
 
 == Changelog ==
+
+= 2.6.1 =
+* Bugfixes (incl. sorting bug - hopefully ;-))
+* Added short product description e.g. Women’s Classic T-Shirt, Men’s Classic T-Shirt,...
 
 = 2.6 =
 * New social buttons, if you don't like, just replace in the image directory with your own. See FAQ
