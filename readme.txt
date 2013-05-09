@@ -60,7 +60,7 @@ https://twitter.com/Pr3ssplay_de
 
 1. Upload the spreadplugin directory to the `/wp-content/plugins/wp-spreadplugin` Directory (if not exists please create) or install using wordpress plugin installer
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Edit settings using `http://YOURBLOGURL/wp-admin/options-general.php?page=splg_options`.
+3. Edit default settings using `http://YOURBLOGURL/wp-admin/options-general.php?page=splg_options`.
 4. Create a new site or edit an existing site
 5. Insert shortcode
 
@@ -77,14 +77,14 @@ EU:
 `[spreadplugin shop_id="732552" shop_limit="20" shop_locale="de_DE" shop_source="net" shop_category="" shop_social="1" shop_enablelink="1" shop_productcategory="" shop_checkoutiframe="2" shop_sortby="" shop_designershop="0" shop_display="0" shop_api="" shop_secret=""]`
 
 6. When adding default settings, only the minimum shortcode is required. 
-(If you extend the shortcode with additional values, you can overwrite the default settings and use the plugin with a different shop (add the extended shortcode to a different article/site)).
-7. Done (you may modify the layout using the separate css file in the spreadplugin Folder)
+(If you extend the shortcode with additional values, you can overwrite the default settings and use the plugin with an additional shop (add the extended shortcode to a different article/site)).
+7. Done
 
 == Frequently asked questions ==
 
 = It shows "No articles in Shop", but there are articles in the Spreadshirt-Shop =
 
-Check if your Spreadshirt Shop has a language and country setting. If you haven't set one, please remove `xx_XX` from the `shop_locale="xx_XX"` value.
+Check if your Spreadshirt Shop has a language and country setting.
 
 = How can I reduce the space between color selection and price? =
 
@@ -94,7 +94,7 @@ Change padding-top and padding-bottom to a value you like.
 
 = I want to use a different currency. Is this possible? =
 
-The currency bases on the currency you're using for your Spreadshirt Shop. So if you want to use DKK instead of EUR, change the currency in the Shop options of your Spreadshirt Shop. But be sure to not have any products in your shop, because Spreadshirt doesn't allow changing it, when you've already products in it. (The solution would be to create a new shop)
+The currency bases on the currency you're using for your Spreadshirt Shop. So if you want to use DKK instead of EUR, change the currency in the Shop options of your Spreadshirt Shop. But be sure to not have any products in your shop, because Spreadshirt doesn't allow changing it, when you've already products in it. (The solution would be to create a new shop) Please clear the cache of the Spreadplugin plugin in the Spreadplugin settings page when done (you may wait some hours to the spreadshirt cache to refresh).
 
 = I just want to display one price. What to do? =
 
@@ -113,19 +113,19 @@ Depending on what kind of price you want to hide uncomment the line.
 
 = How to disable the social buttons? =
 
-Add or change in the [spreadplugin] code the value from `shop_social="1"` to `shop_social="0"`
+Add or change in the [spreadplugin] code the value from `shop_social="1"` to `shop_social="0"` or use the settings page.
 
 = How to disable the product links? =
 
-Add or change in the [spreadplugin] code the value from `shop_enablelink="1"` to `shop_enablelink="0"`
+Add or change in the [spreadplugin] code the value from `shop_enablelink="1"` to `shop_enablelink="0"` or use the settings page.
 
 = How to change the link targets? =
 
-Add or change in the [spreadplugin] code the value from `shop_linktarget=""` to shop_linktarget="YOUR_IFRAME_NAME"` or whatever it is
+Add or change in the [spreadplugin] code the value from `shop_linktarget=""` to shop_linktarget="YOUR_IFRAME_NAME"` or whatever it is. Or use the settings page.
 
 = I want my checkout page display in an iframe, what is to do? =
 
-Add or change in the [spreadplugin] code the value from `shop_checkoutiframe="0"` to `shop_checkoutiframe="1"` or `shop_checkoutiframe="2"`. Note: shop_linktarget will be ignored.
+Add or change in the [spreadplugin] code the value from `shop_checkoutiframe="0"` to `shop_checkoutiframe="1"` or `shop_checkoutiframe="2"`. Note: shop_linktarget will be ignored. Or use the settings page.
 
 * `shop_checkoutiframe="0"` opens basket in separate window
 * `shop_checkoutiframe="1"` opens basket in an iframe in the page content 
@@ -133,7 +133,7 @@ Add or change in the [spreadplugin] code the value from `shop_checkoutiframe="0"
 
 = How to default sort? =
 
-Add or change in the `[spreadplugin]` code the value from `shop_sortby=""` to `shop_sortby="name"`. Available sort options are name, price, recent
+Add or change in the `[spreadplugin]` code the value from `shop_sortby=""` to `shop_sortby="name"`. Available sort options are name, price, recent. Or use the settings page.
 
 = I get following error, when I add an article to the basket: "ERROR: Basket not ready yet." =
 
@@ -141,11 +141,11 @@ Please update to the most recent version
 
 = How to active edit articles to use the designer shop? =
 
-Activate by changing shop_designershop="0" to shop_designershop="[DESIGNERSHOPID]" where [DESIGNERSHOPID] is your designer shop ID.
+Activate by changing shop_designershop="0" to shop_designershop="[DESIGNERSHOPID]" where [DESIGNERSHOPID] is your designer shop ID. Or use the settings page.
 
 = How to active designs view? =
 
-Activate by changing shop_display="0" to shop_display="1" or change it in the admin panel.
+Activate by changing shop_display="0" to shop_display="1" or change it in the admin panel. Or use the settings page.
 
 = It shows old articles =
 
