@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: spreadshirt,wordpress,plugin,shop
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 2.7
+Stable tag: 2.7.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -156,11 +156,6 @@ Please go to the settings page in the admin panel of the plugin and click "Clear
 Please use the extended shortcode. 
 This will overwrite the default plugin settings just for the page, where you have added this shortcode.
 
-= I don't like the new social buttons =
-
-This may happen ;) 
-Please replace them with your own by locating the spreadplugin-plugin directory `/wp-content/plugins/spreadplugin/img/`.
-
 == Screenshots ==
 
 1. The Output 1
@@ -171,6 +166,9 @@ Please replace them with your own by locating the spreadplugin-plugin directory 
 6. Settings page
 
 == Changelog ==
+
+= 2.7.1 =
+* Fix for `Better WP Security` users, which were unable to display the options page in some circumstances.
 
 = 2.7 =
 * New kick-ass retina social buttons

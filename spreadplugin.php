@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 2.7
+ * Version: 2.7.1
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
  */
@@ -695,11 +695,11 @@ if(!class_exists('WP_Spreadplugin')) {
 				$output .= '
 						<ul class="soc-icons">
 						<li><a target="_blank" data-color="#5481de" class="fb" href="//www.facebook.com/sharer.php?u='.urlencode(get_page_link().'#'.$id).'&t='.rawurlencode(get_the_title()).'" title="Facebook"></a></li>
-								<li><a target="_blank" data-color="#06ad18" class="goog" href="//plus.google.com/share?url='.urlencode(get_page_link().'#'.$id).'" title="Google"></a></li>
-										<li><a target="_blank" data-color="#2cbbea" class="twt" href="//twitter.com/home?status='.rawurlencode(get_the_title()).' - '.urlencode(get_page_link().'#'.$id).'" title="Twitter"></a></li>
-												<li><a target="_blank" data-color="#e84f61" class="pin" href="//pinterest.com/pin/create/button/?url='.get_page_link().'&media=' . $article['resource0'] . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'&description='.(!empty($article['description'])?htmlspecialchars($article['description'],ENT_QUOTES):'Product').'" title="Pinterest"></a></li>
-														</ul>
-														';
+						<li><a target="_blank" data-color="#06ad18" class="goog" href="//plus.google.com/share?url='.urlencode(get_page_link().'#'.$id).'" title="Google"></a></li>
+						<li><a target="_blank" data-color="#2cbbea" class="twt" href="//twitter.com/home?status='.rawurlencode(get_the_title()).' - '.urlencode(get_page_link().'#'.$id).'" title="Twitter"></a></li>
+						<li><a target="_blank" data-color="#e84f61" class="pin" href="//pinterest.com/pin/create/button/?url='.get_page_link().'&media=' . $article['resource0'] . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'&description='.(!empty($article['description'])?htmlspecialchars($article['description'],ENT_QUOTES):'Product').'" title="Pinterest"></a></li>
+						</ul>
+						';
 
 				/*
 					<li><a target="_blank" data-color="#459ee9" class="in" href="#" title="LinkedIn"></a></li>
@@ -1208,7 +1208,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			}
 
 			// display options page
-			include(ABSPATH.'wp-content/plugins/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE__)).'options.php');
+			include(plugin_dir_path(__FILE__).'/options.php');
 		}
 
 		// Ajax delete the transient
