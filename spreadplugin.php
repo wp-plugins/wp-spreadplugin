@@ -775,13 +775,13 @@ if(!class_exists('WP_Spreadplugin')) {
 			if (!empty($designData['description'])) {
 				$output .= '<div class="separator"></div>';
 				$output .= '<div class="description-wrapper">
-						<div class="header"><a>'.__('Show description', $this->stringTextdomain).'</a></div>
-								<div class="description">'.htmlspecialchars($designData['description'],ENT_QUOTES).'</div>
-										</div>';
+				<div class="header"><a>'.__('Show description', $this->stringTextdomain).'</a></div>
+				<div class="description">'.htmlspecialchars($designData['description'],ENT_QUOTES).'</div>
+				</div>';
 			}
 				
 			$output .= '
-					</div>';
+			</div>';
 
 			return $output;
 
@@ -1058,17 +1058,17 @@ if(!class_exists('WP_Spreadplugin')) {
 					*/
 						
 					var textHideDesc = '".__('Hide description', $this->stringTextdomain)."';
-							var textShowDesc = '".__('Show description', $this->stringTextdomain)."';
-									var loadingImage = '".plugins_url('/img/loading.gif', __FILE__)."';
-											var loadingMessage = '".__('Loading new articles...', $this->stringTextdomain)."';
-													var loadingFinishedMessage = '".__('You have reached the end', $this->stringTextdomain)."';
-															var pageLink = '".get_page_link()."';
-																	var pageCheckoutUseIframe = ".self::$shopCheckoutIframe.";
-																			var textButtonAdd = '".__('Add to basket', $this->stringTextdomain)."';
-																					var textButtonAdded = '".__('Adding...', $this->stringTextdomain)."';
-																							var ajaxLocation = '".admin_url( 'admin-ajax.php' )."?pageid=".get_the_ID()."&nonce=".wp_create_nonce('spreadplugin')."';
-																									var display = ".self::$shopDisplay.";
-																											</script>";
+					var textShowDesc = '".__('Show description', $this->stringTextdomain)."';
+					var loadingImage = '".plugins_url('/img/loading.gif', __FILE__)."';
+					var loadingMessage = '".__('Loading new articles...', $this->stringTextdomain)."';
+					var loadingFinishedMessage = '".__('You have reached the end', $this->stringTextdomain)."';
+					var pageLink = '".get_page_link()."';
+					var pageCheckoutUseIframe = ".self::$shopCheckoutIframe.";
+					var textButtonAdd = '".__('Add to basket', $this->stringTextdomain)."';
+					var textButtonAdded = '".__('Adding...', $this->stringTextdomain)."';
+					var ajaxLocation = '".admin_url( 'admin-ajax.php' )."?pageid=".get_the_ID()."&nonce=".wp_create_nonce('spreadplugin')."';
+					var display = ".self::$shopDisplay.";
+					</script>";
 
 			echo "
 					<script src='".plugins_url('/js/spreadplugin.js', __FILE__)."'></script>
