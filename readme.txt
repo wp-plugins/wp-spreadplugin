@@ -76,9 +76,10 @@ US/NA:
 EU:
 `[spreadplugin shop_id="732552" shop_limit="20" shop_locale="de_DE" shop_source="net" shop_category="" shop_social="1" shop_enablelink="1" shop_productcategory="" shop_checkoutiframe="2" shop_sortby="" shop_designershop="0" shop_display="0" shop_api="" shop_secret=""]`
 
-6. When adding default settings, only the minimum shortcode is required. 
+6. These values are required: Shop Id, Shop locale, Shop source, Shop API and Shop secret!
+7. When adding default settings, only the minimum shortcode is required. 
 (If you extend the shortcode with additional values, you can overwrite the default settings and use the plugin with an additional shop (add the extended shortcode to a different article/site)).
-7. Done
+8. Done
 
 == Frequently asked questions ==
 
