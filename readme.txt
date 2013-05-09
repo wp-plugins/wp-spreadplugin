@@ -157,6 +157,11 @@ Please go to the settings page in the admin panel of the plugin and click "Clear
 Please use the extended shortcode. 
 This will overwrite the default plugin settings just for the page, where you have added this shortcode.
 
+= The infinity scroll always repeats all of my articles on and on and on and.. =
+
+This might be a problem resulting of a special URL structure (permalinks). In this case, please have a look at your wordpress settings -> permalinks. 
+If you don't want to change this setting to another one, please let me know the structure to check it.
+
 == Screenshots ==
 
 1. The Output 1
