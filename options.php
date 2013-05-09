@@ -74,7 +74,7 @@ if (is_user_logged_in() && is_admin()) {
         </select></td>
     </tr>
     <tr>
-      <td valign="top"><?php _e('Limit articles:','spreadplugin'); ?></td>
+      <td valign="top"><?php _e('Limit articles per page:','spreadplugin'); ?></td>
       <td><input type="text" name="shop_limit" value="<?php echo (empty($adminOptions['shop_limit'])?20:$adminOptions['shop_limit']); ?>" class="only-digit" /></td>
     </tr>
     <tr>
