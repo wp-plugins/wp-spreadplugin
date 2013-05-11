@@ -33,11 +33,11 @@ if (is_user_logged_in() && is_admin()) {
   <table border="0" cellpadding="3" cellspacing="0">
     <tr>
       <td valign="top"><?php _e('Shop id:','spreadplugin'); ?></td>
-      <td><input type="text" name="shop_id" value="<?php echo (empty($adminOptions['shop_id'])?0:$adminOptions['shop_id']); ?>" class="only-digit" /></td>
+      <td><input type="text" name="shop_id" value="<?php echo (empty($adminOptions['shop_id'])?0:$adminOptions['shop_id']); ?>" class="only-digit required" /></td>
     </tr>
     <tr>
-      <td valign="top"><?php _e('Shop locale:','spreadplugin'); ?></td>
-      <td><select name="shop_locale" id="shop_locale">
+      <td valign="top"><?php _e('Shop country:','spreadplugin'); ?></td>
+      <td><select name="shop_locale" id="shop_locale" class="required">
           <option value="de_DE"<?php echo ($adminOptions['shop_locale']=='de_DE' || empty($adminOptions['shop_locale'])?" selected":"") ?>>Deutschland</option>
           <option value="fr_FR"<?php echo ($adminOptions['shop_locale']=='fr_FR'?" selected":"") ?>>France</option>
           <option value="en_GB"<?php echo ($adminOptions['shop_locale']=='en_GB'?" selected":"") ?>>United Kingdom</option>
@@ -59,19 +59,19 @@ if (is_user_logged_in() && is_admin()) {
         </select></td>
     </tr>
     <tr>
-      <td valign="top"><?php _e('Spreadshirt API Key:','spreadplugin'); ?></td>
-      <td><input type="text" name="shop_api" value="<?php echo $adminOptions['shop_api']; ?>" /></td>
-    </tr>
-    <tr>
-      <td valign="top"><?php _e('Spreadshirt API Secret:','spreadplugin'); ?></td>
-      <td><input type="text" name="shop_secret" value="<?php echo $adminOptions['shop_secret']; ?>" /></td>
-    </tr>
-    <tr>
       <td valign="top"><?php _e('Shop source:','spreadplugin'); ?></td>
-      <td><select name="shop_source" id="shop_source">
+      <td><select name="shop_source" id="shop_source" class="required">
           <option value="net"<?php echo ($adminOptions['shop_source']=='net'?" selected":"") ?>>Europe</option>
           <option value="com"<?php echo ($adminOptions['shop_source']=='com'?" selected":"") ?>>US/Canada</option>
         </select></td>
+    </tr>
+    <tr>
+      <td valign="top"><?php _e('Spreadshirt API Key:','spreadplugin'); ?></td>
+      <td><input type="text" name="shop_api" value="<?php echo $adminOptions['shop_api']; ?>" class="required" /></td>
+    </tr>
+    <tr>
+      <td valign="top"><?php _e('Spreadshirt API Secret:','spreadplugin'); ?></td>
+      <td><input type="text" name="shop_secret" value="<?php echo $adminOptions['shop_secret']; ?>" class="required" /></td>
     </tr>
     <tr>
       <td valign="top"><?php _e('Limit articles per page:','spreadplugin'); ?></td>
@@ -79,14 +79,23 @@ if (is_user_logged_in() && is_admin()) {
     </tr>
     <tr>
       <td valign="top"><?php _e('Product category:','spreadplugin'); ?></td>
-      <td><input type="text" name="shop_productcategory" value="<?php echo $adminOptions['shop_productcategory']; ?>" /></td>
+      <td><select name="shop_productcategory" id="shop_productcategory">
+          <option value=""><?php _e('All products'); ?></option>
+          <option value="<?php _e('Men'); ?>"<?php echo ($adminOptions['shop_productcategory']==__('Men')?" selected":""); ?>><?php _e('Men'); ?></option>
+          <option value="<?php _e('Women'); ?>"<?php echo ($adminOptions['shop_productcategory']==__('Women')?" selected":""); ?>><?php _e('Women'); ?></option>
+          <option value="<?php _e('Kids & Babies'); ?>"<?php echo ($adminOptions['shop_productcategory']==__('Kids & Babies')?" selected":""); ?>><?php _e('Kids & Babies'); ?></option>
+          <option value="<?php _e('Accessories'); ?>"<?php echo ($adminOptions['shop_productcategory']==__('Accessories')?" selected":""); ?>><?php _e('Accessories'); ?></option>
+          <option value="<?php _e('New Products'); ?>"<?php echo ($adminOptions['shop_productcategory']==__('New Products')?" selected":""); ?>><?php _e('New Products'); ?></option>
+        </select></td>
     </tr>
     <tr>
       <td valign="top"><?php _e('Article category:','spreadplugin'); ?></td>
-      <td><input type="text" name="shop_category" value="<?php echo $adminOptions['shop_category']; ?>" class="only-digit" /></td>
+      <td>Please see <strong>How do I get the category Id?</strong> in FAQ<br />
+        <br />
+      <input type="text" name="shop_category" value="<?php echo $adminOptions['shop_category']; ?>" class="only-digit" /></td>
     </tr>
     <tr>
-      <td valign="top"><?php _e('Social plugins:','spreadplugin'); ?></td>
+      <td valign="top"><?php _e('Social buttons:','spreadplugin'); ?></td>
       <td><input type="radio" name="shop_social" value="0"<?php echo ($adminOptions['shop_social']==0?" checked":"") ?> />
         <?php _e('Disabled','spreadplugin'); ?>
         <br />
@@ -102,7 +111,7 @@ if (is_user_logged_in() && is_admin()) {
         <?php _e('Enabled','spreadplugin'); ?></td>
     </tr>
     <tr>
-      <td valign="top"><?php _e('Default sorting:','spreadplugin'); ?></td>
+      <td valign="top"><?php _e('Sort articles by:','spreadplugin'); ?></td>
       <td><select name="shop_sortby" id="shop_sortby">
           <option></option>
           <?php if (!empty(self::$shopArticleSortOptions)) {
@@ -116,7 +125,10 @@ if (is_user_logged_in() && is_admin()) {
     </tr>
     <tr>
       <td valign="top"><?php _e('Target of links:','spreadplugin'); ?></td>
-      <td><input type="text" name="shop_linktarget" value="<?php echo ($adminOptions['shop_linktarget']?'_blank':$adminOptions['shop_linktarget']); ?>" /></td>
+      <td><?php _e('Enter the name of your target iframe or frame, if available. Default is _blank (new window).','spreadplugin'); ?>
+        <br />
+        <br />
+        <input type="text" name="shop_linktarget" value="<?php echo ($adminOptions['shop_linktarget']?'_blank':$adminOptions['shop_linktarget']); ?>" /></td>
     </tr>
     <tr>
       <td valign="top"><?php _e('Use iframe for checkout:','spreadplugin'); ?></td>
@@ -130,8 +142,8 @@ if (is_user_logged_in() && is_admin()) {
         <?php _e('Opens an iframe in a modal window (fancybox)','spreadplugin'); ?></td>
     </tr>
     <tr>
-      <td valign="top"><?php _e('Designer Shop id:','spreadplugin'); ?></td>
-      <td><input type="text" name="shop_designershop" value="<?php echo $adminOptions['shop_designershop']; ?>" class="only-digit" /></td>
+      <td valign="top"><?php _e('Designer Shop ID:','spreadplugin'); ?></td>
+      <td><?php _e('If you have a designer Shop (Spreadshirt premium account), enter the ID here. A new link will appear where the customer can change the design.','spreadplugin'); ?><input type="text" name="shop_designershop" value="<?php echo $adminOptions['shop_designershop']; ?>" class="only-digit" /></td>
     </tr>
     <tr>
       <td valign="top"><?php _e('Default display:','spreadplugin'); ?></td>
@@ -141,16 +153,17 @@ if (is_user_logged_in() && is_admin()) {
         <input type="radio" name="shop_display" value="1"<?php echo ($adminOptions['shop_display']==1?" checked":"") ?> />
         <?php _e('Designs','spreadplugin'); ?></td>
     </tr>
-    <!-- 
     <tr>
       <td valign="top"><?php _e('Designs with background:','spreadplugin'); ?></td>
-      <td><input type="radio" name="shop_designsbackground" value="0"<?php echo ($adminOptions['shop_designsbackground']==0?" checked":"") ?> />
+      <td><?php _e('Displays designs with background color of each first given article/shirt'); ?>
+        <br />
+        <br />
+        <input type="radio" name="shop_designsbackground" value="0"<?php echo ($adminOptions['shop_designsbackground']==0?" checked":"") ?> />
         <?php _e('Disabled','spreadplugin'); ?>
         <br />
         <input type="radio" name="shop_designsbackground" value="1"<?php echo ($adminOptions['shop_designsbackground']==1?" checked":"") ?> />
         <?php _e('Enabled','spreadplugin'); ?></td>
     </tr>
-    -->
   </table>
   <br />
   <input type="submit" name="update-splg_options" id="update-splg_options" value="<?php _e('Update settings','spreadplugin'); ?>" />
@@ -194,6 +207,7 @@ if (is_user_logged_in() && is_admin()) {
 	function setMessage(msg) {
 		jQuery("#message").append(msg); //.html(msg)
 		jQuery("#message").show();
+		jQuery('html, body').animate({scrollTop: 0}, 800);
 	}
 
 	function rebuild() {
@@ -220,6 +234,32 @@ if (is_user_logged_in() && is_admin()) {
 		}
 	});
 	
+	
+	// bind to the form's submit event
+jQuery('#splg_options_form').submit(function() {
+
+	var isFormValid = true;
+		
+	jQuery("#splg_options_form .required").each(function() { 
+		if (jQuery.trim(jQuery(this).val()).length == 0) {
+			jQuery(this).parent().addClass("highlight");
+			isFormValid = false;
+		} else {
+			jQuery(this).parent().removeClass("highlight");
+		}
+	});
+	
+	
+	// Formularprüfung
+	if (!isFormValid) { 	
+		setMessage("<p><?php _e('Please fill in the highlighted fields!','spreadplugin'); ?></p>");
+	} else {
+		return true;
+	}
+
+	return false;
+});
+
 </script>
 <?php 
 if (isset($_GET['saved'])) {

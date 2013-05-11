@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: spreadshirt,wordpress,plugin,shop
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 2.7.1
+Stable tag: 2.7.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -26,16 +26,17 @@ The pagination is done via infinity scroll.
 * Uses Spreadshirt-Basket (A click on the basket opens the spreadshirt own basket)
 * Price listing
 * Choose color and sizes
-* Language support (de_DE, en_GB, fr_FR, nl_NL based on Wordpress installation)
+* Language support (de_DE, en_GB, fr_FR, nl_NL based on Wordpress installation, more on request)
 * Social buttons
 * Zoomed article preview
 * Display article descriptions
 * Cache
 * Choose or direct link to the product category
 * Sorting and filtering
-* Adding the products to the basket without page reload
-* Choose between article or designs display (click on a design shows the articles)
-* Settings page/Admin page for easy configuration
+* Adding products to the basket without page reload
+* Choose between article or design view (click on a design shows the articles inside the website)
+* Settings page/admin page for easier configuration
+* No premium shop necessary except you want to link to and use the designer
 
 **See it in action**
 
@@ -43,9 +44,9 @@ http://www.pr3ss-play.de/shop/ (in german)
 
 **What do you need**
 
-* Wordpress most recent Version
+* Wordpress
 * Spreadshirt shop
-* Spreadshirt API key and secret ( US/NA From: https://www.spreadshirt.com/-C6840 , EU From: https://www.spreadshirt.de/-C7120 )
+* Spreadshirt API key and secret (US/NA From: `https://www.spreadshirt.com/-C6840`, EU From: `https://www.spreadshirt.net/my-api-keys-C7120`)
 
 If you have suggestions, feel free to email me at info@spreadplugin.de.
 Want regular updates? Become a fan of my sites on Facebook!
@@ -172,6 +173,10 @@ If you don't want to change this setting to another one, please let me know the 
 6. Settings page
 
 == Changelog ==
+
+= 2.7.2 =
+* Extended admin page
+* An must have update!
 
 = 2.7.1 =
 * Fix for `Better WP Security` users, which were unable to display the options page in some circumstances.

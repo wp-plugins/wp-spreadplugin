@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spreadplugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-09 13:21+0100\n"
-"PO-Revision-Date: 2013-05-09 13:21+0100\n"
+"POT-Creation-Date: 2013-05-11 16:58+0100\n"
+"PO-Revision-Date: 2013-05-11 17:18+0100\n"
 "Last-Translator: Thimo Grauerholz <info@pr3ss-play.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -34,20 +34,20 @@ msgid "Shop id:"
 msgstr "Shop ID:"
 
 #: options.php:39
-msgid "Shop locale:"
-msgstr "Shop Regionseinstellung:"
+msgid "Shop country:"
+msgstr "Shop Land:"
 
 #: options.php:62
+msgid "Shop source:"
+msgstr "Shop Quelle:"
+
+#: options.php:69
 msgid "Spreadshirt API Key:"
 msgstr ""
 
-#: options.php:66
+#: options.php:73
 msgid "Spreadshirt API Secret:"
 msgstr ""
-
-#: options.php:70
-msgid "Shop source:"
-msgstr "Shop Quelle:"
 
 #: options.php:77
 msgid "Limit articles per page:"
@@ -57,101 +57,153 @@ msgstr "Anzahl Artikel pro Seite:"
 msgid "Product category:"
 msgstr "Produkt Kategorie:"
 
+#: options.php:83
+msgid "All products"
+msgstr "Alle Produkte"
+
+#: options.php:84
+msgid "Men"
+msgstr "Männer"
+
 #: options.php:85
+msgid "Women"
+msgstr "Frauen"
+
+#: options.php:86
+msgid "Kids & Babies"
+msgstr "Kinder & Babys"
+
+#: options.php:87
+msgid "Accessories"
+msgstr "Accessoires"
+
+#: options.php:88
+msgid "New Products"
+msgstr "Neue Produkte"
+
+#: options.php:92
 msgid "Article category:"
 msgstr "Artikel Kategorie:"
 
-#: options.php:89
-msgid "Social plugins:"
-msgstr "Social Pugins:"
+#: options.php:98
+msgid "Social buttons:"
+msgstr "Social Buttons:"
 
-#: options.php:91 options.php:99 options.php:148
+#: options.php:100 options.php:108 options.php:162
 msgid "Disabled"
 msgstr "Deaktivieren"
 
-#: options.php:94 options.php:102 options.php:151
+#: options.php:103 options.php:111 options.php:165
 msgid "Enabled"
 msgstr "Aktivieren"
 
-#: options.php:97
+#: options.php:106
 msgid "Product linking:"
 msgstr "Produkte verlinken:"
 
-#: options.php:105
-msgid "Default sorting:"
-msgstr "Standardsortierung:"
+#: options.php:114
+msgid "Sort articles by:"
+msgstr "Artikel sortieren nach:"
 
-#: options.php:118
+#: options.php:127
 msgid "Target of links:"
 msgstr "Link Ziel:"
 
-#: options.php:122
+#: options.php:128
+msgid ""
+"Enter the name of your target iframe or frame, if available. Default is "
+"_blank (new window)."
+msgstr ""
+"Falls Sie Iframes oder Frames nutzen, können Sie hier den Namen angeben, um "
+"die Inhalte dort anzeigen zu lassen. Standard ist _blank (Neues Fenster)"
+
+#: options.php:134
 msgid "Use iframe for checkout:"
 msgstr "Iframe für Warenkorb benutzen:"
 
-#: options.php:124
+#: options.php:136
 msgid "Opens in separate window"
 msgstr "Im separaten Fenster öffnen"
 
-#: options.php:127
+#: options.php:139
 msgid "Opens an iframe in the page content"
 msgstr "Im Iframe innerhalb der Seite öffnen"
 
-#: options.php:130
+#: options.php:142
 msgid "Opens an iframe in a modal window (fancybox)"
 msgstr "In einem Modal-Fenster öffnen (fancybox)"
 
-#: options.php:133
-msgid "Designer Shop id:"
+#: options.php:145
+msgid "Designer Shop ID:"
 msgstr "Designer-Shop ID:"
 
-#: options.php:137
+#: options.php:146
+msgid ""
+"If you have a designer Shop (Spreadshirt premium account), enter the ID "
+"here. A new link will appear where the customer can change the design."
+msgstr ""
+"Falls Sie einen Designer Shop haben (Spreadshirt Premium Account), können "
+"Sie hier dessen ID angeben. Ein neuer Link wird dann bei den Artikeln "
+"sichtbar, damit die Kunden die Artikel anpassen können."
+
+#: options.php:149
 msgid "Default display:"
 msgstr "Standardanzeige:"
 
-#: options.php:139
+#: options.php:151
 msgid "Articles"
 msgstr "Artikel"
 
-#: options.php:142
+#: options.php:154
 msgid "Designs"
 msgstr "Motive"
 
-#: options.php:146
+#: options.php:157
 msgid "Designs with background:"
 msgstr "Motive mit Hintergrund:"
 
-#: options.php:156
+#: options.php:158
+msgid ""
+"Displays designs with background color of each first given article/shirt"
+msgstr ""
+"Zeigt die Motive mit farblichen Hintergrund an. Die Farbe wird automatisch "
+"von den ersten Artikeln genommen."
+
+#: options.php:169
 msgid "Update settings"
 msgstr "Einstellungen aktualisieren"
 
-#: options.php:159
+#: options.php:172
 msgid "Minimum required shortcode"
 msgstr "Minimal erforderlicher Shortcode"
 
-#: options.php:163
+#: options.php:176
 msgid "Extended sample shortcode"
 msgstr "Beispiel erweiterter Shortcode"
 
-#: options.php:166
+#: options.php:179
 msgid "The extended shortcodes will overwrite the default settings."
 msgstr ""
 "Der erweiterte Shortcode überschreibt die Standardeinstellungen nur für die "
 "Seite, wo dieser eingegeben wurde."
 
-#: options.php:176
+#: options.php:189
 msgid "Options"
 msgstr "Optionen"
 
-#: options.php:179
+#: options.php:192
 msgid "Clear cache"
 msgstr "Cache leeren"
 
-#: options.php:201
+#: options.php:215
 msgid "Successfully cleared the cache"
 msgstr "Cache erfolgreich geleert"
 
-#: options.php:227
+#: options.php:255
+msgid "Please fill in the highlighted fields!"
+msgstr "Bitte füllen Sie die hinterlegten Felder aus!"
+
+#: options.php:267
 msgid "Successfully saved settings"
 msgstr "Einstellungen gespeichert"
 
@@ -234,6 +286,12 @@ msgstr "Füge ein..."
 #: spreadplugin.php:1207
 msgid "You do not have sufficient permissions to access this page."
 msgstr ""
+
+#~ msgid "Shop locale:"
+#~ msgstr "Shop Regionseinstellung:"
+
+#~ msgid "Default sorting:"
+#~ msgstr "Standardsortierung:"
 
 #~ msgid "If you use more than one shop add the complete shortcode."
 #~ msgstr ""

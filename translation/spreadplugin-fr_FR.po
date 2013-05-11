@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spreadplugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-09 13:21+0100\n"
-"PO-Revision-Date: 2013-05-09 13:21+0100\n"
+"POT-Creation-Date: 2013-05-11 17:31+0100\n"
+"PO-Revision-Date: 2013-05-11 17:32+0100\n"
 "Last-Translator: Thimo Grauerholz <info@pr3ss-play.de>\n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -32,19 +32,19 @@ msgid "Shop id:"
 msgstr ""
 
 #: options.php:39
-msgid "Shop locale:"
+msgid "Shop country:"
 msgstr ""
 
 #: options.php:62
+msgid "Shop source:"
+msgstr ""
+
+#: options.php:69
 msgid "Spreadshirt API Key:"
 msgstr ""
 
-#: options.php:66
+#: options.php:73
 msgid "Spreadshirt API Secret:"
-msgstr ""
-
-#: options.php:70
-msgid "Shop source:"
 msgstr ""
 
 #: options.php:77
@@ -55,99 +55,144 @@ msgstr ""
 msgid "Product category:"
 msgstr ""
 
+#: options.php:83
+msgid "All products"
+msgstr "Tous les produits"
+
+#: options.php:84
+msgid "Men"
+msgstr "Hommes"
+
 #: options.php:85
+msgid "Women"
+msgstr "Femmes"
+
+#: options.php:86
+msgid "Kids & Babies"
+msgstr "Enfants et Bébés"
+
+#: options.php:87
+msgid "Accessories"
+msgstr "Accessoires"
+
+#: options.php:88
+msgid "New Products"
+msgstr "Nouveaux produits"
+
+#: options.php:92
 msgid "Article category:"
 msgstr ""
 
-#: options.php:89
-msgid "Social plugins:"
+#: options.php:98
+msgid "Social buttons:"
 msgstr ""
 
-#: options.php:91 options.php:99 options.php:148
+#: options.php:100 options.php:108 options.php:162
 msgid "Disabled"
 msgstr ""
 
-#: options.php:94 options.php:102 options.php:151
+#: options.php:103 options.php:111 options.php:165
 msgid "Enabled"
 msgstr ""
 
-#: options.php:97
+#: options.php:106
 msgid "Product linking:"
 msgstr ""
 
-#: options.php:105
-msgid "Default sorting:"
-msgstr ""
+#: options.php:114
+msgid "Sort articles by:"
+msgstr "Trier par"
 
-#: options.php:118
+#: options.php:127
 msgid "Target of links:"
 msgstr ""
 
-#: options.php:122
+#: options.php:128
+msgid ""
+"Enter the name of your target iframe or frame, if available. Default is "
+"_blank (new window)."
+msgstr ""
+
+#: options.php:134
 msgid "Use iframe for checkout:"
 msgstr ""
 
-#: options.php:124
+#: options.php:136
 msgid "Opens in separate window"
 msgstr ""
 
-#: options.php:127
+#: options.php:139
 msgid "Opens an iframe in the page content"
 msgstr ""
 
-#: options.php:130
+#: options.php:142
 msgid "Opens an iframe in a modal window (fancybox)"
 msgstr ""
 
-#: options.php:133
-msgid "Designer Shop id:"
-msgstr ""
-
-#: options.php:137
-msgid "Default display:"
-msgstr ""
-
-#: options.php:139
-msgid "Articles"
-msgstr ""
-
-#: options.php:142
-msgid "Designs"
+#: options.php:145
+msgid "Designer Shop ID:"
 msgstr ""
 
 #: options.php:146
+msgid ""
+"If you have a designer Shop (Spreadshirt premium account), enter the ID "
+"here. A new link will appear where the customer can change the design."
+msgstr ""
+
+#: options.php:149
+msgid "Default display:"
+msgstr ""
+
+#: options.php:151
+msgid "Articles"
+msgstr ""
+
+#: options.php:154
+msgid "Designs"
+msgstr ""
+
+#: options.php:157
 msgid "Designs with background:"
 msgstr ""
 
-#: options.php:156
+#: options.php:158
+msgid ""
+"Displays designs with background color of each first given article/shirt"
+msgstr ""
+
+#: options.php:169
 msgid "Update settings"
 msgstr ""
 
-#: options.php:159
+#: options.php:172
 msgid "Minimum required shortcode"
 msgstr ""
 
-#: options.php:163
+#: options.php:176
 msgid "Extended sample shortcode"
 msgstr ""
 
-#: options.php:166
+#: options.php:179
 msgid "The extended shortcodes will overwrite the default settings."
 msgstr ""
 
-#: options.php:176
+#: options.php:189
 msgid "Options"
 msgstr ""
 
-#: options.php:179
+#: options.php:192
 msgid "Clear cache"
 msgstr ""
 
-#: options.php:201
+#: options.php:215
 msgid "Successfully cleared the cache"
 msgstr ""
 
-#: options.php:227
+#: options.php:255
+msgid "Please fill in the highlighted fields!"
+msgstr ""
+
+#: options.php:267
 msgid "Successfully saved settings"
 msgstr ""
 
