@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 2.7.3
+ * Version: 2.7.4
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
  */
@@ -45,6 +45,7 @@ if(!class_exists('WP_Spreadplugin')) {
 		private static $shopDesignerShopId;
 		private static $shopDesignsBackground;
 		private static $shopImgSize = '190';
+		private static $shopShowDescription;
 		public static $shopArticleSortOptions = array(
 				'name',
 				'price',
@@ -68,7 +69,8 @@ if(!class_exists('WP_Spreadplugin')) {
 				'shop_checkoutiframe' => '',
 				'shop_designershop' => '',
 				'shop_display' => '',
-				'shop_designsbackground' => ''
+				'shop_designsbackground' => '',
+				'shop_showdescription' => ''
 		);
 		private static $shopCache = 8760; // Shop article cache in hours 24*365 => 1 year
 
@@ -184,6 +186,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			self::$shopDesignerShopId = intval($conOp['shop_designershop']);
 			self::$shopDisplay = intval($conOp['shop_display']);
 			self::$shopDesignsBackground = intval($conOp['shop_designsbackground']);
+			self::$shopShowDescription = intval($conOp['shop_showdescription']);
 
 
 			if (isset($_GET['productCategory'])) {
@@ -673,7 +676,12 @@ if(!class_exists('WP_Spreadplugin')) {
 			// Show description link if not empty
 			if (!empty($article['description'])) {
 				$output .= '<div class="separator"></div>';
-				$output .= '<div class="description-wrapper"><div class="header"><a>'.__('Show description', $this->stringTextdomain).'</a></div><div class="description">'.htmlspecialchars($article['description'],ENT_QUOTES).'</div></div>';
+				
+				if (self::$shopShowDescription==0) {
+					$output .= '<div class="description-wrapper"><div class="header"><a>'.__('Show description', $this->stringTextdomain).'</a></div><div class="description">'.htmlspecialchars($article['description'],ENT_QUOTES).'</div></div>';
+				} else {
+					$output .= '<div class="description-wrapper">'.htmlspecialchars($article['description'],ENT_QUOTES).'</div>';
+				}
 			}
 				
 			$output .= '<input type="hidden" value="'. $article['appearance'] .'" id="appearance" name="appearance" />';

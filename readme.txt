@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: spreadshirt,wordpress,plugin,shop
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 2.7.3
+Stable tag: 2.7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -163,6 +163,10 @@ This will overwrite the default plugin settings just for the page, where you hav
 This might be a problem resulting of a special URL structure (permalinks). In this case, please have a look at your wordpress settings -> permalinks. 
 If you don't want to change this setting to another one, please let me know the structure to check it.
 
+= The article description should be displayed without clicking "Show description". How to do it? =
+
+Add or edit the shortcode or set in shortcode plugin settings to enable. Shortcode would be `shop_showdescription="1"` for enabling.
+
 == Screenshots ==
 
 1. The Output 1
@@ -173,6 +177,9 @@ If you don't want to change this setting to another one, please let me know the 
 6. Settings page
 
 == Changelog ==
+
+= 2.7.4 =
+Article description can now be displayed always. Use `shop_showdescription="1"` to enable or use settings.
 
 = 2.7.3 =
 Edit article now opens in fancybox when set `shop_checkoutiframe="2"`. It opens in a separate window by default, now. Thanks to grillwear-shop.de

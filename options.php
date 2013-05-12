@@ -179,6 +179,15 @@ if (is_user_logged_in() && is_admin()) {
         <input type="radio" name="shop_designsbackground" value="1"<?php echo ($adminOptions['shop_designsbackground']==1?" checked":"") ?> />
         <?php _e('Enabled','spreadplugin'); ?></td>
     </tr>
+    <tr>
+      <td valign="top"><?php _e('Always show article description:','spreadplugin'); ?></td>
+      <td>
+        <input type="radio" name="shop_showdescription" value="0"<?php echo ($adminOptions['shop_showdescription']==0?" checked":"") ?> />
+        <?php _e('Disabled','spreadplugin'); ?>
+        <br />
+        <input type="radio" name="shop_showdescription" value="1"<?php echo ($adminOptions['shop_showdescription']==1?" checked":"") ?> />
+        <?php _e('Enabled','spreadplugin'); ?></td>
+    </tr>
   </table>
   <br />
   <input type="submit" name="update-splg_options" id="update-splg_options" value="<?php _e('Update settings','spreadplugin'); ?>" />
