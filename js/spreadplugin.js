@@ -128,18 +128,20 @@ function bindClick() {
 
 					});
 
-	jQuery('.spreadshirt-article #editArticle').fancybox({
-		type : 'iframe',
-		fitToView : false,
-		autoSize : false,
-		height : 1000,
-		width : fancyBoxWidth,
-		preload : true,
-		afterClose : function() {
-			location.reload();
-			return;
-		}
-	});
+	if (pageCheckoutUseIframe == 2) {
+		jQuery('.spreadshirt-article #editArticle').fancybox({
+			type : 'iframe',
+			fitToView : false,
+			autoSize : false,
+			height : 1000,
+			width : fancyBoxWidth,
+			preload : true,
+			afterClose : function() {
+				location.reload();
+				return;
+			}
+		});
+	}
 
 	jQuery('.spreadshirt-article .image-wrapper a').fancybox({
 		type : 'iframe',

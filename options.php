@@ -80,19 +80,31 @@ if (is_user_logged_in() && is_admin()) {
     <tr>
       <td valign="top"><?php _e('Product category:','spreadplugin'); ?></td>
       <td><select name="shop_productcategory" id="shop_productcategory">
-          <option value=""><?php _e('All products'); ?></option>
-          <option value="<?php _e('Men'); ?>"<?php echo ($adminOptions['shop_productcategory']==__('Men')?" selected":""); ?>><?php _e('Men'); ?></option>
-          <option value="<?php _e('Women'); ?>"<?php echo ($adminOptions['shop_productcategory']==__('Women')?" selected":""); ?>><?php _e('Women'); ?></option>
-          <option value="<?php _e('Kids & Babies'); ?>"<?php echo ($adminOptions['shop_productcategory']==__('Kids & Babies')?" selected":""); ?>><?php _e('Kids & Babies'); ?></option>
-          <option value="<?php _e('Accessories'); ?>"<?php echo ($adminOptions['shop_productcategory']==__('Accessories')?" selected":""); ?>><?php _e('Accessories'); ?></option>
-          <option value="<?php _e('New Products'); ?>"<?php echo ($adminOptions['shop_productcategory']==__('New Products')?" selected":""); ?>><?php _e('New Products'); ?></option>
+          <option value="">
+          <?php _e('All products'); ?>
+          </option>
+          <option value="<?php _e('Men'); ?>"<?php echo ($adminOptions['shop_productcategory']==__('Men')?" selected":""); ?>>
+          <?php _e('Men'); ?>
+          </option>
+          <option value="<?php _e('Women'); ?>"<?php echo ($adminOptions['shop_productcategory']==__('Women')?" selected":""); ?>>
+          <?php _e('Women'); ?>
+          </option>
+          <option value="<?php _e('Kids & Babies'); ?>"<?php echo ($adminOptions['shop_productcategory']==__('Kids & Babies')?" selected":""); ?>>
+          <?php _e('Kids & Babies'); ?>
+          </option>
+          <option value="<?php _e('Accessories'); ?>"<?php echo ($adminOptions['shop_productcategory']==__('Accessories')?" selected":""); ?>>
+          <?php _e('Accessories'); ?>
+          </option>
+          <option value="<?php _e('New Products'); ?>"<?php echo ($adminOptions['shop_productcategory']==__('New Products')?" selected":""); ?>>
+          <?php _e('New Products'); ?>
+          </option>
         </select></td>
     </tr>
     <tr>
       <td valign="top"><?php _e('Article category:','spreadplugin'); ?></td>
       <td>Please see <strong>How do I get the category Id?</strong> in FAQ<br />
         <br />
-      <input type="text" name="shop_category" value="<?php echo $adminOptions['shop_category']; ?>" class="only-digit" /></td>
+        <input type="text" name="shop_category" value="<?php echo $adminOptions['shop_category']; ?>" class="only-digit" /></td>
     </tr>
     <tr>
       <td valign="top"><?php _e('Social buttons:','spreadplugin'); ?></td>
@@ -143,7 +155,10 @@ if (is_user_logged_in() && is_admin()) {
     </tr>
     <tr>
       <td valign="top"><?php _e('Designer Shop ID:','spreadplugin'); ?></td>
-      <td><?php _e('If you have a designer Shop (Spreadshirt premium account), enter the ID here. A new link will appear where the customer can change the design.','spreadplugin'); ?><input type="text" name="shop_designershop" value="<?php echo $adminOptions['shop_designershop']; ?>" class="only-digit" /></td>
+      <td><?php _e('If you have a designer Shop (Spreadshirt premium account), enter the ID here. A new link will appear where the customer can change the design.','spreadplugin'); ?>
+        <br />
+        <br />
+        <input type="text" name="shop_designershop" value="<?php echo $adminOptions['shop_designershop']; ?>" class="only-digit" /></td>
     </tr>
     <tr>
       <td valign="top"><?php _e('Default display:','spreadplugin'); ?></td>

@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: spreadshirt,wordpress,plugin,shop
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 2.7.2
+Stable tag: 2.7.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -173,6 +173,9 @@ If you don't want to change this setting to another one, please let me know the 
 6. Settings page
 
 == Changelog ==
+
+= 2.7.3 =
+Edit article now opens in fancybox when set `shop_checkoutiframe="2"`. It opens in a separate window by default, now. Thanks to grillwear-shop.de
 
 = 2.7.2 =
 * Extended admin page
