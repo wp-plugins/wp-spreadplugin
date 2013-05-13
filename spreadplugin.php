@@ -433,7 +433,8 @@ if(!class_exists('WP_Spreadplugin')) {
 				$apiUrlBase .= (!empty(self::$shopCategoryId)?'/articleCategories/'.self::$shopCategoryId:'');
 				$apiUrlBase .= '/articles?'.(!empty(self::$shopLocale)?'locale=' . self::$shopLocale . '&':'').'fullData=true';
 
-				$apiUrl = $apiUrlBase . '&limit=2'; # &limit='.self::$shopLimit.'&offset='.$offset
+				// call first to get count of articles
+				$apiUrl = $apiUrlBase . '&limit='.rand(2,999); // randomize to avoid spreadshirt caching issues
 
 				$stringXmlShop = wp_remote_get($apiUrl);
 				if (count($stringXmlShop->errors)>0) die('Error getting articles. Please check Shop-ID, API and secret.');
@@ -442,10 +443,9 @@ if(!class_exists('WP_Spreadplugin')) {
 				$objArticles = new SimpleXmlElement($stringXmlShop);
 				if (!is_object($objArticles)) die('Articles not loaded');
 
-
-				// re-call to avaid the limit of 50
+				// re-call to read articles with count
 				// read max 1000 articles because of spreadshirt max. limit
-				$apiUrl = $apiUrlBase . '&limit='.($objArticles['count']<=1?2:($objArticles['count']<1000?$objArticles['count']:1000)); # &limit='.self::$shopLimit.'&offset='.$offset
+				$apiUrl = $apiUrlBase . '&limit='.($objArticles['count']<=1?2:($objArticles['count']<1000?$objArticles['count']:1000));
 
 				$stringXmlShop = wp_remote_get($apiUrl);
 				if (count($stringXmlShop->errors)>0) die('Error getting articles. Please check your Shop-ID.');
@@ -555,7 +555,8 @@ if(!class_exists('WP_Spreadplugin')) {
 				//$apiUrlBase .= (!empty(self::$shopCategoryId)?'/articleCategories/'.self::$shopCategoryId:'');
 				$apiUrlBase .= '/designs?'.(!empty(self::$shopLocale)?'locale=' . self::$shopLocale . '&':'').'fullData=true';
 
-				$apiUrl = $apiUrlBase . '&limit=2'; # &limit='.self::$shopLimit.'&offset='.$offset
+				// call first to get count of articles
+				$apiUrl = $apiUrlBase . '&limit='.rand(2,999); // randomize to avoid spreadshirt caching issues
 
 				$stringXmlShop = wp_remote_get($apiUrl);
 				if (count($stringXmlShop->errors)>0) die('Error getting articles. Please check Shop-ID, API and secret.');
@@ -564,10 +565,9 @@ if(!class_exists('WP_Spreadplugin')) {
 				$objArticles = new SimpleXmlElement($stringXmlShop);
 				if (!is_object($objArticles)) die('Articles not loaded');
 
-
-				// re-call to avaid the limit of 50
+				// re-call to read articles with count
 				// read max 1000 articles because of spreadshirt max. limit
-				$apiUrl = $apiUrlBase . '&limit='.($objArticles['count']<=1?2:($objArticles['count']<1000?$objArticles['count']:1000)); # &limit='.self::$shopLimit.'&offset='.$offset
+				$apiUrl = $apiUrlBase . '&limit='.($objArticles['count']<=1?2:($objArticles['count']<1000?$objArticles['count']:1000));
 
 				$stringXmlShop = wp_remote_get($apiUrl);
 				if (count($stringXmlShop->errors)>0) die('Error getting articles. Please check your Shop-ID.');
