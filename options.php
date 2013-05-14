@@ -78,6 +78,14 @@ if (is_user_logged_in() && is_admin()) {
       <td><input type="text" name="shop_limit" value="<?php echo (empty($adminOptions['shop_limit'])?20:$adminOptions['shop_limit']); ?>" class="only-digit" /></td>
     </tr>
     <tr>
+      <td valign="top"><?php _e('Image size:','spreadplugin'); ?></td>
+      <td><select name="shop_imagesize" id="shop_imagesize">
+          <option value="190"<?php echo ($adminOptions['shop_imagesize']==190?" selected":"") ?>>190</option>
+          <option value="280"<?php echo ($adminOptions['shop_imagesize']==280?" selected":"") ?>>280</option>
+        </select>
+        px</td>
+    </tr>
+    <tr>
       <td valign="top"><?php _e('Product category:','spreadplugin'); ?></td>
       <td><select name="shop_productcategory" id="shop_productcategory">
           <option value="">
@@ -114,7 +122,7 @@ if (is_user_logged_in() && is_admin()) {
         <input type="radio" name="shop_social" value="1"<?php echo ($adminOptions['shop_social']==1?" checked":"") ?> />
         <?php _e('Enabled','spreadplugin'); ?></td>
     </tr>
-    <tr>
+<!--    <tr>
       <td valign="top"><?php _e('Product linking:','spreadplugin'); ?></td>
       <td><input type="radio" name="shop_enablelink" value="0"<?php echo ($adminOptions['shop_enablelink']==0?" checked":"") ?> />
         <?php _e('Disabled','spreadplugin'); ?>
@@ -122,7 +130,7 @@ if (is_user_logged_in() && is_admin()) {
         <input type="radio" name="shop_enablelink" value="1"<?php echo ($adminOptions['shop_enablelink']==1?" checked":"") ?> />
         <?php _e('Enabled','spreadplugin'); ?></td>
     </tr>
-    <tr>
+-->    <tr>
       <td valign="top"><?php _e('Sort articles by:','spreadplugin'); ?></td>
       <td><select name="shop_sortby" id="shop_sortby">
           <option></option>
@@ -181,11 +189,18 @@ if (is_user_logged_in() && is_admin()) {
     </tr>
     <tr>
       <td valign="top"><?php _e('Always show article description:','spreadplugin'); ?></td>
-      <td>
-        <input type="radio" name="shop_showdescription" value="0"<?php echo ($adminOptions['shop_showdescription']==0?" checked":"") ?> />
+      <td><input type="radio" name="shop_showdescription" value="0"<?php echo ($adminOptions['shop_showdescription']==0?" checked":"") ?> />
         <?php _e('Disabled','spreadplugin'); ?>
         <br />
         <input type="radio" name="shop_showdescription" value="1"<?php echo ($adminOptions['shop_showdescription']==1?" checked":"") ?> />
+        <?php _e('Enabled','spreadplugin'); ?></td>
+    </tr>
+    <tr>
+      <td valign="top"><?php _e('Display price without and with tax:','spreadplugin'); ?></td>
+      <td><input type="radio" name="shop_showextendprice" value="0"<?php echo ($adminOptions['shop_showextendprice']==0?" checked":"") ?> />
+        <?php _e('Disabled','spreadplugin'); ?>
+        <br />
+        <input type="radio" name="shop_showextendprice" value="1"<?php echo ($adminOptions['shop_showextendprice']==1?" checked":"") ?> />
         <?php _e('Enabled','spreadplugin'); ?></td>
     </tr>
   </table>

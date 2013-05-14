@@ -4,6 +4,8 @@ var prod2 = getParameterByName('productSubCategory');
 var sor = getParameterByName('articleSortBy');
 var infiniteItemSel = '.spreadshirt-article';
 var fancyBoxWidth = 840;
+var appearance = '';
+var view = '';
 
 if (display == 1) {
 	infiniteItemSel = '.spreadshirt-designs';
@@ -18,30 +20,27 @@ if (pageLink.indexOf('?') > -1) {
  */
 function bindClick() {
 	// avoid double firing events
-	jQuery('#spreadshirt-items .colors li').unbind();
-	jQuery('#spreadshirt-items .views li').unbind();
-	jQuery('#spreadshirt-items .description-wrapper div.header').unbind();
+	jQuery('.spreadshirt-article .colors li').unbind();
+	jQuery('.spreadshirt-article .views li').unbind();
+	jQuery('.spreadshirt-article .description-wrapper div.header').unbind();
 	jQuery('.spreadshirt-design .image-wrapper').unbind();
 	jQuery('.spreadshirt-article form').unbind();
 
-	jQuery('#spreadshirt-items .colors li').click(
+	jQuery('.spreadshirt-article .colors li').click(
 			function() {
 				var id = '#'
 						+ jQuery(this).closest('.spreadshirt-article').attr(
 								'id');
-				var appearance = jQuery(this).attr('value');
 				var src = jQuery(id + ' img.preview').attr('src');
-				var srccomp = jQuery(id + ' img.compositions').attr('src');
+				var srczoom = jQuery(id + ' img.preview').attr(
+						'data-zoom-image');
+				var srczoomData = jQuery(id + ' img.preview').data(
+						'elevateZoom');
+				appearance = jQuery(this).attr('value');
 
 				jQuery(id + ' img.preview').attr(
 						'src',
-						src.replace(/\,appearanceId=(\d+)/g, '').replace(
-								/\,viewId=(\d+)/g, '')
-								+ ',appearanceId=' + appearance);
-				jQuery(id + ' img.compositions').attr(
-						'src',
-						srccomp.replace(/\,appearanceId=(\d+)/g, '').replace(
-								/\,viewId=(\d+)/g, '')
+						src.replace(/\,appearanceId=(\d+)/g, '')
 								+ ',appearanceId=' + appearance);
 
 				jQuery(id + ' img.previewview').each(
@@ -54,31 +53,54 @@ function bindClick() {
 											+ ',appearanceId=' + appearance);
 						});
 
-				jQuery(id + ' #appearance').attr('value', appearance);
+				jQuery(id + ' img.preview').attr(
+						'data-zoom-image',
+						srczoom.replace(/\,appearanceId=(\d+)/g, '')
+								+ ',appearanceId=' + appearance);
+
+				jQuery(id + ' #appearance').val(appearance);
+
+				var url = srczoomData.imageSrc.replace(/\,viewId=(\d+)/g, '');
+				url = url + ',appearanceId=' + appearance;
+				url = url + ',viewId=' + jQuery(id + ' #view').val();
+
+				srczoomData.zoomWindow.css({
+					backgroundImage : "url('" + url + "')"
+				});
+
 			});
 
-	jQuery('#spreadshirt-items .views li').click(
+	jQuery('.spreadshirt-article .views li').click(
 			function() {
 				var id = '#'
 						+ jQuery(this).closest('.spreadshirt-article').attr(
 								'id');
-				var view = jQuery(this).attr('value');
 				var src = jQuery(id + ' img.previewview').attr('src');
-				var srccomp = jQuery(id + ' img.compositions').attr('src');
+				var srczoomData = jQuery(id + ' img.preview').data(
+						'elevateZoom');
+				view = jQuery(this).attr('value');
 
 				jQuery(id + ' img.preview').attr(
 						'src',
 						src.replace(/\,viewId=(\d+)/g, '').replace(
-								/\,width=(\d+)\,height=(\d+)/g, '')
+								/width=(\d+)/g, 'width=' + imageSize).replace(
+								/height=(\d+)/g, 'height=' + imageSize)
 								+ ',viewId=' + view);
-				jQuery(id + ' img.compositions').attr(
-						'src',
-						srccomp.replace(/\,viewId=(\d+)/g, '') + ',viewId='
-								+ view);
-				jQuery(id + ' #view').attr('value', view);
+
+				jQuery(id + ' #view').val(view);
+
+				var url = srczoomData.imageSrc.replace(/\,viewId=(\d+)/g, '');
+				url = url + ',appearanceId='
+						+ jQuery(id + ' #appearance').val();
+				url = url + ',viewId=' + view;
+
+				srczoomData.zoomWindow.css({
+					backgroundImage : "url('" + url + "')"
+				});
+
 			});
 
-	jQuery('#spreadshirt-items .description-wrapper div.header').click(
+	jQuery('.spreadshirt-article .description-wrapper div.header').click(
 			function() {
 				var par = jQuery(this).parent().parent().parent();
 				var field = jQuery(this).next();
@@ -173,6 +195,7 @@ function bindClick() {
 }
 
 function bindHover() {
+	jQuery(".spreadshirt-article img.preview").unbind();
 
 	// display image caption on top of image
 	jQuery(".spreadshirt-design div.image-wrapper").each(
@@ -196,26 +219,17 @@ function bindHover() {
 						});
 			});
 
-	// Articles
-	jQuery('#spreadshirt-items img.preview').mouseenter(function() {
-		var id = jQuery(this).attr('id');
-		id = '#' + id.replace('previewimg', 'compositeimg');
 
-		if (jQuery(this).is(':visible')) {
-			jQuery(this).hide();
-			jQuery(id).show();
-		}
+	// Articles zoom image
+	jQuery(".spreadshirt-article img.preview").elevateZoom({
+		zoomType : "inner",
+		cursor : "crosshair",
+		easing : true
 	});
-
-	jQuery('#spreadshirt-items .spreadshirt-article').mouseleave(function() {
-		var id = jQuery(this).attr('id');
-		id = id.replace('article', '');
-
-		jQuery('#' + 'compositeimg' + id).hide();
-		jQuery('#' + 'previewimg' + id).show();
-	});
-
-	jQuery('.spreadshirt-items ul.soc-icons a').hover(
+		
+	
+	// socials
+	jQuery('.spreadshirt-article ul.soc-icons a').hover(
 			function() {
 				jQuery(this).parent().css('background-color',
 						jQuery(this).attr('data-color'));
@@ -225,8 +239,13 @@ function bindHover() {
 
 }
 
+
+
+
 bindClick();
 bindHover();
+
+
 
 // Fixed menu bar
 jQuery(function() {
@@ -370,4 +389,3 @@ function getParameterByName(name) {
 				" ")));
 	}
 }
-

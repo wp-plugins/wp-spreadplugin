@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 2.7.6
+ * Version: 2.8
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
  */
@@ -44,8 +44,9 @@ if(!class_exists('WP_Spreadplugin')) {
 		private static $shopCheckoutIframe;
 		private static $shopDesignerShopId;
 		private static $shopDesignsBackground;
-		private static $shopImgSize = '190';
+		private static $shopImgSize;
 		private static $shopShowDescription;
+		private static $shopShowExtendPrice;
 		public static $shopArticleSortOptions = array(
 				'name',
 				'price',
@@ -70,7 +71,9 @@ if(!class_exists('WP_Spreadplugin')) {
 				'shop_designershop' => '',
 				'shop_display' => '',
 				'shop_designsbackground' => '',
-				'shop_showdescription' => ''
+				'shop_showdescription' => '',
+				'shop_imagesize' => '',
+				'shop_showextendprice' => ''
 		);
 		private static $shopCache = 8760; // Shop article cache in hours 24*365 => 1 year
 
@@ -100,6 +103,10 @@ if(!class_exists('WP_Spreadplugin')) {
 			// Fancybox
 			wp_register_script('fancy_box', plugins_url('/js/jquery.fancybox.pack.js', __FILE__),array('jquery'));
 			wp_enqueue_script('fancy_box');
+			
+			// Zoom
+			wp_register_script('zoom', plugins_url('/js/jquery.elevateZoom-2.5.5.min.js', __FILE__),array('jquery'));
+			wp_enqueue_script('zoom');
 
 			// Respects SSL, Style.css is relative to the current file
 			wp_register_style('spreadplugin', plugins_url('/css/spreadplugin.css', __FILE__));
@@ -187,6 +194,8 @@ if(!class_exists('WP_Spreadplugin')) {
 			self::$shopDisplay = intval($conOp['shop_display']);
 			self::$shopDesignsBackground = intval($conOp['shop_designsbackground']);
 			self::$shopShowDescription = intval($conOp['shop_showdescription']);
+			self::$shopShowExtendPrice = intval($conOp['shop_showextendprice']);
+			self::$shopImgSize = (intval($conOp['shop_imagesize'])==0?190:intval($conOp['shop_imagesize']));
 
 
 			if (isset($_GET['productCategory'])) {
@@ -369,9 +378,10 @@ if(!class_exists('WP_Spreadplugin')) {
 								if (self::$shopDesignsBackground==1) {
 									// fetch first article background color
 									@reset($articleData[$designId]);
-									$bgc=$articleData[$designId][key($articleData[$designId])]['default_bgc'];
+									$bgcV=$articleData[$designId][key($articleData[$designId])]['default_bgc'];
+									$bgcV = str_replace("#", "", $bgcV);
 									// calc to hex
-									$bgc=$this->hex2rgb($bgc);
+									$bgc=$this->hex2rgb($bgcV);
 									$addStyle="style=\"background-color:rgba(".$bgc[0].",".$bgc[1].",".$bgc[2].",0.4);\"";
 								}
 
@@ -381,7 +391,7 @@ if(!class_exists('WP_Spreadplugin')) {
 									
 								if (!empty($articleData[$designId])) {
 									foreach ($articleData[$designId] as $articleId => $arrArticle) {
-										$output .= $this->displayArticles($articleId,$arrArticle);
+										$output .= $this->displayArticles($articleId,$arrArticle); // ,$bgcV
 									}
 								}
 
@@ -498,8 +508,6 @@ if(!class_exists('WP_Spreadplugin')) {
 						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['pricenet']=(float)$article->price->vatExcluded;
 						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['pricebrut']=(float)$article->price->vatIncluded;
 						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['currencycode']=(string)$objCurrencyData->isoCode;
-						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['resource0']=(string)$article->resources->resource->attributes('xlink', true);
-						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['resource2']=(string)$article->resources->resource[2]->attributes('xlink', true);
 						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['productname']=(string)$objArticleData->name;
 						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['productdescription']=(string)$objArticleData->description;
 						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['weight']=(float)$article['weight'];
@@ -614,17 +622,16 @@ if(!class_exists('WP_Spreadplugin')) {
 		 *
 		 * @return html
 		 */
-		private function displayArticles($id,$article) {
+		private function displayArticles($id,$article,$backgroundColor='FFFFFF') {
 				
-			$output = '<div class="spreadshirt-article clearfix" id="article_'.$id.'">';
+			$output = '<div class="spreadshirt-article clearfix" id="article_'.$id.'" style="width:'.(self::$shopImgSize+7).'px">';
 			$output .= '<a name="'.$id.'"></a>';
 			$output .= '<h3>'.htmlspecialchars($article['name'],ENT_QUOTES).'</h3>';
 			$output .= '<form method="post" id="form_'.$id.'">';
 			$output .= '<div class="image-wrapper">';
-			$output .= (self::$shopLinkEnabled==1?'<a href="//'.self::$shopId.'.spreadshirt.'.self::$apiUrl.'/-A'.$id.'" target="'.self::$shopLinkTarget.'">':'');
-			$output .= '<img src="' . $this->cleanURL($article['resource0']) . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="preview" alt="' . htmlspecialchars($article['name'],ENT_QUOTES) . '" id="previewimg_'.$id.'" />';
-			$output .= '<img src="' . $this->cleanURL($article['resource2']) . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="compositions" style="display:none;" alt="' . htmlspecialchars($article['name'],ENT_QUOTES) . '" id="compositeimg_'.$id.'" title="'.htmlspecialchars($article['productdescription'],ENT_QUOTES).'" />';
-			$output .= (self::$shopLinkEnabled==1?'</a>':'');
+			//$output .= (self::$shopLinkEnabled==1?'<a href="//'.self::$shopId.'.spreadshirt.'.self::$apiUrl.'/-A'.$id.'" target="'.self::$shopLinkTarget.'">':'');
+			$output .= '<img src="http://image.spreadshirt.'.self::$apiUrl.'/image-server/v1/products/'.$article['productId'].'/views/1,width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="preview" alt="' . htmlspecialchars($article['name'],ENT_QUOTES) . '" id="previewimg_'.$id.'" data-zoom-image="http://image.spreadshirt.'.self::$apiUrl.'/image-server/v1/products/'.$article['productId'].'/views/1,width=800,height=800,backgroundColor='.$backgroundColor.'" />';
+			//$output .= (self::$shopLinkEnabled==1?'</a>':'');
 			$output .= '</div>';
 
 			// add a select with available sizes
@@ -690,8 +697,12 @@ if(!class_exists('WP_Spreadplugin')) {
 				
 			$output .= '<div class="separator"></div>';
 			$output .= '<div class="price-wrapper">';
-			$output .= '<span id="price-without-tax">'.__('Price (without tax):', $this->stringTextdomain)." ".(empty(self::$shopLocale) || self::$shopLocale=='en_US' || self::$shopLocale=='en_GB'?number_format($article['pricenet'],2,'.',''):number_format($article['pricenet'],2,',','.'))." ".$article['currencycode']."<br /></span>";
-			$output .= '<span id="price-with-tax">'.__('Price (with tax):', $this->stringTextdomain)." ".(empty(self::$shopLocale) || self::$shopLocale=='en_US' || self::$shopLocale=='en_GB'?number_format($article['pricebrut'],2,'.',''):number_format($article['pricebrut'],2,',','.'))." ".$article['currencycode']."<br /></span>";
+			if (self::$shopShowExtendPrice==1) {
+				$output .= '<span id="price-without-tax">'.__('Price (without tax):', $this->stringTextdomain)." ".(empty(self::$shopLocale) || self::$shopLocale=='en_US' || self::$shopLocale=='en_GB'?number_format($article['pricenet'],2,'.',''):number_format($article['pricenet'],2,',','.'))." ".$article['currencycode']."<br /></span>";
+				$output .= '<span id="price-with-tax">'.__('Price (with tax):', $this->stringTextdomain)." ".(empty(self::$shopLocale) || self::$shopLocale=='en_US' || self::$shopLocale=='en_GB'?number_format($article['pricebrut'],2,'.',''):number_format($article['pricebrut'],2,',','.'))." ".$article['currencycode']."</span>";
+			} else {
+				$output .= '<span id="price">'.__('Price:', $this->stringTextdomain)." ".(empty(self::$shopLocale) || self::$shopLocale=='en_US' || self::$shopLocale=='en_GB'?number_format($article['pricebrut'],2,'.',''):number_format($article['pricebrut'],2,',','.'))." ".$article['currencycode']."</span>";
+			}
 			$output .= '</div>';
 				
 			// order buttons
@@ -768,14 +779,11 @@ if(!class_exists('WP_Spreadplugin')) {
 			$addStyle = '';
 			if ($bgc) $addStyle='style="background-color:rgba('.$bgc[0].','.$bgc[1].','.$bgc[2].',0.4);"';
 
-			$output = '<div class="spreadshirt-design clearfix" id="design_'.$id.'">';
+			$output = '<div class="spreadshirt-design clearfix" id="design_'.$id.'" style="width:187px">';
 			$output .= '<a name="'.$id.'"></a>';
 			$output .= '<h3>'.htmlspecialchars($designData['name'],ENT_QUOTES).'</h3>';
 			$output .= '<div class="image-wrapper" '.$addStyle.'>';
-			// hovering disabled
-			//$output .= '<img src="' . $designData['resource0'] . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="preview" alt="' . htmlspecialchars($designData['name'],ENT_QUOTES) . '" id="previewdesignimg_'.$id.'" />';
-			$output .= '<img src="' . $this->cleanURL($designData['resource2']) . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="compositions" alt="' . htmlspecialchars($designData['name'],ENT_QUOTES) . '" id="compositedesignimg_'.$id.'" />'; // style="display:none;" // title="'.htmlspecialchars($designData['productdescription'],ENT_QUOTES).'"
-				
+			$output .= '<img src="' . $this->cleanURL($designData['resource2']) . ',width='.self::$shopImgSize.',height='.self::$shopImgSize.'" alt="' . htmlspecialchars($designData['name'],ENT_QUOTES) . '" id="compositedesignimg_'.$id.'" />'; // style="display:none;" // title="'.htmlspecialchars($designData['productdescription'],ENT_QUOTES).'"
 			$output .= '<span class="img-caption">'.__('Click to view the articles', $this->stringTextdomain).'</em></span>';
 			$output .= '</div>';
 
@@ -1076,6 +1084,7 @@ if(!class_exists('WP_Spreadplugin')) {
 					var textButtonAdded = '".__('Adding...', $this->stringTextdomain)."';
 					var ajaxLocation = '".admin_url( 'admin-ajax.php' )."?pageid=".get_the_ID()."&nonce=".wp_create_nonce('spreadplugin')."';
 					var display = ".self::$shopDisplay.";
+					var imageSize = ".self::$shopImgSize.";
 					</script>";
 
 			echo "
@@ -1249,8 +1258,6 @@ if(!class_exists('WP_Spreadplugin')) {
 
 		// Convert hex to rgb values
 		public function hex2rgb($hex) {
-			$hex = str_replace("#", "", $hex);
-
 			if(strlen($hex) == 3) {
 				$r = hexdec(substr($hex,0,1).substr($hex,0,1));
 				$g = hexdec(substr($hex,1,1).substr($hex,1,1));

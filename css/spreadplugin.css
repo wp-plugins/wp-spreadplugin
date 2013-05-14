@@ -13,10 +13,8 @@ pre, code {
 	float: left;
 	margin-top: 20px;
 	margin-right: 2px;
-	width: 205px;
 	padding: 5px;
 	display: block;
-	z-index: auto;
 	min-height: 650px; /* fixing the height of each Article */
 	overflow: hidden;
 	white-space: normal;

@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: spreadshirt,wordpress,plugin,shop
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 2.7.6
+Stable tag: 2.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -28,7 +28,7 @@ The pagination is done via infinity scroll.
 * Choose color and sizes
 * Language support (de_DE, en_GB, fr_FR, nl_NL based on Wordpress installation, more on request)
 * Social buttons
-* Zoomed article preview
+* Enhanced article zoom
 * Display article descriptions
 * Cache
 * Choose or direct link to the product category
@@ -177,6 +177,11 @@ Add or edit the shortcode or set in shortcode plugin settings to enable. Shortco
 6. Settings page
 
 == Changelog ==
+
+= 2.8 =
+* Enhanced article zoom
+* Price with tax now displayed only. Can be changed in options/settings page.
+* Two images sizes now available (190 & 280 pixel)
 
 = 2.7.6 =
 Enhanced cache call method to get always newest API file, when deleting spreadplugin cache.
