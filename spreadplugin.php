@@ -179,7 +179,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			self::$shopId = intval($conOp['shop_id']);
 			self::$shopApi = $conOp['shop_api'];
 			self::$shopSecret = $conOp['shop_secret'];
-			self::$shopLimit = (empty($conOp['shop_limit'])?20:intval($conOp['shop_limit']));
+			self::$shopLimit = (empty($conOp['shop_limit'])?10:intval($conOp['shop_limit']));
 			self::$shopLocale = (($conOp['shop_locale']=='' || $conOp['shop_locale']=='de_DE') && $conOp['shop_source']=='com'?'us_US':$conOp['shop_locale']); // Workaround for older versions of this plugin
 			self::$apiUrl = $conOp['shop_source'];
 			self::$shopCategoryId = intval($conOp['shop_category']);
