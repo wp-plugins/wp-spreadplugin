@@ -646,7 +646,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			$output .= '<form method="post" id="form_'.$id.'">';
 			$output .= '<div class="image-wrapper">';
 			//$output .= (self::$shopLinkEnabled==1?'<a href="//'.self::$shopId.'.spreadshirt.'.self::$apiUrl.'/-A'.$id.'" target="'.self::$shopLinkTarget.'">':'');
-			$output .= '<img src="http://image.spreadshirt.'.self::$apiUrl.'/image-server/v1/products/'.$article['productId'].'/views/1,width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="preview" alt="' . htmlspecialchars($article['name'],ENT_QUOTES) . '" id="previewimg_'.$id.'" data-zoom-image="http://image.spreadshirt.'.self::$apiUrl.'/image-server/v1/products/'.$article['productId'].'/views/1,width=800,height=800'.(!empty($backgroundColor)?',backgroundColor='.$backgroundColor:'').'" />';
+			$output .= '<img src="http://image.spreadshirt.'.self::$apiUrl.'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="preview" alt="' . htmlspecialchars($article['name'],ENT_QUOTES) . '" id="previewimg_'.$id.'" data-zoom-image="http://image.spreadshirt.'.self::$apiUrl.'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width=800,height=800'.(!empty($backgroundColor)?',backgroundColor='.$backgroundColor:'').'" />';
 			//$output .= (self::$shopLinkEnabled==1?'</a>':'');
 			$output .= '</div>';
 
