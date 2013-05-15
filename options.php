@@ -122,7 +122,7 @@ if (is_user_logged_in() && is_admin()) {
         <input type="radio" name="shop_social" value="1"<?php echo ($adminOptions['shop_social']==1?" checked":"") ?> />
         <?php _e('Enabled','spreadplugin'); ?></td>
     </tr>
-<!--    <tr>
+    <!--    <tr>
       <td valign="top"><?php _e('Product linking:','spreadplugin'); ?></td>
       <td><input type="radio" name="shop_enablelink" value="0"<?php echo ($adminOptions['shop_enablelink']==0?" checked":"") ?> />
         <?php _e('Disabled','spreadplugin'); ?>
@@ -130,7 +130,8 @@ if (is_user_logged_in() && is_admin()) {
         <input type="radio" name="shop_enablelink" value="1"<?php echo ($adminOptions['shop_enablelink']==1?" checked":"") ?> />
         <?php _e('Enabled','spreadplugin'); ?></td>
     </tr>
--->    <tr>
+-->
+    <tr>
       <td valign="top"><?php _e('Sort articles by:','spreadplugin'); ?></td>
       <td><select name="shop_sortby" id="shop_sortby">
           <option></option>
@@ -203,6 +204,10 @@ if (is_user_logged_in() && is_admin()) {
         <input type="radio" name="shop_showextendprice" value="1"<?php echo ($adminOptions['shop_showextendprice']==1?" checked":"") ?> />
         <?php _e('Enabled','spreadplugin'); ?></td>
     </tr>
+    <tr>
+      <td valign="top"><?php _e('Zoom image background color:','spreadplugin'); ?></td>
+      <td><input type="text" name="shop_zoomimagebackground" class="colorpicker" value="<?php echo (empty($adminOptions['shop_zoomimagebackground'])?'#FFFFFF':$adminOptions['shop_zoomimagebackground']); ?>" data-default-color="#FFFFFF" maxlength="7" /></td>
+    </tr>
   </table>
   <br />
   <input type="submit" name="update-splg_options" id="update-splg_options" value="<?php _e('Update settings','spreadplugin'); ?>" />
@@ -243,38 +248,38 @@ if (is_user_logged_in() && is_admin()) {
   <p>All donations or backlinks to <a href="http://www.pr3ss-play.de/" target="_blank">http://www.pr3ss-play.de/</a> valued greatly</p>
 </div>
 <script language="javascript">
-	function setMessage(msg) {
-		jQuery("#message").append(msg); //.html(msg)
-		jQuery("#message").show();
-		jQuery('html, body').animate({scrollTop: 0}, 800);
-	}
+function setMessage(msg) {
+	jQuery("#message").append(msg); //.html(msg)
+	jQuery("#message").show();
+	jQuery('html, body').animate({scrollTop: 0}, 800);
+}
 
-	function rebuild() {
-		jQuery.post("<?php echo admin_url('admin-ajax.php'); ?>","action=regenCache", function() {
-			setMessage("<p><?php _e('Successfully cleared the cache','spreadplugin'); ?></p>");
-		});
-	}
-	
-	jQuery('.only-digit').keyup(function() {
-		if (/\D/g.test(this.value)) {
-			// Filter non-digits from input value.
-			this.value = this.value.replace(/\D/g, '');
-		}
+function rebuild() {
+	jQuery.post("<?php echo admin_url('admin-ajax.php'); ?>","action=regenCache", function() {
+		setMessage("<p><?php _e('Successfully cleared the cache','spreadplugin'); ?></p>");
 	});
+}
 
-	// select different locale if north america is set
-	jQuery('#shop_locale').change(function() {
-		var sel = jQuery(this).val();
+jQuery('.only-digit').keyup(function() {
+	if (/\D/g.test(this.value)) {
+		// Filter non-digits from input value.
+		this.value = this.value.replace(/\D/g, '');
+	}
+});
 
-		if (sel == 'us_US' || sel == 'us_CA' || sel == 'fr_CA') {
-			jQuery('#shop_source').val('com');
-		} else {
-			jQuery('#shop_source').val('net');
-		}
-	});
-	
-	
-	// bind to the form's submit event
+// select different locale if north america is set
+jQuery('#shop_locale').change(function() {
+	var sel = jQuery(this).val();
+
+	if (sel == 'us_US' || sel == 'us_CA' || sel == 'fr_CA') {
+		jQuery('#shop_source').val('com');
+	} else {
+		jQuery('#shop_source').val('net');
+	}
+});
+
+
+// bind to the form's submit event
 jQuery('#splg_options_form').submit(function() {
 
 	var isFormValid = true;
@@ -298,6 +303,11 @@ jQuery('#splg_options_form').submit(function() {
 
 	return false;
 });
+
+// add color picker
+jQuery(document).ready(function() {  
+	jQuery('.colorpicker').wpColorPicker();  
+});  
 
 </script>
 <?php 

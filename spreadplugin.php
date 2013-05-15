@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 2.8
+ * Version: 2.8.1
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
  */
@@ -47,6 +47,7 @@ if(!class_exists('WP_Spreadplugin')) {
 		private static $shopImgSize;
 		private static $shopShowDescription;
 		private static $shopShowExtendPrice;
+		private static $shopZoomImageBackgroundColor;
 		public static $shopArticleSortOptions = array(
 				'name',
 				'price',
@@ -73,7 +74,8 @@ if(!class_exists('WP_Spreadplugin')) {
 				'shop_designsbackground' => '',
 				'shop_showdescription' => '',
 				'shop_imagesize' => '',
-				'shop_showextendprice' => ''
+				'shop_showextendprice' => '',
+				'shop_zoomimagebackground' => ''
 		);
 		private static $shopCache = 8760; // Shop article cache in hours 24*365 => 1 year
 
@@ -123,11 +125,13 @@ if(!class_exists('WP_Spreadplugin')) {
 				add_action('admin_menu', array($this, 'addPluginPage'));
 				// add Plugin settings link
 				add_filter('plugin_action_links', array($this, 'addPluginSettingsLink'),10,2);
+	
+				// add color picker
+				wp_enqueue_style('wp-color-picker');          
+				wp_enqueue_script('wp-color-picker');  
 			}
 
 		}
-
-
 
 
 
@@ -196,7 +200,8 @@ if(!class_exists('WP_Spreadplugin')) {
 			self::$shopShowDescription = intval($conOp['shop_showdescription']);
 			self::$shopShowExtendPrice = intval($conOp['shop_showextendprice']);
 			self::$shopImgSize = (intval($conOp['shop_imagesize'])==0?190:intval($conOp['shop_imagesize']));
-
+			self::$shopZoomImageBackgroundColor = (empty($conOp['shop_zoomimagebackground'])?'FFFFFF':str_replace("#", "", $conOp['shop_zoomimagebackground']));
+			
 
 			if (isset($_GET['productCategory'])) {
 				$c = urldecode($_GET['productCategory']);
@@ -264,9 +269,14 @@ if(!class_exists('WP_Spreadplugin')) {
 				}
 
 
-				@krsort($designsData);
+				//@krsort($designsData);
 				@krsort($articleData);
-				@krsort($articleCleanData);
+				//@krsort($articleCleanData);
+
+				
+				@uasort($designsData,create_function('$a,$b',"return (\$a[place] < \$b[place])?-1:1;"));
+				@uasort($articleCleanData,create_function('$a,$b',"return (\$a[place] < \$b[place])?-1:1;"));
+
 
 				// sorting
 				if (self::$shopDisplay==1) {
@@ -379,7 +389,7 @@ if(!class_exists('WP_Spreadplugin')) {
 									// fetch first article background color
 									@reset($articleData[$designId]);
 									$bgcV=$articleData[$designId][key($articleData[$designId])]['default_bgc'];
-									$bgcV = str_replace("#", "", $bgcV);
+									$bgcV=str_replace("#", "", $bgcV);
 									// calc to hex
 									$bgc=$this->hex2rgb($bgcV);
 									$addStyle="style=\"background-color:rgba(".$bgc[0].",".$bgc[1].",".$bgc[2].",0.4);\"";
@@ -391,7 +401,7 @@ if(!class_exists('WP_Spreadplugin')) {
 									
 								if (!empty($articleData[$designId])) {
 									foreach ($articleData[$designId] as $articleId => $arrArticle) {
-										$output .= $this->displayArticles($articleId,$arrArticle); // ,$bgcV
+										$output .= $this->displayArticles($articleId,$arrArticle,self::$shopZoomImageBackgroundColor); // ,$bgcV
 									}
 								}
 
@@ -403,7 +413,7 @@ if(!class_exists('WP_Spreadplugin')) {
 						// Article view
 						if (!empty($articleCleanData)) {
 							foreach ($articleCleanData as $articleId => $arrArticle) {
-								$output .= $this->displayArticles($articleId,$arrArticle);
+								$output .= $this->displayArticles($articleId,$arrArticle,self::$shopZoomImageBackgroundColor);
 							}
 						}
 					}
@@ -490,6 +500,7 @@ if(!class_exists('WP_Spreadplugin')) {
 
 
 					// read articles
+					$i=0;
 					foreach ($objArticles->article as $article) {
 
 						$stringXmlArticle = wp_remote_retrieve_body(wp_remote_get($article->product->productType->attributes('xlink', true).'?'.(!empty(self::$shopLocale)?'locale=' . self::$shopLocale:'')));
@@ -512,6 +523,7 @@ if(!class_exists('WP_Spreadplugin')) {
 						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['productdescription']=(string)$objArticleData->description;
 						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['weight']=(float)$article['weight'];
 						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['id']=(int)$article['id'];
+						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['place']=$i;
 
 						foreach($objArticleData->sizes->size as $val) {
 							$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['sizes'][(int)$val['id']]=(string)$val->name;
@@ -530,7 +542,8 @@ if(!class_exists('WP_Spreadplugin')) {
 						foreach($objArticleData->views->view as $view) {
 							$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['views'][(int)$view['id']]=(string)$article->resources->resource->attributes('xlink', true);
 						}
-
+						
+						$i++;
 					}
 
 					set_transient('spreadplugin2-article-cache-'.get_the_ID(), $articleData, self::$shopCache*3600);
@@ -588,6 +601,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				if ($objArticles['count']>0) {
 
 					// read articles
+					$i=0;
 					foreach ($objArticles->design as $article) {
 
 						$articleData[(int)$article['id']]['name']=(string)$article->name;
@@ -603,7 +617,9 @@ if(!class_exists('WP_Spreadplugin')) {
 						$articleData[(int)$article['id']]['resource2']=(string)$article->resources->resource[1]->attributes('xlink', true);
 						$articleData[(int)$article['id']]['productdescription']=(string)$objArticleData->description;
 						$articleData[(int)$article['id']]['weight']=(float)$article['weight'];
-
+						$articleData[(int)$article['id']]['place']=$i;
+						
+						$i++;
 					}
 
 					set_transient('spreadplugin2-designs-cache-'.get_the_ID(), $articleData, self::$shopCache*3600);
@@ -622,7 +638,7 @@ if(!class_exists('WP_Spreadplugin')) {
 		 *
 		 * @return html
 		 */
-		private function displayArticles($id,$article,$backgroundColor='FFFFFF') {
+		private function displayArticles($id,$article,$backgroundColor='') {
 				
 			$output = '<div class="spreadshirt-article clearfix" id="article_'.$id.'" style="width:'.(self::$shopImgSize+7).'px">';
 			$output .= '<a name="'.$id.'"></a>';
@@ -630,7 +646,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			$output .= '<form method="post" id="form_'.$id.'">';
 			$output .= '<div class="image-wrapper">';
 			//$output .= (self::$shopLinkEnabled==1?'<a href="//'.self::$shopId.'.spreadshirt.'.self::$apiUrl.'/-A'.$id.'" target="'.self::$shopLinkTarget.'">':'');
-			$output .= '<img src="http://image.spreadshirt.'.self::$apiUrl.'/image-server/v1/products/'.$article['productId'].'/views/1,width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="preview" alt="' . htmlspecialchars($article['name'],ENT_QUOTES) . '" id="previewimg_'.$id.'" data-zoom-image="http://image.spreadshirt.'.self::$apiUrl.'/image-server/v1/products/'.$article['productId'].'/views/1,width=800,height=800,backgroundColor='.$backgroundColor.'" />';
+			$output .= '<img src="http://image.spreadshirt.'.self::$apiUrl.'/image-server/v1/products/'.$article['productId'].'/views/1,width='.self::$shopImgSize.',height='.self::$shopImgSize.'" class="preview" alt="' . htmlspecialchars($article['name'],ENT_QUOTES) . '" id="previewimg_'.$id.'" data-zoom-image="http://image.spreadshirt.'.self::$apiUrl.'/image-server/v1/products/'.$article['productId'].'/views/1,width=800,height=800'.(!empty($backgroundColor)?',backgroundColor='.$backgroundColor:'').'" />';
 			//$output .= (self::$shopLinkEnabled==1?'</a>':'');
 			$output .= '</div>';
 

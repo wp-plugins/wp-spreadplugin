@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spreadplugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-14 21:29+0100\n"
-"PO-Revision-Date: 2013-05-14 21:29+0100\n"
+"POT-Creation-Date: 2013-05-15 11:54+0100\n"
+"PO-Revision-Date: 2013-05-15 11:55+0100\n"
 "Last-Translator: Thimo Grauerholz <info@pr3ss-play.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -17,7 +17,7 @@ msgstr ""
 "X-Generator: Poedit 1.5.5\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: options.php:28 spreadplugin.php:1251
+#: options.php:28 spreadplugin.php:1267
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -93,13 +93,13 @@ msgstr "Artikel Kategorie:"
 msgid "Social buttons:"
 msgstr "Social Buttons:"
 
-#: options.php:120 options.php:128 options.php:185 options.php:193
-#: options.php:201
+#: options.php:120 options.php:128 options.php:186 options.php:194
+#: options.php:202
 msgid "Disabled"
 msgstr "Deaktivieren"
 
-#: options.php:123 options.php:131 options.php:188 options.php:196
-#: options.php:204
+#: options.php:123 options.php:131 options.php:189 options.php:197
+#: options.php:205
 msgid "Enabled"
 msgstr "Aktivieren"
 
@@ -107,15 +107,15 @@ msgstr "Aktivieren"
 msgid "Product linking:"
 msgstr "Produkte verlinken:"
 
-#: options.php:134
+#: options.php:135
 msgid "Sort articles by:"
 msgstr "Artikel sortieren nach:"
 
-#: options.php:147
+#: options.php:148
 msgid "Target of links:"
 msgstr "Link Ziel:"
 
-#: options.php:148
+#: options.php:149
 msgid ""
 "Enter the name of your target iframe or frame, if available. Default is "
 "_blank (new window)."
@@ -123,27 +123,27 @@ msgstr ""
 "Falls Sie Iframes oder Frames nutzen, können Sie hier den Namen angeben, um "
 "die Inhalte dort anzeigen zu lassen. Standard ist _blank (Neues Fenster)"
 
-#: options.php:154
+#: options.php:155
 msgid "Use iframe for checkout:"
 msgstr "Iframe für Warenkorb benutzen:"
 
-#: options.php:156
+#: options.php:157
 msgid "Opens in separate window"
 msgstr "Im separaten Fenster öffnen"
 
-#: options.php:159
+#: options.php:160
 msgid "Opens an iframe in the page content"
 msgstr "Im Iframe innerhalb der Seite öffnen"
 
-#: options.php:162
+#: options.php:163
 msgid "Opens an iframe in a modal window (fancybox)"
 msgstr "In einem Modal-Fenster öffnen (fancybox)"
 
-#: options.php:165
+#: options.php:166
 msgid "Designer Shop ID:"
 msgstr "Designer-Shop ID:"
 
-#: options.php:166
+#: options.php:167
 msgid ""
 "If you have a designer Shop (Spreadshirt premium account), enter the ID "
 "here. A new link will appear where the customer can change the design."
@@ -152,156 +152,160 @@ msgstr ""
 "Sie hier dessen ID angeben. Ein neuer Link wird dann bei den Artikeln "
 "sichtbar, damit die Kunden die Artikel anpassen können."
 
-#: options.php:172
+#: options.php:173
 msgid "Default display:"
 msgstr "Standardanzeige:"
 
-#: options.php:174
+#: options.php:175
 msgid "Articles"
 msgstr "Artikel"
 
-#: options.php:177
+#: options.php:178
 msgid "Designs"
 msgstr "Motive"
 
-#: options.php:180
+#: options.php:181
 msgid "Designs with background:"
 msgstr "Motive mit Hintergrund:"
 
-#: options.php:181
+#: options.php:182
 msgid ""
 "Displays designs with background color of each first given article/shirt"
 msgstr ""
 "Zeigt die Motive mit farblichen Hintergrund an. Die Farbe wird automatisch "
 "von den ersten Artikeln genommen."
 
-#: options.php:191
+#: options.php:192
 msgid "Always show article description:"
 msgstr "Artikelbeschreibung immer anzeigen:"
 
-#: options.php:199
+#: options.php:200
 msgid "Display price without and with tax:"
 msgstr "Preis ohne und mit MwSt anzeigen:"
 
 #: options.php:208
+msgid "Zoom image background color:"
+msgstr "Hintergrundfarbe für vergrößertes Bild:"
+
+#: options.php:213
 msgid "Update settings"
 msgstr "Einstellungen aktualisieren"
 
-#: options.php:211
+#: options.php:216
 msgid "Minimum required shortcode"
 msgstr "Minimal erforderlicher Shortcode"
 
-#: options.php:215
+#: options.php:220
 msgid "Extended sample shortcode"
 msgstr "Beispiel erweiterter Shortcode"
 
-#: options.php:218
+#: options.php:223
 msgid "The extended shortcodes will overwrite the default settings."
 msgstr ""
 "Der erweiterte Shortcode überschreibt die Standardeinstellungen nur für die "
 "Seite, wo dieser eingegeben wurde."
 
-#: options.php:228
+#: options.php:233
 msgid "Options"
 msgstr "Optionen"
 
-#: options.php:231
+#: options.php:236
 msgid "Clear cache"
 msgstr "Cache leeren"
 
-#: options.php:254
+#: options.php:259
 msgid "Successfully cleared the cache"
 msgstr "Cache erfolgreich geleert"
 
-#: options.php:294
+#: options.php:299
 msgid "Please fill in the highlighted fields!"
 msgstr "Bitte füllen Sie die hinterlegten Felder aus!"
 
-#: options.php:306
+#: options.php:316
 msgid "Successfully saved settings"
 msgstr "Einstellungen gespeichert"
 
-#: spreadplugin.php:319
+#: spreadplugin.php:329
 msgid "Product category"
 msgstr "Produkt Kategorie"
 
-#: spreadplugin.php:344
+#: spreadplugin.php:354
 msgid "Sort by"
 msgstr "Sortieren"
 
-#: spreadplugin.php:345
+#: spreadplugin.php:355
 msgid "name"
 msgstr "Name"
 
-#: spreadplugin.php:346
+#: spreadplugin.php:356
 msgid "price"
 msgstr "Preis"
 
-#: spreadplugin.php:347
+#: spreadplugin.php:357
 msgid "recent"
 msgstr "Erschienen"
 
-#: spreadplugin.php:348
+#: spreadplugin.php:358
 msgid "weight"
 msgstr "Gewichtung"
 
-#: spreadplugin.php:352 spreadplugin.php:354
+#: spreadplugin.php:362 spreadplugin.php:364
 msgid "Basket"
 msgstr "Warenkorb"
 
-#: spreadplugin.php:354
+#: spreadplugin.php:364
 msgid "Basket is empty"
 msgstr "Warenkorb ist leer"
 
-#: spreadplugin.php:413
+#: spreadplugin.php:423
 msgid "next"
 msgstr "weiter"
 
-#: spreadplugin.php:649
+#: spreadplugin.php:665
 msgid "Edit article"
 msgstr "Artikel anpassen"
 
-#: spreadplugin.php:688 spreadplugin.php:794 spreadplugin.php:1077
+#: spreadplugin.php:704 spreadplugin.php:810 spreadplugin.php:1093
 msgid "Show description"
 msgstr "Zeige Beschreibung"
 
-#: spreadplugin.php:701
+#: spreadplugin.php:717
 msgid "Price (without tax):"
 msgstr "Preis (exkl. MwSt.):"
 
-#: spreadplugin.php:702
+#: spreadplugin.php:718
 msgid "Price (with tax):"
 msgstr "Preis (inkl. MwSt.):"
 
-#: spreadplugin.php:704
+#: spreadplugin.php:720
 msgid "Price:"
 msgstr "Preis:"
 
-#: spreadplugin.php:710 spreadplugin.php:1083
+#: spreadplugin.php:726 spreadplugin.php:1099
 msgid "Add to basket"
 msgstr "In den Warenkorb"
 
-#: spreadplugin.php:787
+#: spreadplugin.php:803
 msgid "Click to view the articles"
 msgstr "Klicken Sie hier, um die Artikel anzusehen"
 
-#: spreadplugin.php:1076
+#: spreadplugin.php:1092
 msgid "Hide description"
 msgstr "Verstecke Beschreibung"
 
-#: spreadplugin.php:1079
+#: spreadplugin.php:1095
 msgid "Loading new articles..."
 msgstr "Artikel werden geladen..."
 
-#: spreadplugin.php:1080
+#: spreadplugin.php:1096
 msgid "You have reached the end"
 msgstr "Keine weiteren Artikel verfügbar"
 
-#: spreadplugin.php:1084
+#: spreadplugin.php:1100
 msgid "Adding..."
 msgstr "Füge ein..."
 
-#: spreadplugin.php:1224
+#: spreadplugin.php:1240
 msgid "You do not have sufficient permissions to access this page."
 msgstr ""
 

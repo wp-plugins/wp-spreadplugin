@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: spreadshirt,wordpress,plugin,shop
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 2.8
+Stable tag: 2.8.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -177,6 +177,10 @@ Add or edit the shortcode or set in shortcode plugin settings to enable. Shortco
 6. Settings page
 
 == Changelog ==
+
+= 2.8.1 =
+* Color picker for zoom image background / choose background color
+* Default sorting changed
 
 = 2.8 =
 * Enhanced article zoom
