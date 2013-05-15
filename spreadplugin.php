@@ -269,12 +269,8 @@ if(!class_exists('WP_Spreadplugin')) {
 				}
 
 
-				@krsort($designsData);
-				@krsort($articleData);
-				@krsort($articleCleanData);
-
-				
-				//@uasort($designsData,create_function('$a,$b',"return (\$a[place] < \$b[place])?-1:1;"));
+				// default sort
+				@uasort($designsData,create_function('$a,$b',"return (\$a[place] > \$b[place])?-1:1;"));
 				@uasort($articleCleanData,create_function('$a,$b',"return (\$a[place] < \$b[place])?-1:1;"));
 
 
@@ -400,6 +396,10 @@ if(!class_exists('WP_Spreadplugin')) {
 								$output .= "<div id=\"designContainer_".$designId."\" class=\"design-container clearfix\" ".$addStyle.">";
 									
 								if (!empty($articleData[$designId])) {
+									
+									// default sort
+									@uasort($articleData[$designId],create_function('$a,$b',"return (\$a[place] < \$b[place])?-1:1;"));
+									
 									foreach ($articleData[$designId] as $articleId => $arrArticle) {
 										$output .= $this->displayArticles($articleId,$arrArticle,self::$shopZoomImageBackgroundColor); // ,$bgcV
 									}
