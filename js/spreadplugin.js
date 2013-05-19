@@ -1,3 +1,6 @@
+jQuery(function() {
+	
+
 var sep = '?';
 var prod = getParameterByName('productCategory');
 var prod2 = getParameterByName('productSubCategory');
@@ -25,6 +28,9 @@ function bindClick() {
 	jQuery('.spreadshirt-article .description-wrapper div.header').unbind();
 	jQuery('.spreadshirt-design .image-wrapper').unbind();
 	jQuery('.spreadshirt-article form').unbind();
+	jQuery('.spreadshirt-article .edit-wrapper a').unbind();
+	jQuery('.spreadshirt-article .details-wrapper a').unbind();
+	jQuery('.spreadshirt-article .image-wrapper').unbind();
 
 	jQuery('.spreadshirt-article .colors li').click(
 			function() {
@@ -151,7 +157,7 @@ function bindClick() {
 					});
 
 	if (pageCheckoutUseIframe == 2) {
-		jQuery('.spreadshirt-article #editArticle').fancybox({
+		jQuery('.spreadshirt-article .edit-wrapper a').fancybox({
 			type : 'iframe',
 			fitToView : false,
 			autoSize : false,
@@ -163,6 +169,16 @@ function bindClick() {
 				return;
 			}
 		});
+
+		jQuery('.spreadshirt-article .details-wrapper a').fancybox({
+			type : 'iframe',
+			fitToView : false,
+			autoSize : false,
+			height : 1000,
+			width : fancyBoxWidth,
+			preload : true
+		});
+
 	}
 
 	jQuery('.spreadshirt-article .image-wrapper a').fancybox({
@@ -248,7 +264,7 @@ bindHover();
 
 
 // Fixed menu bar
-jQuery(function() {
+
 	var msie6 = jQuery.browser == 'msie' && jQuery.browser.version < 7;
 	if (!msie6 && jQuery('.spreadshirt-menu').length != 0) {
 		var top = jQuery('#spreadshirt-menu').offset().top
@@ -276,7 +292,6 @@ jQuery(function() {
 					}
 				});
 	}
-});
 
 // reload caption
 jQuery(window).resize(function() {
@@ -389,3 +404,6 @@ function getParameterByName(name) {
 				" ")));
 	}
 }
+
+});
+

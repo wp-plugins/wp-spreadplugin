@@ -75,7 +75,7 @@ if (is_user_logged_in() && is_admin()) {
     </tr>
     <tr>
       <td valign="top"><?php _e('Limit articles per page:','spreadplugin'); ?></td>
-      <td><input type="text" name="shop_limit" value="<?php echo (empty($adminOptions['shop_limit'])?20:$adminOptions['shop_limit']); ?>" class="only-digit" /></td>
+      <td><input type="text" name="shop_limit" value="<?php echo (empty($adminOptions['shop_limit'])?10:$adminOptions['shop_limit']); ?>" class="only-digit" /></td>
     </tr>
     <tr>
       <td valign="top"><?php _e('Image size:','spreadplugin'); ?></td>
@@ -122,7 +122,7 @@ if (is_user_logged_in() && is_admin()) {
         <input type="radio" name="shop_social" value="1"<?php echo ($adminOptions['shop_social']==1?" checked":"") ?> />
         <?php _e('Enabled','spreadplugin'); ?></td>
     </tr>
-    <!--    <tr>
+    <tr>
       <td valign="top"><?php _e('Product linking:','spreadplugin'); ?></td>
       <td><input type="radio" name="shop_enablelink" value="0"<?php echo ($adminOptions['shop_enablelink']==0?" checked":"") ?> />
         <?php _e('Disabled','spreadplugin'); ?>
@@ -130,7 +130,6 @@ if (is_user_logged_in() && is_admin()) {
         <input type="radio" name="shop_enablelink" value="1"<?php echo ($adminOptions['shop_enablelink']==1?" checked":"") ?> />
         <?php _e('Enabled','spreadplugin'); ?></td>
     </tr>
--->
     <tr>
       <td valign="top"><?php _e('Sort articles by:','spreadplugin'); ?></td>
       <td><select name="shop_sortby" id="shop_sortby">
@@ -208,6 +207,18 @@ if (is_user_logged_in() && is_admin()) {
       <td valign="top"><?php _e('Zoom image background color:','spreadplugin'); ?></td>
       <td><input type="text" name="shop_zoomimagebackground" class="colorpicker" value="<?php echo (empty($adminOptions['shop_zoomimagebackground'])?'#FFFFFF':$adminOptions['shop_zoomimagebackground']); ?>" data-default-color="#FFFFFF" maxlength="7" /></td>
     </tr>
+    <tr>
+      <td valign="top"><?php _e('Infinity scrolling:','spreadplugin'); ?></td>
+      <td><input type="radio" name="shop_infinitescroll" value="0"<?php echo ($adminOptions['shop_infinitescroll']==0?" checked":"") ?> />
+        <?php _e('Disabled','spreadplugin'); ?>
+        <br />
+        <input type="radio" name="shop_infinitescroll" value="1"<?php echo ($adminOptions['shop_infinitescroll']==1 || $adminOptions['shop_infinitescroll']==''?" checked":"") ?> />
+        <?php _e('Enabled','spreadplugin'); ?></td>
+    </tr>
+    <tr>
+      <td valign="top"><?php _e('Custom CSS'); ?></td>
+      <td><textarea style="width: 300px; height: 215px; background: #EEE;" name="shop_customcss" class="custom-css"><?php echo htmlspecialchars($adminOptions['shop_customcss'], ENT_QUOTES); ?></textarea></td>
+    </tr>
   </table>
   <br />
   <input type="submit" name="update-splg_options" id="update-splg_options" value="<?php _e('Update settings','spreadplugin'); ?>" />
@@ -220,15 +231,24 @@ if (is_user_logged_in() && is_admin()) {
     <?php _e('Extended sample shortcode','spreadplugin'); ?>
   </h4>
   <p>
-    <?php _e('The extended shortcodes will overwrite the default settings.'); ?>
+    <?php _e('The extended shortcodes will overwrite the default settings. You may use it to create a different shop with the same plugin.'); ?>
   </p>
-  <p><strong>US/NA</strong><br />
-    [spreadplugin shop_id=&quot;414192&quot; shop_limit=&quot;20&quot; shop_locale=&quot;us_US&quot; shop_source=&quot;com&quot; shop_category=&quot;&quot; shop_social=&quot;1&quot; shop_enablelink=&quot;1&quot; shop_productcategory=&quot;&quot; shop_checkoutiframe=&quot;2&quot; shop_sortby=&quot;&quot; shop_designershop=&quot;0&quot; shop_display=&quot;0&quot; shop_api=&quot;&quot; shop_secret=&quot;&quot;]</p>
-  <p><strong>EU (DE,...)</strong><br />
-    [spreadplugin shop_id=&quot;732552&quot; shop_limit=&quot;20&quot; shop_locale=&quot;de_DE&quot; shop_source=&quot;net&quot; shop_category=&quot;&quot; shop_social=&quot;1&quot; shop_enablelink=&quot;1&quot; shop_productcategory=&quot;&quot; shop_checkoutiframe=&quot;2&quot; shop_sortby=&quot;&quot; shop_designershop=&quot;0&quot; shop_display=&quot;0&quot; shop_api=&quot;&quot; shop_secret=&quot;&quot;]<br />
-  </p>
-  <p><br />
-  </p>
+  <p> [spreadplugin
+    <?php
+  
+  $_plgop = '';
+  foreach ($adminOptions as $k => $v) {
+	  if ($k != 'shop_infinitescroll' && $k != 'shop_customcss') {	
+		$_plgop .= $k.'="'.$v.'" ';
+	  }
+  }
+  
+  echo trim($_plgop);
+  
+  ?>
+    ] </p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
   <h3>
     <?php _e('Options','spreadplugin'); ?>
   </h3>

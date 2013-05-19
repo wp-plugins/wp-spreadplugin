@@ -117,7 +117,7 @@ pre, code {
 }
 .spreadshirt-items #infscr-loading {
 	background: #fff;
-	z-index: 1000;
+	z-index: 1001;
 	position: fixed;
 	clear: both;
 	bottom: 5px;
@@ -182,6 +182,7 @@ pre, code {
 	padding: 2px;
 	width: 190px;
 	position: relative;
+	font-size: 13px;
 	left: 0;
 	overflow: hidden;
 	height: 50px;
@@ -194,7 +195,7 @@ pre, code {
 /* spreadshirt-menu */
 .spreadshirt-menu {
 	position: relative;
-	z-index: 999;
+	z-index: 1001;
 	padding: 10px;
 	width: 100%;
 	margin: 0;
@@ -233,6 +234,17 @@ pre, code {
 }
 .spreadshirt-items .product-name {
 	font-size: 90%
+}
+.spreadshirt-items .details-wrapper {
+	float: right;
+}
+.spreadshirt-items .edit-wrapper {
+	margin-left: 0;
+	margin-top: 0;
+	padding: 5px;
+	position: absolute;
+	z-index: 1000;
+	float: left
 }
 /* social icons*/
 .spreadshirt-items ul.soc-icons a {
