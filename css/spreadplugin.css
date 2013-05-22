@@ -1,0 +1,390 @@
+#main ul {
+	margin: 0;
+	padding: 0
+}
+pre, code {
+	font-family: Arial, Helvetica, Tahoma, sans-serif;
+	font-size: 13px;
+}
+.spreadshirt-items {
+	position: relative;
+}
+.spreadshirt-article, .spreadshirt-design {
+	float: left;
+	margin-top: 20px;
+	margin-right: 2px;
+	padding: 5px;
+	display: block;
+	min-height: 650px; /* fixing the height of each Article */
+	overflow: hidden;
+	white-space: normal;
+}
+.spreadshirt-items a {
+	color: #000;
+}
+.spreadshirt-items a:hover {
+	text-decoration: underline;
+}
+.spreadshirt-design {
+	min-height: 300px;
+	height: 300px !important;
+	text-align: center;
+}
+.spreadshirt-article img {
+	padding: 0;
+	border: 0;
+	border-radius: 0;
+	background: none;
+	margin: 0;
+}
+.spreadshirt-article img, .spreadshirt-article h3, .spreadshirt-design h3 {
+	display: block;
+	text-align: center;
+	margin: 0 auto;
+}
+.spreadshirt-article .image-wrapper {
+	min-height: 200px;
+}
+.spreadshirt-article h3, .spreadshirt-design h3 {
+	min-height: 55px
+}
+.spreadshirt-article div {
+	text-align: left;
+}
+.spreadshirt-article ul, .spreadshirt-items .colors li, .spreadshirt-article ul li, .spreadshirt-article #size-select, .spreadshirt-article p, .spreadshirt-article input {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.spreadshirt-article ul li {
+/* border: 1px solid #e8e8e8 */
+}
+.spreadshirt-article input[type=text] {
+	clear: both;
+	width: 30px;
+	margin-right: 10px;
+}
+.spreadshirt-article input[type="submit"], .spreadshirt-article #quantity {
+	padding: 5px;
+	margin: 5px;
+	margin-bottom: 10px;
+}
+.spreadshirt-article input[type="submit"] {
+	width: auto;
+}
+.spreadshirt-items .colors {
+	min-height: 40px;
+}
+.spreadshirt-items .colors li, .spreadshirt-items .views li {
+	float: left;
+	width: 13px;
+	height: 13px;
+	margin: 0 2px 2px 0;
+	cursor: pointer;
+}
+.spreadshirt-items .views li {
+	width: 42px;
+	height: 42px;
+}
+.spreadshirt-items #pagination {
+	float: left;
+}
+.spreadshirt-items #copyright {
+	clear: both;
+	padding-top: 20px;
+	z-index: 0;
+}
+.spreadshirt-items #copyright, .spreadshirt-items #copyright a {
+	color: #ccc;
+	font-size: x-small;
+}
+.spreadshirt-items .description-wrapper .header a {
+	cursor: pointer;
+}
+.spreadshirt-items .description-wrapper .description {
+	display: none
+}
+.spreadshirt-items .ul {
+	list-style: none outside none !important;
+}
+.spreadshirt-items .separator {
+	margin: 0;
+	padding: 0;
+	clear: both;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	background-color: transparent
+}
+.spreadshirt-items #infscr-loading {
+	background: #fff;
+	z-index: 1001;
+	position: fixed;
+	clear: both;
+	bottom: 5px;
+	width: 200px;
+	overflow: hidden;
+	padding: 15px;
+	left: 50%;
+	margin-left: -100px;
+	border: 1px solid #eee;
+	text-align: center;
+	box-shadow: 0 0px 9px 0px rgba(0,0,0,0.1);
+	-moz-box-shadow: 0 0px 9px 0px rgba(0,0,0,0.1);
+	-webkit-box-shadow: 0 0px 9px 0px rgba(0,0,0,0.1);
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+}
+.spreadshirt-items #infscr-loading img {
+	position: absolute;
+	top: 19px;
+	left: 20px;
+	border-radius: 0;
+	box-shadow: none;
+}
+#spreadshirt-list {
+	display: inline-block;
+	padding-top: 20px;
+	position: relative;
+	width: 100%;
+}
+/* display or hide prices */
+.spreadshirt-article #price-without-tax {
+/*	display:none; */
+}
+.spreadshirt-article #price-with-tax {
+/*	display:none; */
+}
+.spreadshirt-items #size-select {
+	width: 80px
+}
+.spreadshirt-items .design-container {
+	display: none;
+}
+.spreadshirt-items .active {
+	width: 100%;
+	float: left;
+	clear: both;
+	background-color: #e8e8e8;
+	padding: 2px;
+}
+.spreadshirt-design .image-wrapper {
+	cursor: pointer;
+	text-align: center;
+	vertical-align: middle;
+	height: 190px;
+	width: 190px;
+}
+.spreadshirt-design .img-caption {
+	background: #fff;
+	color: #000;
+	display: none;
+	padding: 2px;
+	width: 190px;
+	position: relative;
+	font-size: 13px;
+	left: 0;
+	overflow: hidden;
+	height: 50px;
+	/* opacity setting */
+	filter: alpha(opacity=80);    /* ie  */
+	-moz-opacity: 0.8;    /* old mozilla browser like netscape  */
+	-khtml-opacity: 0.8;    /* for really really old safari */
+	opacity: 0.8;    /* css standard, currently it works in most modern browsers like firefox,  */
+}
+/* spreadshirt-menu */
+.spreadshirt-menu {
+	position: relative;
+	z-index: 1001;
+	padding: 10px;
+	width: 100%;
+	margin: 0;
+	top: 0;
+	background: white;
+ *left: 0;
+	display: inline-block;
+}
+.spreadshirt-menu.fixed {
+	position: fixed;
+	top: 0;
+	width: 100%;
+	border: 1px solid #DBDBDB;
+	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+.spreadshirt-menu #productCategory, .spreadshirt-menu #productSubCategory, .spreadshirt-menu #articleSortBy, .spreadshirt-menu #checkout {
+	position: relative;
+	float: left;
+	margin-right: 10px;
+}
+.spreadshirt-menu #productCategory {
+	/*	display:none; */
+	width: 150px;
+	margin-left: 10px;
+}
+.spreadshirt-menu #productSubCategory {
+	/*	display:none; */
+	width: 150px;
+}
+.spreadshirt-menu #articleSortBy {
+	/*	display:none; */
+	width: 100px;
+}
+.spreadshirt-menu #checkout {
+	float: right;
+}
+.spreadshirt-items .product-name {
+	font-size: 90%
+}
+.spreadshirt-items .details-wrapper {
+	float: right;
+}
+.spreadshirt-items .edit-wrapper {
+	margin-left: 0;
+	margin-top: 0;
+	padding: 5px;
+	position: absolute;
+	z-index: 1000 !important;
+	z-index: 1000;
+	float: left
+}
+/* social icons*/
+.spreadshirt-items ul.soc-icons a {
+	display: block;
+	line-height: 1em;
+}
+.spreadshirt-items ul.soc-icons li {
+	display: inline-block;
+	float: none;
+	margin: 0 !important;
+	vertical-align: top;
+}
+.spreadshirt-items ul.soc-icons li {
+	display: inline-block;
+	list-style: none outside none;
+	vertical-align: top;
+}
+.spreadshirt-items ul.soc-icons a {
+	background-image: url("../img/social-buttons.svg");
+	background-repeat: no-repeat;
+	background-size: 570px 240px;
+	display: block;
+	height: 35px;
+	position: relative;
+	white-space: normal;
+	width: 35px;
+}
+.spreadshirt-items ul.soc-icons .twt {
+	background-position: -20px -20px;
+}
+.spreadshirt-items ul.soc-icons .fb {
+	background-position: -75px -20px;
+}
+.spreadshirt-items ul.soc-icons .in {
+	background-position: -130px -20px;
+}
+.spreadshirt-items ul.soc-icons .pin {
+	background-position: -185px -20px;
+}
+.spreadshirt-items ul.soc-icons .drb {
+	background-position: -240px -20px;
+}
+.spreadshirt-items ul.soc-icons .tumb {
+	background-position: -295px -20px;
+}
+.spreadshirt-items ul.soc-icons .flick {
+	background-position: -350px -20px;
+}
+.spreadshirt-items ul.soc-icons .vim {
+	background-position: -405px -20px;
+}
+.spreadshirt-items ul.soc-icons .delic {
+	background-position: -460px -20px;
+}
+.spreadshirt-items ul.soc-icons .goog {
+	background-position: -515px -20px;
+}
+.spreadshirt-items ul.soc-icons .forr {
+	background-position: -20px -75px;
+}
+.spreadshirt-items ul.soc-icons .hi5 {
+	background-position: -75px -75px;
+}
+.spreadshirt-items ul.soc-icons .last {
+	background-position: -130px -75px;
+}
+.spreadshirt-items ul.soc-icons .space {
+	background-position: -185px -75px;
+}
+.spreadshirt-items ul.soc-icons .newsv {
+	background-position: -240px -75px;
+}
+.spreadshirt-items ul.soc-icons .pica {
+	background-position: -295px -75px;
+}
+.spreadshirt-items ul.soc-icons .tech {
+	background-position: -350px -75px;
+}
+.spreadshirt-items ul.soc-icons .rss {
+	background-position: -405px -75px;
+}
+.spreadshirt-items ul.soc-icons .rdio {
+	background-position: -460px -75px;
+}
+.spreadshirt-items ul.soc-icons .share {
+	background-position: -515px -75px;
+}
+.spreadshirt-items ul.soc-icons .skyp {
+	background-position: -20px -130px;
+}
+.spreadshirt-items ul.soc-icons .slid {
+	background-position: -75px -130px;
+}
+.spreadshirt-items ul.soc-icons .squid {
+	background-position: -130px -130px;
+}
+.spreadshirt-items ul.soc-icons .stum {
+	background-position: -185px -130px;
+}
+.spreadshirt-items ul.soc-icons .what {
+	background-position: -240px -130px;
+}
+.spreadshirt-items ul.soc-icons .wp {
+	background-position: -295px -130px;
+}
+.spreadshirt-items ul.soc-icons .ytb {
+	background-position: -350px -130px;
+}
+.spreadshirt-items ul.soc-icons .digg {
+	background-position: -405px -130px;
+}
+.spreadshirt-items ul.soc-icons .beh {
+	background-position: -460px -130px;
+}
+.spreadshirt-items ul.soc-icons .yah {
+	background-position: -515px -130px;
+}
+.spreadshirt-items ul.soc-icons .blogg {
+	background-position: -20px -185px;
+}
+.spreadshirt-items ul.soc-icons .hype {
+	background-position: -75px -185px;
+}
+.spreadshirt-items ul.soc-icons .groove {
+	background-position: -130px -185px;
+}
+.spreadshirt-items ul.soc-icons .sound {
+	background-position: -185px -185px;
+}
+.spreadshirt-items ul.soc-icons .insta {
+	background-position: -240px -185px;
+}
+.spreadshirt-items ul.soc-icons .vk {
+	background-position: -295px -185px;
+}
+
+
+
+
+/* responsive */
+@media screen and (max-width: 550px) {
+}
