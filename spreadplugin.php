@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
@@ -92,10 +92,10 @@ if(!class_exists('WP_Spreadplugin')) {
 				add_action('admin_menu', array(&$this, 'addPluginPage'));
 				// add Plugin settings link
 				add_filter('plugin_action_links', array(&$this, 'addPluginSettingsLink'),10,2);
-	
+
 				// add color picker
-				wp_enqueue_style('wp-color-picker');          
-				wp_enqueue_script('wp-color-picker');  
+				wp_enqueue_style('wp-color-picker');
+				wp_enqueue_script('wp-color-picker');
 			}
 
 		}
@@ -107,7 +107,7 @@ if(!class_exists('WP_Spreadplugin')) {
 		 * Initialize Plugin
 		 */
 		public function plugin_init() {
-				
+
 			// get translation
 			if(function_exists('load_plugin_textdomain')) {
 				load_plugin_textdomain($this->stringTextdomain, false, dirname(plugin_basename( __FILE__ )) . '/translation');
@@ -124,7 +124,7 @@ if(!class_exists('WP_Spreadplugin')) {
 		 */
 		public function Spreadplugin($atts) {
 			global $paged;
-				
+
 			$articleCleanData = array(); // Array with article informations for sorting and filtering
 			$articleData = array();
 			$designsData = array();
@@ -132,10 +132,10 @@ if(!class_exists('WP_Spreadplugin')) {
 
 			// get admin options (default option set on admin page)
 			$conOp = $this->getAdminOptions();
-				
+
 			// shortcode overwrites admin options (default option set on admin page) if available
 			$arrSc = shortcode_atts($this->defaultOptions, $atts);
-				
+
 			// replace options by shortcode if set
 			if (!empty($arrSc)) {
 				foreach ($arrSc as $key => $option) {
@@ -154,7 +154,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			self::$shopOptions['shop_imagesize'] = (intval($conOp['shop_imagesize'])==0?190:intval($conOp['shop_imagesize']));
 			self::$shopOptions['shop_zoomimagebackground'] = (empty($conOp['shop_zoomimagebackground'])?'FFFFFF':str_replace("#", "", $conOp['shop_zoomimagebackground']));
 			self::$shopOptions['shop_infinitescroll'] = ($conOp['shop_infinitescroll']==''?1:$conOp['shop_infinitescroll']);
-			
+				
 
 			if (isset($_GET['productCategory'])) {
 				$c = urldecode($_GET['productCategory']);
@@ -214,7 +214,7 @@ if(!class_exists('WP_Spreadplugin')) {
 						$articleCleanData[$articleId] = $arrArticle;
 					}
 				}
-				
+
 
 				// filter
 				if (is_array($articleCleanData)) {
@@ -273,8 +273,8 @@ if(!class_exists('WP_Spreadplugin')) {
 						$articleCleanData = array_slice($articleCleanData, $offset, self::$shopOptions['shop_limit'], true);
 					}
 				}
-				
-				
+
+
 
 				// Start output
 				$output = '<div id="spreadshirt-items" class="spreadshirt-items clearfix">';
@@ -338,7 +338,7 @@ if(!class_exists('WP_Spreadplugin')) {
 						foreach ($designsData as $designId => $arrDesigns) {
 							$bgc = false;
 							$addStyle = '';
-								
+
 							// Display just Designs with products
 							if (!empty($articleData[$designId])) {
 
@@ -358,10 +358,10 @@ if(!class_exists('WP_Spreadplugin')) {
 								$output .= "<div id=\"designContainer_".$designId."\" class=\"design-container clearfix\" ".$addStyle.">";
 									
 								if (!empty($articleData[$designId])) {
-									
+										
 									// default sort
 									@uasort($articleData[$designId],create_function('$a,$b',"return (\$a[place] < \$b[place])?-1:1;"));
-									
+										
 									foreach ($articleData[$designId] as $articleId => $arrArticle) {
 										$output .= $this->displayArticles($articleId,$arrArticle,self::$shopOptions['shop_zoomimagebackground']); // ,$bgcV
 									}
@@ -388,8 +388,8 @@ if(!class_exists('WP_Spreadplugin')) {
 					$output .= "</div>";
 
 					$output .= "
-					<!-- <div id=\"copyright\">Copyright (c) Thimo Grauerholz - <a href=\"http://www.pr3ss-play.de\">pr3ss-play - Dein Shirt-Shop für geile Party T-shirts!</a></div> -->
-					</div>";
+							<!-- <div id=\"copyright\">Copyright (c) Thimo Grauerholz - <a href=\"http://www.pr3ss-play.de\">pr3ss-play - Dein Shirt-Shop f&uuml;r geile Party T-shirts!</a></div> -->
+							</div>";
 				}
 
 
@@ -500,7 +500,7 @@ if(!class_exists('WP_Spreadplugin')) {
 							if ((int)$article->product->appearance['id'] == (int)$appearance['id']) {
 								$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['default_bgc'] = (string)$appearance->colors->color;
 							}
-								
+
 							if ($article->product->restrictions->freeColorSelection == 'true' || (int)$article->product->appearance['id'] == (int)$appearance['id']) {
 								$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['appearances'][(int)$appearance['id']]=(string)$appearance->resources->resource->attributes('xlink', true);
 							}
@@ -509,7 +509,7 @@ if(!class_exists('WP_Spreadplugin')) {
 						foreach($objArticleData->views->view as $view) {
 							$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['views'][(int)$view['id']]=(string)$article->resources->resource->attributes('xlink', true);
 						}
-						
+
 						$i++;
 					}
 
@@ -585,7 +585,7 @@ if(!class_exists('WP_Spreadplugin')) {
 						$articleData[(int)$article['id']]['productdescription']=(string)$objArticleData->description;
 						$articleData[(int)$article['id']]['weight']=(float)$article['weight'];
 						$articleData[(int)$article['id']]['place']=$i;
-						
+
 						$i++;
 					}
 
@@ -606,17 +606,17 @@ if(!class_exists('WP_Spreadplugin')) {
 		 * @return html
 		 */
 		private function displayArticles($id,$article,$backgroundColor='') {
-				
+
 			$output = '<div class="spreadshirt-article clearfix" id="article_'.$id.'" style="width:'.(self::$shopOptions['shop_imagesize']+7).'px">';
 			$output .= '<a name="'.$id.'"></a>';
 			$output .= '<h3>'.htmlspecialchars($article['name'],ENT_QUOTES).'</h3>';
 			$output .= '<form method="post" id="form_'.$id.'">';
-			
+				
 			// edit article button
 			if (self::$shopOptions['shop_designershop']>0) {
 				$output .= ' <div class="edit-wrapper"><a href="//'.self::$shopOptions['shop_designershop'].'.spreadshirt.'.self::$shopOptions['shop_source'].'/-D1/customize/product/'.$article['productId'].'?noCache=true" target="'.self::$shopOptions['shop_linktarget'].'" title="'.__('Edit article', $this->stringTextdomain).'"><img src="'.plugins_url('/img/edit.png', __FILE__).'"></a></div>';
 			}
-			
+				
 			// display preview image
 			$output .= '<div class="image-wrapper">';
 			$output .= '<img src="http://image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width='.self::$shopOptions['shop_imagesize'].',height='.self::$shopOptions['shop_imagesize'].'" class="preview" alt="' . htmlspecialchars($article['name'],ENT_QUOTES) . '" id="previewimg_'.$id.'" data-zoom-image="http://image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width=800,height=800'.(!empty($backgroundColor)?',backgroundColor='.$backgroundColor:'').'" />';
@@ -637,7 +637,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			if (self::$shopOptions['shop_enablelink']==1) {
 				$output .= ' <div class="details-wrapper"><a href="//'.self::$shopOptions['shop_id'].'.spreadshirt.'.self::$shopOptions['shop_source'].'/-A'.$id.'" target="'.self::$shopOptions['shop_linktarget'].'">'.__('Details', $this->stringTextdomain).'</a></div>';
 			}
-				
+
 			$output .= '<div class="separator"></div>';
 
 			// add a list with availabel product colors
@@ -651,7 +651,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				$output .= '</ul>';
 			}
 
-				
+
 			// add a list with available product views
 			if (isset($article['views'])&&is_array($article['views'])) {
 				$output .= '<ul class="views" name="views">';
@@ -672,18 +672,18 @@ if(!class_exists('WP_Spreadplugin')) {
 			// Show description link if not empty
 			if (!empty($article['description'])) {
 				$output .= '<div class="separator"></div>';
-				
+
 				if (self::$shopOptions['shop_showdescription']==0) {
 					$output .= '<div class="description-wrapper"><div class="header"><a>'.__('Show description', $this->stringTextdomain).'</a></div><div class="description">'.htmlspecialchars($article['description'],ENT_QUOTES).'</div></div>';
 				} else {
 					$output .= '<div class="description-wrapper">'.htmlspecialchars($article['description'],ENT_QUOTES).'</div>';
 				}
 			}
-				
+
 			$output .= '<input type="hidden" value="'. $article['appearance'] .'" id="appearance" name="appearance" />';
 			$output .= '<input type="hidden" value="'. $article['view'] .'" id="view" name="view" />';
 			$output .= '<input type="hidden" value="'. $id .'" id="article" name="article" />';
-				
+
 			$output .= '<div class="separator"></div>';
 			$output .= '<div class="price-wrapper">';
 			if (self::$shopOptions['shop_showextendprice']==1) {
@@ -693,7 +693,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				$output .= '<span id="price">'.__('Price:', $this->stringTextdomain)." ".(empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale']=='en_US' || self::$shopOptions['shop_locale']=='en_GB'?number_format($article['pricebrut'],2,'.',''):number_format($article['pricebrut'],2,',','.'))." ".$article['currencycode']."</span>";
 			}
 			$output .= '</div>';
-				
+
 			// order buttons
 			$output .= '<input type="text" value="1" id="quantity" name="quantity" maxlength="4" />';
 			$output .= '<input type="submit" name="submit" value="'.__('Add to basket', $this->stringTextdomain).'" /><br>';
@@ -703,11 +703,11 @@ if(!class_exists('WP_Spreadplugin')) {
 				$output .= '
 						<ul class="soc-icons">
 						<li><a target="_blank" data-color="#5481de" class="fb" href="//www.facebook.com/sharer.php?u='.urlencode(get_page_link().'#'.$id).'&t='.rawurlencode(get_the_title()).'" title="Facebook"></a></li>
-						<li><a target="_blank" data-color="#06ad18" class="goog" href="//plus.google.com/share?url='.urlencode(get_page_link().'#'.$id).'" title="Google"></a></li>
-						<li><a target="_blank" data-color="#2cbbea" class="twt" href="//twitter.com/home?status='.rawurlencode(get_the_title()).' - '.urlencode(get_page_link().'#'.$id).'" title="Twitter"></a></li>
-						<li><a target="_blank" data-color="#e84f61" class="pin" href="//pinterest.com/pin/create/button/?url='.get_page_link().'&media=' . $article['resource0'] . ',width='.self::$shopOptions['shop_imagesize'].',height='.self::$shopOptions['shop_imagesize'].'&description='.(!empty($article['description'])?htmlspecialchars($article['description'],ENT_QUOTES):'Product').'" title="Pinterest"></a></li>
-						</ul>
-						';
+								<li><a target="_blank" data-color="#06ad18" class="goog" href="//plus.google.com/share?url='.urlencode(get_page_link().'#'.$id).'" title="Google"></a></li>
+										<li><a target="_blank" data-color="#2cbbea" class="twt" href="//twitter.com/home?status='.rawurlencode(get_the_title()).' - '.urlencode(get_page_link().'#'.$id).'" title="Twitter"></a></li>
+												<li><a target="_blank" data-color="#e84f61" class="pin" href="//pinterest.com/pin/create/button/?url='.get_page_link().'&media=' . $article['resource0'] . ',width='.self::$shopOptions['shop_imagesize'].',height='.self::$shopOptions['shop_imagesize'].'&description='.(!empty($article['description'])?htmlspecialchars($article['description'],ENT_QUOTES):'Product').'" title="Pinterest"></a></li>
+														</ul>
+														';
 
 				/*
 					<li><a target="_blank" data-color="#459ee9" class="in" href="#" title="LinkedIn"></a></li>
@@ -744,13 +744,13 @@ if(!class_exists('WP_Spreadplugin')) {
 				<li><a href="#" class="vk" title="Vkontakte" data-color="#5f84ab" target="_blank"></a></li>
 				*/
 			}
-				
+
 			$output .= '
-						
+
 					</form>
 					</div>';
-				
-				
+
+
 			return $output;
 
 		}
@@ -764,7 +764,7 @@ if(!class_exists('WP_Spreadplugin')) {
 		 * @return html
 		 */
 		private function displayDesigns($id,$designData,$articleData,$bgc=false) {
-				
+
 			$addStyle = '';
 			if ($bgc) $addStyle='style="background-color:rgba('.$bgc[0].','.$bgc[1].','.$bgc[2].',0.4);"';
 
@@ -780,13 +780,13 @@ if(!class_exists('WP_Spreadplugin')) {
 			if (!empty($designData['description']) && $designData['description']!='null') {
 				$output .= '<div class="separator"></div>';
 				$output .= '<div class="description-wrapper">
-				<div class="header"><a>'.__('Show description', $this->stringTextdomain).'</a></div>
-				<div class="description">'.htmlspecialchars($designData['description'],ENT_QUOTES).'</div>
-				</div>';
+						<div class="header"><a>'.__('Show description', $this->stringTextdomain).'</a></div>
+								<div class="description">'.htmlspecialchars($designData['description'],ENT_QUOTES).'</div>
+										</div>';
 			}
-				
+
 			$output .= '
-			</div>';
+					</div>';
 
 			return $output;
 
@@ -1057,16 +1057,16 @@ if(!class_exists('WP_Spreadplugin')) {
 		 *
 		 */
 		public function loadHead() {
-			
+				
 			$conOp = $this->getAdminOptions();
-							
+				
 			if (!empty($conOp['shop_customcss'])) {
 				echo '
-				<style type="text/css">
-				' . $conOp['shop_customcss'] . '
-				</style>
-				';
-			}			
+						<style type="text/css">
+						' . $conOp['shop_customcss'] . '
+								</style>
+								';
+			}
 		}
 
 
@@ -1075,48 +1075,48 @@ if(!class_exists('WP_Spreadplugin')) {
 		 *
 		 */
 		public function loadFoot() {
-			
-			echo "
-			<script language='javascript' type='text/javascript'>
-			/**
-			* Spreadplugin vars
-			*/
 				
-			var textHideDesc = '".__('Hide description', $this->stringTextdomain)."';
-			var textShowDesc = '".__('Show description', $this->stringTextdomain)."';
-			var loadingImage = '".plugins_url('/img/loading.gif', __FILE__)."';
-			var loadingMessage = '".__('Loading new articles...', $this->stringTextdomain)."';
-			var loadingFinishedMessage = '".__('You have reached the end', $this->stringTextdomain)."';
-			var pageLink = '".get_page_link()."';
-			var pageCheckoutUseIframe = '".self::$shopOptions['shop_checkoutiframe']."';
-			var textButtonAdd = '".__('Add to basket', $this->stringTextdomain)."';
-			var textButtonAdded = '".__('Adding...', $this->stringTextdomain)."';
-			var ajaxLocation = '".admin_url( 'admin-ajax.php' )."?pageid=".get_the_ID()."&nonce=".wp_create_nonce('spreadplugin')."';
-			var display = '".self::$shopOptions['shop_display']."';
-			var imageSize = '".self::$shopOptions['shop_imagesize']."';
-			var infiniteScroll = '".(self::$shopOptions['shop_infinitescroll']==1 || self::$shopOptions['shop_infinitescroll']==''?1:0)."';
-			</script>";
+			echo "
+					<script language='javascript' type='text/javascript'>
+					/**
+					* Spreadplugin vars
+					*/
+
+					var textHideDesc = '".__('Hide description', $this->stringTextdomain)."';
+							var textShowDesc = '".__('Show description', $this->stringTextdomain)."';
+									var loadingImage = '".plugins_url('/img/loading.gif', __FILE__)."';
+											var loadingMessage = '".__('Loading new articles...', $this->stringTextdomain)."';
+													var loadingFinishedMessage = '".__('You have reached the end', $this->stringTextdomain)."';
+															var pageLink = '".get_page_link()."';
+																	var pageCheckoutUseIframe = '".self::$shopOptions['shop_checkoutiframe']."';
+																			var textButtonAdd = '".__('Add to basket', $this->stringTextdomain)."';
+																					var textButtonAdded = '".__('Adding...', $this->stringTextdomain)."';
+																							var ajaxLocation = '".admin_url( 'admin-ajax.php' )."?pageid=".get_the_ID()."&nonce=".wp_create_nonce('spreadplugin')."';
+																									var display = '".self::$shopOptions['shop_display']."';
+																											var imageSize = '".self::$shopOptions['shop_imagesize']."';
+																													var infiniteScroll = '".(self::$shopOptions['shop_infinitescroll']==1 || self::$shopOptions['shop_infinitescroll']==''?1:0)."';
+																															</script>";
 
 			echo "
-			<script language='javascript' type='text/javascript' src='".plugins_url('/js/spreadplugin.js', __FILE__)."'></script>";
+					<script language='javascript' type='text/javascript' src='".plugins_url('/js/spreadplugin.js', __FILE__)."'></script>";
 
 		}
-		
-		
+
+
 		public function enqueueJs() {
-			
+				
 			$conOp = $this->getAdminOptions();
 
 			// Scrolling
 			if ($conOp['shop_infinitescroll']==1 || $conOp['shop_infinitescroll']=='') {
 				wp_register_script('infinite_scroll', plugins_url('/js/jquery.infinitescroll.min.js', __FILE__),array('jquery'));
-				wp_enqueue_script('infinite_scroll');	
+				wp_enqueue_script('infinite_scroll');
 			}
-				
+
 			// Fancybox
 			wp_register_script('fancy_box', plugins_url('/js/jquery.fancybox.pack.js', __FILE__),array('jquery'));
 			wp_enqueue_script('fancy_box');
-			
+				
 			// Zoom
 			wp_register_script('zoom', plugins_url('/js/jquery.elevateZoom-2.5.5.min.js', __FILE__),array('jquery'));
 			wp_enqueue_script('zoom');
@@ -1126,7 +1126,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			wp_enqueue_style('spreadplugin');
 			wp_register_style('fancy_box_css', plugins_url('/css/jquery.fancybox.css', __FILE__));
 			wp_enqueue_style('fancy_box_css');
-			
+				
 		}
 
 
@@ -1170,10 +1170,10 @@ if(!class_exists('WP_Spreadplugin')) {
 
 			// get admin options (default option set on admin page)
 			$conOp = $this->getAdminOptions();
-				
+
 			// shortcode overwrites admin options (default option set on admin page) if available
 			$arrSc = shortcode_parse_atts(str_replace("[spreadplugin",'',str_replace("]","",$pageContent)));
-				
+
 			// replace options by shortcode if set
 			if (!empty($arrSc)) {
 				foreach ($arrSc as $key => $option) {
@@ -1285,7 +1285,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				$settings_link = '<a href="options-general.php?page=splg_options">'.__("Settings", $this->stringTextdomain) .'</a>';
 				array_unshift($links, $settings_link);
 			}
-				
+
 			return $links;
 		}
 
@@ -1315,7 +1315,7 @@ if(!class_exists('WP_Spreadplugin')) {
 					$scOptions[$key] = $option;
 				}
 			}
-				
+
 			return $scOptions;
 		}
 
