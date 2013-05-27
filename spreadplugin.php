@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 2.9.2
+ * Version: 2.9.3
  * Author: Thimo Grauerholz
  * Author URI: http://www.pr3ss-play.de
  */
@@ -687,10 +687,10 @@ if(!class_exists('WP_Spreadplugin')) {
 			$output .= '<div class="separator"></div>';
 			$output .= '<div class="price-wrapper">';
 			if (self::$shopOptions['shop_showextendprice']==1) {
-				$output .= '<span id="price-without-tax">'.__('Price (without tax):', $this->stringTextdomain)." ".(empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale']=='en_US' || self::$shopOptions['shop_locale']=='en_GB'?number_format($article['pricenet'],2,'.',''):number_format($article['pricenet'],2,',','.'))." ".$article['currencycode']."<br /></span>";
-				$output .= '<span id="price-with-tax">'.__('Price (with tax):', $this->stringTextdomain)." ".(empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale']=='en_US' || self::$shopOptions['shop_locale']=='en_GB'?number_format($article['pricebrut'],2,'.',''):number_format($article['pricebrut'],2,',','.'))." ".$article['currencycode']."</span>";
+				$output .= '<span id="price-without-tax">'.__('Price (without tax):', $this->stringTextdomain)." ".(empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale']=='en_US' || self::$shopOptions['shop_locale']=='en_GB' || self::$shopOptions['shop_locale']=='us_US' || self::$shopOptions['shop_locale']=='us_CA' || self::$shopOptions['shop_locale']=='fr_CA'?$article['currencycode']." ".number_format($article['pricenet'],2,'.',''):number_format($article['pricenet'],2,',','.')." ".$article['currencycode'])."<br /></span>";
+				$output .= '<span id="price-with-tax">'.__('Price (with tax):', $this->stringTextdomain)." ".(empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale']=='en_US' || self::$shopOptions['shop_locale']=='en_GB' || self::$shopOptions['shop_locale']=='us_US' || self::$shopOptions['shop_locale']=='us_CA' || self::$shopOptions['shop_locale']=='fr_CA'?$article['currencycode']." ".number_format($article['pricebrut'],2,'.',''):number_format($article['pricebrut'],2,',','.')." ".$article['currencycode'])."</span>";
 			} else {
-				$output .= '<span id="price">'.__('Price:', $this->stringTextdomain)." ".(empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale']=='en_US' || self::$shopOptions['shop_locale']=='en_GB'?number_format($article['pricebrut'],2,'.',''):number_format($article['pricebrut'],2,',','.'))." ".$article['currencycode']."</span>";
+				$output .= '<span id="price">'.__('Price:', $this->stringTextdomain)." ".(empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale']=='en_US' || self::$shopOptions['shop_locale']=='en_GB' || self::$shopOptions['shop_locale']=='us_US' || self::$shopOptions['shop_locale']=='us_CA' || self::$shopOptions['shop_locale']=='fr_CA'?$article['currencycode']." ".number_format($article['pricebrut'],2,'.',''):number_format($article['pricebrut'],2,',','.')." ".$article['currencycode'])."</span>";
 			}
 			$output .= '</div>';
 
@@ -701,13 +701,13 @@ if(!class_exists('WP_Spreadplugin')) {
 			// Social buttons
 			if (self::$shopOptions['shop_social']==true) {
 				$output .= '
-						<ul class="soc-icons">
-						<li><a target="_blank" data-color="#5481de" class="fb" href="//www.facebook.com/sharer.php?u='.urlencode(get_page_link().'#'.$id).'&t='.rawurlencode(get_the_title()).'" title="Facebook"></a></li>
-								<li><a target="_blank" data-color="#06ad18" class="goog" href="//plus.google.com/share?url='.urlencode(get_page_link().'#'.$id).'" title="Google"></a></li>
-										<li><a target="_blank" data-color="#2cbbea" class="twt" href="//twitter.com/home?status='.rawurlencode(get_the_title()).' - '.urlencode(get_page_link().'#'.$id).'" title="Twitter"></a></li>
-												<li><a target="_blank" data-color="#e84f61" class="pin" href="//pinterest.com/pin/create/button/?url='.get_page_link().'&media=' . $article['resource0'] . ',width='.self::$shopOptions['shop_imagesize'].',height='.self::$shopOptions['shop_imagesize'].'&description='.(!empty($article['description'])?htmlspecialchars($article['description'],ENT_QUOTES):'Product').'" title="Pinterest"></a></li>
-														</ul>
-														';
+				<ul class="soc-icons">
+				<li><a target="_blank" data-color="#5481de" class="fb" href="//www.facebook.com/sharer.php?u='.urlencode(get_page_link().'#'.$id).'&t='.rawurlencode(get_the_title()).'" title="Facebook"></a></li>
+				<li><a target="_blank" data-color="#06ad18" class="goog" href="//plus.google.com/share?url='.urlencode(get_page_link().'#'.$id).'" title="Google"></a></li>
+				<li><a target="_blank" data-color="#2cbbea" class="twt" href="//twitter.com/home?status='.rawurlencode(get_the_title()).' - '.urlencode(get_page_link().'#'.$id).'" title="Twitter"></a></li>
+				<li><a target="_blank" data-color="#e84f61" class="pin" href="//pinterest.com/pin/create/button/?url='.get_page_link().'&media=' . $article['resource0'] . ',width='.self::$shopOptions['shop_imagesize'].',height='.self::$shopOptions['shop_imagesize'].'&description='.(!empty($article['description'])?htmlspecialchars($article['description'],ENT_QUOTES):'Product').'" title="Pinterest"></a></li>
+				</ul>
+				';
 
 				/*
 					<li><a target="_blank" data-color="#459ee9" class="in" href="#" title="LinkedIn"></a></li>
@@ -780,9 +780,9 @@ if(!class_exists('WP_Spreadplugin')) {
 			if (!empty($designData['description']) && $designData['description']!='null') {
 				$output .= '<div class="separator"></div>';
 				$output .= '<div class="description-wrapper">
-						<div class="header"><a>'.__('Show description', $this->stringTextdomain).'</a></div>
-								<div class="description">'.htmlspecialchars($designData['description'],ENT_QUOTES).'</div>
-										</div>';
+				<div class="header"><a>'.__('Show description', $this->stringTextdomain).'</a></div>
+				<div class="description">'.htmlspecialchars($designData['description'],ENT_QUOTES).'</div>
+				</div>';
 			}
 
 			$output .= '
@@ -1062,10 +1062,10 @@ if(!class_exists('WP_Spreadplugin')) {
 				
 			if (!empty($conOp['shop_customcss'])) {
 				echo '
-						<style type="text/css">
-						' . $conOp['shop_customcss'] . '
-								</style>
-								';
+				<style type="text/css">
+				' . $conOp['shop_customcss'] . '
+				</style>
+				';
 			}
 		}
 
@@ -1083,19 +1083,19 @@ if(!class_exists('WP_Spreadplugin')) {
 					*/
 
 					var textHideDesc = '".__('Hide description', $this->stringTextdomain)."';
-							var textShowDesc = '".__('Show description', $this->stringTextdomain)."';
-									var loadingImage = '".plugins_url('/img/loading.gif', __FILE__)."';
-											var loadingMessage = '".__('Loading new articles...', $this->stringTextdomain)."';
-													var loadingFinishedMessage = '".__('You have reached the end', $this->stringTextdomain)."';
-															var pageLink = '".get_page_link()."';
-																	var pageCheckoutUseIframe = '".self::$shopOptions['shop_checkoutiframe']."';
-																			var textButtonAdd = '".__('Add to basket', $this->stringTextdomain)."';
-																					var textButtonAdded = '".__('Adding...', $this->stringTextdomain)."';
-																							var ajaxLocation = '".admin_url( 'admin-ajax.php' )."?pageid=".get_the_ID()."&nonce=".wp_create_nonce('spreadplugin')."';
-																									var display = '".self::$shopOptions['shop_display']."';
-																											var imageSize = '".self::$shopOptions['shop_imagesize']."';
-																													var infiniteScroll = '".(self::$shopOptions['shop_infinitescroll']==1 || self::$shopOptions['shop_infinitescroll']==''?1:0)."';
-																															</script>";
+					var textShowDesc = '".__('Show description', $this->stringTextdomain)."';
+					var loadingImage = '".plugins_url('/img/loading.gif', __FILE__)."';
+					var loadingMessage = '".__('Loading new articles...', $this->stringTextdomain)."';
+					var loadingFinishedMessage = '".__('You have reached the end', $this->stringTextdomain)."';
+					var pageLink = '".get_page_link()."';
+					var pageCheckoutUseIframe = '".self::$shopOptions['shop_checkoutiframe']."';
+					var textButtonAdd = '".__('Add to basket', $this->stringTextdomain)."';
+					var textButtonAdded = '".__('Adding...', $this->stringTextdomain)."';
+					var ajaxLocation = '".admin_url( 'admin-ajax.php' )."?pageid=".get_the_ID()."&nonce=".wp_create_nonce('spreadplugin')."';
+					var display = '".self::$shopOptions['shop_display']."';
+					var imageSize = '".self::$shopOptions['shop_imagesize']."';
+					var infiniteScroll = '".(self::$shopOptions['shop_infinitescroll']==1 || self::$shopOptions['shop_infinitescroll']==''?1:0)."';
+					</script>";
 
 			echo "
 					<script language='javascript' type='text/javascript' src='".plugins_url('/js/spreadplugin.js', __FILE__)."'></script>";
