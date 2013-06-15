@@ -393,7 +393,7 @@ if(!class_exists('WP_Spreadplugin')) {
 					$output .= "</div>";
 
 					$output .= "
-							<!-- <div id=\"copyright\">Copyright (c) Thimo Grauerholz - <a href=\"http://www.pr3ss-play.de\">pr3ss-play - Dein Shirt-Shop f&uuml;r geile Party T-shirts!</a></div> -->
+							<!-- <div id=\"copyright\"><a href=\"http://www.pr3ss-play.de\">pr3ss-play - Dein Shirt-Shop f&uuml;r geile Party T-shirts!</a></div> -->
 							</div>";
 				}
 
