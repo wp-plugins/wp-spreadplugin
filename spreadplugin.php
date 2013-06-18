@@ -204,7 +204,7 @@ if(!class_exists('WP_Spreadplugin')) {
 
 				$intInBasket=self::getInBasketQuantity();
 
-				// built second array with articles for sorting and filtering
+				// built array with articles for sorting and filtering
 				if (is_array($designsData)) {
 					foreach ($designsData as $designId => $arrDesigns) {
 						if (!empty($articleData[$designId])) {
@@ -213,8 +213,10 @@ if(!class_exists('WP_Spreadplugin')) {
 							}
 						}
 					}
-				} else {
-					// no designs available, so...
+				}
+				
+				// Add those articles which have no own designs
+				if (isset($articleData) && is_array($articleData[0])) {
 					foreach ($articleData[0] as $articleId => $arrArticle) {
 						$articleCleanData[$articleId] = $arrArticle;
 					}
@@ -278,7 +280,7 @@ if(!class_exists('WP_Spreadplugin')) {
 						$articleCleanData = array_slice($articleCleanData, $offset, self::$shopOptions['shop_limit'], true);
 					}
 				}
-
+				
 
 
 				// Start output
