@@ -8,6 +8,8 @@
  * Author URI: http://www.pr3ss-play.de
  */
 
+set_time_limit(0);
+
 
 /**
  * Avoid direct calls to this file
@@ -80,7 +82,6 @@ if(!class_exists('WP_Spreadplugin')) {
 
 			add_action('wp_enqueue_scripts', array(&$this,'enqueueJs'));
 			add_action('wp_head', array(&$this,'loadHead'));
-			add_action('wp_footer', array(&$this,'loadFoot'));
 
 
 			// admin check
@@ -129,6 +130,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			$articleData = array();
 			$designsData = array();
 
+			add_action('wp_footer', array(&$this,'loadFoot'));
 
 			// get admin options (default option set on admin page)
 			$conOp = $this->getAdminOptions();
