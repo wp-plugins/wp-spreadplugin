@@ -1151,7 +1151,8 @@ if(!class_exists('WP_Spreadplugin')) {
 
 		// prepare for https
 		private function cleanURL($url) {
-			return str_replace('http:','',$url);
+			return $url;
+			//return str_replace('http:','',$url);
 		}
 
 
