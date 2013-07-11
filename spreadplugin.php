@@ -5,7 +5,7 @@
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
  * Version: 2.9.5
  * Author: Thimo Grauerholz
- * Author URI: http://www.pr3ss-play.de
+ * Author URI: http://www.grauerholz.de/
  */
 
 set_time_limit(0);
@@ -397,7 +397,7 @@ if(!class_exists('WP_Spreadplugin')) {
 					$output .= "</div>";
 
 					$output .= "
-							<!-- <div id=\"copyright\"><a href=\"http://www.pr3ss-play.de\">pr3ss-play - Dein Shirt-Shop f&uuml;r geile Party T-shirts!</a></div> -->
+							<!-- <div id=\"copyright\"><a href=\"http://lovetee.de\">lovetee - we love t-shirts</a></div> -->
 							</div>";
 				}
 

@@ -40,7 +40,7 @@ The pagination is done via infinity scroll.
 
 **See it in action**
 
-http://www.pr3ss-play.de/shop/ (in german)
+http://lovetee.de/shop/ (in german)
 
 **What do you need**
 
@@ -51,11 +51,11 @@ http://www.pr3ss-play.de/shop/ (in german)
 If you have suggestions, feel free to email me at info@spreadplugin.de.
 Want regular updates? Become a fan of my sites on Facebook!
 
-http://www.facebook.com/pr3ss.play
+http://www.facebook.com/lovetee.de
 
 Or follow my sites on Twitter!
 
-https://twitter.com/Pr3ssplay_de
+http://twitter.com/lovetee_de
 
 == Installation ==
 
@@ -106,9 +106,9 @@ Depending on what kind of price you want to hide uncomment the line.
 = How do I get the category Id? =
 
 1. You must have already created a category in your spreadshirt shop, if not, please do so, now. Please refer to spreadshirt, if you don't know how.
-2. Please open your normal spreadshirt shop (shopid.spreadshirt.net). In my case: http://pr3ss-play.spreadshirt.de/
+2. Please open your normal spreadshirt shop (shopid.spreadshirt.net). In my case: http://welovetee.spreadshirt.de/
 3. Choose a category from the category selection.
-4. The url of your shop has changed to `http://pr3ss-play.spreadshirt.de/winter-C269237` in my case
+4. The url of your shop has changed to `http://welovetee.spreadshirt.de/winter-C269237` in my case
 5. The category Id in this case is `269237` (the numbers after the "-C" part)
 6. Paste this number in the `shop_category=""` variable.
 7. Save and done.
@@ -273,8 +273,8 @@ Bugfix: Infinity scrolling doesn't work sometimes when in designs view
 
 = 2.0 =
 * Added a new shortcode variable to by display designs by default. To enable change shop_display="0"` to shop_display="1"`. 
-Sample (active): http://www.pr3ss-play.de/shop/
-Sample (disabled/article view): http://www.pr3ss-play.de/shop-en/
+Sample (active): http://lovetee.de/shop/
+Sample (disabled/article view): http://lovetee.de/shop-articles/
 * Added Pinterest / Thanks to shirtarrest.com
 * Article category sub-filter
 * CSS fixes
