@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: spreadshirt,wordpress,plugin,shop
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 2.9.5
+Stable tag: 2.9.5.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -26,7 +26,7 @@ The pagination is done via infinity scroll.
 * Uses Spreadshirt-Basket (A click on the basket opens the spreadshirt own basket)
 * Price listing
 * Choose color and sizes
-* Language support (de_DE, en_GB, fr_FR, nl_NL based on Wordpress installation, more on request)
+* Language support (de_DE, en_GB, fr_FR, nl_NL, nn_NO, nb_NO based on Wordpress installation, more on request)
 * Social buttons
 * Enhanced article zoom
 * Display article descriptions
@@ -177,6 +177,9 @@ Add or edit the shortcode or set in shortcode plugin settings to enable. Shortco
 6. Settings page
 
 == Changelog ==
+
+= 2.9.5.1 =
+Norwegian language added
 
 = 2.9.5 =
 * JS now loaded at the shortcode call.
