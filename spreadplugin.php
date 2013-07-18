@@ -700,8 +700,9 @@ if(!class_exists('WP_Spreadplugin')) {
 				$output .= '<span id="price-with-tax">'.__('Price (with tax):', $this->stringTextdomain)." ".(empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale']=='en_US' || self::$shopOptions['shop_locale']=='en_GB' || self::$shopOptions['shop_locale']=='us_US' || self::$shopOptions['shop_locale']=='us_CA' || self::$shopOptions['shop_locale']=='fr_CA'?$article['currencycode']." ".number_format($article['pricebrut'],2,'.',''):number_format($article['pricebrut'],2,',','.')." ".$article['currencycode'])."</span>";
 			
 				if (self::$shopOptions['shop_locale']=='de_DE') {
-					$output .= '<br>';
+					$output .= '<br><div class="additionalshippingcosts">';
 					$output .= __('zzgl. Versandkosten', $this->stringTextdomain);
+					$output .= '</div>';
 				}
 			
 			} else {
