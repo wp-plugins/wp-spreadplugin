@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: spreadshirt,wordpress,plugin,shop
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 2.9.5.1
+Stable tag: 2.9.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -177,6 +177,10 @@ Add or edit the shortcode or set in shortcode plugin settings to enable. Shortco
 6. Settings page
 
 == Changelog ==
+
+= 2.9.6 =
+* Minor bugfixes
+* Added Text for german locale 'zzgl. Versandkosten' if extended price is choosen
 
 = 2.9.5.1 =
 Norwegian language added
