@@ -8,7 +8,8 @@
  * Author URI: http://lovetee.de/
  */
 
-set_time_limit(0);
+// Uncoment the next line, if you've got problems loading the articles e.g. timeout
+//set_time_limit(0);
 
 
 /**
