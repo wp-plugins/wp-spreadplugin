@@ -1,10 +1,10 @@
 === WP-Spreadplugin ===
 Contributors: Thimo Grauerholz
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EZLKTKW8UR6PQ
-Tags: spreadshirt,wordpress,plugin,shop
+Tags: spreadshirt,wordpress,plugin,shop,store,shirt,t-shirt,integration,online store,online shop
 Requires at least: 3.3
-Tested up to: 3.5.1
-Stable tag: 2.9.6
+Tested up to: 3.5.2
+Stable tag: 3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -37,10 +37,11 @@ The pagination is done via infinity scroll.
 * Choose between article or design view (click on a design shows the articles inside the website)
 * Settings page/admin page for easier configuration
 * No premium shop necessary except you want to link to and use the designer
+* Basket
 
 **See it in action**
 
-http://lovetee.de/shop/ (in german)
+http://lovetee.de/#shop (in german)
 
 **What do you need**
 
@@ -177,6 +178,10 @@ Add or edit the shortcode or set in shortcode plugin settings to enable. Shortco
 6. Settings page
 
 == Changelog ==
+
+= 3.0 =
+* Basket added
+* Minor bugfixes
 
 = 2.9.6 =
 * Minor bugfixes

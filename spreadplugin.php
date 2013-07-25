@@ -3,9 +3,9 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 2.9.6
+ * Version: 3.0
  * Author: Thimo Grauerholz
- * Author URI: http://www.grauerholz.de/
+ * Author URI: http://lovetee.de/
  */
 
 set_time_limit(0);
@@ -30,6 +30,7 @@ if(!class_exists('WP_Spreadplugin')) {
 	class WP_Spreadplugin {
 		private $stringTextdomain = 'spreadplugin';
 		public static $shopOptions;
+		public static $basketContents;
 		public static $shopArticleSortOptions = array(
 				'name',
 				'price',
@@ -78,6 +79,10 @@ if(!class_exists('WP_Spreadplugin')) {
 			// Ajax actions
 			add_action('wp_ajax_nopriv_myAjax',array(&$this,'doAjax'));
 			add_action('wp_ajax_myAjax',array(&$this,'doAjax'));
+			add_action('wp_ajax_nopriv_myCart',array(&$this,'doCart'));
+			add_action('wp_ajax_myCart',array(&$this,'doCart'));
+			add_action('wp_ajax_nopriv_myDelete',array(&$this,'doCartItemDelete'));
+			add_action('wp_ajax_myDelete',array(&$this,'doCartItemDelete'));
 			add_action('wp_ajax_regenCache',array(&$this,'doRegenerateCache'));
 
 			add_action('wp_enqueue_scripts', array(&$this,'enqueueJs'));
@@ -193,8 +198,8 @@ if(!class_exists('WP_Spreadplugin')) {
 				}
 
 				$offset=($paged-1)*self::$shopOptions['shop_limit'];
-
-
+				
+				
 				// get article data
 				$articleData=self::getArticleData();
 				// get rid of types in array
@@ -203,8 +208,6 @@ if(!class_exists('WP_Spreadplugin')) {
 
 				// get designs data
 				$designsData=self::getDesignsData();
-
-				$intInBasket=self::getInBasketQuantity();
 
 				// built array with articles for sorting and filtering
 				if (is_array($designsData)) {
@@ -325,11 +328,8 @@ if(!class_exists('WP_Spreadplugin')) {
 				$output .= '<option value="weight"'.('weight'==self::$shopOptions['shop_sortby']?' selected':'').'>'.__('weight', $this->stringTextdomain).'</option>';
 				$output .= '</select>';
 
-				if (isset($_SESSION['checkoutUrl']) && $intInBasket>0) {
-					$output .= ' <div id="checkout"><span>'.$intInBasket."</span> <a href=".$_SESSION['checkoutUrl']." target=\"".self::$shopOptions['shop_linktarget']."\">".__('Basket', $this->stringTextdomain)."</a></div>";
-				} else {
-					$output .= ' <div id="checkout"><span>'.$intInBasket."</span> <a title=\"".__('Basket is empty', $this->stringTextdomain)."\">".__('Basket', $this->stringTextdomain)."</a></div>";
-				}
+				$output .= '<div id="checkout"><span></span> <a href="'.$_SESSION['checkoutUrl'].'" target="'.self::$shopOptions['shop_linktarget'].'">'.__('Basket', $this->stringTextdomain).'</a></div>';
+				$output .= '<div id="cart"></div>';
 
 				$output .= '</div>';
 
@@ -699,19 +699,19 @@ if(!class_exists('WP_Spreadplugin')) {
 				$output .= '<span id="price-without-tax">'.__('Price (without tax):', $this->stringTextdomain)." ".(empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale']=='en_US' || self::$shopOptions['shop_locale']=='en_GB' || self::$shopOptions['shop_locale']=='us_US' || self::$shopOptions['shop_locale']=='us_CA' || self::$shopOptions['shop_locale']=='fr_CA'?$article['currencycode']." ".number_format($article['pricenet'],2,'.',''):number_format($article['pricenet'],2,',','.')." ".$article['currencycode'])."<br /></span>";
 				$output .= '<span id="price-with-tax">'.__('Price (with tax):', $this->stringTextdomain)." ".(empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale']=='en_US' || self::$shopOptions['shop_locale']=='en_GB' || self::$shopOptions['shop_locale']=='us_US' || self::$shopOptions['shop_locale']=='us_CA' || self::$shopOptions['shop_locale']=='fr_CA'?$article['currencycode']." ".number_format($article['pricebrut'],2,'.',''):number_format($article['pricebrut'],2,',','.')." ".$article['currencycode'])."</span>";
 			
+			
 				if (self::$shopOptions['shop_locale']=='de_DE') {
 					$output .= '<br><div class="additionalshippingcosts">';
 					$output .= __('zzgl. Versandkosten', $this->stringTextdomain);
 					$output .= '</div>';
 				}
 			
+
 			} else {
 				$output .= '<span id="price">'.__('Price:', $this->stringTextdomain)." ".(empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale']=='en_US' || self::$shopOptions['shop_locale']=='en_GB' || self::$shopOptions['shop_locale']=='us_US' || self::$shopOptions['shop_locale']=='us_CA' || self::$shopOptions['shop_locale']=='fr_CA'?$article['currencycode']." ".number_format($article['pricebrut'],2,'.',''):number_format($article['pricebrut'],2,',','.')." ".$article['currencycode'])."</span>";
 			}
-			
 			$output .= '</div>';
 			
-
 			// order buttons
 			$output .= '<input type="text" value="1" id="quantity" name="quantity" maxlength="4" />';
 			$output .= '<input type="submit" name="submit" value="'.__('Add to basket', $this->stringTextdomain).'" /><br>';
@@ -849,6 +849,25 @@ if(!class_exists('WP_Spreadplugin')) {
 			} else {
 				die('ERROR: Item not added.');
 			}
+
+		}
+
+
+		/**
+		 * Function delete basket item
+		 *
+		 * @param $basketUrl
+		 * @param $namespaces
+		 * @param array $data
+		 *
+		 */
+		private static function deleteBasketItem($basketUrl, $itemId) {
+
+			$basketItemsUrl = $basketUrl . "/items/".$itemId;
+
+			$header = array();
+			$header[] = self::createAuthHeader("DELETE", $basketItemsUrl);
+			$result = self::oldHttpRequest($basketItemsUrl, $header, 'DELETE');
 
 		}
 
@@ -1049,8 +1068,18 @@ if(!class_exists('WP_Spreadplugin')) {
 					curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 					curl_setopt($ch, CURLOPT_HEADER, true);
 					curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-					curl_setopt($ch, CURLOPT_POST, true); //not createBasket but addBasketItem
+					curl_setopt($ch, CURLOPT_POST, true); 
 					curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+
+					break;
+					
+				case 'DELETE':
+					$ch = curl_init($url);
+					curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+					curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+					curl_setopt($ch, CURLOPT_HEADER, false);
+					curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+					curl_setopt($ch, CURLOPT_CUSTOMREQUEST,'DELETE');
 
 					break;
 
@@ -1252,11 +1281,13 @@ if(!class_exists('WP_Spreadplugin')) {
 				// add to basket
 				self::addBasketItem($_SESSION['basketUrl'] , $_SESSION['namespaces'] , $data);
 
-				$intInBasket=self::getInBasketQuantity();
-
-				echo json_encode(array("c" => array("u" => $_SESSION['checkoutUrl'],"q" => $intInBasket)));
-				die();
 			}
+
+
+			$intInBasket=self::getInBasketQuantity();
+			
+			echo json_encode(array("c" => array("u" => $_SESSION['checkoutUrl'],"q" => intval($intInBasket))));
+			die();
 		}
 
 
@@ -1337,6 +1368,137 @@ if(!class_exists('WP_Spreadplugin')) {
 
 			return $scOptions;
 		}
+		
+		
+		
+		public function doCart() {
+
+			if (!wp_verify_nonce($_GET['nonce'], 'spreadplugin')) die('Security check');
+
+
+			/**
+			 * re-parse the shortcode to get the authentication details
+			 *
+			 * @TODO find a different way
+			 *
+			*/
+			$pageData = get_page(intval($_GET['pageid']));
+			$pageContent = $pageData->post_content;
+
+			// get admin options (default option set on admin page)
+			$conOp = $this->getAdminOptions();
+
+			// shortcode overwrites admin options (default option set on admin page) if available
+			$arrSc = shortcode_parse_atts(str_replace("[spreadplugin",'',str_replace("]","",$pageContent)));
+
+			// replace options by shortcode if set
+			if (!empty($arrSc)) {
+				foreach ($arrSc as $key => $option) {
+					if ($option != '') {
+						$conOp[$key] = $option;
+					}
+				}
+			}
+
+			self::$shopOptions = $conOp;
+			self::$shopOptions['shop_locale'] = (($conOp['shop_locale']=='' || $conOp['shop_locale']=='de_DE') && $conOp['shop_source']=='com'?'us_US':$conOp['shop_locale']); // Workaround for older versions of this plugin
+			self::$shopOptions['shop_source'] = (empty($conOp['shop_source'])?'net':$conOp['shop_source']);
+
+
+			// create an new basket if not exist
+			if (isset($_SESSION['basketUrl'])) {
+				
+				$basketItems=self::getBasket($_SESSION['basketUrl']);
+				$priceSum=0;
+				$intSumQuantity=0;
+				
+				echo '<div id="cart-contents">';
+				
+				if(!empty($basketItems)) {
+					//echo "<pre>".print_r($basketItems)."</pre>";
+					foreach($basketItems->basketItems->basketItem as $item){
+						
+						$apiUrl='http://api.spreadshirt.'.self::$shopOptions['shop_source'].'/api/v1/shops/'.(string)$item->shop['id'].'/articles/'.(string)$item->element['id'];						
+						$stringXmlShop = wp_remote_get($apiUrl);
+						if (count($stringXmlShop->errors)>0) die('Error getting articles. Please check Shop-ID, API and secret.');
+						if ($stringXmlShop['body'][0]!='<') die($stringXmlShop['body']);
+						$stringXmlShop = wp_remote_retrieve_body($stringXmlShop);
+						$objArticles = new SimpleXmlElement($stringXmlShop);
+						if (!is_object($objArticles)) die('Articles not loaded');
+						
+						echo '<div class="cart-row" data-id="'.(string)$item['id'].'">
+							<div class="cart-preview"><img src="http://image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.(string)$objArticles->product['id'].'/views/'.(string)$objArticles->product->defaultValues->defaultView['id'].',viewId='.(string)$objArticles->product->defaultValues->defaultView['id'].',width=60,height=60,appearanceId='.(string)$item->element->properties->property[1].'"></div>
+							<div class="cart-description"><strong>'.htmlspecialchars((empty($objArticles->name)?$item->description:$objArticles->name),ENT_QUOTES).'</strong><br>'.__('Size', $this->stringTextdomain).': '.(string)$item->element->properties->property[0].'<br>'.__('Quantity', $this->stringTextdomain).': '.(int)$item->quantity.'</div>
+							<div class="cart-price"><strong>'.(empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale']=='en_US' || self::$shopOptions['shop_locale']=='en_GB' || self::$shopOptions['shop_locale']=='us_US' || self::$shopOptions['shop_locale']=='us_CA' || self::$shopOptions['shop_locale']=='fr_CA'?number_format((float)$item->price->vatIncluded,2,'.',''):number_format((float)$item->price->vatIncluded,2,',','.')).'</strong></div>
+							<div class="cart-delete"><a href="javascript:;" class="deleteCartItem" title="'.__('Remove', $this->stringTextdomain).'"><img src="'.plugins_url('/img/delete.png', __FILE__).'"></a></div>
+							</div>';
+						
+						$priceSum+=(float)$item->price->vatIncluded;
+						$intSumQuantity+=(int)$item->quantity;
+						
+					}
+				}
+				
+				echo '</div>';
+				echo '<div id="cart-total">'.__('Total (excl. Shipping)', $this->stringTextdomain).'<span class="price">'.(empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale']=='en_US' || self::$shopOptions['shop_locale']=='en_GB' || self::$shopOptions['shop_locale']=='us_US' || self::$shopOptions['shop_locale']=='us_CA' || self::$shopOptions['shop_locale']=='fr_CA'?number_format($priceSum,2,'.',''):number_format($priceSum,2,',','.')).'</span></div>';
+				
+				if ($intSumQuantity>0) {
+					echo '<div id="cart-checkout"><a href="'.$_SESSION['checkoutUrl'].'" target="'.self::$shopOptions['shop_linktarget'].'">'.__('Proceed checkout', $this->stringTextdomain).'</a></div>';
+				} else {
+					echo '<div id="cart-checkout"><a title="'.__('Basket is empty', $this->stringTextdomain).'">'.__('Proceed checkout', $this->stringTextdomain).'</a></div>';
+				}
+			}
+			
+			die();
+		}
+		
+		
+		
+		public function doCartItemDelete() {
+
+			if (!wp_verify_nonce($_GET['nonce'], 'spreadplugin')) die('Security check');
+
+
+			/**
+			 * re-parse the shortcode to get the authentication details
+			 *
+			 * @TODO find a different way
+			 *
+			*/
+			$pageData = get_page(intval($_GET['pageid']));
+			$pageContent = $pageData->post_content;
+
+			// get admin options (default option set on admin page)
+			$conOp = $this->getAdminOptions();
+
+			// shortcode overwrites admin options (default option set on admin page) if available
+			$arrSc = shortcode_parse_atts(str_replace("[spreadplugin",'',str_replace("]","",$pageContent)));
+
+			// replace options by shortcode if set
+			if (!empty($arrSc)) {
+				foreach ($arrSc as $key => $option) {
+					if ($option != '') {
+						$conOp[$key] = $option;
+					}
+				}
+			}
+
+			self::$shopOptions = $conOp;
+			self::$shopOptions['shop_locale'] = (($conOp['shop_locale']=='' || $conOp['shop_locale']=='de_DE') && $conOp['shop_source']=='com'?'us_US':$conOp['shop_locale']); // Workaround for older versions of this plugin
+			self::$shopOptions['shop_source'] = (empty($conOp['shop_source'])?'net':$conOp['shop_source']);
+
+
+			// create an new basket if not exist
+			if (isset($_SESSION['basketUrl'])) {
+				// uuid test
+				if(preg_match('/\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/',$_POST['id'])) {
+					self::deleteBasketItem($_SESSION['basketUrl'],$_POST['id']);
+				}
+			}
+			
+			die();
+		}
+		
 
 
 	} // END class WP_Spreadplugin

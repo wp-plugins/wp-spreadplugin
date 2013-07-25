@@ -1,3 +1,12 @@
+/**
+ * Plugin Name: WP-Spreadplugin
+ * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
+ * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
+ * Version: 3.0
+ * Author: Thimo Grauerholz
+ * Author URI: http://lovetee.de/
+ */
+
 jQuery(function() {
 
 	var sep = '?';
@@ -16,6 +25,10 @@ jQuery(function() {
 	if (pageLink.indexOf('?') > -1) {
 		sep = '&';
 	}
+	
+	
+	jQuery('#cart').hide();
+	
 
 	/*
 	 * change article color and view
@@ -154,20 +167,13 @@ jQuery(function() {
 											data,
 											function(json) {
 												button.val(textButtonAdd);
-												jQuery(
-														'#spreadshirt-items #spreadshirt-menu #checkout a')
-														.attr('href', json.c.u);
-												jQuery(
-														'#spreadshirt-items #spreadshirt-menu #checkout a')
-														.removeAttr('title');
-												jQuery(
-														'#spreadshirt-items #spreadshirt-menu #checkout span')
-														.text(json.c.q);
+												refreshCart(json);
 											}, 'json');
 
 							return false;
 
 						});
+
 
 		if (pageCheckoutUseIframe == 2) {
 			jQuery('.spreadshirt-article .edit-wrapper a').fancybox({
@@ -347,62 +353,19 @@ jQuery(function() {
 						+ sor;
 			});
 
-	// checkout in an iframe in page
-	if (pageCheckoutUseIframe == 1) {
-		jQuery('#spreadshirt-items #spreadshirt-menu a')
-				.click(
+
+		jQuery('#spreadshirt-items #spreadshirt-menu a').click(
 						function(event) {
 							event.preventDefault();
-
-							var checkoutLink = jQuery(
-									'#spreadshirt-items #spreadshirt-menu a')
-									.attr('href');
-
-							if (typeof checkoutLink !== "undefined"
-									&& checkoutLink.length > 0) {
-
-								jQuery('#spreadshirt-items #pagination')
-										.remove();
-								jQuery('#spreadshirt-items #spreadshirt-menu')
-										.remove();
-								jQuery(window).unbind('.infscr');
-
-								jQuery('#spreadshirt-list')
-										.html(
-												'<iframe style="z-index:10002" id="checkoutFrame" frameborder="0" width="900" height="2000" scroll="yes">');
-								jQuery('#spreadshirt-list #checkoutFrame')
-										.attr('src', checkoutLink);
-
-								jQuery('html, body')
-										.animate(
-												{
-													scrollTop : jQuery(
-															"#spreadshirt-items #checkoutFrame")
-															.offset().top
-												}, 2000);
-
+							
+							if (jQuery('#cart').is(':hidden')) {
+								jQuery('#cart').show();
+							} else {
+								jQuery('#cart').hide();
 							}
 						});
 
-	}
 
-	// checkout in an iframe with modal window (fancybox)
-	if (pageCheckoutUseIframe == 2) {
-
-		jQuery('#spreadshirt-items #spreadshirt-menu a').fancybox({
-			type : 'iframe',
-			fitToView : false,
-			autoSize : false,
-			height : 1000,
-			width : fancyBoxWidth,
-			preload : true,
-			afterClose : function() {
-				location.reload();
-				return;
-			}
-		});
-
-	}
 
 	function getParameterByName(name) {
 		name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
@@ -412,9 +375,103 @@ jQuery(function() {
 		if (results == null) {
 			return "";
 		} else {
-			return encodeURIComponent(decodeURIComponent(results[1].replace(
-					/\+/g, " ")));
+			return encodeURIComponent(decodeURIComponent(results[1].replace(/\+/g, " ")));
 		}
 	}
+	
+	
+	function refreshCart(json) {
+		
+		jQuery('#spreadshirt-items #spreadshirt-menu #checkout a').attr('href', json.c.u);
+		jQuery('#spreadshirt-items #spreadshirt-menu #checkout a').removeAttr('title');
+		jQuery('#spreadshirt-items #spreadshirt-menu #checkout span').text(json.c.q);
+		jQuery('#cart-checkout a').attr('href', json.c.u);
+		
+		jQuery.get(ajaxLocation,'action=myCart',function (data) {
+			jQuery('#spreadshirt-items #cart').html(data);
+			
+			
+			// checkout in an iframe in page
+			if (pageCheckoutUseIframe == 1) {
+						jQuery('#cart-checkout a').click(
+								function(event) {
+									event.preventDefault();
+		
+									var checkoutLink = jQuery(
+											'#cart-checkout a')
+											.attr('href');
+		
+									if (typeof checkoutLink !== "undefined"
+											&& checkoutLink.length > 0) {
+		
+										jQuery('#spreadshirt-items #pagination')
+												.remove();
+										jQuery('#spreadshirt-items #spreadshirt-menu')
+												.remove();
+										jQuery(window).unbind('.infscr');
+		
+										jQuery('#spreadshirt-list')
+												.html(
+														'<iframe style="z-index:10002" id="checkoutFrame" frameborder="0" width="900" height="2000" scroll="yes">');
+										jQuery('#spreadshirt-list #checkoutFrame')
+												.attr('src', checkoutLink);
+		
+										jQuery('html, body')
+												.animate(
+														{
+															scrollTop : jQuery(
+																	"#spreadshirt-items #checkoutFrame")
+																	.offset().top
+														}, 2000);
+		
+									}
+								});
+		
+			}
+		
+			// checkout in an iframe with modal window (fancybox)
+			if (pageCheckoutUseIframe == 2) {
+					var checkoutLink = jQuery(
+							'#cart-checkout a')
+							.attr('href');
+		
+					if (typeof checkoutLink !== "undefined" && checkoutLink.length > 0) {
+					
+							jQuery('#cart-checkout a').fancybox({
+								type : 'iframe',
+								fitToView : false,
+								autoSize : false,
+								height : 1000,
+								width : fancyBoxWidth,
+								preload : true,
+								afterClose : function() {
+									location.reload();
+									return;
+								}
+							});
+				}
+			}
+			
+			
+			jQuery('.cart-row a.deleteCartItem').click(function(e) {
+				e.preventDefault;
+				jQuery(this).closest('.cart-row').show().fadeOut('slow');
+				
+				jQuery.post(ajaxLocation,	'action=myDelete&id='+jQuery(this).closest('.cart-row').data('id'),function() {	
+					jQuery.post(ajaxLocation,	'action=myAjax',function(json) {
+						refreshCart(json);
+						}, 'json');	
+					});	
 
+			});
+			
+			
+		});
+	}
+	
+	
+	jQuery.post(ajaxLocation,	'action=myAjax',function(json) {
+		refreshCart(json);
+		}, 'json');	
+	
 });

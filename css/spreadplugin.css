@@ -1,3 +1,12 @@
+/**
+ * Plugin Name: WP-Spreadplugin
+ * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
+ * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
+ * Version: 3.0
+ * Author: Thimo Grauerholz
+ * Author URI: http://lovetee.de/
+ */
+
 #main ul {
 	margin: 0;
 	padding: 0
@@ -8,6 +17,9 @@ pre, code {
 }
 .spreadshirt-items {
 	position: relative;
+}
+.spreadshirt-items img {
+	padding: 0 !important;
 }
 .spreadshirt-article, .spreadshirt-design {
 	float: left;
@@ -381,6 +393,70 @@ pre, code {
 .spreadshirt-items ul.soc-icons .vk {
 	background-position: -295px -185px;
 }
-
-
-
+#cart .cart-row {
+	float: left;
+	padding-bottom: 10px;
+	padding-top: 10px;
+	border-bottom: 1px #CCC solid;
+	display: block;
+	width: 100%;
+	white-space: normal;
+}
+#cart {
+	position: absolute;
+	right: 0;
+	top: 50px;
+	background-color: #FFF;
+	padding: 10px;
+}
+#cart-contents {
+	width: 400px;
+	height: 400px;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+#cart-contents div {
+	float: left;
+}
+#cart .cart-preview {
+	width: 70px;
+}
+#cart .cart-price {
+	float: left;
+	text-align: right
+}
+#cart .cart-delete {
+	float: right;
+	padding: 2px;
+}
+#cart .cart-delete a img {
+	border: 0 !important;
+}
+#cart .cart-description {
+	width: 200px;
+	padding-left: 10px;
+	padding-right: 10px
+}
+#cart-checkout {
+	text-align: right;
+	padding: 10px;
+}
+#cart-checkout a, #cart-checkout a:hover {
+	color: #fff;
+	text-decoration: none;
+}
+#cart-checkout a {
+	background-color: #666;
+	padding: 15px 30px;
+}
+#cart-checkout a:hover {
+	background-color: #999;
+}
+#cart-total {
+	padding: 10px;
+}
+#cart-total .price {
+	float: right;
+}
