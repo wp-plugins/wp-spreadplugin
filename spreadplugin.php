@@ -9,7 +9,7 @@
  */
 
 // Uncoment the next line, if you've got problems loading the articles e.g. timeout
-//set_time_limit(0);
+@set_time_limit(0);
 
 
 /**
@@ -1207,34 +1207,7 @@ if(!class_exists('WP_Spreadplugin')) {
 
 			if (!wp_verify_nonce($_GET['nonce'], 'spreadplugin')) die('Security check');
 
-
-			/**
-			 * re-parse the shortcode to get the authentication details
-			 *
-			 * @TODO find a different way
-			 *
-			*/
-			$pageData = get_page(intval($_GET['pageid']));
-			$pageContent = $pageData->post_content;
-
-			// get admin options (default option set on admin page)
-			$conOp = $this->getAdminOptions();
-
-			// shortcode overwrites admin options (default option set on admin page) if available
-			$arrSc = shortcode_parse_atts(str_replace("[spreadplugin",'',str_replace("]","",$pageContent)));
-
-			// replace options by shortcode if set
-			if (!empty($arrSc)) {
-				foreach ($arrSc as $key => $option) {
-					if ($option != '') {
-						$conOp[$key] = $option;
-					}
-				}
-			}
-
-			self::$shopOptions = $conOp;
-			self::$shopOptions['shop_locale'] = (($conOp['shop_locale']=='' || $conOp['shop_locale']=='de_DE') && $conOp['shop_source']=='com'?'us_US':$conOp['shop_locale']); // Workaround for older versions of this plugin
-			self::$shopOptions['shop_source'] = (empty($conOp['shop_source'])?'net':$conOp['shop_source']);
+			$this->reparseShortcodeData();
 
 
 			// create an new basket if not exist
@@ -1370,13 +1343,11 @@ if(!class_exists('WP_Spreadplugin')) {
 			return $scOptions;
 		}
 		
+
+
+		// read page config and admin options
+		public function reparseShortcodeData() {
 		
-		
-		public function doCart() {
-
-			if (!wp_verify_nonce($_GET['nonce'], 'spreadplugin')) die('Security check');
-
-
 			/**
 			 * re-parse the shortcode to get the authentication details
 			 *
@@ -1401,9 +1372,21 @@ if(!class_exists('WP_Spreadplugin')) {
 				}
 			}
 
+			
 			self::$shopOptions = $conOp;
 			self::$shopOptions['shop_locale'] = (($conOp['shop_locale']=='' || $conOp['shop_locale']=='de_DE') && $conOp['shop_source']=='com'?'us_US':$conOp['shop_locale']); // Workaround for older versions of this plugin
 			self::$shopOptions['shop_source'] = (empty($conOp['shop_source'])?'net':$conOp['shop_source']);
+
+		}
+
+
+		
+		// build cart
+		public function doCart() {
+
+			if (!wp_verify_nonce($_GET['nonce'], 'spreadplugin')) die('Security check');
+
+			$this->reparseShortcodeData();
 
 
 			// create an new basket if not exist
@@ -1454,39 +1437,12 @@ if(!class_exists('WP_Spreadplugin')) {
 		}
 		
 		
-		
+		// delete cart
 		public function doCartItemDelete() {
 
 			if (!wp_verify_nonce($_GET['nonce'], 'spreadplugin')) die('Security check');
-
-
-			/**
-			 * re-parse the shortcode to get the authentication details
-			 *
-			 * @TODO find a different way
-			 *
-			*/
-			$pageData = get_page(intval($_GET['pageid']));
-			$pageContent = $pageData->post_content;
-
-			// get admin options (default option set on admin page)
-			$conOp = $this->getAdminOptions();
-
-			// shortcode overwrites admin options (default option set on admin page) if available
-			$arrSc = shortcode_parse_atts(str_replace("[spreadplugin",'',str_replace("]","",$pageContent)));
-
-			// replace options by shortcode if set
-			if (!empty($arrSc)) {
-				foreach ($arrSc as $key => $option) {
-					if ($option != '') {
-						$conOp[$key] = $option;
-					}
-				}
-			}
-
-			self::$shopOptions = $conOp;
-			self::$shopOptions['shop_locale'] = (($conOp['shop_locale']=='' || $conOp['shop_locale']=='de_DE') && $conOp['shop_source']=='com'?'us_US':$conOp['shop_locale']); // Workaround for older versions of this plugin
-			self::$shopOptions['shop_source'] = (empty($conOp['shop_source'])?'net':$conOp['shop_source']);
+			
+			$this->reparseShortcodeData();
 
 
 			// create an new basket if not exist
