@@ -3,12 +3,12 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.0
+ * Version: 3.0.1
  * Author: Thimo Grauerholz
  * Author URI: http://lovetee.de/
  */
 
-// Uncoment the next line, if you've got problems loading the articles e.g. timeout
+
 @set_time_limit(0);
 
 
@@ -61,7 +61,8 @@ if(!class_exists('WP_Spreadplugin')) {
 				'shop_showextendprice' => '',
 				'shop_zoomimagebackground' => '',
 				'shop_infinitescroll' => '',
-				'shop_customcss' => ''
+				'shop_customcss' => '',
+				'shop_design' => ''
 		);
 		private static $shopCache = 8760; // Shop article cache in hours 24*365 => 1 year
 
@@ -154,7 +155,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			}
 
 
-			// setting vars
+			// setting defaults if needed
 			self::$shopOptions = $conOp;
 			self::$shopOptions['shop_source'] = (empty($conOp['shop_source'])?'net':$conOp['shop_source']);
 			self::$shopOptions['shop_limit'] = (empty($conOp['shop_limit'])?10:intval($conOp['shop_limit']));
@@ -181,7 +182,7 @@ if(!class_exists('WP_Spreadplugin')) {
 
 
 			// At filtering articles don't use designs view
-			if (self::$shopOptions['shop_display']==1 && self::$shopOptions['shop_productcategory']=='') {
+			if (self::$shopOptions['shop_display']==1 && self::$shopOptions['shop_productcategory']=='' && self::$shopOptions['shop_design']==0) {
 			} else {
 				self::$shopOptions['shop_display']=0;
 			}
@@ -227,11 +228,19 @@ if(!class_exists('WP_Spreadplugin')) {
 						$articleCleanData[$articleId] = $arrArticle;
 					}
 				}
+								
 
 
 				// filter
 				if (is_array($articleCleanData)) {
 					foreach ($articleCleanData as $id => $article) {
+						
+						// designs
+						if (self::$shopOptions['shop_design']>0 && self::$shopOptions['shop_design']!=$articleCleanData[$id]['designid']) {
+							unset($articleCleanData[$id]);
+						}
+						
+						// product categories
 						if (!empty(self::$shopOptions['shop_productcategory'])&&isset($typesData[self::$shopOptions['shop_productcategory']][self::$shopOptions['shop_productsubcategory']])) {
 							if (!isset($typesData[self::$shopOptions['shop_productcategory']][self::$shopOptions['shop_productsubcategory']][$article['type']])) {
 								unset($articleCleanData[$id]);
@@ -501,6 +510,7 @@ if(!class_exists('WP_Spreadplugin')) {
 						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['weight']=(float)$article['weight'];
 						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['id']=(int)$article['id'];
 						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['place']=$i;
+						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['designid']=(int)$article->product->defaultValues->defaultDesign['id'];
 
 						foreach($objArticleData->sizes->size as $val) {
 							$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['sizes'][(int)$val['id']]=(string)$val->name;
@@ -595,6 +605,7 @@ if(!class_exists('WP_Spreadplugin')) {
 						$articleData[(int)$article['id']]['productdescription']=(string)$objArticleData->description;
 						$articleData[(int)$article['id']]['weight']=(float)$article['weight'];
 						$articleData[(int)$article['id']]['place']=$i;
+						$articleData[(int)$article['id']]['designid']=(int)$article['id'];
 
 						$i++;
 					}

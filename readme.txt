@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: spreadshirt,wordpress,plugin,shop,store,shirt,t-shirt,integration,online store,online shop
 Requires at least: 3.3
 Tested up to: 3.5.2
-Stable tag: 3.0
+Stable tag: 3.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -144,7 +144,7 @@ Please update to the most recent version
 
 = How to active edit articles to use the designer shop? =
 
-Activate by changing shop_designershop="0" to shop_designershop="[DESIGNERSHOPID]" where [DESIGNERSHOPID] is your designer shop ID. Or use the settings page.
+Activate by changing shop_designershop="0" to shop_designershop="DESIGNERSHOPID" where DESIGNERSHOPID is your designer shop ID. Or use the settings page.
 
 = How to active designs view? =
 
@@ -168,6 +168,11 @@ If you don't want to change this setting to another one, please let me know the 
 
 Add or edit the shortcode or set in shortcode plugin settings to enable. Shortcode would be `shop_showdescription="1"` for enabling.
 
+= I want to display one design per page =
+
+Add or edit the shortcode you are using and add/change following variable `shop_design="DESIGNID"`.
+You get the `DESIGNID` from your spreadshirt admin panel.
+
 == Screenshots ==
 
 1. The Output 1
@@ -178,6 +183,9 @@ Add or edit the shortcode or set in shortcode plugin settings to enable. Shortco
 6. Settings page
 
 == Changelog ==
+
+= 3.0.1 =
+* Added new shortcode for displaying only specific designs in specific pages. Please refer faq.
 
 = 3.0 =
 * Basket added
