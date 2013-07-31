@@ -247,7 +247,7 @@ pre, code {
 .spreadshirt-items .product-name {
 	font-size: 90%
 }
-.spreadshirt-items .details-wrapper {
+.spreadshirt-items .details-wrapper,.spreadshirt-items .details-wrapper2 {
 	float: right;
 }
 .spreadshirt-items .edit-wrapper {
@@ -459,4 +459,14 @@ pre, code {
 }
 #cart-total .price {
 	float: right;
+}
+.spreadshirt-article form table td {
+	vertical-align:top;
+}
+.spreadshirt-article form table td h3 {
+	text-align:left
+}
+.spreadshirt-items .product-description-wrapper {
+	padding-top:10px;
+	padding-bottom:10px;
 }

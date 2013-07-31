@@ -296,52 +296,12 @@ if(!class_exists('WP_Spreadplugin')) {
 					}
 				}
 				
-
-
+				
+				
+				
 				// Start output
 				$output = '<div id="spreadshirt-items" class="spreadshirt-items clearfix">';
 
-				// add spreadshirt-menu
-				$output .= '<div id="spreadshirt-menu" class="spreadshirt-menu">';
-
-				// add product categories
-				$output .= '<select name="productCategory" id="productCategory">';
-				$output .= '<option value="">'.__('Product category', $this->stringTextdomain).'</option>';
-				if (isset($typesData)) {
-					foreach ($typesData as $t => $v) {
-						$output .= '<option value="'.urlencode($t).'"'.($t==self::$shopOptions['shop_productcategory']?' selected':'').'>'.$t.'</option>';
-					}
-				}
-				$output .= '</select> ';
-
-				// simple sub categories
-				// @TODO Javascript
-				if (isset($_GET['productCategory'])) {
-					$output .= '<select name="productSubCategory" id="productSubCategory">';
-					$output .= '<option value="all"></option>';
-					if (isset($typesData[self::$shopOptions['shop_productcategory']])) {
-						@ksort($typesData[self::$shopOptions['shop_productcategory']]);
-						unset($typesData[self::$shopOptions['shop_productcategory']]['all']);
-						foreach ($typesData[self::$shopOptions['shop_productcategory']] as $t => $v) {
-							$output .= '<option value="'.urlencode($t).'"'.($t==self::$shopOptions['shop_productsubcategory']?' selected':'').'>'.$t.'</option>';
-						}
-					}
-					$output .= '</select> ';
-				}
-
-				// add sorting
-				$output .= '<select name="articleSortBy" id="articleSortBy">';
-				$output .= '<option value="">'.__('Sort by', $this->stringTextdomain).'</option>';
-				$output .= '<option value="name"'.('name'==self::$shopOptions['shop_sortby']?' selected':'').'>'.__('name', $this->stringTextdomain).'</option>';
-				$output .= '<option value="price"'.('price'==self::$shopOptions['shop_sortby']?' selected':'').'>'.__('price', $this->stringTextdomain).'</option>';
-				$output .= '<option value="recent"'.('recent'==self::$shopOptions['shop_sortby']?' selected':'').'>'.__('recent', $this->stringTextdomain).'</option>';
-				$output .= '<option value="weight"'.('weight'==self::$shopOptions['shop_sortby']?' selected':'').'>'.__('weight', $this->stringTextdomain).'</option>';
-				$output .= '</select>';
-
-				$output .= '<div id="checkout"><span></span> <a href="'.$_SESSION['checkoutUrl'].'" target="'.self::$shopOptions['shop_linktarget'].'">'.__('Basket', $this->stringTextdomain).'</a></div>';
-				$output .= '<div id="cart"></div>';
-
-				$output .= '</div>';
 
 				// display
 				if (count($articleData) == 0 || $articleData==false) {
@@ -349,68 +309,134 @@ if(!class_exists('WP_Spreadplugin')) {
 					$output .= '<br>No articles in Shop';
 
 				} else {
-
-					$output .= '<div id="spreadshirt-list">';
-
-					// Designs view
-					if (self::$shopOptions['shop_display']==1) {
-						foreach ($designsData as $designId => $arrDesigns) {
-							$bgc = false;
-							$addStyle = '';
-
-							// Display just Designs with products
-							if (!empty($articleData[$designId])) {
-
-								// check if designs background is enabled
-								if (self::$shopOptions['shop_designsbackground']==1) {
-									// fetch first article background color
-									@reset($articleData[$designId]);
-									$bgcV=$articleData[$designId][key($articleData[$designId])]['default_bgc'];
-									$bgcV=str_replace("#", "", $bgcV);
-									// calc to hex
-									$bgc=$this->hex2rgb($bgcV);
-									$addStyle="style=\"background-color:rgba(".$bgc[0].",".$bgc[1].",".$bgc[2].",0.4);\"";
+					// Listing product
+					if (!isset($_GET['product'])&&intval($_GET['product'])==0) {
+	
+						// add spreadshirt-menu
+						$output .= '<div id="spreadshirt-menu" class="spreadshirt-menu">';
+		
+						// add product categories
+						$output .= '<select name="productCategory" id="productCategory">';
+						$output .= '<option value="">'.__('Product category', $this->stringTextdomain).'</option>';
+						if (isset($typesData)) {
+							foreach ($typesData as $t => $v) {
+								$output .= '<option value="'.urlencode($t).'"'.($t==self::$shopOptions['shop_productcategory']?' selected':'').'>'.$t.'</option>';
+							}
+						}
+						$output .= '</select> ';
+		
+						// simple sub categories
+						// @TODO Javascript
+						if (isset($_GET['productCategory'])) {
+							$output .= '<select name="productSubCategory" id="productSubCategory">';
+							$output .= '<option value="all"></option>';
+							if (isset($typesData[self::$shopOptions['shop_productcategory']])) {
+								@ksort($typesData[self::$shopOptions['shop_productcategory']]);
+								unset($typesData[self::$shopOptions['shop_productcategory']]['all']);
+								foreach ($typesData[self::$shopOptions['shop_productcategory']] as $t => $v) {
+									$output .= '<option value="'.urlencode($t).'"'.($t==self::$shopOptions['shop_productsubcategory']?' selected':'').'>'.$t.'</option>';
 								}
+							}
+							$output .= '</select> ';
+						}
+		
+						// add sorting
+						$output .= '<select name="articleSortBy" id="articleSortBy">';
+						$output .= '<option value="">'.__('Sort by', $this->stringTextdomain).'</option>';
+						$output .= '<option value="name"'.('name'==self::$shopOptions['shop_sortby']?' selected':'').'>'.__('name', $this->stringTextdomain).'</option>';
+						$output .= '<option value="price"'.('price'==self::$shopOptions['shop_sortby']?' selected':'').'>'.__('price', $this->stringTextdomain).'</option>';
+						$output .= '<option value="recent"'.('recent'==self::$shopOptions['shop_sortby']?' selected':'').'>'.__('recent', $this->stringTextdomain).'</option>';
+						$output .= '<option value="weight"'.('weight'==self::$shopOptions['shop_sortby']?' selected':'').'>'.__('weight', $this->stringTextdomain).'</option>';
+						$output .= '</select>';
+		
+						$output .= '<div id="checkout"><span></span> <a href="'.$_SESSION['checkoutUrl'].'" target="'.self::$shopOptions['shop_linktarget'].'" id="basketLink">'.__('Basket', $this->stringTextdomain).'</a></div>';
+						$output .= '<div id="cart"></div>';
+		
+						$output .= '</div>';
+	
 
-								$output .= "<div class=\"spreadshirt-designs\">";
-								$output .= $this->displayDesigns($designId,$arrDesigns,$articleData[$designId],$bgc);
-								$output .= "<div id=\"designContainer_".$designId."\" class=\"design-container clearfix\" ".$addStyle.">";
-									
+
+					
+						$output .= '<div id="spreadshirt-list">';
+	
+						// Designs view
+						if (self::$shopOptions['shop_display']==1) {
+							foreach ($designsData as $designId => $arrDesigns) {
+								$bgc = false;
+								$addStyle = '';
+	
+								// Display just Designs with products
 								if (!empty($articleData[$designId])) {
-										
-									// default sort
-									@uasort($articleData[$designId],create_function('$a,$b',"return (\$a[place] < \$b[place])?-1:1;"));
-										
-									foreach ($articleData[$designId] as $articleId => $arrArticle) {
-										$output .= $this->displayArticles($articleId,$arrArticle,self::$shopOptions['shop_zoomimagebackground']); // ,$bgcV
+	
+									// check if designs background is enabled
+									if (self::$shopOptions['shop_designsbackground']==1) {
+										// fetch first article background color
+										@reset($articleData[$designId]);
+										$bgcV=$articleData[$designId][key($articleData[$designId])]['default_bgc'];
+										$bgcV=str_replace("#", "", $bgcV);
+										// calc to hex
+										$bgc=$this->hex2rgb($bgcV);
+										$addStyle="style=\"background-color:rgba(".$bgc[0].",".$bgc[1].",".$bgc[2].",0.4);\"";
 									}
+	
+									$output .= "<div class=\"spreadshirt-designs\">";
+									$output .= $this->displayDesigns($designId,$arrDesigns,$articleData[$designId],$bgc);
+									$output .= "<div id=\"designContainer_".$designId."\" class=\"design-container clearfix\" ".$addStyle.">";
+										
+									if (!empty($articleData[$designId])) {
+											
+										// default sort
+										@uasort($articleData[$designId],create_function('$a,$b',"return (\$a[place] < \$b[place])?-1:1;"));
+											
+										foreach ($articleData[$designId] as $articleId => $arrArticle) {
+											$output .= $this->displayArticles($articleId,$arrArticle,self::$shopOptions['shop_zoomimagebackground']); // ,$bgcV
+										}
+									}
+	
+									$output .= "</div>";
+									$output .= "</div>";
 								}
-
-								$output .= "</div>";
-								$output .= "</div>";
+							}
+						} else {
+							// Article view
+							if (!empty($articleCleanData)) {
+								foreach ($articleCleanData as $articleId => $arrArticle) {
+									$output .= $this->displayArticles($articleId,$arrArticle,self::$shopOptions['shop_zoomimagebackground']);
+								}
 							}
 						}
+	
+	
+						$output .= "<div id=\"pagination\">";
+						if ($cArticleNext>0) {
+							$output .= "<a href=\"".get_pagenum_link($paged + 1)."\">".__('next', $this->stringTextdomain)."</a>";
+						}
+						$output .= "</div>";
+					
+					
 					} else {
-						// Article view
-						if (!empty($articleCleanData)) {
-							foreach ($articleCleanData as $articleId => $arrArticle) {
-								$output .= $this->displayArticles($articleId,$arrArticle,self::$shopOptions['shop_zoomimagebackground']);
-							}
+						
+						// display product page
+						
+						// checkout
+						// add simple spreadshirt-menu
+						$output .= '<div id="spreadshirt-menu" class="spreadshirt-menu">';
+						$output .= '<a href="'.get_page_link().'">'.__('Back', $this->stringTextdomain);
+						$output .= '<div id="checkout"><span></span> <a href="'.$_SESSION['checkoutUrl'].'" target="'.self::$shopOptions['shop_linktarget'].'" id="basketLink">'.__('Basket', $this->stringTextdomain).'</a></div>';
+						$output .= '<div id="cart"></div>';
+						$output .= '</div>';
+
+						// product
+						if (!empty($articleCleanData[intval($_GET['product'])])) {
+							$output .= $this->displayDetailPage(intval($_GET['product']),$articleCleanData[intval($_GET['product'])],self::$shopOptions['shop_zoomimagebackground']);
 						}
 					}
-
-
-					$output .= "<div id=\"pagination\">";
-					if ($cArticleNext>0) {
-						$output .= "<a href=\"".get_pagenum_link($paged + 1)."\">".__('next', $this->stringTextdomain)."</a>";
-					}
-					$output .= "</div>";
-
-					$output .= "
-							<!-- <div id=\"copyright\"><a href=\"http://lovetee.de\">lovetee - we love t-shirts</a></div> -->
-							</div>";
+					
+					$output .= '</div>';
 				}
 
+				// footer
+				$output .= "<!-- <div id=\"copyright\"><a href=\"http://lovetee.de\">lovetee - we love t-shirts</a></div> -->";
 
 				$output .= '</div>';
 
@@ -656,7 +682,9 @@ if(!class_exists('WP_Spreadplugin')) {
 
 
 			if (self::$shopOptions['shop_enablelink']==1) {
-				$output .= ' <div class="details-wrapper"><a href="//'.self::$shopOptions['shop_id'].'.spreadshirt.'.self::$shopOptions['shop_source'].'/-A'.$id.'" target="'.self::$shopOptions['shop_linktarget'].'">'.__('Details', $this->stringTextdomain).'</a></div>';
+				// old details page (spreadshirt) disabled here
+				//$output .= ' <div class="details-wrapper clearfix"><a href="//'.self::$shopOptions['shop_id'].'.spreadshirt.'.self::$shopOptions['shop_source'].'/-A'.$id.'" target="'.self::$shopOptions['shop_linktarget'].'">'.__('Details', $this->stringTextdomain).'</a></div>';
+				$output .= ' <div class="details-wrapper2 clearfix"><a href="'.add_query_arg( 'product', $id ).'" target="'.self::$shopOptions['shop_linktarget'].'">'.__('Details', $this->stringTextdomain).'</a></div>';
 			}
 
 			$output .= '<div class="separator"></div>';
@@ -732,10 +760,10 @@ if(!class_exists('WP_Spreadplugin')) {
 			if (self::$shopOptions['shop_social']==true) {
 				$output .= '
 				<ul class="soc-icons">
-				<li><a target="_blank" data-color="#5481de" class="fb" href="//www.facebook.com/sharer.php?u='.urlencode(get_page_link().'#'.$id).'&t='.rawurlencode(get_the_title()).'" title="Facebook"></a></li>
-				<li><a target="_blank" data-color="#06ad18" class="goog" href="//plus.google.com/share?url='.urlencode(get_page_link().'#'.$id).'" title="Google"></a></li>
-				<li><a target="_blank" data-color="#2cbbea" class="twt" href="//twitter.com/home?status='.rawurlencode(get_the_title()).' - '.urlencode(get_page_link().'#'.$id).'" title="Twitter"></a></li>
-				<li><a target="_blank" data-color="#e84f61" class="pin" href="//pinterest.com/pin/create/button/?url='.get_page_link().'&media=' . $article['resource0'] . ',width='.self::$shopOptions['shop_imagesize'].',height='.self::$shopOptions['shop_imagesize'].'&description='.(!empty($article['description'])?htmlspecialchars($article['description'],ENT_QUOTES):'Product').'" title="Pinterest"></a></li>
+				<li><a target="_blank" data-color="#5481de" class="fb" href="//www.facebook.com/sharer.php?u='.urlencode(add_query_arg( 'product', $id, get_permalink())).'&t='.rawurlencode(get_the_title()).'" title="Facebook"></a></li>
+				<li><a target="_blank" data-color="#06ad18" class="goog" href="//plus.google.com/share?url='.urlencode(add_query_arg( 'product', $id, get_permalink() )).'" title="Google"></a></li>
+				<li><a target="_blank" data-color="#2cbbea" class="twt" href="//twitter.com/home?status='.rawurlencode(get_the_title()).' - '.urlencode(add_query_arg( 'product', $id, get_permalink() )).'" title="Twitter"></a></li>
+				<li><a target="_blank" data-color="#e84f61" class="pin" href="//pinterest.com/pin/create/button/?url='.add_query_arg( 'product', $id, get_permalink() ).'&media=' . $article['resource0'] . ',width='.self::$shopOptions['shop_imagesize'].',height='.self::$shopOptions['shop_imagesize'].'&description='.(!empty($article['description'])?htmlspecialchars($article['description'],ENT_QUOTES):'Product').'" title="Pinterest"></a></li>
 				</ul>
 				';
 
@@ -776,10 +804,8 @@ if(!class_exists('WP_Spreadplugin')) {
 			}
 
 			$output .= '
-
 					</form>
 					</div>';
-
 
 			return $output;
 
@@ -1274,6 +1300,208 @@ if(!class_exists('WP_Spreadplugin')) {
 			echo json_encode(array("c" => array("u" => $_SESSION['checkoutUrl'],"q" => intval($intInBasket))));
 			die();
 		}
+
+
+
+
+
+
+
+
+
+
+
+
+		/**
+		 * Function displayArticles
+		 *
+		 * Displays the articles
+		 *
+		 * @return html
+		 */
+		private function displayDetailPage($id,$article,$backgroundColor='') {
+
+			$output = '<div class="spreadshirt-article" id="article_'.$id.'">';
+			$output .= '<a name="'.$id.'"></a>';
+			$output .= '<form method="post" id="form_'.$id.'"><table><tr><td>';
+				
+			// edit article button
+			if (self::$shopOptions['shop_designershop']>0) {
+				$output .= ' <div class="edit-wrapper"><a href="//'.self::$shopOptions['shop_designershop'].'.spreadshirt.'.self::$shopOptions['shop_source'].'/-D1/customize/product/'.$article['productId'].'?noCache=true" target="'.self::$shopOptions['shop_linktarget'].'" title="'.__('Edit article', $this->stringTextdomain).'"><img src="'.plugins_url('/img/edit.png', __FILE__).'"></a></div>';
+			}
+				
+			// display preview image
+			$output .= '<div class="image-wrapper">';
+			$output .= '<img src="http://image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width=280,height=280" class="preview" width="280" height="280" alt="' . htmlspecialchars($article['name'],ENT_QUOTES) . '" id="previewimg_'.$id.'" data-zoom-image="http://image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width=600,height=600'.(!empty($backgroundColor)?',backgroundColor='.$backgroundColor:'').'" />';
+			$output .= '</div>';
+			
+				// Short product description
+			//$output .= '<div class="separator"></div>';
+			$output .= '<div class="product-name">';
+			$output .= htmlspecialchars($article['productname'],ENT_QUOTES);
+			$output .= '</div>';
+		
+
+			if (self::$shopOptions['shop_enablelink']==1) {
+				//$output .= ' <div class="details-wrapper clearfix"><a href="//'.self::$shopOptions['shop_id'].'.spreadshirt.'.self::$shopOptions['shop_source'].'/-A'.$id.'" target="'.self::$shopOptions['shop_linktarget'].'">'.__('Additional details', $this->stringTextdomain).'</a></div>';
+				$output .= ' <div class="details-wrapper2 clearfix"><a href="//'.self::$shopOptions['shop_id'].'.spreadshirt.'.self::$shopOptions['shop_source'].'/-A'.$id.'" target="_blank">'.__('Additional details', $this->stringTextdomain).'</a></div>';
+			}
+
+
+			$output .= '</td><td><h3>'.htmlspecialchars($article['name'],ENT_QUOTES).'</h3>';
+
+			// Show description link if not empty
+			if (!empty($article['description'])) {
+				$output .= '<div class="description-wrapper clearfix">'.htmlspecialchars($article['description'],ENT_QUOTES).'</div>';
+			}
+
+
+			// Show product description link if not empty
+			if (!empty($article['description'])) {
+				$output .= '<div class="product-description-wrapper clearfix"><h4>'.__('Product details').'</h4>'.htmlspecialchars($article['productdescription'],ENT_QUOTES).'</div>';
+			}
+
+
+			// add a select with available sizes
+			if (isset($article['sizes'])&&is_array($article['sizes'])) {
+				$output .= '<div class="size-wrapper clearfix">Gr&ouml;&szlig;e: <select id="size-select" name="size">';
+
+				foreach($article['sizes'] as $k => $v) {
+					$output .= '<option value="'.$k.'">'.$v.'</option>';
+				}
+
+				$output .= '</select></div>';
+			}
+
+			//$output .= '<div class="separator"></div>';
+
+			// add a list with availabel product colors
+			if (isset($article['appearances'])&&is_array($article['appearances'])) {
+				$output .= '<div class="color-wrapper clearfix">Farbe: <ul class="colors" name="color">';
+
+				foreach($article['appearances'] as $k=>$v) {
+					$output .= '<li value="'.$k.'"><img src="'. $this->cleanURL($v) .'" alt="" /></li>';
+				}
+
+				$output .= '</ul></div>';
+			}
+
+
+			// add a list with available product views
+			if (isset($article['views'])&&is_array($article['views'])) {
+				$output .= '<div class="views-wrapper clearfix"><ul class="views" name="views">';
+
+				foreach($article['views'] as $k=>$v) {
+					$output .= '<li value="'.$k.'"><img src="'. $this->cleanURL($v)  .',viewId='.$k.',width=42,height=42" class="previewview" alt="" id="viewimg_'.$id.'" /></li>';
+				}
+
+				$output .= '</ul></div>';
+			}
+
+
+			$output .= '<input type="hidden" value="'. $article['appearance'] .'" id="appearance" name="appearance" />';
+			$output .= '<input type="hidden" value="'. $article['view'] .'" id="view" name="view" />';
+			$output .= '<input type="hidden" value="'. $id .'" id="article" name="article" />';
+
+			//$output .= '<div class="separator"></div>';
+			$output .= '<div class="price-wrapper clearfix">';
+			if (self::$shopOptions['shop_showextendprice']==1) {
+				$output .= '<span id="price-without-tax">'.__('Price (without tax):', $this->stringTextdomain)." ".(empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale']=='en_US' || self::$shopOptions['shop_locale']=='en_GB' || self::$shopOptions['shop_locale']=='us_US' || self::$shopOptions['shop_locale']=='us_CA' || self::$shopOptions['shop_locale']=='fr_CA'?$article['currencycode']." ".number_format($article['pricenet'],2,'.',''):number_format($article['pricenet'],2,',','.')." ".$article['currencycode'])."<br /></span>";
+				$output .= '<span id="price-with-tax">'.__('Price (with tax):', $this->stringTextdomain)." ".(empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale']=='en_US' || self::$shopOptions['shop_locale']=='en_GB' || self::$shopOptions['shop_locale']=='us_US' || self::$shopOptions['shop_locale']=='us_CA' || self::$shopOptions['shop_locale']=='fr_CA'?$article['currencycode']." ".number_format($article['pricebrut'],2,'.',''):number_format($article['pricebrut'],2,',','.')." ".$article['currencycode'])."</span>";
+
+			
+				if (self::$shopOptions['shop_locale']=='de_DE') {
+					$output .= '<br><div class="additionalshippingcosts">';
+					$output .= __('zzgl. Versandkosten', $this->stringTextdomain);
+					$output .= '</div>';
+				}
+
+
+			} else {
+				$output .= '<span id="price">'.__('Price:', $this->stringTextdomain)." ".(empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale']=='en_US' || self::$shopOptions['shop_locale']=='en_GB' || self::$shopOptions['shop_locale']=='us_US' || self::$shopOptions['shop_locale']=='us_CA' || self::$shopOptions['shop_locale']=='fr_CA'?$article['currencycode']." ".number_format($article['pricebrut'],2,'.',''):number_format($article['pricebrut'],2,',','.')." ".$article['currencycode'])."</span>";
+			}
+			$output .= '</div>';
+
+			// order buttons
+			$output .= '<input type="text" value="1" id="quantity" name="quantity" maxlength="4" />';
+			$output .= '<input type="submit" name="submit" value="'.__('Add to basket', $this->stringTextdomain).'" /><br>';
+
+			// Social buttons
+			if (self::$shopOptions['shop_social']==true) {
+				$output .= '
+				<ul class="soc-icons">
+				<li><a target="_blank" data-color="#5481de" class="fb" href="//www.facebook.com/sharer.php?u='.urlencode(add_query_arg( 'product', $id, get_permalink())).'&t='.rawurlencode(get_the_title()).'" title="Facebook"></a></li>
+				<li><a target="_blank" data-color="#06ad18" class="goog" href="//plus.google.com/share?url='.urlencode(add_query_arg( 'product', $id, get_permalink())).'" title="Google"></a></li>
+				<li><a target="_blank" data-color="#2cbbea" class="twt" href="//twitter.com/home?status='.rawurlencode(get_the_title()).' - '.urlencode(add_query_arg( 'product', $id, get_permalink())).'" title="Twitter"></a></li>
+				<li><a target="_blank" data-color="#e84f61" class="pin" href="//pinterest.com/pin/create/button/?url='.add_query_arg( 'product', $id, get_permalink()).'&media=' . $article['resource0'] . ',width='.self::$shopOptions['shop_imagesize'].',height='.self::$shopOptions['shop_imagesize'].'&description='.(!empty($article['description'])?htmlspecialchars($article['description'],ENT_QUOTES):'Product').'" title="Pinterest"></a></li>
+				</ul>
+				';
+
+				/*
+					<li><a target="_blank" data-color="#459ee9" class="in" href="#" title="LinkedIn"></a></li>
+				<li><a target="_blank" data-color="#ee679b" class="drb" href="#" title="Dribbble"></a></li>
+				<li><a target="_blank" data-color="#4887c2" class="tumb" href="#" title="Tumblr"></a></li>
+				<li><a target="_blank" data-color="#f23a94" class="flick" href="#" title="Flickr"></a></li>
+				<li><a target="_blank" data-color="#74c3dd" class="vim" href="#" title="Vimeo"></a></li>
+				<li><a target="_blank" data-color="#4a79ff" class="delic" href="#" title="Delicious"></a></li>
+				<li><a target="_blank" data-color="#6ea863" class="forr" href="#" title="Forrst"></a></li>
+				<li><a target="_blank" data-color="#f6a502" class="hi5" href="#" title="Hi5"></a></li>
+				<li><a target="_blank" data-color="#e3332a" class="last" href="#" title="Last.fm"></a></li>
+				<li><a target="_blank" data-color="#3c6ccc" class="space" href="#" title="Myspace"></a></li>
+				<li><a target="_blank" data-color="#229150" class="newsv" href="#" title="Newsvine"></a></li>
+				<li><a href="#" class="pica" title="Picasa" data-color="#b163c8" target="_blank"></a></li>
+				<li><a href="#" class="tech" title="Technorati" data-color="#3ac13a" target="_blank"></a></li>
+				<li><a href="#" class="rss" title="RSS" data-color="#f18d3c" target="_blank"></a></li>
+				<li><a href="#" class="rdio" title="Rdio" data-color="#2c7ec7" target="_blank"></a></li>
+				<li><a href="#" class="share" title="ShareThis" data-color="#359949" target="_blank"></a></li>
+				<li><a href="#" class="skyp" title="Skype" data-color="#00adf1" target="_blank"></a></li>
+				<li><a href="#" class="slid" title="SlideShare" data-color="#ef8122" target="_blank"></a></li>
+				<li><a href="#" class="squid" title="Squidoo" data-color="#f87f27" target="_blank"></a></li>
+				<li><a href="#" class="stum" title="StumbleUpon" data-color="#f05c38" target="_blank"></a></li>
+				<li><a href="#" class="what" title="WhatsApp" data-color="#3ebe2b" target="_blank"></a></li>
+				<li><a href="#" class="wp" title="Wordpress" data-color="#3078a9" target="_blank"></a></li>
+				<li><a href="#" class="ytb" title="Youtube" data-color="#df3434" target="_blank"></a></li>
+				<li><a href="#" class="digg" title="Digg" data-color="#326ba0" target="_blank"></a></li>
+				<li><a href="#" class="beh" title="Behance" data-color="#2d9ad2" target="_blank"></a></li>
+				<li><a href="#" class="yah" title="Yahoo" data-color="#883890" target="_blank"></a></li>
+				<li><a href="#" class="blogg" title="Blogger" data-color="#f67928" target="_blank"></a></li>
+				<li><a href="#" class="hype" title="Hype Machine" data-color="#f13d3d" target="_blank"></a></li>
+				<li><a href="#" class="groove" title="Grooveshark" data-color="#498eba" target="_blank"></a></li>
+				<li><a href="#" class="sound" title="SoundCloud" data-color="#f0762c" target="_blank"></a></li>
+				<li><a href="#" class="insta" title="Instagram" data-color="#c2784e" target="_blank"></a></li>
+				<li><a href="#" class="vk" title="Vkontakte" data-color="#5f84ab" target="_blank"></a></li>
+				*/
+			}
+
+			$output .= '
+</td></tr></table>
+					</form>
+					</div>';
+
+
+			return $output;
+
+		}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

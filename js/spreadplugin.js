@@ -354,7 +354,7 @@ jQuery(function() {
 			});
 
 
-		jQuery('#spreadshirt-items #spreadshirt-menu a').click(
+		jQuery('#basketLink').click(
 						function(event) {
 							event.preventDefault();
 							
