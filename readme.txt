@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: spreadshirt,wordpress,plugin,shop,store,shirt,t-shirt,integration,online store,online shop
 Requires at least: 3.3
 Tested up to: 3.5.2
-Stable tag: 3.0.1
+Stable tag: 3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -38,6 +38,7 @@ The pagination is done via infinity scroll.
 * Settings page/admin page for easier configuration
 * No premium shop necessary except you want to link to and use the designer
 * Basket
+* Own product pages
 
 **See it in action**
 
@@ -183,6 +184,9 @@ You get the `DESIGNID` from your spreadshirt admin panel.
 6. Settings page
 
 == Changelog ==
+
+= 3.1 =
+* Added own product pages (detail pages)
 
 = 3.0.1 =
 * Added new shortcode for displaying only specific designs in specific pages. Please refer faq.
