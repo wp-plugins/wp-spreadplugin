@@ -1363,7 +1363,7 @@ if(!class_exists('WP_Spreadplugin')) {
 
 			// Show product description link if not empty
 			if (!empty($article['description'])) {
-				$output .= '<div class="product-description-wrapper clearfix"><h4>'.__('Product details').'</h4>'.htmlspecialchars($article['productdescription'],ENT_QUOTES).'</div>';
+				$output .= '<div class="product-description-wrapper clearfix"><h4>'.__('Product details', $this->stringTextdomain).'</h4>'.htmlspecialchars($article['productdescription'],ENT_QUOTES).'</div>';
 			}
 
 
