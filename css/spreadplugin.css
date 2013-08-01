@@ -21,7 +21,7 @@ pre, code {
 .spreadshirt-items img {
 	padding: 0 !important;
 }
-.spreadshirt-article, .spreadshirt-design {
+.spreadshirt-article, .spreadshirt-design,.spreadshirt-article-detail {
 	float: left;
 	margin-top: 20px;
 	margin-right: 2px;
@@ -30,6 +30,9 @@ pre, code {
 	min-height: 650px; /* fixing the height of each Article */
 	overflow: hidden;
 	white-space: normal;
+}
+.spreadshirt-article-detail {
+	width:auto;	
 }
 .spreadshirt-items a {
 	color: #000;
@@ -42,46 +45,43 @@ pre, code {
 	height: 300px !important;
 	text-align: center;
 }
-.spreadshirt-article img {
+.spreadshirt-article img,.spreadshirt-article-detail img {
 	padding: 0;
 	border: 0;
 	border-radius: 0;
 	background: none;
 	margin: 0;
 }
-.spreadshirt-article img, .spreadshirt-article h3, .spreadshirt-design h3 {
+.spreadshirt-article img, .spreadshirt-article h3, .spreadshirt-design h3,.spreadshirt-article-detail img,.spreadshirt-article-detail h3 {
 	display: block;
 	text-align: center;
 	margin: 0 auto;
 }
-.spreadshirt-article .image-wrapper {
+.spreadshirt-article .image-wrapper,.spreadshirt-article-detail .image-wrapper  {
 	min-height: 200px;
 }
 .spreadshirt-article h3, .spreadshirt-design h3 {
 	min-height: 55px
 }
-.spreadshirt-article div {
+.spreadshirt-article div,.spreadshirt-article-detail div {
 	text-align: left;
 }
-.spreadshirt-article ul, .spreadshirt-items .colors li, .spreadshirt-article ul li, .spreadshirt-article #size-select, .spreadshirt-article p, .spreadshirt-article input {
+.spreadshirt-article ul, .spreadshirt-items .colors li, .spreadshirt-article ul li, .spreadshirt-article #size-select, .spreadshirt-article p, .spreadshirt-article input,.spreadshirt-article-detail ul {
 	list-style: none;
 	margin: 0;
 	padding: 0;
 }
-.spreadshirt-article ul li {
-/* border: 1px solid #e8e8e8 */
-}
-.spreadshirt-article input[type=text] {
+.spreadshirt-article input[type=text],.spreadshirt-article-detail input[type=text] {
 	clear: both;
 	width: 30px;
 	margin-right: 10px;
 }
-.spreadshirt-article input[type="submit"], .spreadshirt-article #quantity {
+.spreadshirt-article input[type="submit"], .spreadshirt-article #quantity,.spreadshirt-article-detail input[type="submit"], .spreadshirt-article-detail #quantity {
 	padding: 5px;
 	margin: 5px;
 	margin-bottom: 10px;
 }
-.spreadshirt-article input[type="submit"] {
+.spreadshirt-article input[type="submit"],.spreadshirt-article-detail input[type="submit"] {
 	width: auto;
 }
 .spreadshirt-items .colors {
@@ -161,10 +161,10 @@ pre, code {
 	width: 100%;
 }
 /* display or hide prices */
-.spreadshirt-article #price-without-tax {
+.spreadshirt-article #price-without-tax,.spreadshirt-article-detail #price-without-tax {
 /*	display:none; */
 }
-.spreadshirt-article #price-with-tax {
+.spreadshirt-article #price-with-tax,.spreadshirt-article-detail #price-with-tax {
 /*	display:none; */
 }
 .spreadshirt-items #size-select {
@@ -393,6 +393,10 @@ pre, code {
 .spreadshirt-items ul.soc-icons .vk {
 	background-position: -295px -185px;
 }
+.spreadshirt-article .preview,.spreadshirt-article-detail .preview {
+	min-height: 190px !important;
+	min-width: 190px !important;
+}
 #cart .cart-row {
 	float: left;
 	padding-bottom: 10px;
@@ -460,10 +464,10 @@ pre, code {
 #cart-total .price {
 	float: right;
 }
-.spreadshirt-article form table td {
+.spreadshirt-article-detail form table td {
 	vertical-align:top;
 }
-.spreadshirt-article form table td h3 {
+.spreadshirt-article-detail form table td h3 {
 	text-align:left
 }
 .spreadshirt-items .product-description-wrapper {

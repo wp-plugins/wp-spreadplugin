@@ -407,16 +407,20 @@ if(!class_exists('WP_Spreadplugin')) {
 						}
 	
 	
+						$output .= '</div>';
+						
+						
 						$output .= "<div id=\"pagination\">";
 						if ($cArticleNext>0) {
 							$output .= "<a href=\"".get_pagenum_link($paged + 1)."\">".__('next', $this->stringTextdomain)."</a>";
 						}
 						$output .= "</div>";
-					
+				
 					
 					} else {
 						
 						// display product page
+						$output .= '<div id="spreadshirt-list">';
 						
 						// checkout
 						// add simple spreadshirt-menu
@@ -430,9 +434,10 @@ if(!class_exists('WP_Spreadplugin')) {
 						if (!empty($articleCleanData[intval($_GET['product'])])) {
 							$output .= $this->displayDetailPage(intval($_GET['product']),$articleCleanData[intval($_GET['product'])],self::$shopOptions['shop_zoomimagebackground']);
 						}
+						
+						$output .= '</div>';
 					}
 					
-					$output .= '</div>';
 				}
 
 				// footer
@@ -1321,7 +1326,7 @@ if(!class_exists('WP_Spreadplugin')) {
 		 */
 		private function displayDetailPage($id,$article,$backgroundColor='') {
 
-			$output = '<div class="spreadshirt-article" id="article_'.$id.'">';
+			$output = '<div class="spreadshirt-article-detail" id="article_'.$id.'">';
 			$output .= '<a name="'.$id.'"></a>';
 			$output .= '<form method="post" id="form_'.$id.'"><table><tr><td>';
 				
