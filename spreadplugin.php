@@ -743,15 +743,9 @@ if(!class_exists('WP_Spreadplugin')) {
 			if (self::$shopOptions['shop_showextendprice']==1) {
 				$output .= '<span id="price-without-tax">'.__('Price (without tax):', $this->stringTextdomain)." ".(empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale']=='en_US' || self::$shopOptions['shop_locale']=='en_GB' || self::$shopOptions['shop_locale']=='us_US' || self::$shopOptions['shop_locale']=='us_CA' || self::$shopOptions['shop_locale']=='fr_CA'?$article['currencycode']." ".number_format($article['pricenet'],2,'.',''):number_format($article['pricenet'],2,',','.')." ".$article['currencycode'])."<br /></span>";
 				$output .= '<span id="price-with-tax">'.__('Price (with tax):', $this->stringTextdomain)." ".(empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale']=='en_US' || self::$shopOptions['shop_locale']=='en_GB' || self::$shopOptions['shop_locale']=='us_US' || self::$shopOptions['shop_locale']=='us_CA' || self::$shopOptions['shop_locale']=='fr_CA'?$article['currencycode']." ".number_format($article['pricebrut'],2,'.',''):number_format($article['pricebrut'],2,',','.')." ".$article['currencycode'])."</span>";
-			
-			
-				if (self::$shopOptions['shop_locale']=='de_DE') {
-					$output .= '<br><div class="additionalshippingcosts">';
-					$output .= __('zzgl. Versandkosten', $this->stringTextdomain);
-					$output .= '</div>';
-				}
-			
-
+				$output .= '<br><div class="additionalshippingcosts">';
+				$output .= __('excl. Shipping', $this->stringTextdomain);
+				$output .= '</div>';
 			} else {
 				$output .= '<span id="price">'.__('Price:', $this->stringTextdomain)." ".(empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale']=='en_US' || self::$shopOptions['shop_locale']=='en_GB' || self::$shopOptions['shop_locale']=='us_US' || self::$shopOptions['shop_locale']=='us_CA' || self::$shopOptions['shop_locale']=='fr_CA'?$article['currencycode']." ".number_format($article['pricebrut'],2,'.',''):number_format($article['pricebrut'],2,',','.')." ".$article['currencycode'])."</span>";
 			}
@@ -1354,7 +1348,6 @@ if(!class_exists('WP_Spreadplugin')) {
 
 
 			$output .= '</td><td><h3>'.htmlspecialchars($article['name'],ENT_QUOTES).'</h3>';
-
 			// Show description link if not empty
 			if (!empty($article['description'])) {
 				$output .= '<div class="description-wrapper clearfix">'.htmlspecialchars($article['description'],ENT_QUOTES).'</div>';
@@ -1413,15 +1406,9 @@ if(!class_exists('WP_Spreadplugin')) {
 			if (self::$shopOptions['shop_showextendprice']==1) {
 				$output .= '<span id="price-without-tax">'.__('Price (without tax):', $this->stringTextdomain)." ".(empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale']=='en_US' || self::$shopOptions['shop_locale']=='en_GB' || self::$shopOptions['shop_locale']=='us_US' || self::$shopOptions['shop_locale']=='us_CA' || self::$shopOptions['shop_locale']=='fr_CA'?$article['currencycode']." ".number_format($article['pricenet'],2,'.',''):number_format($article['pricenet'],2,',','.')." ".$article['currencycode'])."<br /></span>";
 				$output .= '<span id="price-with-tax">'.__('Price (with tax):', $this->stringTextdomain)." ".(empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale']=='en_US' || self::$shopOptions['shop_locale']=='en_GB' || self::$shopOptions['shop_locale']=='us_US' || self::$shopOptions['shop_locale']=='us_CA' || self::$shopOptions['shop_locale']=='fr_CA'?$article['currencycode']." ".number_format($article['pricebrut'],2,'.',''):number_format($article['pricebrut'],2,',','.')." ".$article['currencycode'])."</span>";
-
-			
-				if (self::$shopOptions['shop_locale']=='de_DE') {
-					$output .= '<br><div class="additionalshippingcosts">';
-					$output .= __('zzgl. Versandkosten', $this->stringTextdomain);
-					$output .= '</div>';
-				}
-
-
+				$output .= '<br><div class="additionalshippingcosts">';
+				$output .= __('excl. Shipping', $this->stringTextdomain);
+				$output .= '</div>';
 			} else {
 				$output .= '<span id="price">'.__('Price:', $this->stringTextdomain)." ".(empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale']=='en_US' || self::$shopOptions['shop_locale']=='en_GB' || self::$shopOptions['shop_locale']=='us_US' || self::$shopOptions['shop_locale']=='us_CA' || self::$shopOptions['shop_locale']=='fr_CA'?$article['currencycode']." ".number_format($article['pricebrut'],2,'.',''):number_format($article['pricebrut'],2,',','.')." ".$article['currencycode'])."</span>";
 			}
