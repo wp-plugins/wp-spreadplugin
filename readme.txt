@@ -26,7 +26,7 @@ The pagination is done via infinity scroll.
 * Uses Spreadshirt-Basket (A click on the basket opens the spreadshirt own basket)
 * Price listing
 * Choose color and sizes
-* Language support (de_DE, en_GB, fr_FR, nl_NL, nn_NO, nb_NO based on Wordpress installation, more on request)
+* Language support (de_DE, en_GB, fr_FR, nl_NL, nn_NO, nb_NO, da_DK based on Wordpress installation, more on request)
 * Social buttons
 * Enhanced article zoom
 * Display article descriptions
