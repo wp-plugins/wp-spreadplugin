@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.1
+ * Version: 3.1.1
  * Author: Thimo Grauerholz
  * Author URI: http://lovetee.de/
  */
@@ -1348,6 +1348,7 @@ if(!class_exists('WP_Spreadplugin')) {
 
 
 			$output .= '</td><td><h3>'.htmlspecialchars($article['name'],ENT_QUOTES).'</h3>';
+
 			// Show description link if not empty
 			if (!empty($article['description'])) {
 				$output .= '<div class="description-wrapper clearfix">'.htmlspecialchars($article['description'],ENT_QUOTES).'</div>';
@@ -1644,11 +1645,11 @@ if(!class_exists('WP_Spreadplugin')) {
 						echo '<div class="cart-row" data-id="'.(string)$item['id'].'">
 							<div class="cart-preview"><img src="http://image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.(string)$objArticles->product['id'].'/views/'.(string)$objArticles->product->defaultValues->defaultView['id'].',viewId='.(string)$objArticles->product->defaultValues->defaultView['id'].',width=60,height=60,appearanceId='.(string)$item->element->properties->property[1].'"></div>
 							<div class="cart-description"><strong>'.htmlspecialchars((empty($objArticles->name)?$item->description:$objArticles->name),ENT_QUOTES).'</strong><br>'.__('Size', $this->stringTextdomain).': '.(string)$item->element->properties->property[0].'<br>'.__('Quantity', $this->stringTextdomain).': '.(int)$item->quantity.'</div>
-							<div class="cart-price"><strong>'.(empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale']=='en_US' || self::$shopOptions['shop_locale']=='en_GB' || self::$shopOptions['shop_locale']=='us_US' || self::$shopOptions['shop_locale']=='us_CA' || self::$shopOptions['shop_locale']=='fr_CA'?number_format((float)$item->price->vatIncluded,2,'.',''):number_format((float)$item->price->vatIncluded,2,',','.')).'</strong></div>
+							<div class="cart-price"><strong>'.(empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale']=='en_US' || self::$shopOptions['shop_locale']=='en_GB' || self::$shopOptions['shop_locale']=='us_US' || self::$shopOptions['shop_locale']=='us_CA' || self::$shopOptions['shop_locale']=='fr_CA'?number_format((float)$item->price->vatIncluded*(int)$item->quantity,2,'.',''):number_format((float)$item->price->vatIncluded*(int)$item->quantity,2,',','.')).'</strong></div>
 							<div class="cart-delete"><a href="javascript:;" class="deleteCartItem" title="'.__('Remove', $this->stringTextdomain).'"><img src="'.plugins_url('/img/delete.png', __FILE__).'"></a></div>
 							</div>';
 						
-						$priceSum+=(float)$item->price->vatIncluded;
+						$priceSum+=(float)$item->price->vatIncluded * (int)$item->quantity;
 						$intSumQuantity+=(int)$item->quantity;
 						
 					}

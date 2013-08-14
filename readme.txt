@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: spreadshirt,wordpress,plugin,shop,store,shirt,t-shirt,integration,online store,online shop
 Requires at least: 3.3
 Tested up to: 3.6
-Stable tag: 3.1
+Stable tag: 3.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -184,6 +184,9 @@ You get the `DESIGNID` from your spreadshirt admin panel.
 6. Settings page
 
 == Changelog ==
+
+= 3.1.1 =
+* Bugfix: Basket has shown wrong prices, when quantity is higher than one
 
 = 3.1 =
 * Added own product pages (detail pages)
