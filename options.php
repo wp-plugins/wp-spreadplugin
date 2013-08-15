@@ -223,6 +223,7 @@ if (is_user_logged_in() && is_admin()) {
   </table>
   <br />
   <input type="submit" name="update-splg_options" id="update-splg_options" value="<?php _e('Update settings','spreadplugin'); ?>" />
+  </form>
   <p>&nbsp;</p>
   <h4>
     <?php _e('Minimum required shortcode','spreadplugin'); ?>
@@ -260,12 +261,7 @@ if (is_user_logged_in() && is_admin()) {
   <p>If you like this plugin, I'd be happy to read your comments on <a href="http://www.facebook.com/lovetee.de" target="_blank">facebook</a>. 
     If you experience any problems or have suggestions, feel free to leave a message on <a href="http://wordpress.org/support/plugin/wp-spreadplugin" target="_blank">wordpress</a> or send an email to <a href="mailto:info@spreadplugin.de">info@spreadplugin.de</a>.<br />
   </p>
-  <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-    <input type="hidden" name="cmd" value="_s-xclick">
-    <input type="hidden" name="hosted_button_id" value="EZLKTKW8UR6PQ">
-    <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="Jetzt einfach, schnell und sicher online bezahlen – mit PayPal.">
-    <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
-  </form>
+  <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EZLKTKW8UR6PQ" target="_blank"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" alt="Jetzt einfach, schnell und sicher online bezahlen – mit PayPal." /></a>
   <p>All donations or backlinks to <a href="http://lovetee.de/" target="_blank">http://lovetee.de/</a> valued greatly</p>
 </div>
 <script language="javascript">
