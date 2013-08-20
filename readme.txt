@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: spreadshirt,wordpress,plugin,shop,store,shirt,t-shirt,integration,online store,online shop
 Requires at least: 3.3
 Tested up to: 3.6
-Stable tag: 3.1.2
+Stable tag: 3.1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -184,6 +184,9 @@ You get the `DESIGNID` from your spreadshirt admin panel.
 6. Settings page
 
 == Changelog ==
+
+= 3.1.3 =
+* Bugfix: Translation problem in detail page fixed
 
 = 3.1.2 =
 * Bugfix: Pagination did not work in some conditions

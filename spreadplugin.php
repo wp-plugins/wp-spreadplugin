@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.1.2
+ * Version: 3.1.3
  * Author: Thimo Grauerholz
  * Author URI: http://lovetee.de/
  */
@@ -1364,7 +1364,7 @@ if(!class_exists('WP_Spreadplugin')) {
 
 			// add a select with available sizes
 			if (isset($article['sizes'])&&is_array($article['sizes'])) {
-				$output .= '<div class="size-wrapper clearfix">Gr&ouml;&szlig;e: <select id="size-select" name="size">';
+				$output .= '<div class="size-wrapper clearfix">'.__('Size', $this->stringTextdomain).': <select id="size-select" name="size">';
 
 				foreach($article['sizes'] as $k => $v) {
 					$output .= '<option value="'.$k.'">'.$v.'</option>';
@@ -1377,7 +1377,7 @@ if(!class_exists('WP_Spreadplugin')) {
 
 			// add a list with availabel product colors
 			if (isset($article['appearances'])&&is_array($article['appearances'])) {
-				$output .= '<div class="color-wrapper clearfix">Farbe: <ul class="colors" name="color">';
+				$output .= '<div class="color-wrapper clearfix">'.__('Color', $this->stringTextdomain).': <ul class="colors" name="color">';
 
 				foreach($article['appearances'] as $k=>$v) {
 					$output .= '<li value="'.$k.'"><img src="'. $this->cleanURL($v) .'" alt="" /></li>';

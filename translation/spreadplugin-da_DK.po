@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spreadplugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-08 21:11+0100\n"
-"PO-Revision-Date: 2013-08-08 21:11+0100\n"
+"POT-Creation-Date: 2013-08-20 22:56+0100\n"
+"PO-Revision-Date: 2013-08-20 22:56+0100\n"
 "Last-Translator: Thimo Grauerholz <thimo@grauerholz.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -17,7 +17,7 @@ msgstr ""
 "X-Generator: Poedit 1.5.7\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: options.php:29 spreadplugin.php:1540
+#: options.php:29 spreadplugin.php:1542
 msgid "Settings"
 msgstr "Indstillinger"
 
@@ -196,15 +196,15 @@ msgstr "Custom CSS"
 msgid "Update settings"
 msgstr "Gem indstillinger"
 
-#: options.php:228
+#: options.php:229
 msgid "Minimum required shortcode"
 msgstr "Kort shortcode"
 
-#: options.php:232
+#: options.php:233
 msgid "Extended sample shortcode"
 msgstr "Forlænget shortcode"
 
-#: options.php:235
+#: options.php:236
 msgid ""
 "The extended shortcodes will overwrite the default settings. You may use it "
 "to create a different shop with the same plugin."
@@ -212,147 +212,151 @@ msgstr ""
 "Den forlængede shortcode, vil overskrive standard indstillingerne. Dette kan "
 "bruges til at køre flere shops med samme plugin."
 
-#: options.php:254
+#: options.php:255
 msgid "Options"
 msgstr "Muligheder"
 
-#: options.php:257
+#: options.php:258
 msgid "Clear cache"
 msgstr "Ryd cache"
 
-#: options.php:280
+#: options.php:276
 msgid "Successfully cleared the cache"
 msgstr "Cachen blev succesfuldt ryddet"
 
-#: options.php:320
+#: options.php:316
 msgid "Please fill in the highlighted fields!"
 msgstr "Venligst udfyld de markerede felter"
 
-#: options.php:337
+#: options.php:333
 msgid "Successfully saved settings"
 msgstr "Indstillingerne er opdateret"
 
-#: spreadplugin.php:320
+#: spreadplugin.php:321
 msgid "Product category"
 msgstr "Produkt Kategori"
 
-#: spreadplugin.php:345
+#: spreadplugin.php:346
 msgid "Sort by"
 msgstr "Sorter efter"
 
-#: spreadplugin.php:346
+#: spreadplugin.php:347
 msgid "name"
 msgstr "Navn"
 
-#: spreadplugin.php:347
+#: spreadplugin.php:348
 msgid "price"
 msgstr "Pris"
 
-#: spreadplugin.php:348
+#: spreadplugin.php:349
 msgid "recent"
 msgstr "Sidst tilføjet"
 
-#: spreadplugin.php:349
+#: spreadplugin.php:350
 msgid "weight"
 msgstr "Vægt"
 
-#: spreadplugin.php:352 spreadplugin.php:429
+#: spreadplugin.php:353 spreadplugin.php:430
 msgid "Basket"
 msgstr "Indkøbskurv"
 
-#: spreadplugin.php:415
+#: spreadplugin.php:416
 msgid "next"
 msgstr "næste"
 
-#: spreadplugin.php:428
+#: spreadplugin.php:429
 msgid "Back"
 msgstr "tilbage"
 
-#: spreadplugin.php:669 spreadplugin.php:1329
+#: spreadplugin.php:670 spreadplugin.php:1330
 msgid "Edit article"
 msgstr "Rediger produkt"
 
-#: spreadplugin.php:692
+#: spreadplugin.php:693
 msgid "Details"
 msgstr "Detaljer"
 
-#: spreadplugin.php:731 spreadplugin.php:838 spreadplugin.php:1170
+#: spreadplugin.php:732 spreadplugin.php:839 spreadplugin.php:1171
 msgid "Show description"
 msgstr "Vis beskrivelse"
 
-#: spreadplugin.php:744 spreadplugin.php:1407
+#: spreadplugin.php:745 spreadplugin.php:1409
 msgid "Price (without tax):"
 msgstr "Pris (uden moms):"
 
-#: spreadplugin.php:745 spreadplugin.php:1408
+#: spreadplugin.php:746 spreadplugin.php:1410
 msgid "Price (with tax):"
 msgstr "Pris (med moms)"
 
-#: spreadplugin.php:747 spreadplugin.php:1410
+#: spreadplugin.php:748 spreadplugin.php:1412
 msgid "excl. Shipping"
 msgstr "Total (excl. fragt)"
 
-#: spreadplugin.php:750 spreadplugin.php:1413
+#: spreadplugin.php:751 spreadplugin.php:1415
 msgid "Price:"
 msgstr "Pris:"
 
-#: spreadplugin.php:756 spreadplugin.php:1176 spreadplugin.php:1419
+#: spreadplugin.php:757 spreadplugin.php:1177 spreadplugin.php:1421
 msgid "Add to basket"
 msgstr "Tilføj til indkøbskurv"
 
-#: spreadplugin.php:831
+#: spreadplugin.php:832
 msgid "Click to view the articles"
 msgstr "Klik for at se produktet"
 
-#: spreadplugin.php:1169
+#: spreadplugin.php:1170
 msgid "Hide description"
 msgstr "Skjul beskrivelse"
 
-#: spreadplugin.php:1172
+#: spreadplugin.php:1173
 msgid "Loading new articles..."
 msgstr "Henter nye produkter..."
 
-#: spreadplugin.php:1173
+#: spreadplugin.php:1174
 msgid "You have reached the end"
 msgstr "Der er ikke flere produkter"
 
-#: spreadplugin.php:1177
+#: spreadplugin.php:1178
 msgid "Adding..."
 msgstr "Tilføjer..."
 
-#: spreadplugin.php:1346
+#: spreadplugin.php:1347
 msgid "Additional details"
 msgstr "Flere informationer"
 
-#: spreadplugin.php:1359
+#: spreadplugin.php:1361
 msgid "Product details"
 msgstr "Produkt Information"
 
-#: spreadplugin.php:1513
-msgid "You do not have sufficient permissions to access this page."
-msgstr "Du har ikke de nødvendige rettigheder til at tilgå denne side."
-
-#: spreadplugin.php:1646
+#: spreadplugin.php:1367 spreadplugin.php:1648
 msgid "Size"
 msgstr "Størrelse"
 
-#: spreadplugin.php:1646
+#: spreadplugin.php:1380
+msgid "Color"
+msgstr ""
+
+#: spreadplugin.php:1515
+msgid "You do not have sufficient permissions to access this page."
+msgstr "Du har ikke de nødvendige rettigheder til at tilgå denne side."
+
+#: spreadplugin.php:1648
 msgid "Quantity"
 msgstr "Antal"
 
-#: spreadplugin.php:1648
+#: spreadplugin.php:1650
 msgid "Remove"
 msgstr "Fjern"
 
-#: spreadplugin.php:1658
+#: spreadplugin.php:1660
 msgid "Total (excl. Shipping)"
 msgstr "Total (excl. fragt)"
 
-#: spreadplugin.php:1661 spreadplugin.php:1663
+#: spreadplugin.php:1663 spreadplugin.php:1665
 msgid "Proceed checkout"
 msgstr "Til kassen"
 
-#: spreadplugin.php:1663
+#: spreadplugin.php:1665
 msgid "Basket is empty"
 msgstr "Indkøbskurven er tom"
 

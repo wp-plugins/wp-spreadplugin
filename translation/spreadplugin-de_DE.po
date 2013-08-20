@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spreadplugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-02 16:21+0100\n"
-"PO-Revision-Date: 2013-08-02 16:21+0100\n"
+"POT-Creation-Date: 2013-08-20 22:57+0100\n"
+"PO-Revision-Date: 2013-08-20 22:57+0100\n"
 "Last-Translator: Thimo Grauerholz <thimo@grauerholz.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -17,7 +17,7 @@ msgstr ""
 "X-Generator: Poedit 1.5.7\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: options.php:29 spreadplugin.php:1540
+#: options.php:29 spreadplugin.php:1542
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -199,15 +199,15 @@ msgstr ""
 msgid "Update settings"
 msgstr "Einstellungen aktualisieren"
 
-#: options.php:228
+#: options.php:229
 msgid "Minimum required shortcode"
 msgstr "Minimal erforderlicher Shortcode"
 
-#: options.php:232
+#: options.php:233
 msgid "Extended sample shortcode"
 msgstr "Beispiel erweiterter Shortcode"
 
-#: options.php:235
+#: options.php:236
 msgid ""
 "The extended shortcodes will overwrite the default settings. You may use it "
 "to create a different shop with the same plugin."
@@ -216,147 +216,151 @@ msgstr ""
 "Seite, wo dieser eingegeben wurde. Sie können den Shortcode verändern, um "
 "bspw. einen anderen Shop einzubinden."
 
-#: options.php:254
+#: options.php:255
 msgid "Options"
 msgstr "Optionen"
 
-#: options.php:257
+#: options.php:258
 msgid "Clear cache"
 msgstr "Cache leeren"
 
-#: options.php:280
+#: options.php:276
 msgid "Successfully cleared the cache"
 msgstr "Cache erfolgreich geleert"
 
-#: options.php:320
+#: options.php:316
 msgid "Please fill in the highlighted fields!"
 msgstr "Bitte füllen Sie die hinterlegten Felder aus!"
 
-#: options.php:337
+#: options.php:333
 msgid "Successfully saved settings"
 msgstr "Einstellungen gespeichert"
 
-#: spreadplugin.php:320
+#: spreadplugin.php:321
 msgid "Product category"
 msgstr "Produkt Kategorie"
 
-#: spreadplugin.php:345
+#: spreadplugin.php:346
 msgid "Sort by"
 msgstr "Sortieren"
 
-#: spreadplugin.php:346
+#: spreadplugin.php:347
 msgid "name"
 msgstr "Name"
 
-#: spreadplugin.php:347
+#: spreadplugin.php:348
 msgid "price"
 msgstr "Preis"
 
-#: spreadplugin.php:348
+#: spreadplugin.php:349
 msgid "recent"
 msgstr "Erschienen"
 
-#: spreadplugin.php:349
+#: spreadplugin.php:350
 msgid "weight"
 msgstr "Gewichtung"
 
-#: spreadplugin.php:352 spreadplugin.php:429
+#: spreadplugin.php:353 spreadplugin.php:430
 msgid "Basket"
 msgstr "Warenkorb"
 
-#: spreadplugin.php:415
+#: spreadplugin.php:416
 msgid "next"
 msgstr "weiter"
 
-#: spreadplugin.php:428
+#: spreadplugin.php:429
 msgid "Back"
 msgstr "Zurück"
 
-#: spreadplugin.php:669 spreadplugin.php:1329
+#: spreadplugin.php:670 spreadplugin.php:1330
 msgid "Edit article"
 msgstr "Artikel anpassen"
 
-#: spreadplugin.php:692
+#: spreadplugin.php:693
 msgid "Details"
 msgstr "Details"
 
-#: spreadplugin.php:731 spreadplugin.php:838 spreadplugin.php:1170
+#: spreadplugin.php:732 spreadplugin.php:839 spreadplugin.php:1171
 msgid "Show description"
 msgstr "Zeige Beschreibung"
 
-#: spreadplugin.php:744 spreadplugin.php:1407
+#: spreadplugin.php:745 spreadplugin.php:1409
 msgid "Price (without tax):"
 msgstr "Preis (exkl. MwSt.):"
 
-#: spreadplugin.php:745 spreadplugin.php:1408
+#: spreadplugin.php:746 spreadplugin.php:1410
 msgid "Price (with tax):"
 msgstr "Preis (inkl. MwSt.):"
 
-#: spreadplugin.php:747 spreadplugin.php:1410
+#: spreadplugin.php:748 spreadplugin.php:1412
 msgid "excl. Shipping"
 msgstr "zzgl. Versandkosten"
 
-#: spreadplugin.php:750 spreadplugin.php:1413
+#: spreadplugin.php:751 spreadplugin.php:1415
 msgid "Price:"
 msgstr "Preis:"
 
-#: spreadplugin.php:756 spreadplugin.php:1176 spreadplugin.php:1419
+#: spreadplugin.php:757 spreadplugin.php:1177 spreadplugin.php:1421
 msgid "Add to basket"
 msgstr "In den Warenkorb"
 
-#: spreadplugin.php:831
+#: spreadplugin.php:832
 msgid "Click to view the articles"
 msgstr "Klicken Sie hier, um die Artikel anzusehen"
 
-#: spreadplugin.php:1169
+#: spreadplugin.php:1170
 msgid "Hide description"
 msgstr "Verstecke Beschreibung"
 
-#: spreadplugin.php:1172
+#: spreadplugin.php:1173
 msgid "Loading new articles..."
 msgstr "Artikel werden geladen..."
 
-#: spreadplugin.php:1173
+#: spreadplugin.php:1174
 msgid "You have reached the end"
 msgstr "Keine weiteren Artikel verfügbar"
 
-#: spreadplugin.php:1177
+#: spreadplugin.php:1178
 msgid "Adding..."
 msgstr "Füge ein..."
 
-#: spreadplugin.php:1346
+#: spreadplugin.php:1347
 msgid "Additional details"
 msgstr "Weitere Informationen"
 
-#: spreadplugin.php:1359
+#: spreadplugin.php:1361
 msgid "Product details"
 msgstr "Produkt Informationen"
 
-#: spreadplugin.php:1513
-msgid "You do not have sufficient permissions to access this page."
-msgstr ""
-
-#: spreadplugin.php:1646
+#: spreadplugin.php:1367 spreadplugin.php:1648
 msgid "Size"
 msgstr "Größe"
 
-#: spreadplugin.php:1646
+#: spreadplugin.php:1380
+msgid "Color"
+msgstr "Farbe"
+
+#: spreadplugin.php:1515
+msgid "You do not have sufficient permissions to access this page."
+msgstr ""
+
+#: spreadplugin.php:1648
 msgid "Quantity"
 msgstr "Menge"
 
-#: spreadplugin.php:1648
+#: spreadplugin.php:1650
 msgid "Remove"
 msgstr "Entfernen"
 
-#: spreadplugin.php:1658
+#: spreadplugin.php:1660
 msgid "Total (excl. Shipping)"
 msgstr "Gesamt (ohne Versandkosten)"
 
-#: spreadplugin.php:1661 spreadplugin.php:1663
+#: spreadplugin.php:1663 spreadplugin.php:1665
 msgid "Proceed checkout"
 msgstr "Zur Kasse"
 
-#: spreadplugin.php:1663
+#: spreadplugin.php:1665
 msgid "Basket is empty"
 msgstr "Warenkorb ist leer"
 
