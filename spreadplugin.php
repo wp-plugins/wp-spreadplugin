@@ -131,7 +131,6 @@ if(!class_exists('WP_Spreadplugin')) {
 		 *
 		 */
 		public function Spreadplugin($atts) {
-			global $paged;
 
 			$articleCleanData = array(); // Array with article informations for sorting and filtering
 			$articleData = array();
@@ -191,14 +190,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			// check
 			if(!empty(self::$shopOptions['shop_id']) && !empty(self::$shopOptions['shop_api']) && !empty(self::$shopOptions['shop_secret'])) {
 
-				$paged = 1;
-
-				// use pagination value from wordpress
-				if (isset($_GET['paged'])) {
-					$paged = ((int)$_GET['paged']>0)?(int)$_GET['paged']:1;	
-				} else {				
-					$paged = (get_query_var('page')) ? get_query_var('page') : 1;
-				}
+				$paged = ((int)$_GET['pagesp']>0)?(int)$_GET['pagesp']:1;	
 
 				$offset=($paged-1)*self::$shopOptions['shop_limit'];
 				
@@ -413,7 +405,7 @@ if(!class_exists('WP_Spreadplugin')) {
 						
 						$output .= "<div id=\"pagination\">";
 						if ($cArticleNext>0) {
-							$output .= "<a href=\"".get_pagenum_link($paged + 1)."\">".__('next', $this->stringTextdomain)."</a>";
+							$output .= "<a href=\"".add_query_arg( 'pagesp', $paged+1, get_permalink())."\">".__('next', $this->stringTextdomain)."</a>";
 						}
 						$output .= "</div>";
 				
