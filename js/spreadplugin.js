@@ -2,7 +2,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.1.3
+ * Version: 3.1.4
  * Author: Thimo Grauerholz
  * Author URI: http://lovetee.de/
  */
@@ -17,6 +17,7 @@ jQuery(function() {
 	var fancyBoxWidth = 840;
 	var appearance = '';
 	var view = '';
+	var sid = document.cookie.match(/PHPSESSID=[^;]+/);
 
 	if (display == 1) {
 		infiniteItemSel = '.spreadshirt-designs';
@@ -154,7 +155,7 @@ jQuery(function() {
 
 							event.preventDefault();
 							var data = jQuery(this).serialize()
-									+ '&action=myAjax';
+									+ '&action=myAjax&'+sid;
 							var form = this;
 							var button = jQuery('#' + form.id
 									+ ' input[type=submit]');
@@ -386,7 +387,7 @@ jQuery(function() {
 		jQuery('#spreadshirt-items #spreadshirt-menu #checkout span').text(json.c.q);
 		jQuery('#cart-checkout a').attr('href', json.c.u);
 		
-		jQuery.get(ajaxLocation,'action=myCart',function (data) {
+		jQuery.get(ajaxLocation,'action=myCart&'+sid,function (data) {
 			jQuery('#spreadshirt-items #cart').html(data);
 			
 			
@@ -456,8 +457,8 @@ jQuery(function() {
 				e.preventDefault;
 				jQuery(this).closest('.cart-row').show().fadeOut('slow');
 				
-				jQuery.post(ajaxLocation,	'action=myDelete&id='+jQuery(this).closest('.cart-row').data('id'),function() {	
-					jQuery.post(ajaxLocation,	'action=myAjax',function(json) {
+				jQuery.post(ajaxLocation,	'action=myDelete&'+sid+'&id='+jQuery(this).closest('.cart-row').data('id'),function() {	
+					jQuery.post(ajaxLocation,	'action=myAjax&'+sid,function(json) {
 						refreshCart(json);
 						}, 'json');	
 					});	
@@ -469,7 +470,7 @@ jQuery(function() {
 	}
 	
 	
-	jQuery.post(ajaxLocation,	'action=myAjax',function(json) {
+	jQuery.post(ajaxLocation,	'action=myAjax&'+sid,function(json) {
 		refreshCart(json);
 		}, 'json');	
 	
