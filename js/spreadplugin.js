@@ -17,7 +17,7 @@ jQuery(function() {
 	var fancyBoxWidth = 840;
 	var appearance = '';
 	var view = '';
-	var sid = document.cookie.match(/PHPSESSID=[^;]+/);
+//	var sid = document.cookie.match(/PHPSESSID=[^;]+/);
 
 	if (display == 1) {
 		infiniteItemSel = '.spreadshirt-designs';
@@ -155,7 +155,7 @@ jQuery(function() {
 
 							event.preventDefault();
 							var data = jQuery(this).serialize()
-									+ '&action=myAjax&'+sid;
+									+ '&action=myAjax'; //&'+sid
 							var form = this;
 							var button = jQuery('#' + form.id
 									+ ' input[type=submit]');
@@ -387,7 +387,8 @@ jQuery(function() {
 		jQuery('#spreadshirt-items #spreadshirt-menu #checkout span').text(json.c.q);
 		jQuery('#cart-checkout a').attr('href', json.c.u);
 		
-		jQuery.get(ajaxLocation,'action=myCart&'+sid,function (data) {
+		// &'+sid
+		jQuery.get(ajaxLocation,'action=myCart',function (data) {
 			jQuery('#spreadshirt-items #cart').html(data);
 			
 			
@@ -457,8 +458,10 @@ jQuery(function() {
 				e.preventDefault;
 				jQuery(this).closest('.cart-row').show().fadeOut('slow');
 				
-				jQuery.post(ajaxLocation,	'action=myDelete&'+sid+'&id='+jQuery(this).closest('.cart-row').data('id'),function() {	
-					jQuery.post(ajaxLocation,	'action=myAjax&'+sid,function(json) {
+				// &'+sid+'
+				jQuery.post(ajaxLocation,	'action=myDelete&id='+jQuery(this).closest('.cart-row').data('id'),function() {	
+					// &'+sid
+					jQuery.post(ajaxLocation,	'action=myAjax',function(json) {
 						refreshCart(json);
 						}, 'json');	
 					});	
@@ -470,7 +473,8 @@ jQuery(function() {
 	}
 	
 	
-	jQuery.post(ajaxLocation,	'action=myAjax&'+sid,function(json) {
+	// &'+sid
+	jQuery.post(ajaxLocation,	'action=myAjax',function(json) {
 		refreshCart(json);
 		}, 'json');	
 	
