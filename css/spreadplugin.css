@@ -474,3 +474,7 @@ pre, code {
 	padding-top:10px;
 	padding-bottom:10px;
 }
+.zoomContainer {
+	z-index:1000;
+}
+
