@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.1.4
+ * Version: 3.1.5
  * Author: Thimo Grauerholz
  * Author URI: http://lovetee.de/
  */
@@ -664,7 +664,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				
 			// display preview image
 			$output .= '<div class="image-wrapper">';
-			$output .= '<img src="http://image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width='.self::$shopOptions['shop_imagesize'].',height='.self::$shopOptions['shop_imagesize'].'" class="preview" width="'.self::$shopOptions['shop_imagesize'].'" height="'.self::$shopOptions['shop_imagesize'].'" alt="' . htmlspecialchars($article['name'],ENT_QUOTES) . '" id="previewimg_'.$id.'" data-zoom-image="http://image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width=800,height=800'.(!empty($backgroundColor)?',backgroundColor='.$backgroundColor:'').'" />';
+			$output .= '<img src="'.plugins_url('/img/blank.gif', __FILE__).'" alt="' . htmlspecialchars($article['name'],ENT_QUOTES) . '" id="previewimg_'.$id.'" data-zoom-image="http://image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width=800,height=800'.(!empty($backgroundColor)?',backgroundColor='.$backgroundColor:'').'" class="preview lazy" data-original="http://image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width='.self::$shopOptions['shop_imagesize'].',height='.self::$shopOptions['shop_imagesize'].'" width="'.self::$shopOptions['shop_imagesize'].'" height="'.self::$shopOptions['shop_imagesize'].'" />';
 			$output .= '</div>';
 
 			// add a select with available sizes
@@ -704,7 +704,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				$output .= '<ul class="views" name="views">';
 
 				foreach($article['views'] as $k=>$v) {
-					$output .= '<li value="'.$k.'"><img src="'. $this->cleanURL($v)  .',viewId='.$k.',width=42,height=42" class="previewview" alt="" id="viewimg_'.$id.'" /></li>';
+					$output .= '<li value="'.$k.'"><img src="'.plugins_url('/img/blank.gif', __FILE__).'" data-original="'. $this->cleanURL($v)  .',viewId='.$k.',width=42,height=42" class="previewview lazy" alt="" id="viewimg_'.$id.'" /></li>';
 				}
 
 				$output .= '</ul>';
@@ -820,7 +820,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			$output .= '<a name="'.$id.'"></a>';
 			$output .= '<h3>'.htmlspecialchars($designData['name'],ENT_QUOTES).'</h3>';
 			$output .= '<div class="image-wrapper" '.$addStyle.'>';
-			$output .= '<img src="' . $this->cleanURL($designData['resource2']) . ',width='.self::$shopOptions['shop_imagesize'].',height='.self::$shopOptions['shop_imagesize'].'" width="'.self::$shopOptions['shop_imagesize'].'" height="'.self::$shopOptions['shop_imagesize'].'" alt="' . htmlspecialchars($designData['name'],ENT_QUOTES) . '" id="compositedesignimg_'.$id.'" />'; // style="display:none;" // title="'.htmlspecialchars($designData['productdescription'],ENT_QUOTES).'"
+			$output .= '<img src="'.plugins_url('/img/blank.gif', __FILE__).'" class="lazy" data-original="' . $this->cleanURL($designData['resource2']) . ',width='.self::$shopOptions['shop_imagesize'].',height='.self::$shopOptions['shop_imagesize'].'" width="'.self::$shopOptions['shop_imagesize'].'" height="'.self::$shopOptions['shop_imagesize'].'" alt="' . htmlspecialchars($designData['name'],ENT_QUOTES) . '" id="compositedesignimg_'.$id.'" />'; // style="display:none;" // title="'.htmlspecialchars($designData['productdescription'],ENT_QUOTES).'"
 			$output .= '<span class="img-caption">'.__('Click to view the articles', $this->stringTextdomain).'</em></span>';
 			$output .= '</div>';
 
@@ -1197,6 +1197,10 @@ if(!class_exists('WP_Spreadplugin')) {
 			// Zoom
 			wp_register_script('zoom', plugins_url('/js/jquery.elevateZoom-2.5.5.min.js', __FILE__),array('jquery'));
 			wp_enqueue_script('zoom');
+			
+			// lazyload
+			wp_register_script('lazyload', plugins_url('/js/jquery.lazyload.min.js', __FILE__),array('jquery'));
+			wp_enqueue_script('lazyload');
 
 			// Respects SSL, Style.css is relative to the current file
 			wp_register_style('spreadplugin', plugins_url('/css/spreadplugin.css', __FILE__));

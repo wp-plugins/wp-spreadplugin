@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: spreadshirt,wordpress,plugin,shop,store,shirt,t-shirt,integration,online store,online shop
 Requires at least: 3.3
 Tested up to: 3.6
-Stable tag: 3.1.4
+Stable tag: 3.1.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -184,6 +184,9 @@ You get the `DESIGNID` from your spreadshirt admin panel.
 6. Settings page
 
 == Changelog ==
+
+= 3.1.5 =
+* Speed improvements by adding lazy image loading (only loads images when in viewport)
 
 = 3.1.4 =
 * Solved session basket problem: On some server configurations, the session couldn't be reused, so there was created a new session and so the basket contents were lost.
