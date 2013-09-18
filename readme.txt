@@ -186,7 +186,7 @@ You get the `DESIGNID` from your spreadshirt admin panel.
 == Changelog ==
 
 = 3.2 =
-* Depending on stock state the a size or color of a product will be hidden
+* Depending on stock state the size and color of a product will be hidden (beta)
 
 = 3.1.5 =
 * Speed improvements by adding lazy image loading (only loads images when in viewport)
