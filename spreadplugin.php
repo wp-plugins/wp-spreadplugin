@@ -512,6 +512,9 @@ if(!class_exists('WP_Spreadplugin')) {
 					// read articles
 					$i=0;
 					foreach ($objArticles->article as $article) {
+						
+						$stockstates_size=array();
+						$stockstates_appearance=array();
 
 						$stringXmlArticle = wp_remote_retrieve_body(wp_remote_get($article->product->productType->attributes('xlink', true).'?'.(!empty(self::$shopOptions['shop_locale'])?'locale=' . self::$shopOptions['shop_locale']:'')));
 						if(substr($stringXmlArticle, 0, 5) !== "<?xml") continue;
@@ -537,13 +540,15 @@ if(!class_exists('WP_Spreadplugin')) {
 						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['designid']=(int)$article->product->defaultValues->defaultDesign['id'];
 
 						// Assignment of stock availability and matching to articles
+						// echo (string)$article->name."<br>";
 						foreach($objArticleData->stockStates->stockState as $val) {
-							$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['stockstates-size'][(int)$val->size['id']]=(string)$val->available;
-							$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['stockstates-appearance'][(int)$val->appearance['id']]=(string)$val->available;
+							$stockstates_size[(int)$val->size['id']]=(string)$val->available;
+							$stockstates_appearance[(int)$val->appearance['id']]=(string)$val->available;
 						}
-
+						
 						foreach($objArticleData->sizes->size as $val) {
-							if ($articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['stockstates-size'][(int)$val['id']] == "true") {
+							// echo (int)$val['id']." ".$stockstates_size[(int)$val['id']]." ". (string)$val->name."<br>";
+							if ($stockstates_size[(int)$val['id']] == "true") {
 								$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['sizes'][(int)$val['id']]=(string)$val->name;
 							}
 						}
@@ -553,7 +558,8 @@ if(!class_exists('WP_Spreadplugin')) {
 								$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['default_bgc'] = (string)$appearance->colors->color;
 							}
 
-							if (($article->product->restrictions->freeColorSelection == 'true' && $articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['stockstates-appearance'][(int)$appearance['id']] == "true") || (int)$article->product->appearance['id'] == (int)$appearance['id']) {
+							// echo (int)$val['id']." ".$stockstates_appearance[(int)$val['id']]." ". (string)$appearance->resources->resource->attributes('xlink', true)."<br>";
+							if (($article->product->restrictions->freeColorSelection == 'true' && $stockstates_appearance[(int)$appearance['id']] == "true") || (int)$article->product->appearance['id'] == (int)$appearance['id']) {
 								$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['appearances'][(int)$appearance['id']]=(string)$appearance->resources->resource->attributes('xlink', true);
 							}
 						}
