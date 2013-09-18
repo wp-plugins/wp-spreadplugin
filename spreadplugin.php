@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.1.5
+ * Version: 3.2
  * Author: Thimo Grauerholz
  * Author URI: http://lovetee.de/
  */
@@ -536,8 +536,16 @@ if(!class_exists('WP_Spreadplugin')) {
 						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['place']=$i;
 						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['designid']=(int)$article->product->defaultValues->defaultDesign['id'];
 
+						// Assignment of stock availability and matching to articles
+						foreach($objArticleData->stockStates->stockState as $val) {
+							$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['stockstates-size'][(int)$val->size['id']]=(string)$val->available;
+							$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['stockstates-appearance'][(int)$val->appearance['id']]=(string)$val->available;
+						}
+
 						foreach($objArticleData->sizes->size as $val) {
-							$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['sizes'][(int)$val['id']]=(string)$val->name;
+							if ($articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['stockstates-size'][(int)$val['id']] == "true") {
+								$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['sizes'][(int)$val['id']]=(string)$val->name;
+							}
 						}
 
 						foreach($objArticleData->appearances->appearance as $appearance) {
@@ -545,7 +553,7 @@ if(!class_exists('WP_Spreadplugin')) {
 								$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['default_bgc'] = (string)$appearance->colors->color;
 							}
 
-							if ($article->product->restrictions->freeColorSelection == 'true' || (int)$article->product->appearance['id'] == (int)$appearance['id']) {
+							if (($article->product->restrictions->freeColorSelection == 'true' && $articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['stockstates-appearance'][(int)$appearance['id']] == "true") || (int)$article->product->appearance['id'] == (int)$appearance['id']) {
 								$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['appearances'][(int)$appearance['id']]=(string)$appearance->resources->resource->attributes('xlink', true);
 							}
 						}
