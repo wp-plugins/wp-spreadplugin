@@ -471,17 +471,27 @@ jQuery(function($) {
 			
 		});
 	}
-	
+
+
 	
 	// &'+sid
 	$.post(ajaxLocation,	'action=myAjax',function(json) {
 		refreshCart(json);
+	}, 'json');	
+			
+	setInterval(function() {
+		$.post(ajaxLocation,	'action=myAjax',function(json) {
+			refreshCart(json);
 		}, 'json');	
+	}, 10000);
 	
 	
-	
+
 	bindClick();
 	bindHover();
 	$("img.lazy").lazyload({effect : "fadeIn"});
 	
 });
+
+
+
