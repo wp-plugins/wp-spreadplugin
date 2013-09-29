@@ -174,6 +174,11 @@ Add or edit the shortcode or set in shortcode plugin settings to enable. Shortco
 Add or edit the shortcode you are using and add/change following variable `shop_design="DESIGNID"`.
 You get the `DESIGNID` from your spreadshirt admin panel.
 
+= If I checkout, the language differs from the language of the shop?! =
+
+Please check your `Locale` setting in your user-data of spreadshirt.
+You can find it here: http://www.spreadshirt.net/user-data-C162 or http://www.spreadshirt.com/user-data-C162
+
 == Screenshots ==
 
 1. The Output 1
