@@ -174,6 +174,11 @@ if(!class_exists('WP_Spreadplugin')) {
 					self::$shopOptions['shop_productsubcategory'] = $c;
 				}
 			}
+			
+			if (!empty(self::$shopOptions['shop_productcategory']) && empty(self::$shopOptions['shop_productsubcategory'])) {
+				self::$shopOptions['shop_productsubcategory']="all";
+			}
+			
 			if (isset($_GET['articleSortBy'])) {
 				$c = urldecode($_GET['articleSortBy']);
 				self::$shopOptions['shop_sortby'] = $c;
@@ -221,8 +226,6 @@ if(!class_exists('WP_Spreadplugin')) {
 						$articleCleanData[$articleId] = $arrArticle;
 					}
 				}
-
-
 
 				// filter
 				if (is_array($articleCleanData)) {
