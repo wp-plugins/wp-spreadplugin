@@ -162,8 +162,7 @@ jQuery(function($) {
 
 							button.val(textButtonAdded);
 
-							$
-									.post(
+							$.post(
 											ajaxLocation,
 											data,
 											function(json) {
@@ -182,12 +181,7 @@ jQuery(function($) {
 				fitToView : false,
 				autoSize : false,
 				height : 1000,
-				width : fancyBoxWidth,
-				preload : true,
-				afterClose : function() {
-					location.reload();
-					return;
-				}
+				width : fancyBoxWidth
 			});
 
 			$('.spreadshirt-article .details-wrapper a,.spreadshirt-article-detail .details-wrapper a').fancybox({
@@ -195,8 +189,7 @@ jQuery(function($) {
 				fitToView : false,
 				autoSize : false,
 				height : 1000,
-				width : fancyBoxWidth,
-				preload : true
+				width : fancyBoxWidth
 			});
 
 		}
@@ -206,8 +199,7 @@ jQuery(function($) {
 			fitToView : false,
 			autoSize : false,
 			height : 1000,
-			width : fancyBoxWidth,
-			preload : true
+			width : fancyBoxWidth
 		});
 
 		$('.spreadshirt-design .image-wrapper').click(
@@ -443,12 +435,7 @@ jQuery(function($) {
 								fitToView : false,
 								autoSize : false,
 								height : 1000,
-								width : fancyBoxWidth,
-								preload : true,
-								afterClose : function() {
-									location.reload();
-									return;
-								}
+								width : fancyBoxWidth
 							});
 				}
 			}
