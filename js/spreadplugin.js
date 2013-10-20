@@ -183,11 +183,7 @@ jQuery(function($) {
 				autoSize : false,
 				height : 1000,
 				width : fancyBoxWidth,
-				preload : true,
-				afterClose : function() {
-					location.reload();
-					return;
-				}
+				preload : true
 			});
 
 			$('.spreadshirt-article .details-wrapper a,.spreadshirt-article-detail .details-wrapper a').fancybox({
@@ -444,11 +440,7 @@ jQuery(function($) {
 								autoSize : false,
 								height : 1000,
 								width : fancyBoxWidth,
-								preload : true,
-								afterClose : function() {
-									location.reload();
-									return;
-								}
+								preload : true
 							});
 				}
 			}
