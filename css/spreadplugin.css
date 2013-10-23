@@ -130,7 +130,7 @@ pre, code {
 }
 .spreadshirt-items #infscr-loading {
 	background: #fff;
-	z-index: 1001;
+	z-index: 1003;
 	position: fixed;
 	clear: both;
 	bottom: 5px;
@@ -207,7 +207,7 @@ pre, code {
 /* spreadshirt-menu */
 .spreadshirt-menu {
 	position: relative;
-	z-index: 1001;
+	z-index: 1002;
 	padding: 10px;
 	width: 100%;
 	margin: 0;
@@ -255,8 +255,7 @@ pre, code {
 	margin-top: 0;
 	padding: 5px;
 	position: absolute;
-	z-index: 1000 !important;
-	z-index: 1000;
+	z-index: 1001 !important;
 	float: left
 }
 /* social icons*/
