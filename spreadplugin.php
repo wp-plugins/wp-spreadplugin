@@ -3,24 +3,13 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.2
+ * Version: 3.3
  * Author: Thimo Grauerholz
  * Author URI: http://lovetee.de/
  */
 
 
 @set_time_limit(0);
-
-
-/**
- * Avoid direct calls to this file
- */
-if(!function_exists('add_action')) {
-	header('Status: 403 Forbidden');
-	header('HTTP/1.1 403 Forbidden');
-
-	exit();
-}
 
 
 
@@ -31,7 +20,6 @@ if(!class_exists('WP_Spreadplugin')) {
 	class WP_Spreadplugin {
 		private $stringTextdomain = 'spreadplugin';
 		public static $shopOptions;
-		public static $basketContents;
 		public static $shopArticleSortOptions = array(
 				'name',
 				'price',
@@ -79,6 +67,8 @@ if(!class_exists('WP_Spreadplugin')) {
 			add_shortcode('spreadplugin', array($this,'Spreadplugin'));
 
 			// Ajax actions
+			add_action('wp_ajax_nopriv_mergeBasket',array(&$this,'mergeBaskets'));
+			add_action('wp_ajax_mergeBasket',array(&$this,'mergeBaskets'));
 			add_action('wp_ajax_nopriv_myAjax',array(&$this,'doAjax'));
 			add_action('wp_ajax_myAjax',array(&$this,'doAjax'));
 			add_action('wp_ajax_nopriv_myCart',array(&$this,'doCart'));
@@ -1092,6 +1082,8 @@ if(!class_exists('WP_Spreadplugin')) {
 		 *
 		 */
 		private static function getInBasketQuantity() {
+			$intInBasket = 0;
+			
 			if (isset($_SESSION['basketUrl'])) {
 					
 				$basketItems=self::getBasket($_SESSION['basketUrl']);
@@ -1102,6 +1094,7 @@ if(!class_exists('WP_Spreadplugin')) {
 					}
 				}
 			}
+
 			return $intInBasket;
 		}
 
@@ -1168,6 +1161,33 @@ if(!class_exists('WP_Spreadplugin')) {
 			}
 
 			return false;
+		}
+		
+		
+		/**
+		* call to merge the designer shop basket with the api basket
+		* @TODO doesn't work yet - Spreadshirt's API is beta :(
+		**/
+		public function mergeBaskets() {
+		
+			$header = array();
+			$basketId = "";
+			$coolUrl = "";
+
+			if (!empty($_SESSION['basketUrl'])) {
+				
+				if (preg_match("/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}/",$_SESSION['basketUrl'],$found)) {
+					$basketId = $found[0];
+				}
+				
+				// cool widget url
+				$coolUrl = "http://www.spreadshirt.de/de/DE/Widget/Www/synchronizeBasket/basket/".$basketId."/toApi/false";
+				
+				$result = self::oldHttpRequest($coolUrl, $header, 'GET');
+			}
+
+			echo $result;
+			die();
 		}
 
 
@@ -1284,7 +1304,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			if (!wp_verify_nonce($_GET['nonce'], 'spreadplugin')) die('Security check');
 
 			$this->reparseShortcodeData();
-
+			
 
 			// create an new basket if not exist
 			if (!isset($_SESSION['basketUrl'])) {
@@ -1339,9 +1359,6 @@ if(!class_exists('WP_Spreadplugin')) {
 			echo json_encode(array("c" => array("u" => $_SESSION['checkoutUrl'],"q" => intval($intInBasket))));
 			die();
 		}
-
-
-
 
 
 
@@ -1660,11 +1677,11 @@ if(!class_exists('WP_Spreadplugin')) {
 
 			$this->reparseShortcodeData();
 
-
 			// create an new basket if not exist
 			if (isset($_SESSION['basketUrl'])) {
-				
+							
 				$basketItems=self::getBasket($_SESSION['basketUrl']);
+
 				$priceSum=0;
 				$intSumQuantity=0;
 				

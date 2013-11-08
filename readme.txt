@@ -3,8 +3,8 @@ Contributors: Thimo Grauerholz
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EZLKTKW8UR6PQ
 Tags: spreadshirt,wordpress,plugin,shop,store,shirt,t-shirt,integration,online store,online shop
 Requires at least: 3.3
-Tested up to: 3.6
-Stable tag: 3.2
+Tested up to: 3.7.1
+Stable tag: 3.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -190,8 +190,11 @@ You can find it here: http://www.spreadshirt.net/user-data-C162 or http://www.sp
 
 == Changelog ==
 
+= 3.3 = 
+* Beautiful flyover to basket animation
+
 = 3.2 =
-* Depending on stock state the size and color of a product will be hidden (beta)
+* Depending on stock state the size and color of a product will be hidden (beta) / removed
 
 = 3.1.5 =
 * Speed improvements by adding lazy image loading (only loads images when in viewport)

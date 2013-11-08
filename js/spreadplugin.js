@@ -2,7 +2,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.2
+ * Version: 3.3
  * Author: Thimo Grauerholz
  * Author URI: http://lovetee.de/
  */
@@ -160,46 +160,65 @@ jQuery(function($) {
 							var button = $('#' + form.id
 									+ ' input[type=submit]');
 
+
+							// to basket animation vars
+							var productIdValSplitter = form.id.split("_");
+							var productIdVal = productIdValSplitter[1];
+							var productX = $("#previewimg_" + productIdVal).offset().left;
+							var productY = $("#previewimg_" + productIdVal).offset().top;
+							var basketX = $("#checkout").offset().left;
+							var basketY = $("#checkout").offset().top;
+							var gotoX = basketX - productX;
+							var gotoY = basketY - productY;
+												
+						
 							button.val(textButtonAdded);
+							$("#article_" + productIdVal + ' .preview')
+								.clone()
+								.prependTo("#article_" + productIdVal)
+								.css({'position' : 'absolute'})
+								.css({'z-index' : '1008'})
+								.animate({opacity: 0.9}, 100 )
+								.animate({opacity: 0.1, marginLeft: gotoX, marginTop: gotoY}, 900, function() { 
+									$.post(ajaxLocation,data,function(json) {
+															button.val(textButtonAdd);
+															refreshCart(json);
+														}, 'json');
+									$(this).remove();	
+								});
+							
+							
 
-							$.post(
-											ajaxLocation,
-											data,
-											function(json) {
-												button.val(textButtonAdd);
-												refreshCart(json);
-											}, 'json');
+			return false;
+		});
 
-							return false;
 
-						});
 
 
 		if (pageCheckoutUseIframe == 2) {
 			$('.spreadshirt-article .edit-wrapper a,.spreadshirt-article-detail .edit-wrapper a').fancybox({
-				type : 'iframe',
-				fitToView : false,
-				autoSize : false,
-				height : 1000,
-				width : fancyBoxWidth
+				type : 'iframe',								
+				autoSize: true,
+				autoResize: true,
+				fitToView: true,
+				autoCenter:true
 			});
 
 			$('.spreadshirt-article .details-wrapper a,.spreadshirt-article-detail .details-wrapper a').fancybox({
-				type : 'iframe',
-				fitToView : false,
-				autoSize : false,
-				height : 1000,
-				width : fancyBoxWidth
+				type : 'iframe',								
+				autoSize: true,
+				autoResize: true,
+				fitToView: true,
+				autoCenter:true
 			});
-
 		}
 
 		$('.spreadshirt-article .image-wrapper a,.spreadshirt-article-detail .image-wrapper a').fancybox({
 			type : 'iframe',
-			fitToView : false,
-			autoSize : false,
-			height : 1000,
-			width : fancyBoxWidth
+			autoSize: true,
+			autoResize: true,
+			fitToView: true,
+			autoCenter:true
 		});
 
 		$('.spreadshirt-design .image-wrapper').click(
@@ -350,6 +369,8 @@ jQuery(function($) {
 						function(event) {
 							event.preventDefault();
 							
+							//mergeBasket();
+							
 							if ($('#cart').is(':hidden')) {
 								$('#cart').show();
 							} else {
@@ -432,10 +453,10 @@ jQuery(function($) {
 					
 							$('#cart-checkout a').fancybox({
 								type : 'iframe',
-								fitToView : false,
-								autoSize : false,
-								height : 1000,
-								width : fancyBoxWidth
+								autoSize: true,
+								autoResize: true,
+								fitToView: true,
+								autoCenter:true
 							});
 				}
 			}
@@ -459,6 +480,12 @@ jQuery(function($) {
 		});
 	}
 
+	// call to merge the designer shop basket with the api basket
+	function mergeBasket() {
+		$.get(ajaxLocation,'action=mergeBasket',function(json) {
+		//console.debug(json);
+		}, 'json');	
+	}
 
 	
 	// &'+sid
