@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Spreadplugin\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-08-20 22:57+0100\n"
-"PO-Revision-Date: 2013-08-20 22:57+0100\n"
+"PO-Revision-Date: 2013-11-09 10:20+0100\n"
 "Last-Translator: Thimo Grauerholz <thimo@grauerholz.de>\n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -322,11 +322,11 @@ msgstr ""
 
 #: spreadplugin.php:1367 spreadplugin.php:1648
 msgid "Size"
-msgstr ""
+msgstr "Taille"
 
 #: spreadplugin.php:1380
 msgid "Color"
-msgstr ""
+msgstr "Couleur"
 
 #: spreadplugin.php:1515
 msgid "You do not have sufficient permissions to access this page."
@@ -334,19 +334,19 @@ msgstr ""
 
 #: spreadplugin.php:1648
 msgid "Quantity"
-msgstr ""
+msgstr "Quantité"
 
 #: spreadplugin.php:1650
 msgid "Remove"
-msgstr ""
+msgstr "Supprimer"
 
 #: spreadplugin.php:1660
 msgid "Total (excl. Shipping)"
-msgstr ""
+msgstr "Total (sans frais d'expédition)"
 
 #: spreadplugin.php:1663 spreadplugin.php:1665
 msgid "Proceed checkout"
-msgstr ""
+msgstr "Commander"
 
 #: spreadplugin.php:1665
 msgid "Basket is empty"
