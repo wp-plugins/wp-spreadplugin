@@ -1,0 +1,363 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Spreadplugin\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-20 22:57+0100\n"
+"PO-Revision-Date: 2013-11-16 14:45+0100\n"
+"Last-Translator: Thimo Grauerholz <thimo@grauerholz.de>\n"
+"Language-Team: \n"
+"Language: it_IT\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-Basepath: ../\n"
+"X-Textdomain-Support: yes\n"
+"X-Generator: Poedit 1.5.7\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: options.php:29 spreadplugin.php:1542
+msgid "Settings"
+msgstr ""
+
+#: options.php:32
+msgid ""
+"These settings will be used as default and can be overwritten by the "
+"extended shortcode."
+msgstr ""
+
+#: options.php:36
+msgid "Shop id:"
+msgstr ""
+
+#: options.php:40
+msgid "Shop country:"
+msgstr ""
+
+#: options.php:63
+msgid "Shop source:"
+msgstr ""
+
+#: options.php:70
+msgid "Spreadshirt API Key:"
+msgstr ""
+
+#: options.php:74
+msgid "Spreadshirt API Secret:"
+msgstr ""
+
+#: options.php:78
+msgid "Limit articles per page:"
+msgstr ""
+
+#: options.php:82
+msgid "Image size:"
+msgstr ""
+
+#: options.php:90
+msgid "Product category:"
+msgstr ""
+
+#: options.php:93
+msgid "All products"
+msgstr "Tutti i prodotti"
+
+#: options.php:95 options.php:96
+msgid "Men"
+msgstr "Uomo"
+
+#: options.php:98 options.php:99
+msgid "Women"
+msgstr "Donna"
+
+#: options.php:101 options.php:102
+msgid "Kids & Babies"
+msgstr "Bambini e Neonati"
+
+#: options.php:104 options.php:105
+msgid "Accessories"
+msgstr "Accessori"
+
+#: options.php:107 options.php:108
+msgid "New Products"
+msgstr "Nuovi Prodotti"
+
+#: options.php:113
+msgid "Article category:"
+msgstr ""
+
+#: options.php:119
+msgid "Social buttons:"
+msgstr ""
+
+#: options.php:121 options.php:129 options.php:186 options.php:194
+#: options.php:202 options.php:214
+msgid "Disabled"
+msgstr ""
+
+#: options.php:124 options.php:132 options.php:189 options.php:197
+#: options.php:205 options.php:217
+msgid "Enabled"
+msgstr ""
+
+#: options.php:127
+msgid "Product linking:"
+msgstr ""
+
+#: options.php:135
+msgid "Sort articles by:"
+msgstr "Ordina per"
+
+#: options.php:148
+msgid "Target of links:"
+msgstr ""
+
+#: options.php:149
+msgid ""
+"Enter the name of your target iframe or frame, if available. Default is "
+"_blank (new window)."
+msgstr ""
+
+#: options.php:155
+msgid "Use iframe for checkout:"
+msgstr ""
+
+#: options.php:157
+msgid "Opens in separate window"
+msgstr ""
+
+#: options.php:160
+msgid "Opens an iframe in the page content"
+msgstr ""
+
+#: options.php:163
+msgid "Opens an iframe in a modal window (fancybox)"
+msgstr ""
+
+#: options.php:166
+msgid "Designer Shop ID:"
+msgstr ""
+
+#: options.php:167
+msgid ""
+"If you have a designer Shop (Spreadshirt premium account), enter the ID "
+"here. A new link will appear where the customer can change the design."
+msgstr ""
+
+#: options.php:173
+msgid "Default display:"
+msgstr ""
+
+#: options.php:175
+msgid "Articles"
+msgstr ""
+
+#: options.php:178
+msgid "Designs"
+msgstr ""
+
+#: options.php:181
+msgid "Designs with background:"
+msgstr ""
+
+#: options.php:182
+msgid ""
+"Displays designs with background color of each first given article/shirt"
+msgstr ""
+
+#: options.php:192
+msgid "Always show article description:"
+msgstr ""
+
+#: options.php:200
+msgid "Display price without and with tax:"
+msgstr ""
+
+#: options.php:208
+msgid "Zoom image background color:"
+msgstr ""
+
+#: options.php:212
+msgid "Infinity scrolling:"
+msgstr ""
+
+#: options.php:220
+msgid "Custom CSS"
+msgstr ""
+
+#: options.php:225
+msgid "Update settings"
+msgstr ""
+
+#: options.php:229
+msgid "Minimum required shortcode"
+msgstr ""
+
+#: options.php:233
+msgid "Extended sample shortcode"
+msgstr ""
+
+#: options.php:236
+msgid ""
+"The extended shortcodes will overwrite the default settings. You may use it "
+"to create a different shop with the same plugin."
+msgstr ""
+
+#: options.php:255
+msgid "Options"
+msgstr ""
+
+#: options.php:258
+msgid "Clear cache"
+msgstr ""
+
+#: options.php:276
+msgid "Successfully cleared the cache"
+msgstr ""
+
+#: options.php:316
+msgid "Please fill in the highlighted fields!"
+msgstr ""
+
+#: options.php:333
+msgid "Successfully saved settings"
+msgstr ""
+
+#: spreadplugin.php:321
+msgid "Product category"
+msgstr "Scegli categoria"
+
+#: spreadplugin.php:346
+msgid "Sort by"
+msgstr "Ordina per"
+
+#: spreadplugin.php:347
+msgid "name"
+msgstr "nome"
+
+#: spreadplugin.php:348
+msgid "price"
+msgstr "prezzo"
+
+#: spreadplugin.php:349
+msgid "recent"
+msgstr "recente"
+
+#: spreadplugin.php:350
+msgid "weight"
+msgstr "taglia"
+
+#: spreadplugin.php:353 spreadplugin.php:430
+msgid "Basket"
+msgstr "Carrello"
+
+#: spreadplugin.php:416
+msgid "next"
+msgstr "Avanti"
+
+#: spreadplugin.php:429
+msgid "Back"
+msgstr ""
+
+#: spreadplugin.php:670 spreadplugin.php:1330
+msgid "Edit article"
+msgstr "Modifica articolo"
+
+#: spreadplugin.php:693
+msgid "Details"
+msgstr "Dettagli"
+
+#: spreadplugin.php:732 spreadplugin.php:839 spreadplugin.php:1171
+msgid "Show description"
+msgstr "Mostra descrizione"
+
+#: spreadplugin.php:745 spreadplugin.php:1409
+msgid "Price (without tax):"
+msgstr "Prezzo (senza tasse):"
+
+#: spreadplugin.php:746 spreadplugin.php:1410
+msgid "Price (with tax):"
+msgstr "Prezzo (con tasse):"
+
+#: spreadplugin.php:748 spreadplugin.php:1412
+msgid "excl. Shipping"
+msgstr ""
+
+#: spreadplugin.php:751 spreadplugin.php:1415
+msgid "Price:"
+msgstr "Prezzo:"
+
+#: spreadplugin.php:757 spreadplugin.php:1177 spreadplugin.php:1421
+msgid "Add to basket"
+msgstr "Aggiungi al carrello"
+
+#: spreadplugin.php:832
+msgid "Click to view the articles"
+msgstr ""
+
+#: spreadplugin.php:1170
+msgid "Hide description"
+msgstr "Nascondi descrizione"
+
+#: spreadplugin.php:1173
+msgid "Loading new articles..."
+msgstr "Caricamento nuovi articoli..."
+
+#: spreadplugin.php:1174
+msgid "You have reached the end"
+msgstr "Complimenti, sei giunto al termine"
+
+#: spreadplugin.php:1178
+msgid "Adding..."
+msgstr "Aggiungi..."
+
+#: spreadplugin.php:1347
+msgid "Additional details"
+msgstr "Ulteriori dettagli"
+
+#: spreadplugin.php:1361
+msgid "Product details"
+msgstr "Dettagli prodotti"
+
+#: spreadplugin.php:1367 spreadplugin.php:1648
+msgid "Size"
+msgstr ""
+
+#: spreadplugin.php:1380
+msgid "Color"
+msgstr ""
+
+#: spreadplugin.php:1515
+msgid "You do not have sufficient permissions to access this page."
+msgstr ""
+
+#: spreadplugin.php:1648
+msgid "Quantity"
+msgstr ""
+
+#: spreadplugin.php:1650
+msgid "Remove"
+msgstr ""
+
+#: spreadplugin.php:1660
+msgid "Total (excl. Shipping)"
+msgstr ""
+
+#: spreadplugin.php:1663 spreadplugin.php:1665
+msgid "Proceed checkout"
+msgstr ""
+
+#: spreadplugin.php:1665
+msgid "Basket is empty"
+msgstr "Il carrello è vuoto"
+
+#~ msgid "zzgl. Versandkosten"
+#~ msgstr "excl. Shipping"
+
+#, fuzzy
+#~ msgid "Preis (with tax):"
+#~ msgstr "Preis (with Tax):"
+
+#~ msgid "Preis (ohne MwSt.):"
+#~ msgstr "Price (without Tax):"
