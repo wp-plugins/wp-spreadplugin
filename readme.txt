@@ -179,7 +179,7 @@ You get the `DESIGNID` from your spreadshirt admin panel.
 Please check your `Locale` setting in your user-data of spreadshirt.
 You can find it here: http://www.spreadshirt.net/user-data-C162 or http://www.spreadshirt.com/user-data-C162
 
-= Where do I find great templates for wordpress? =
+= Where do I find great website templates for wordpress? =
 
 Please have a look here: http://themeforest.net/category/wordpress?ref=thimo
 
