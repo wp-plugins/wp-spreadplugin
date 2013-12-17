@@ -3,9 +3,9 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.3
+ * Version: 3.4
  * Author: Thimo Grauerholz
- * Author URI: http://lovetee.de/
+ * Author URI: http://www.spreadplugin.de
  */
 
 
@@ -45,6 +45,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				'shop_display' => '',
 				'shop_designsbackground' => '',
 				'shop_showdescription' => '',
+				'shop_showproductdescription' => '',
 				'shop_imagesize' => '',
 				'shop_showextendprice' => '',
 				'shop_zoomimagebackground' => '',
@@ -286,7 +287,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				
 				
 				// Start output
-				$output = '<div id="spreadshirt-items" class="spreadshirt-items clearfix">';
+				$output = '<div id="spreadplugin-items" class="spreadplugin-items clearfix">';
 
 
 				// display
@@ -298,8 +299,8 @@ if(!class_exists('WP_Spreadplugin')) {
 					// Listing product
 					if (!isset($_GET['product'])&&intval($_GET['product'])==0) {
 	
-						// add spreadshirt-menu
-						$output .= '<div id="spreadshirt-menu" class="spreadshirt-menu">';
+						// add spreadplugin-menu
+						$output .= '<div id="spreadplugin-menu" class="spreadplugin-menu">';
 		
 						// add product categories
 						$output .= '<select name="productCategory" id="productCategory">';
@@ -343,7 +344,7 @@ if(!class_exists('WP_Spreadplugin')) {
 
 
 					
-						$output .= '<div id="spreadshirt-list">';
+						$output .= '<div id="spreadplugin-list">';
 	
 						// Designs view
 						if (self::$shopOptions['shop_display']==1) {
@@ -365,7 +366,7 @@ if(!class_exists('WP_Spreadplugin')) {
 										$addStyle="style=\"background-color:rgba(".$bgc[0].",".$bgc[1].",".$bgc[2].",0.4);\"";
 									}
 	
-									$output .= "<div class=\"spreadshirt-designs\">";
+									$output .= "<div class=\"spreadplugin-designs\">";
 									$output .= $this->displayDesigns($designId,$arrDesigns,$articleData[$designId],$bgc);
 									$output .= "<div id=\"designContainer_".$designId."\" class=\"design-container clearfix\" ".$addStyle.">";
 										
@@ -406,11 +407,11 @@ if(!class_exists('WP_Spreadplugin')) {
 					} else {
 						
 						// display product page
-						$output .= '<div id="spreadshirt-list">';
+						$output .= '<div id="spreadplugin-list">';
 						
 						// checkout
-						// add simple spreadshirt-menu
-						$output .= '<div id="spreadshirt-menu" class="spreadshirt-menu">';
+						// add simple spreadplugin-menu
+						$output .= '<div id="spreadplugin-menu" class="spreadplugin-menu">';
 						$output .= '<a href="'.get_page_link().'">'.__('Back', $this->stringTextdomain);
 						$output .= '<div id="checkout"><span></span> <a href="'.$_SESSION['checkoutUrl'].'" target="'.self::$shopOptions['shop_linktarget'].'" id="basketLink">'.__('Basket', $this->stringTextdomain).'</a></div>';
 						$output .= '<div id="cart"></div>';
@@ -685,7 +686,7 @@ if(!class_exists('WP_Spreadplugin')) {
 		 */
 		private function displayArticles($id,$article,$backgroundColor='') {
 
-			$output = '<div class="spreadshirt-article clearfix" id="article_'.$id.'" style="width:'.(self::$shopOptions['shop_imagesize']+7).'px">';
+			$output = '<div class="spreadplugin-article clearfix" id="article_'.$id.'" style="width:'.(self::$shopOptions['shop_imagesize']+7).'px">';
 			$output .= '<a name="'.$id.'"></a>';
 			$output .= '<h3>'.htmlspecialchars($article['name'],ENT_QUOTES).'</h3>';
 			$output .= '<form method="post" id="form_'.$id.'">';
@@ -697,7 +698,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				
 			// display preview image
 			$output .= '<div class="image-wrapper">';
-			$output .= '<img src="'.plugins_url('/img/blank.gif', __FILE__).'" alt="' . htmlspecialchars($article['name'],ENT_QUOTES) . '" id="previewimg_'.$id.'" data-zoom-image="http://image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width=800,height=800'.(!empty($backgroundColor)?',backgroundColor='.$backgroundColor:'').'" class="preview lazy" data-original="http://image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width='.self::$shopOptions['shop_imagesize'].',height='.self::$shopOptions['shop_imagesize'].'" width="'.self::$shopOptions['shop_imagesize'].'" height="'.self::$shopOptions['shop_imagesize'].'" />';
+			$output .= '<img src="'.plugins_url('/img/blank.gif', __FILE__).'" alt="' . htmlspecialchars($article['name'],ENT_QUOTES) . '" id="previewimg_'.$id.'" data-zoom-image="http://image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width=800,height=800'.(!empty($backgroundColor)?',backgroundColor='.$backgroundColor:'').'" class="preview lazy" data-original="http://image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width='.self::$shopOptions['shop_imagesize'].',height='.self::$shopOptions['shop_imagesize'].'" />';
 			$output .= '</div>';
 
 			// add a select with available sizes
@@ -754,9 +755,20 @@ if(!class_exists('WP_Spreadplugin')) {
 				$output .= '<div class="separator"></div>';
 
 				if (self::$shopOptions['shop_showdescription']==0) {
-					$output .= '<div class="description-wrapper"><div class="header"><a>'.__('Show description', $this->stringTextdomain).'</a></div><div class="description">'.htmlspecialchars($article['description'],ENT_QUOTES).'</div></div>';
+					$output .= '<div class="description-wrapper"><div class="header"><a>'.__('Show article description', $this->stringTextdomain).'</a></div><div class="description">'.htmlspecialchars($article['description'],ENT_QUOTES).'</div></div>';
 				} else {
 					$output .= '<div class="description-wrapper">'.htmlspecialchars($article['description'],ENT_QUOTES).'</div>';
+				}
+			}
+			
+			// Show product description link if set
+			if (self::$shopOptions['shop_showproductdescription']==1) {
+				$output .= '<div class="separator"></div>';
+
+				if (self::$shopOptions['shop_showdescription']==0) {
+					$output .= '<div class="product-description-wrapper"><div class="header"><a>'.__('Show product description', $this->stringTextdomain).'</a></div><div class="description">'.$article['productdescription'].'</div></div>';
+				} else {
+					$output .= '<div class="product-description-wrapper">'.$article['productdescription'].'</div>';
 				}
 			}
 
@@ -849,11 +861,11 @@ if(!class_exists('WP_Spreadplugin')) {
 			$addStyle = '';
 			if ($bgc) $addStyle='style="background-color:rgba('.$bgc[0].','.$bgc[1].','.$bgc[2].',0.4);"';
 
-			$output = '<div class="spreadshirt-design clearfix" id="design_'.$id.'" style="width:187px">';
+			$output = '<div class="spreadplugin-design clearfix" id="design_'.$id.'" style="width:187px">';
 			$output .= '<a name="'.$id.'"></a>';
 			$output .= '<h3>'.htmlspecialchars($designData['name'],ENT_QUOTES).'</h3>';
 			$output .= '<div class="image-wrapper" '.$addStyle.'>';
-			$output .= '<img src="'.plugins_url('/img/blank.gif', __FILE__).'" class="lazy" data-original="' . $this->cleanURL($designData['resource2']) . ',width='.self::$shopOptions['shop_imagesize'].',height='.self::$shopOptions['shop_imagesize'].'" width="'.self::$shopOptions['shop_imagesize'].'" height="'.self::$shopOptions['shop_imagesize'].'" alt="' . htmlspecialchars($designData['name'],ENT_QUOTES) . '" id="compositedesignimg_'.$id.'" />'; // style="display:none;" // title="'.htmlspecialchars($designData['productdescription'],ENT_QUOTES).'"
+			$output .= '<img src="'.plugins_url('/img/blank.gif', __FILE__).'" class="lazy" data-original="' . $this->cleanURL($designData['resource2']) . ',width='.self::$shopOptions['shop_imagesize'].',height='.self::$shopOptions['shop_imagesize'].'" alt="' . htmlspecialchars($designData['name'],ENT_QUOTES) . '" id="compositedesignimg_'.$id.'" />'; // style="display:none;" // title="'.htmlspecialchars($designData['productdescription'],ENT_QUOTES).'"
 			$output .= '<span class="img-caption">'.__('Click to view the articles', $this->stringTextdomain).'</em></span>';
 			$output .= '</div>';
 
@@ -1222,8 +1234,10 @@ if(!class_exists('WP_Spreadplugin')) {
 					* Spreadplugin vars
 					*/
 
-					var textHideDesc = '".__('Hide description', $this->stringTextdomain)."';
-					var textShowDesc = '".__('Show description', $this->stringTextdomain)."';
+					var textHideDesc = '".__('Hide article description', $this->stringTextdomain)."';
+					var textShowDesc = '".__('Show article description', $this->stringTextdomain)."';
+					var textProdHideDesc = '".__('Hide product description', $this->stringTextdomain)."';
+					var textProdShowDesc = '".__('Show product description', $this->stringTextdomain)."';
 					var loadingImage = '".plugins_url('/img/loading.gif', __FILE__)."';
 					var loadingMessage = '".__('Loading new articles...', $this->stringTextdomain)."';
 					var loadingFinishedMessage = '".__('You have reached the end', $this->stringTextdomain)."';
@@ -1377,7 +1391,7 @@ if(!class_exists('WP_Spreadplugin')) {
 		 */
 		private function displayDetailPage($id,$article,$backgroundColor='') {
 
-			$output = '<div class="spreadshirt-article-detail" id="article_'.$id.'">';
+			$output = '<div class="spreadplugin-article-detail" id="article_'.$id.'">';
 			$output .= '<a name="'.$id.'"></a>';
 			$output .= '<form method="post" id="form_'.$id.'"><table><tr><td>';
 				
@@ -1388,7 +1402,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				
 			// display preview image
 			$output .= '<div class="image-wrapper">';
-			$output .= '<img src="http://image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width=280,height=280" class="preview" width="280" height="280" alt="' . htmlspecialchars($article['name'],ENT_QUOTES) . '" id="previewimg_'.$id.'" data-zoom-image="http://image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width=600,height=600'.(!empty($backgroundColor)?',backgroundColor='.$backgroundColor:'').'" />';
+			$output .= '<img src="http://image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width=280,height=280" class="preview"  alt="' . htmlspecialchars($article['name'],ENT_QUOTES) . '" id="previewimg_'.$id.'" data-zoom-image="http://image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width=600,height=600'.(!empty($backgroundColor)?',backgroundColor='.$backgroundColor:'').'" />';
 			$output .= '</div>';
 			
 				// Short product description
@@ -1412,10 +1426,8 @@ if(!class_exists('WP_Spreadplugin')) {
 			}
 
 
-			// Show product description link if not empty
-			if (!empty($article['description'])) {
-				$output .= '<div class="product-description-wrapper clearfix"><h4>'.__('Product details', $this->stringTextdomain).'</h4>'.htmlspecialchars($article['productdescription'],ENT_QUOTES).'</div>';
-			}
+			// Show product description
+			$output .= '<div class="product-description-wrapper clearfix"><h4>'.__('Product details', $this->stringTextdomain).'</h4>'.$article['productdescription'].'</div>';
 
 
 			// add a select with available sizes

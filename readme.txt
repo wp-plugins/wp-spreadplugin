@@ -3,8 +3,8 @@ Contributors: Thimo Grauerholz
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EZLKTKW8UR6PQ
 Tags: spreadshirt,wordpress,plugin,shop,store,shirt,t-shirt,integration,online store,online shop
 Requires at least: 3.3
-Tested up to: 3.7.1
-Stable tag: 3.3
+Tested up to: 3.8
+Stable tag: 3.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -194,6 +194,11 @@ Please have a look here: http://themeforest.net/category/wordpress?ref=thimo
 
 == Changelog ==
 
+= 3.4 =
+* Added close basket, when click outside
+* Added new option to display product description under article
+* Minor enhancements
+
 = 3.3.1 = 
 * Italian translation added
 
@@ -382,7 +387,7 @@ Translation for sorting added
 
 = 1.7.1 =
 * Added a new shortcode variable to change the link targets. To enable change `shop_linktarget=""` to shop_linktarget="YOUR_IFRAME_NAME"`.
-* You may hide the product category field by adding a style in the plugin css. E.g. .spreadshirt-items #productCategory {display:none}
+* You may hide the product category field by adding a style in the plugin css. E.g. .spreadplugin-items #productCategory {display:none}
 
 = 1.7 =
 * Own cache added (updates every 8 hours) - speed improvements.

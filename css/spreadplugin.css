@@ -2,9 +2,9 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.3
+ * Version: 3.4
  * Author: Thimo Grauerholz
- * Author URI: http://lovetee.de/
+ * Author URI: http://www.spreadplugin.de
  */
 
 #main ul {
@@ -15,13 +15,13 @@ pre, code {
 	font-family: Arial, Helvetica, Tahoma, sans-serif;
 	font-size: 13px;
 }
-.spreadshirt-items {
+.spreadplugin-items {
 	position: relative;
 }
-.spreadshirt-items img {
+.spreadplugin-items img {
 	padding: 0 !important;
 }
-.spreadshirt-article, .spreadshirt-design,.spreadshirt-article-detail {
+.spreadplugin-article, .spreadplugin-design,.spreadplugin-article-detail {
 	float: left;
 	margin-top: 20px;
 	margin-right: 2px;
@@ -31,96 +31,96 @@ pre, code {
 	overflow: hidden;
 	white-space: normal;
 }
-.spreadshirt-article-detail {
+.spreadplugin-article-detail {
 	width:auto;	
 }
-.spreadshirt-items a {
+.spreadplugin-items a {
 	color: #000;
 }
-.spreadshirt-items a:hover {
+.spreadplugin-items a:hover {
 	text-decoration: underline;
 }
-.spreadshirt-design {
+.spreadplugin-design {
 	min-height: 300px;
 	height: 300px !important;
 	text-align: center;
 }
-.spreadshirt-article img,.spreadshirt-article-detail img {
+.spreadplugin-article img,.spreadplugin-article-detail img {
 	padding: 0;
 	border: 0;
 	border-radius: 0;
 	background: none;
 	margin: 0;
 }
-.spreadshirt-article img, .spreadshirt-article h3, .spreadshirt-design h3,.spreadshirt-article-detail img,.spreadshirt-article-detail h3 {
+.spreadplugin-article img, .spreadplugin-article h3, .spreadplugin-design h3,.spreadplugin-article-detail img,.spreadplugin-article-detail h3 {
 	display: block;
 	text-align: center;
 	margin: 0 auto;
 }
-.spreadshirt-article .image-wrapper,.spreadshirt-article-detail .image-wrapper  {
+.spreadplugin-article .image-wrapper,.spreadplugin-article-detail .image-wrapper  {
 	min-height: 200px;
 }
-.spreadshirt-article h3, .spreadshirt-design h3 {
+.spreadplugin-article h3, .spreadplugin-design h3 {
 	min-height: 55px
 }
-.spreadshirt-article div,.spreadshirt-article-detail div {
+.spreadplugin-article div,.spreadplugin-article-detail div {
 	text-align: left;
 }
-.spreadshirt-article ul, .spreadshirt-items .colors li, .spreadshirt-article ul li, .spreadshirt-article #size-select, .spreadshirt-article p, .spreadshirt-article input,.spreadshirt-article-detail ul {
+.spreadplugin-article ul, .spreadplugin-items .colors li, .spreadplugin-article ul li, .spreadplugin-article #size-select, .spreadplugin-article p, .spreadplugin-article input,.spreadplugin-article-detail ul {
 	list-style: none;
 	margin: 0;
 	padding: 0;
 }
-.spreadshirt-article input[type=text],.spreadshirt-article-detail input[type=text] {
+.spreadplugin-article input[type=text],.spreadplugin-article-detail input[type=text] {
 	clear: both;
 	width: 30px;
 	margin-right: 10px;
 }
-.spreadshirt-article input[type="submit"], .spreadshirt-article #quantity,.spreadshirt-article-detail input[type="submit"], .spreadshirt-article-detail #quantity {
+.spreadplugin-article input[type="submit"], .spreadplugin-article #quantity,.spreadplugin-article-detail input[type="submit"], .spreadplugin-article-detail #quantity {
 	padding: 5px;
 	margin: 5px;
 	margin-bottom: 10px;
 }
-.spreadshirt-article input[type="submit"],.spreadshirt-article-detail input[type="submit"] {
+.spreadplugin-article input[type="submit"],.spreadplugin-article-detail input[type="submit"] {
 	width: auto;
 }
-.spreadshirt-items .colors {
+.spreadplugin-items .colors {
 	min-height: 40px;
 }
-.spreadshirt-items .colors li, .spreadshirt-items .views li {
+.spreadplugin-items .colors li, .spreadplugin-items .views li {
 	float: left;
 	width: 13px;
 	height: 13px;
 	margin: 0 2px 2px 0;
 	cursor: pointer;
 }
-.spreadshirt-items .views li {
+.spreadplugin-items .views li {
 	width: 42px;
 	height: 42px;
 	list-style-type: none !important;
 }
-.spreadshirt-items #pagination {
+.spreadplugin-items #pagination {
 	float: left;
 }
-.spreadshirt-items #copyright {
+.spreadplugin-items #copyright {
 	clear: both;
 	padding-top: 20px;
 	z-index: 0;
 }
-.spreadshirt-items #copyright, .spreadshirt-items #copyright a {
+.spreadplugin-items #copyright, .spreadplugin-items #copyright a {
 	color: #ccc;
 	font-size: x-small;
 }
-.spreadshirt-items .description-wrapper .header a {
+.spreadplugin-items .description-wrapper .header a,.spreadplugin-items .product-description-wrapper .header a {
 	cursor: pointer;
 }
-.spreadshirt-items .description-wrapper .description {
+.spreadplugin-items .description-wrapper .description,.spreadplugin-items .product-description-wrapper .description {
 	display: none
 }
-.spreadshirt-items .ul {
+.spreadplugin-items .ul {
 	list-style: none outside none !important;
 }
-.spreadshirt-items .separator {
+.spreadplugin-items .separator {
 	margin: 0;
 	padding: 0;
 	clear: both;
@@ -128,7 +128,7 @@ pre, code {
 	padding-bottom: 5px;
 	background-color: transparent
 }
-.spreadshirt-items #infscr-loading {
+.spreadplugin-items #infscr-loading {
 	background: #fff;
 	z-index: 1003;
 	position: fixed;
@@ -148,46 +148,46 @@ pre, code {
 	-webkit-border-radius: 5px;
 	border-radius: 5px;
 }
-.spreadshirt-items #infscr-loading img {
+.spreadplugin-items #infscr-loading img {
 	position: absolute;
 	top: 19px;
 	left: 20px;
 	border-radius: 0;
 	box-shadow: none;
 }
-#spreadshirt-list {
+#spreadplugin-list {
 	padding-top: 20px;
 	position: relative;
 	width: 100%;
 }
 /* display or hide prices */
-.spreadshirt-article #price-without-tax,.spreadshirt-article-detail #price-without-tax {
+.spreadplugin-article #price-without-tax,.spreadplugin-article-detail #price-without-tax {
 /*	display:none; */
 }
-.spreadshirt-article #price-with-tax,.spreadshirt-article-detail #price-with-tax {
+.spreadplugin-article #price-with-tax,.spreadplugin-article-detail #price-with-tax {
 /*	display:none; */
 }
-.spreadshirt-items #size-select {
+.spreadplugin-items #size-select {
 	width: 80px
 }
-.spreadshirt-items .design-container {
+.spreadplugin-items .design-container {
 	display: none;
 }
-.spreadshirt-items .active {
+.spreadplugin-items .active {
 	width: 100%;
 	float: left;
 	clear: both;
 	background-color: #e8e8e8;
 	padding: 2px;
 }
-.spreadshirt-design .image-wrapper {
+.spreadplugin-design .image-wrapper {
 	cursor: pointer;
 	text-align: center;
 	vertical-align: middle;
 	height: 190px;
 	width: 190px;
 }
-.spreadshirt-design .img-caption {
+.spreadplugin-design .img-caption {
 	background: #fff;
 	color: #000;
 	display: none;
@@ -204,8 +204,8 @@ pre, code {
 	-khtml-opacity: 0.8;    /* for really really old safari */
 	opacity: 0.8;    /* css standard, currently it works in most modern browsers like firefox,  */
 }
-/* spreadshirt-menu */
-.spreadshirt-menu {
+/* spreadplugin-menu */
+.spreadplugin-menu {
 	position: relative;
 	z-index: 1002;
 	padding: 10px;
@@ -216,41 +216,41 @@ pre, code {
  *left: 0;
 	display: inline-block;
 }
-.spreadshirt-menu.fixed {
+.spreadplugin-menu.fixed {
 	position: fixed;
 	top: 0;
 	width: 100%;
 	border: 1px solid #DBDBDB;
 	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
 }
-.spreadshirt-menu #productCategory, .spreadshirt-menu #productSubCategory, .spreadshirt-menu #articleSortBy, .spreadshirt-menu #checkout {
+.spreadplugin-menu #productCategory, .spreadplugin-menu #productSubCategory, .spreadplugin-menu #articleSortBy, .spreadplugin-menu #checkout {
 	position: relative;
 	float: left;
 	margin-right: 10px;
 }
-.spreadshirt-menu #productCategory {
+.spreadplugin-menu #productCategory {
 	/*	display:none; */
 	width: 150px;
 	margin-left: 10px;
 }
-.spreadshirt-menu #productSubCategory {
+.spreadplugin-menu #productSubCategory {
 	/*	display:none; */
 	width: 150px;
 }
-.spreadshirt-menu #articleSortBy {
+.spreadplugin-menu #articleSortBy {
 	/*	display:none; */
 	width: 100px;
 }
-.spreadshirt-menu #checkout {
+.spreadplugin-menu #checkout {
 	float: right;
 }
-.spreadshirt-items .product-name {
+.spreadplugin-items .product-name {
 	font-size: 90%
 }
-.spreadshirt-items .details-wrapper,.spreadshirt-items .details-wrapper2 {
+.spreadplugin-items .details-wrapper,.spreadplugin-items .details-wrapper2 {
 	float: right;
 }
-.spreadshirt-items .edit-wrapper {
+.spreadplugin-items .edit-wrapper {
 	margin-left: 0;
 	margin-top: 0;
 	padding: 5px;
@@ -259,22 +259,22 @@ pre, code {
 	float: left
 }
 /* social icons*/
-.spreadshirt-items ul.soc-icons a {
+.spreadplugin-items ul.soc-icons a {
 	display: block;
 	line-height: 1em;
 }
-.spreadshirt-items ul.soc-icons li {
+.spreadplugin-items ul.soc-icons li {
 	display: inline-block;
 	float: none;
 	margin: 0 !important;
 	vertical-align: top;
 }
-.spreadshirt-items ul.soc-icons li {
+.spreadplugin-items ul.soc-icons li {
 	display: inline-block;
 	list-style: none outside none;
 	vertical-align: top;
 }
-.spreadshirt-items ul.soc-icons a {
+.spreadplugin-items ul.soc-icons a {
 	background-image: url("../img/social-buttons.svg");
 	background-repeat: no-repeat;
 	background-size: 570px 240px;
@@ -284,117 +284,113 @@ pre, code {
 	white-space: normal;
 	width: 35px;
 }
-.spreadshirt-items ul.soc-icons .twt {
+.spreadplugin-items ul.soc-icons .twt {
 	background-position: -20px -20px;
 }
-.spreadshirt-items ul.soc-icons .fb {
+.spreadplugin-items ul.soc-icons .fb {
 	background-position: -75px -20px;
 }
-.spreadshirt-items ul.soc-icons .in {
+.spreadplugin-items ul.soc-icons .in {
 	background-position: -130px -20px;
 }
-.spreadshirt-items ul.soc-icons .pin {
+.spreadplugin-items ul.soc-icons .pin {
 	background-position: -185px -20px;
 }
-.spreadshirt-items ul.soc-icons .drb {
+.spreadplugin-items ul.soc-icons .drb {
 	background-position: -240px -20px;
 }
-.spreadshirt-items ul.soc-icons .tumb {
+.spreadplugin-items ul.soc-icons .tumb {
 	background-position: -295px -20px;
 }
-.spreadshirt-items ul.soc-icons .flick {
+.spreadplugin-items ul.soc-icons .flick {
 	background-position: -350px -20px;
 }
-.spreadshirt-items ul.soc-icons .vim {
+.spreadplugin-items ul.soc-icons .vim {
 	background-position: -405px -20px;
 }
-.spreadshirt-items ul.soc-icons .delic {
+.spreadplugin-items ul.soc-icons .delic {
 	background-position: -460px -20px;
 }
-.spreadshirt-items ul.soc-icons .goog {
+.spreadplugin-items ul.soc-icons .goog {
 	background-position: -515px -20px;
 }
-.spreadshirt-items ul.soc-icons .forr {
+.spreadplugin-items ul.soc-icons .forr {
 	background-position: -20px -75px;
 }
-.spreadshirt-items ul.soc-icons .hi5 {
+.spreadplugin-items ul.soc-icons .hi5 {
 	background-position: -75px -75px;
 }
-.spreadshirt-items ul.soc-icons .last {
+.spreadplugin-items ul.soc-icons .last {
 	background-position: -130px -75px;
 }
-.spreadshirt-items ul.soc-icons .space {
+.spreadplugin-items ul.soc-icons .space {
 	background-position: -185px -75px;
 }
-.spreadshirt-items ul.soc-icons .newsv {
+.spreadplugin-items ul.soc-icons .newsv {
 	background-position: -240px -75px;
 }
-.spreadshirt-items ul.soc-icons .pica {
+.spreadplugin-items ul.soc-icons .pica {
 	background-position: -295px -75px;
 }
-.spreadshirt-items ul.soc-icons .tech {
+.spreadplugin-items ul.soc-icons .tech {
 	background-position: -350px -75px;
 }
-.spreadshirt-items ul.soc-icons .rss {
+.spreadplugin-items ul.soc-icons .rss {
 	background-position: -405px -75px;
 }
-.spreadshirt-items ul.soc-icons .rdio {
+.spreadplugin-items ul.soc-icons .rdio {
 	background-position: -460px -75px;
 }
-.spreadshirt-items ul.soc-icons .share {
+.spreadplugin-items ul.soc-icons .share {
 	background-position: -515px -75px;
 }
-.spreadshirt-items ul.soc-icons .skyp {
+.spreadplugin-items ul.soc-icons .skyp {
 	background-position: -20px -130px;
 }
-.spreadshirt-items ul.soc-icons .slid {
+.spreadplugin-items ul.soc-icons .slid {
 	background-position: -75px -130px;
 }
-.spreadshirt-items ul.soc-icons .squid {
+.spreadplugin-items ul.soc-icons .squid {
 	background-position: -130px -130px;
 }
-.spreadshirt-items ul.soc-icons .stum {
+.spreadplugin-items ul.soc-icons .stum {
 	background-position: -185px -130px;
 }
-.spreadshirt-items ul.soc-icons .what {
+.spreadplugin-items ul.soc-icons .what {
 	background-position: -240px -130px;
 }
-.spreadshirt-items ul.soc-icons .wp {
+.spreadplugin-items ul.soc-icons .wp {
 	background-position: -295px -130px;
 }
-.spreadshirt-items ul.soc-icons .ytb {
+.spreadplugin-items ul.soc-icons .ytb {
 	background-position: -350px -130px;
 }
-.spreadshirt-items ul.soc-icons .digg {
+.spreadplugin-items ul.soc-icons .digg {
 	background-position: -405px -130px;
 }
-.spreadshirt-items ul.soc-icons .beh {
+.spreadplugin-items ul.soc-icons .beh {
 	background-position: -460px -130px;
 }
-.spreadshirt-items ul.soc-icons .yah {
+.spreadplugin-items ul.soc-icons .yah {
 	background-position: -515px -130px;
 }
-.spreadshirt-items ul.soc-icons .blogg {
+.spreadplugin-items ul.soc-icons .blogg {
 	background-position: -20px -185px;
 }
-.spreadshirt-items ul.soc-icons .hype {
+.spreadplugin-items ul.soc-icons .hype {
 	background-position: -75px -185px;
 }
-.spreadshirt-items ul.soc-icons .groove {
+.spreadplugin-items ul.soc-icons .groove {
 	background-position: -130px -185px;
 }
-.spreadshirt-items ul.soc-icons .sound {
+.spreadplugin-items ul.soc-icons .sound {
 	background-position: -185px -185px;
 }
-.spreadshirt-items ul.soc-icons .insta {
+.spreadplugin-items ul.soc-icons .insta {
 	background-position: -240px -185px;
 }
-.spreadshirt-items ul.soc-icons .vk {
+.spreadplugin-items ul.soc-icons .vk {
 	background-position: -295px -185px;
-}
-.spreadshirt-article .preview,.spreadshirt-article-detail .preview {
-	min-height: 190px !important;
-	min-width: 190px !important;
 }
 #cart .cart-row {
 	float: left;
@@ -463,13 +459,13 @@ pre, code {
 #cart-total .price {
 	float: right;
 }
-.spreadshirt-article-detail form table td {
+.spreadplugin-article-detail form table td {
 	vertical-align:top;
 }
-.spreadshirt-article-detail form table td h3 {
+.spreadplugin-article-detail form table td h3 {
 	text-align:left
 }
-.spreadshirt-items .product-description-wrapper {
+.spreadplugin-items .product-description-wrapper {
 	padding-top:10px;
 	padding-bottom:10px;
 }
