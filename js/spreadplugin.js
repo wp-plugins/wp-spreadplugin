@@ -362,7 +362,7 @@ jQuery(function($) {
 		}, function(arrayOfNewElems) {
 			bindClick();
 			bindHover();
-			$("img.lazy").lazyload({effect : "fadeIn"});
+			$("img.lazyimg").lazyload({effect : "fadeIn"});
 		});
 	}
 
@@ -528,7 +528,7 @@ jQuery(function($) {
 
 	bindClick();
 	bindHover();
-	$("img.lazy").lazyload({effect : "fadeIn"});
+	$("img.lazyimg").lazyload({effect : "fadeIn"});
 	
 });
 
