@@ -2,7 +2,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.4
+ * Version: 3.4.1
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -53,95 +53,55 @@ jQuery(function($) {
 		$('.spreadplugin-article .details-wrapper a,.spreadplugin-article-detail .details-wrapper a').unbind();
 		$('.spreadplugin-article .image-wrapper,.spreadplugin-article-detail .image-wrapper').unbind();
 
-		$('.spreadplugin-article .colors li,.spreadplugin-article-detail .colors li')
-				.click(
-						function() {
-							var id = '#'
-									+ $(this).closest(
-											'.spreadplugin-article,.spreadplugin-article-detail').attr('id');
+		$('.spreadplugin-article .colors li,.spreadplugin-article-detail .colors li').click(function() {
+							var id = '#' + $(this).closest('.spreadplugin-article,.spreadplugin-article-detail').attr('id');
 							var src = $(id + ' img.preview').attr('src');
-							var srczoom = $(id + ' img.preview').attr(
-									'data-zoom-image');
-							var srczoomData = $(id + ' img.preview').data(
-									'elevateZoom');
-							appearance = $(this).attr('value');
+							var srczoom = $(id + ' img.preview').attr('data-zoom-image');
+							var srczoomData = $(id + ' img.preview').data('elevateZoom');
+							var appearance = $(this).attr('value');
 
-							$(id + ' img.preview').attr(
-									'src',
-									src.replace(/\,appearanceId=(\d+)/g, '')
-											+ ',appearanceId=' + appearance);
-
-							$(id + ' img.previewview')
-									.each(
-											function() {
-												var originalsrc = $(this)
-														.attr('src');
-												$(this)
-														.attr(
-																'src',
-																originalsrc
-																		.replace(
-																				/\,appearanceId=(\d+)/g,
-																				'')
-																		+ ',appearanceId='
-																		+ appearance);
+							$(id + ' img.preview').attr('src',src.replace(/\,appearanceId=(\d+)/g, '') + ',appearanceId=' + appearance);
+							$(id + ' img.previewview').each(function() {
+												var originalsrc = $(this).attr('src');
+												$(this).attr('src',originalsrc.replace(/\,appearanceId=(\d+)/g,'') + ',appearanceId=' + appearance);
 											});
 
-							$(id + ' img.preview').attr(
-									'data-zoom-image',
-									srczoom
-											.replace(/\,appearanceId=(\d+)/g,
-													'')
-											+ ',appearanceId=' + appearance);
-
+							$(id + ' img.preview').attr('data-zoom-image',	srczoom.replace(/\,appearanceId=(\d+)/g,'') + ',appearanceId=' + appearance);
 							$(id + ' #appearance').val(appearance);
-
-							var url = srczoomData.imageSrc.replace(
-									/\,viewId=(\d+)/g, '');
-							url = url + ',appearanceId=' + appearance;
-							url = url + ',viewId='
-									+ $(id + ' #view').val();
-
-							srczoomData.zoomWindow.css({
-								backgroundImage : "url('" + url + "')"
-							});
+							
+							if (srczoomData) {
+								var url = srczoomData.imageSrc.replace(	/\,viewId=(\d+)/g, '');
+								url = url + ',appearanceId=' + appearance + ',viewId=' + $(id + ' #view').val();
+								srczoomData.zoomWindow.css({
+									backgroundImage : "url('" + url + "')"
+								});
+							}
 
 						});
 
-		$('.spreadplugin-article .views li,.spreadplugin-article-detail .views li').click(
-				function() {
-					var id = '#'
-							+ $(this).closest('.spreadplugin-article,.spreadplugin-article-detail')
-									.attr('id');
+		$('.spreadplugin-article .views li,.spreadplugin-article-detail .views li').click(function() {
+					var id = '#' + $(this).closest('.spreadplugin-article,.spreadplugin-article-detail').attr('id');
 					var src = $(id + ' img.previewview').attr('src');
-					var srczoomData = $(id + ' img.preview').data(
-							'elevateZoom');
-					view = $(this).attr('value');
+					var srczoomData = $(id + ' img.preview').data('elevateZoom');
+					var view = $(this).attr('value');
 
-					$(id + ' img.preview').attr(
-							'src',
-							src.replace(/\,viewId=(\d+)/g, '').replace(
-									/width=(\d+)/g, 'width=' + imageSize)
-									.replace(/height=(\d+)/g,
-											'height=' + imageSize)
-									+ ',viewId=' + view);
+					$(id + ' img.preview').attr('src',src.replace(/\,viewId=(\d+)/g, '')
+						.replace(/width=(\d+)/g, 'width=' + $(id + ' img.preview').width())
+						.replace(/height=(\d+)/g,'height=' + $(id + ' img.preview').height()) + ',viewId=' + view);
 
 					$(id + ' #view').val(view);
 
-					var url = srczoomData.imageSrc.replace(/\,viewId=(\d+)/g,
-							'');
-					url = url + ',appearanceId='
-							+ $(id + ' #appearance').val();
-					url = url + ',viewId=' + view;
-
-					srczoomData.zoomWindow.css({
-						backgroundImage : "url('" + url + "')"
-					});
+					if (srczoomData) {
+						var url = srczoomData.imageSrc.replace(/\,viewId=(\d+)/g,'');
+						srczoomData.zoomWindow.css({
+							backgroundImage : "url('" + url + "')"
+						});
+						url = url + ',appearanceId='	+ $(id + ' #appearance').val() + ',viewId=' + view;
+					}
 
 				});
 
-		$('.spreadplugin-article .description-wrapper div.header,.spreadplugin-article-detail .description-wrapper div.header').click(
-				function() {
+		$('.spreadplugin-article .description-wrapper div.header,.spreadplugin-article-detail .description-wrapper div.header').click(function() {
 					var par = $(this).parent().parent().parent();
 					var field = $(this).next();
 
@@ -155,8 +115,7 @@ jQuery(function($) {
 						$('.description-wrapper div.header a').html(	textShowDesc);
 					}
 				});
-		$('.spreadplugin-article .product-description-wrapper div.header,.spreadplugin-article-detail .description-wrapper div.header').click(
-				function() {
+		$('.spreadplugin-article .product-description-wrapper div.header,.spreadplugin-article-detail .description-wrapper div.header').click(function() {
 					var par = $(this).parent().parent().parent();
 					var field = $(this).next();
 
@@ -171,16 +130,12 @@ jQuery(function($) {
 					}
 				});
 
-		$('.spreadplugin-article form,.spreadplugin-article-detail form')
-				.submit(
-						function(event) {
+		$('.spreadplugin-article form,.spreadplugin-article-detail form').submit(function(event) {
 
 							event.preventDefault();
-							var data = $(this).serialize()
-									+ '&action=myAjax'; //&'+sid
+							var data = $(this).serialize() + '&action=myAjax'; //&'+sid
 							var form = this;
-							var button = $('#' + form.id
-									+ ' input[type=submit]');
+							var button = $('#' + form.id + ' input[type=submit]');
 
 
 							// to basket animation vars
@@ -245,8 +200,7 @@ jQuery(function($) {
 			autoCenter:true
 		});
 
-		$('.spreadplugin-design .image-wrapper').click(
-				function() {
+		$('.spreadplugin-design .image-wrapper').click(function() {
 
 					var id = $(this).parent().attr('id');
 					id = '#' + id.replace('design', 'designContainer');
@@ -255,8 +209,7 @@ jQuery(function($) {
 						$(id).addClass('active');
 						$(id).slideDown('slow');
 					} else {
-						$('#spreadplugin-list .design-container').slideUp(
-								'slow', function() {
+						$('#spreadplugin-list .design-container').slideUp('slow', function() {
 									$(this).removeClass('active');
 								});
 					}
@@ -269,8 +222,7 @@ jQuery(function($) {
 		$(".spreadplugin-article img.preview,.spreadplugin-article-detail img.preview").unbind();
 
 		// display image caption on top of image
-		$(".spreadplugin-design div.image-wrapper").each(
-				function() {
+		$(".spreadplugin-design div.image-wrapper").each(function() {
 
 					$(this).hover(
 							function() {
@@ -301,10 +253,8 @@ jQuery(function($) {
 		});
 
 		// socials
-		$('.spreadplugin-article ul.soc-icons a,.spreadplugin-article-detail ul.soc-icons a').hover(
-				function() {
-					$(this).parent().css('background-color',
-							$(this).attr('data-color'));
+		$('.spreadplugin-article ul.soc-icons a,.spreadplugin-article-detail ul.soc-icons a').hover(function() {
+					$(this).parent().css('background-color',$(this).attr('data-color'));
 				}, function() {
 					$(this).parent().removeAttr('style');
 				});
@@ -314,12 +264,9 @@ jQuery(function($) {
 	// Fixed menu bar
 	var msie6 = $.browser == 'msie' && $.browser.version < 7;
 	if (!msie6 && $('.spreadplugin-menu').length != 0) {
-		var top = $('#spreadplugin-menu').offset().top
-				- parseFloat($('#spreadplugin-menu').css('margin-top')
-						.replace(/auto/, 0));
+		var top = $('#spreadplugin-menu').offset().top - parseFloat($('#spreadplugin-menu').css('margin-top').replace(/auto/, 0));
 
-		$(window).scroll(
-				function(event) {
+		$(window).scroll(function(event) {
 					// what the y position of the scroll is
 					var y = $(this).scrollTop();
 					// whether that's below the form
@@ -328,13 +275,10 @@ jQuery(function($) {
 						$('#spreadplugin-menu').addClass('fixed');
 
 						// using wp #main container width and pos for fixed
-						$('#spreadplugin-menu').css('width',
-								$('div.spreadplugin-items').width());
-						// $('#spreadplugin-menu').css('left',$('div.spreadplugin-items').position().left);
+						$('#spreadplugin-menu').css('width',$('div.spreadplugin-items').width());
 					} else {
 						// otherwise remove it
 						$('#spreadplugin-menu').css('width', '');
-						// $('#spreadplugin-menu').css('left','');
 						$('#spreadplugin-menu').removeClass('fixed');
 					}
 				});
@@ -366,41 +310,32 @@ jQuery(function($) {
 		});
 	}
 
-	$('#spreadplugin-items #productCategory').change(
-			function() {
+	$('#spreadplugin-items #productCategory').change(function() {
 				prod = $(this).val();
-				document.location = pageLink + sep + 'productCategory=' + prod
-						+ '&articleSortBy=' + sor;
+				document.location = pageLink + sep + 'productCategory=' + prod + '&articleSortBy=' + sor;
 			});
-	$('#spreadplugin-items #productSubCategory').change(
-			function() {
+	$('#spreadplugin-items #productSubCategory').change(function() {
 				prod2 = $(this).val();
-				document.location = pageLink + sep + 'productCategory=' + prod
-						+ '&productSubCategory=' + prod2 + '&articleSortBy='
-						+ sor;
+				document.location = pageLink + sep + 'productCategory=' + prod + '&productSubCategory=' + prod2 + '&articleSortBy=' + sor;
 			});
 
-	$('#spreadplugin-items #articleSortBy').change(
-			function() {
+	$('#spreadplugin-items #articleSortBy').change(function() {
 				sor = $(this).val();
-				document.location = pageLink + sep + 'productCategory=' + prod
-						+ '&productSubCategory=' + prod2 + '&articleSortBy='
-						+ sor;
+				document.location = pageLink + sep + 'productCategory=' + prod + '&productSubCategory=' + prod2 + '&articleSortBy=' + sor;
 			});
 
 
-		$('#basketLink').click(
-						function(event) {
-							event.preventDefault();
-							
-							//mergeBasket();
-							
-							if ($('#cart').is(':hidden')) {
-								$('#cart').show();
-							} else {
-								$('#cart').hide();
-							}
-						});
+	$('#basketLink').click(function(event) {
+		event.preventDefault();
+		
+		//mergeBasket();
+		
+		if ($('#cart').is(':hidden')) {
+			$('#cart').show();
+		} else {
+			$('#cart').hide();
+		}
+	});
 
 
 
@@ -431,34 +366,22 @@ jQuery(function($) {
 			
 			// checkout in an iframe in page
 			if (pageCheckoutUseIframe == 1) {
-						$('#cart-checkout a').click(
-								function(event) {
+						$('#cart-checkout a').click(function(event) {
 									event.preventDefault();
 		
-									var checkoutLink = $(
-											'#cart-checkout a')
-											.attr('href');
+									var checkoutLink = $('#cart-checkout a').attr('href');
 		
-									if (typeof checkoutLink !== "undefined"
-											&& checkoutLink.length > 0) {
+									if (typeof checkoutLink !== "undefined" && checkoutLink.length > 0) {
 		
-										$('#spreadplugin-items #pagination')
-												.remove();
-										$('#spreadplugin-items #spreadplugin-menu')
-												.remove();
+										$('#spreadplugin-items #pagination').remove();
+										$('#spreadplugin-items #spreadplugin-menu').remove();
 										$(window).unbind('.infscr');
 		
-										$('#spreadplugin-list')
-												.html(
-														'<iframe style="z-index:10002" id="checkoutFrame" frameborder="0" width="900" height="2000" scroll="yes">');
-										$('#spreadplugin-list #checkoutFrame')
-												.attr('src', checkoutLink);
+										$('#spreadplugin-list').html('<iframe style="z-index:10002" id="checkoutFrame" frameborder="0" width="900" height="2000" scroll="yes">');
+										$('#spreadplugin-list #checkoutFrame').attr('src', checkoutLink);
 		
-										$('html, body')
-												.animate({
-															scrollTop : $(
-																	"#spreadplugin-items #checkoutFrame")
-																	.offset().top
+										$('html, body').animate({
+															scrollTop : $("#spreadplugin-items #checkoutFrame").offset().top
 														}, 2000);
 		
 									}
@@ -468,9 +391,7 @@ jQuery(function($) {
 		
 			// checkout in an iframe with modal window (fancybox)
 			if (pageCheckoutUseIframe == 2) {
-					var checkoutLink = $(
-							'#cart-checkout a')
-							.attr('href');
+					var checkoutLink = $('#cart-checkout a').attr('href');
 		
 					if (typeof checkoutLink !== "undefined" && checkoutLink.length > 0) {
 					
@@ -490,14 +411,7 @@ jQuery(function($) {
 				$(this).closest('.cart-row').show().fadeOut('slow');
 				
 				// &'+sid+'
-				$.post(ajaxLocation,	'action=myDelete&id='+$(this).closest('.cart-row').data('id'),function() {	
-					// &'+sid
-					/*
-					$.post(ajaxLocation,	'action=myAjax',function(json) {
-						refreshCart(json);
-						}, 'json');	
-					*/	
-					});
+				$.post(ajaxLocation,	'action=myDelete&id='+$(this).closest('.cart-row').data('id'),function() {});
 
 			});
 			

@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.4
+ * Version: 3.4.1
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -715,7 +715,6 @@ if(!class_exists('WP_Spreadplugin')) {
 
 			if (self::$shopOptions['shop_enablelink']==1) {
 				// old details page (spreadshirt) disabled here
-				//$output .= ' <div class="details-wrapper clearfix"><a href="//'.self::$shopOptions['shop_id'].'.spreadshirt.'.self::$shopOptions['shop_source'].'/-A'.$id.'" target="'.self::$shopOptions['shop_linktarget'].'">'.__('Details', $this->stringTextdomain).'</a></div>';
 				$output .= ' <div class="details-wrapper2 clearfix"><a href="'.add_query_arg( 'product', $id ).'" target="'.self::$shopOptions['shop_linktarget'].'">'.__('Details', $this->stringTextdomain).'</a></div>';
 			}
 
@@ -736,9 +735,12 @@ if(!class_exists('WP_Spreadplugin')) {
 			// add a list with available product views
 			if (isset($article['views'])&&is_array($article['views'])) {
 				$output .= '<ul class="views" name="views">';
-
+				
+				$_vc=0;
 				foreach($article['views'] as $k=>$v) {
 					$output .= '<li value="'.$k.'"><img src="'.plugins_url('/img/blank.gif', __FILE__).'" data-original="'. $this->cleanURL($v)  .',viewId='.$k.',width=42,height=42" class="previewview lazyimg" alt="" id="viewimg_'.$id.'" /></li>';
+					if ($_vc==3) break;
+					$_vc++;
 				}
 
 				$output .= '</ul>';
@@ -1247,12 +1249,11 @@ if(!class_exists('WP_Spreadplugin')) {
 					var textButtonAdded = '".__('Adding...', $this->stringTextdomain)."';
 					var ajaxLocation = '".admin_url( 'admin-ajax.php' )."?pageid=".get_the_ID()."&nonce=".wp_create_nonce('spreadplugin')."';
 					var display = '".self::$shopOptions['shop_display']."';
-					var imageSize = '".self::$shopOptions['shop_imagesize']."';
 					var infiniteScroll = '".(self::$shopOptions['shop_infinitescroll']==1 || self::$shopOptions['shop_infinitescroll']==''?1:0)."';
 					</script>";
 
 			echo "
-					<script language='javascript' type='text/javascript' src='".plugins_url('/js/spreadplugin.js', __FILE__)."'></script>";
+					<script language='javascript' type='text/javascript' src='".plugins_url('/js/spreadplugin.min.js', __FILE__)."'></script>";
 
 		}
 
@@ -1404,17 +1405,28 @@ if(!class_exists('WP_Spreadplugin')) {
 			$output .= '<div class="image-wrapper">';
 			$output .= '<img src="http://image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width=280,height=280" class="preview"  alt="' . htmlspecialchars($article['name'],ENT_QUOTES) . '" id="previewimg_'.$id.'" data-zoom-image="http://image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width=600,height=600'.(!empty($backgroundColor)?',backgroundColor='.$backgroundColor:'').'" />';
 			$output .= '</div>';
+
+
+			// add a list with available product views
+			if (isset($article['views'])&&is_array($article['views'])) {
+				$output .= '<div class="views-wrapper"><ul class="views" name="views">';
+
+				foreach($article['views'] as $k=>$v) {
+					$output .= '<li value="'.$k.'"><img src="'. $this->cleanURL($v)  .',viewId='.$k.',width=42,height=42" class="previewview" alt="" id="viewimg_'.$id.'" /></li>';
+				}
+
+				$output .= '</ul></div>';
+			}
+
 			
-				// Short product description
-			//$output .= '<div class="separator"></div>';
+			// Short product description
 			$output .= '<div class="product-name">';
 			$output .= htmlspecialchars($article['productname'],ENT_QUOTES);
 			$output .= '</div>';
 		
 
 			if (self::$shopOptions['shop_enablelink']==1) {
-				//$output .= ' <div class="details-wrapper clearfix"><a href="//'.self::$shopOptions['shop_id'].'.spreadshirt.'.self::$shopOptions['shop_source'].'/-A'.$id.'" target="'.self::$shopOptions['shop_linktarget'].'">'.__('Additional details', $this->stringTextdomain).'</a></div>';
-				$output .= ' <div class="details-wrapper2 clearfix"><a href="//'.self::$shopOptions['shop_id'].'.spreadshirt.'.self::$shopOptions['shop_source'].'/-A'.$id.'" target="_blank">'.__('Additional details', $this->stringTextdomain).'</a></div>';
+				$output .= ' <div class="details-wrapper2"><a href="//'.self::$shopOptions['shop_id'].'.spreadshirt.'.self::$shopOptions['shop_source'].'/-A'.$id.'" target="_blank">'.__('Additional details', $this->stringTextdomain).'</a></div>';
 			}
 
 
@@ -1441,26 +1453,12 @@ if(!class_exists('WP_Spreadplugin')) {
 				$output .= '</select></div>';
 			}
 
-			//$output .= '<div class="separator"></div>';
-
 			// add a list with availabel product colors
 			if (isset($article['appearances'])&&is_array($article['appearances'])) {
 				$output .= '<div class="color-wrapper clearfix">'.__('Color', $this->stringTextdomain).': <ul class="colors" name="color">';
 
 				foreach($article['appearances'] as $k=>$v) {
 					$output .= '<li value="'.$k.'"><img src="'. $this->cleanURL($v) .'" alt="" /></li>';
-				}
-
-				$output .= '</ul></div>';
-			}
-
-
-			// add a list with available product views
-			if (isset($article['views'])&&is_array($article['views'])) {
-				$output .= '<div class="views-wrapper clearfix"><ul class="views" name="views">';
-
-				foreach($article['views'] as $k=>$v) {
-					$output .= '<li value="'.$k.'"><img src="'. $this->cleanURL($v)  .',viewId='.$k.',width=42,height=42" class="previewview" alt="" id="viewimg_'.$id.'" /></li>';
 				}
 
 				$output .= '</ul></div>';
