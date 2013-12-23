@@ -40,6 +40,10 @@ The pagination is done via infinity scroll.
 * Basket
 * Own product pages
 
+**Premium Support**
+
+The Spreadplugin team does not provide support for the plugin on the WordPress.org forums anymore. One on one email support is available to people who donated at least €10.
+
 **See it in action**
 
 http://lovetee.de/#shop (in german)
