@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: spreadshirt,wordpress,plugin,shop,store,shirt,t-shirt,integration,online store,online shop
 Requires at least: 3.3
 Tested up to: 3.8
-Stable tag: 3.4.1
+Stable tag: 3.4.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -197,6 +197,9 @@ Please have a look here: http://themeforest.net/category/wordpress?ref=thimo
 6. Settings page
 
 == Changelog ==
+
+= 3.4.2 =
+* Bugfixes
 
 = 3.4.1 =
 * Minor improvements

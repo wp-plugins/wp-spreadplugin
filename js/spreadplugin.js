@@ -2,7 +2,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.4.1
+ * Version: 3.4.2
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -86,17 +86,17 @@ jQuery(function($) {
 					var view = $(this).attr('value');
 
 					$(id + ' img.preview').attr('src',src.replace(/\,viewId=(\d+)/g, '')
-						.replace(/width=(\d+)/g, 'width=' + $(id + ' img.preview').width())
-						.replace(/height=(\d+)/g,'height=' + $(id + ' img.preview').height()) + ',viewId=' + view);
+						.replace(/width=(\d+)/g, 'width=' + Math.round($(id + ' img.preview').width()))
+						.replace(/height=(\d+)/g,'height=' + Math.round($(id + ' img.preview').height())) + ',viewId=' + view);
 
 					$(id + ' #view').val(view);
 
 					if (srczoomData) {
 						var url = srczoomData.imageSrc.replace(/\,viewId=(\d+)/g,'');
+						url = url + ',appearanceId='	+ $(id + ' #appearance').val() + ',viewId=' + view;
 						srczoomData.zoomWindow.css({
 							backgroundImage : "url('" + url + "')"
 						});
-						url = url + ',appearanceId='	+ $(id + ' #appearance').val() + ',viewId=' + view;
 					}
 
 				});
@@ -411,7 +411,7 @@ jQuery(function($) {
 				$(this).closest('.cart-row').show().fadeOut('slow');
 				
 				// &'+sid+'
-				$.post(ajaxLocation,	'action=myDelete&id='+$(this).closest('.cart-row').data('id'),function() {});
+				$.post(ajaxLocation,'action=myDelete&id='+$(this).closest('.cart-row').data('id'),function() {});
 
 			});
 			
