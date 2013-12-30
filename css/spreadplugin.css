@@ -2,7 +2,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.4.1
+ * Version: 3.5
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -27,9 +27,9 @@ code, pre {
 	position: relative
 }
 .spreadplugin-items img {
-	padding: 0!important
+	padding: 0 !important
 }
-.spreadplugin-article, .spreadplugin-article-detail, .spreadplugin-design {
+.spreadplugin-article, .spreadplugin-article-detail, .spreadplugin-design, .spreadplugin-article.list {
 	float: left;
 	margin-top: 20px;
 	margin-right: 2px;
@@ -39,7 +39,11 @@ code, pre {
 	overflow: hidden;
 	white-space: normal
 }
-.spreadplugin-article table, .spreadplugin-article-detail table, .spreadplugin-design table {
+.spreadplugin-article.list {
+	min-height: 450px; /* fixing the height of each Article */
+	width: 450px;
+}
+.spreadplugin-article table, .spreadplugin-article-detail table, .spreadplugin-design table, .spreadplugin-article.list table {
 	border: 0
 }
 .spreadplugin-article-detail {
@@ -53,21 +57,21 @@ code, pre {
 }
 .spreadplugin-design {
 	min-height: 300px;
-	height: 300px!important;
+	height: 300px !important;
 	text-align: center
 }
-.spreadplugin-article img, .spreadplugin-article-detail img {
+.spreadplugin-article img, .spreadplugin-article-detail img, .spreadplugin-article.list img {
 	padding: 0;
 	border: 0;
 	border-radius: 0;
 	background: 0 0
 }
-.spreadplugin-article h3, .spreadplugin-article img, .spreadplugin-article-detail h3, .spreadplugin-article-detail img, .spreadplugin-design h3 {
+.spreadplugin-article h3, .spreadplugin-article img, .spreadplugin-article-detail h3, .spreadplugin-article-detail img, .spreadplugin-design h3, .spreadplugin-article.list h3, .spreadplugin-article.list img {
 	display: block;
 	text-align: center;
 	margin: 0 auto
 }
-.spreadplugin-article .image-wrapper, .spreadplugin-article-detail .image-wrapper {
+.spreadplugin-article .image-wrapper, .spreadplugin-article-detail .image-wrapper, .spreadplugin-article.list .image-wrapper {
 	min-height: 200px
 }
 .spreadplugin-article h3, .spreadplugin-design h3 {
@@ -107,7 +111,7 @@ code, pre {
 .spreadplugin-items .views li {
 	width: 42px;
 	height: 42px;
-	list-style-type: none!important
+	list-style-type: none !important
 }
 .spreadplugin-items #pagination {
 	float: left
@@ -128,7 +132,7 @@ code, pre {
 	display: none
 }
 .spreadplugin-items .ul {
-	list-style: none outside none!important
+	list-style: none outside none !important
 }
 .spreadplugin-items .separator {
 	margin: 0;
@@ -254,7 +258,7 @@ code, pre {
 	margin-top: 0;
 	padding: 5px;
 	position: absolute;
-	z-index: 1001!important;
+	z-index: 1001 !important;
 	float: left
 }
 .spreadplugin-items ul.soc-icons a {
@@ -262,7 +266,7 @@ code, pre {
 }
 .spreadplugin-items ul.soc-icons li {
 	float: none;
-	margin: 0!important;
+	margin: 0 !important;
 	display: inline-block;
 	list-style: none outside none;
 	vertical-align: top
@@ -424,7 +428,7 @@ code, pre {
 	padding: 2px
 }
 #cart .cart-delete a img {
-	border: 0!important
+	border: 0 !important
 }
 #cart .cart-description {
 	width: 200px;
@@ -482,5 +486,35 @@ code, pre {
 	margin: 0 auto
 }
 spreadplugin-items img {
-	max-width: none!important
+	max-width: none !important
+}
+.spreadplugin-article.list .articleContentLeft, .spreadplugin-article.list .articleContentRight {
+	float: left;
+}
+.spreadplugin-article.list .articleContentLeft {
+	width: 40%;
+	min-width: 190px;
+}
+.spreadplugin-article.list .articleContentRight {
+	margin-left: 20px;
+	width: 50%;
+	min-width: 225px;
+}
+.spreadplugin-article.list .articleContentLeft * {
+	text-align: center !important
+}
+.spreadplugin-article.list .articleContentLeft .details-wrapper2 {
+	float: none;
+	clear: both;
+}
+.spreadplugin-article.list .articleContentRight * {
+	text-align: left !important
+}
+.spreadplugin-article.list h3 {
+	min-height: inherit !important;
+}
+ @media only screen and (max-width: 480px) {
+.spreadplugin-article, .spreadplugin-design, .spreadplugin-article-detail {
+	width: 100% !important;
+}
 }

@@ -223,6 +223,14 @@ if (is_user_logged_in() && is_admin()) {
                 <td><input type="text" name="shop_zoomimagebackground" class="colorpicker" value="<?php echo (empty($adminOptions['shop_zoomimagebackground'])?'#FFFFFF':$adminOptions['shop_zoomimagebackground']); ?>" data-default-color="#FFFFFF" maxlength="7" /></td>
               </tr>
               <tr>
+                <td valign="top"><?php _e('View:','spreadplugin'); ?></td>
+                <td><input type="radio" name="shop_view" value="0"<?php echo ($adminOptions['shop_view']==0 || $adminOptions['shop_view']==''?" checked":"") ?> />
+                  <?php _e('Grid view','spreadplugin'); ?>
+                  <br />
+                  <input type="radio" name="shop_view" value="1"<?php echo ($adminOptions['shop_view']==1?" checked":"") ?> />
+                  <?php _e('List view','spreadplugin'); ?></td>
+              </tr>
+              <tr>
                 <td valign="top"><?php _e('Infinity scrolling:','spreadplugin'); ?></td>
                 <td><input type="radio" name="shop_infinitescroll" value="0"<?php echo ($adminOptions['shop_infinitescroll']==0?" checked":"") ?> />
                   <?php _e('Disabled','spreadplugin'); ?>

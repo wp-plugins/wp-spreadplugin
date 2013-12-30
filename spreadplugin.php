@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.4.2
+ * Version: 3.5
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -51,7 +51,8 @@ if(!class_exists('WP_Spreadplugin')) {
 				'shop_zoomimagebackground' => '',
 				'shop_infinitescroll' => '',
 				'shop_customcss' => '',
-				'shop_design' => ''
+				'shop_design' => '',
+				'shop_view' => ''
 		);
 		private static $shopCache = 8760; // Shop article cache in hours 24*365 => 1 year
 
@@ -375,9 +376,16 @@ if(!class_exists('WP_Spreadplugin')) {
 										// default sort
 										@uasort($articleData[$designId],create_function('$a,$b',"return (\$a[place] < \$b[place])?-1:1;"));
 											
-										foreach ($articleData[$designId] as $articleId => $arrArticle) {
-											$output .= $this->displayArticles($articleId,$arrArticle,self::$shopOptions['shop_zoomimagebackground']); // ,$bgcV
+										if (self::$shopOptions['shop_view']==1) {
+											foreach ($articleData[$designId] as $articleId => $arrArticle) {
+												$output .= $this->displayListArticles($articleId,$arrArticle,self::$shopOptions['shop_zoomimagebackground']);
+											}
+										} else {
+											foreach ($articleData[$designId] as $articleId => $arrArticle) {
+												$output .= $this->displayArticles($articleId,$arrArticle,self::$shopOptions['shop_zoomimagebackground']); 									
+											}
 										}
+										
 									}
 	
 									$output .= "</div>";
@@ -387,8 +395,14 @@ if(!class_exists('WP_Spreadplugin')) {
 						} else {
 							// Article view
 							if (!empty($articleCleanData)) {
-								foreach ($articleCleanData as $articleId => $arrArticle) {
-									$output .= $this->displayArticles($articleId,$arrArticle,self::$shopOptions['shop_zoomimagebackground']);
+								if (self::$shopOptions['shop_view']==1) {
+									foreach ($articleCleanData as $articleId => $arrArticle) {
+										$output .= $this->displayListArticles($articleId,$arrArticle,self::$shopOptions['shop_zoomimagebackground']);
+									}
+								} else {
+									foreach ($articleCleanData as $articleId => $arrArticle) {
+										$output .= $this->displayArticles($articleId,$arrArticle,self::$shopOptions['shop_zoomimagebackground']);
+									}
 								}
 							}
 						}
@@ -714,8 +728,7 @@ if(!class_exists('WP_Spreadplugin')) {
 
 
 			if (self::$shopOptions['shop_enablelink']==1) {
-				// old details page (spreadshirt) disabled here
-				$output .= ' <div class="details-wrapper2 clearfix"><a href="'.add_query_arg( 'product', $id ).'" target="'.self::$shopOptions['shop_linktarget'].'">'.__('Details', $this->stringTextdomain).'</a></div>';
+				$output .= '<div class="details-wrapper2 clearfix"><a href="'.add_query_arg('product',$id,get_permalink()).'" target="'.self::$shopOptions['shop_linktarget'].'">'.__('Details', $this->stringTextdomain).'</a></div>';
 			}
 
 			$output .= '<div class="separator"></div>';
@@ -849,6 +862,136 @@ if(!class_exists('WP_Spreadplugin')) {
 			return $output;
 
 		}
+
+
+
+		/**
+		 * Function displayListArticles
+		 *
+		 * Displays the articles
+		 *
+		 * @return html
+		 */
+		private function displayListArticles($id,$article,$backgroundColor='') {
+
+			$output = '<div class="spreadplugin-article list" id="article_'.$id.'">';
+			$output .= '<a name="'.$id.'"></a>';
+			$output .= '<form method="post" id="form_'.$id.'"><div class="articleContentLeft">';
+				
+			// edit article button
+			if (self::$shopOptions['shop_designershop']>0) {
+				$output .= ' <div class="edit-wrapper"><a href="//'.self::$shopOptions['shop_designershop'].'.spreadshirt.'.self::$shopOptions['shop_source'].'/-D1/customize/product/'.$article['productId'].'?noCache=true" target="'.self::$shopOptions['shop_linktarget'].'" title="'.__('Edit article', $this->stringTextdomain).'"><img src="'.plugins_url('/img/edit.png', __FILE__).'"></a></div>';
+			}
+				
+			// display preview image
+			$output .= '<div class="image-wrapper">';
+			$output .= '<img src="'.plugins_url('/img/blank.gif', __FILE__).'" alt="' . htmlspecialchars($article['name'],ENT_QUOTES) . '" id="previewimg_'.$id.'" data-zoom-image="http://image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width=800,height=800'.(!empty($backgroundColor)?',backgroundColor='.$backgroundColor:'').'" class="preview lazyimg" data-original="http://image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width='.self::$shopOptions['shop_imagesize'].',height='.self::$shopOptions['shop_imagesize'].'" />';
+			$output .= '</div>';
+
+			// Short product description
+			$output .= '<div class="product-name">';
+			$output .= htmlspecialchars($article['productname'],ENT_QUOTES);
+			$output .= '</div>';
+			
+			if (self::$shopOptions['shop_enablelink']==1) {
+				$output .= '<div class="details-wrapper2 clearfix"><a href="'.add_query_arg('product',$id,get_permalink()).'" target="'.self::$shopOptions['shop_linktarget'].'">'.__('Details', $this->stringTextdomain).'</a></div>';
+			}
+
+			$output .= '</div><div class="articleContentRight"><h3>'.htmlspecialchars($article['name'],ENT_QUOTES).'</h3>';
+
+
+			// Show description link if not empty
+			if (!empty($article['description'])) {
+				if (self::$shopOptions['shop_showdescription']==0) {
+					$output .= '<div class="description-wrapper"><div class="header"><a>'.__('Show article description', $this->stringTextdomain).'</a></div><div class="description">'.htmlspecialchars($article['description'],ENT_QUOTES).'</div></div>';
+				} else {
+					$output .= '<div class="description-wrapper">'.htmlspecialchars($article['description'],ENT_QUOTES).'</div>';
+				}
+			}
+					
+
+			// add a select with available sizes
+			if (isset($article['sizes'])&&is_array($article['sizes'])) {
+				$output .= '<div class="size-wrapper clearfix">'.__('Size', $this->stringTextdomain).': <select id="size-select" name="size">';
+
+				foreach($article['sizes'] as $k => $v) {
+					$output .= '<option value="'.$k.'">'.$v.'</option>';
+				}
+
+				$output .= '</select></div>';
+			}
+
+
+			// add a list with availabel product colors
+			if (isset($article['appearances'])&&is_array($article['appearances'])) {
+				$output .= '<div class="color-wrapper clearfix">'.__('Color', $this->stringTextdomain).': <ul class="colors" name="color">';
+
+				foreach($article['appearances'] as $k=>$v) {
+					$output .= '<li value="'.$k.'"><img src="'. $this->cleanURL($v) .'" alt="" /></li>';
+				}
+
+				$output .= '</ul></div>';
+			}
+
+
+			// add a list with available product views
+			if (isset($article['views'])&&is_array($article['views'])) {
+				$output .= '<div class="views-wrapper clearfix"><ul class="views" name="views">';
+				
+				$_vc=0;
+				foreach($article['views'] as $k=>$v) {
+					$output .= '<li value="'.$k.'"><img src="'.plugins_url('/img/blank.gif', __FILE__).'" data-original="'. $this->cleanURL($v)  .',viewId='.$k.',width=42,height=42" class="previewview lazyimg" alt="" id="viewimg_'.$id.'" /></li>';
+					if ($_vc==3) break;
+					$_vc++;
+				}
+
+				$output .= '</ul></div>';
+			}
+
+
+
+			$output .= '<input type="hidden" value="'. $article['appearance'] .'" id="appearance" name="appearance" />';
+			$output .= '<input type="hidden" value="'. $article['view'] .'" id="view" name="view" />';
+			$output .= '<input type="hidden" value="'. $id .'" id="article" name="article" />';
+
+			$output .= '<div class="price-wrapper clearfix">';
+			if (self::$shopOptions['shop_showextendprice']==1) {
+				$output .= '<span id="price-without-tax">'.__('Price (without tax):', $this->stringTextdomain)." ".(empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale']=='en_US' || self::$shopOptions['shop_locale']=='en_GB' || self::$shopOptions['shop_locale']=='us_US' || self::$shopOptions['shop_locale']=='us_CA' || self::$shopOptions['shop_locale']=='fr_CA'?$article['currencycode']." ".number_format($article['pricenet'],2,'.',''):number_format($article['pricenet'],2,',','.')." ".$article['currencycode'])."<br /></span>";
+				$output .= '<span id="price-with-tax">'.__('Price (with tax):', $this->stringTextdomain)." ".(empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale']=='en_US' || self::$shopOptions['shop_locale']=='en_GB' || self::$shopOptions['shop_locale']=='us_US' || self::$shopOptions['shop_locale']=='us_CA' || self::$shopOptions['shop_locale']=='fr_CA'?$article['currencycode']." ".number_format($article['pricebrut'],2,'.',''):number_format($article['pricebrut'],2,',','.')." ".$article['currencycode'])."</span>";
+				$output .= '<br><div class="additionalshippingcosts">';
+				$output .= __('excl. Shipping', $this->stringTextdomain);
+				$output .= '</div>';
+			} else {
+				$output .= '<span id="price">'.__('Price:', $this->stringTextdomain)." ".(empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale']=='en_US' || self::$shopOptions['shop_locale']=='en_GB' || self::$shopOptions['shop_locale']=='us_US' || self::$shopOptions['shop_locale']=='us_CA' || self::$shopOptions['shop_locale']=='fr_CA'?$article['currencycode']." ".number_format($article['pricebrut'],2,'.',''):number_format($article['pricebrut'],2,',','.')." ".$article['currencycode'])."</span>";
+			}
+			$output .= '</div>';
+			
+			// order buttons
+			$output .= '<input type="text" value="1" id="quantity" name="quantity" maxlength="4" />';
+			$output .= '<input type="submit" name="submit" value="'.__('Add to basket', $this->stringTextdomain).'" /><br>';
+
+			// Social buttons
+			if (self::$shopOptions['shop_social']==true) {
+				$output .= '
+				<ul class="soc-icons">
+				<li><a target="_blank" data-color="#5481de" class="fb" href="//www.facebook.com/sharer.php?u='.urlencode(add_query_arg( 'product', $id, get_permalink())).'&t='.rawurlencode(get_the_title()).'" title="Facebook"></a></li>
+				<li><a target="_blank" data-color="#06ad18" class="goog" href="//plus.google.com/share?url='.urlencode(add_query_arg( 'product', $id, get_permalink())).'" title="Google"></a></li>
+				<li><a target="_blank" data-color="#2cbbea" class="twt" href="//twitter.com/home?status='.rawurlencode(get_the_title()).' - '.urlencode(add_query_arg( 'product', $id, get_permalink())).'" title="Twitter"></a></li>
+				<li><a target="_blank" data-color="#e84f61" class="pin" href="//pinterest.com/pin/create/button/?url='.rawurlencode(add_query_arg( 'product', $id, get_permalink())).'&media='.rawurlencode('http://image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width='.self::$shopOptions['shop_imagesize'].',height='.self::$shopOptions['shop_imagesize'].'').',width='.self::$shopOptions['shop_imagesize'].',height='.self::$shopOptions['shop_imagesize'].'&description='.(!empty($article['description'])?htmlspecialchars($article['description'],ENT_QUOTES):'Product').'" title="Pinterest"></a></li>
+				</ul>
+				';
+
+			}
+
+			$output .= '
+			</div>
+			</form>
+			</div>';
+
+			return $output;
+
+		}
+
 
 
 		/**
