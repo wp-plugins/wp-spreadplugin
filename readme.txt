@@ -189,12 +189,9 @@ Please have a look here: http://themeforest.net/category/wordpress?ref=thimo
 
 == Screenshots ==
 
-1. The Output 1
-2. Screenshot 2
-3. Screenshot 3
-4. Design view
-5. Article view
-6. Settings page
+1. Design view
+2. Article view
+3. Settings page
 
 == Changelog ==
 
