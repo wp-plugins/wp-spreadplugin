@@ -2,7 +2,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.5
+ * Version: 3.5.1
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -28,12 +28,12 @@ jQuery(function($) {
 	}
 	
 	
-	$('#cart').hide();
+	$('.spreadplugin-cart').hide();
 	
 	// hide cart when user clicks outside
 	$(document).click(function(e) {
-	    if (e.target.id != 'cart' && !$('#cart').find(e.target).length && e.target.id!='basketLink') {
-    	    $("#cart").hide();
+	    if (e.target.className != 'spreadplugin-basket-link' && $('.spreadplugin-cart').is(':visible') && !$('.spreadplugin-cart').find(e.target).length) {
+    	    $(".spreadplugin-cart").hide();
     	}
 	});
 	
@@ -145,8 +145,8 @@ jQuery(function($) {
 							var newImageHeight  = $("#previewimg_" + productIdVal).height() / 3;
 							var productX = $("#previewimg_" + productIdVal).offset().left;
 							var productY = $("#previewimg_" + productIdVal).offset().top;
-							var basketX = $("#checkout").offset().left;
-							var basketY = $("#checkout").offset().top;
+							var basketX = $(".spreadplugin-checkout").offset().left;
+							var basketY = $(".spreadplugin-checkout").offset().top;
 							var gotoX = basketX - productX;
 							var gotoY = basketY - productY;
 												
@@ -325,15 +325,17 @@ jQuery(function($) {
 			});
 
 
-	$('#basketLink').click(function(event) {
+	$('.spreadplugin-basket-link').click(function(event) {
 		event.preventDefault();
 		
 		//mergeBasket();
 		
-		if ($('#cart').is(':hidden')) {
-			$('#cart').show();
+		var cart = $(this).parent().next('.spreadplugin-cart');
+		
+		if (cart.is(':hidden')) {
+			cart.show();
 		} else {
-			$('#cart').hide();
+			cart.hide();
 		}
 	});
 
@@ -354,22 +356,22 @@ jQuery(function($) {
 	
 	function refreshCart(json) {
 		
-		$('#spreadplugin-items #spreadplugin-menu #checkout a').attr('href', json.c.u);
-		$('#spreadplugin-items #spreadplugin-menu #checkout a').removeAttr('title');
-		$('#spreadplugin-items #spreadplugin-menu #checkout span').text(json.c.q);
-		$('#cart-checkout a').attr('href', json.c.u);
+		$('.spreadplugin-checkout a').attr('href', json.c.u);
+		$('.spreadplugin-checkout a').removeAttr('title');
+		$('.spreadplugin-checkout span').text(json.c.q);
+		$('.spreadplugin-checkout-button a').attr('href', json.c.u);
 		
 		// &'+sid
 		$.get(ajaxLocation,'action=myCart',function (data) {
-			$('#spreadplugin-items #cart').html(data);
+			$('.spreadplugin-cart').html(data);
 			
 			
 			// checkout in an iframe in page
 			if (pageCheckoutUseIframe == 1) {
-						$('#cart-checkout a').click(function(event) {
+						$('.spreadplugin-checkout-button a').click(function(event) {
 									event.preventDefault();
 		
-									var checkoutLink = $('#cart-checkout a').attr('href');
+									var checkoutLink = $(this).attr('href');
 		
 									if (typeof checkoutLink !== "undefined" && checkoutLink.length > 0) {
 		
@@ -391,11 +393,11 @@ jQuery(function($) {
 		
 			// checkout in an iframe with modal window (fancybox)
 			if (pageCheckoutUseIframe == 2) {
-					var checkoutLink = $('#cart-checkout a').attr('href');
+					var checkoutLink = $('.spreadplugin-checkout-button a').attr('href');
 		
 					if (typeof checkoutLink !== "undefined" && checkoutLink.length > 0) {
 					
-							$('#cart-checkout a').fancybox({
+							$('.spreadplugin-checkout-button a').fancybox({
 								type : 'iframe',
 								autoSize: true,
 								autoResize: true,

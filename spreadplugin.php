@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.5
+ * Version: 3.5.1
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -337,8 +337,9 @@ if(!class_exists('WP_Spreadplugin')) {
 						$output .= '<option value="weight"'.('weight'==self::$shopOptions['shop_sortby']?' selected':'').'>'.__('weight', $this->stringTextdomain).'</option>';
 						$output .= '</select>';
 		
-						$output .= '<div id="checkout"><span></span> <a href="'.$_SESSION['checkoutUrl'].'" target="'.self::$shopOptions['shop_linktarget'].'" id="basketLink">'.__('Basket', $this->stringTextdomain).'</a></div>';
-						$output .= '<div id="cart"></div>';
+						// url not needed here, but just in case if js won't work for some reason
+						$output .= '<div id="checkout" class="spreadplugin-checkout"><span></span> <a href="'.$_SESSION['checkoutUrl'].'" target="'.self::$shopOptions['shop_linktarget'].'" id="basketLink" class="spreadplugin-basket-link">'.__('Basket', $this->stringTextdomain).'</a></div>';
+						$output .= '<div id="cart" class="spreadplugin-cart"></div>';
 		
 						$output .= '</div>';
 	
@@ -1838,7 +1839,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				$priceSum=0;
 				$intSumQuantity=0;
 				
-				echo '<div id="cart-contents">';
+				echo '<div class="spreadplugin-cart-contents">';
 				
 				if(!empty($basketItems)) {
 					//echo "<pre>".print_r($basketItems)."</pre>";
@@ -1866,12 +1867,12 @@ if(!class_exists('WP_Spreadplugin')) {
 				}
 				
 				echo '</div>';
-				echo '<div id="cart-total">'.__('Total (excl. Shipping)', $this->stringTextdomain).'<span class="price">'.(empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale']=='en_US' || self::$shopOptions['shop_locale']=='en_GB' || self::$shopOptions['shop_locale']=='us_US' || self::$shopOptions['shop_locale']=='us_CA' || self::$shopOptions['shop_locale']=='fr_CA'?number_format($priceSum,2,'.',''):number_format($priceSum,2,',','.')).'</span></div>';
+				echo '<div class="spreadplugin-cart-total">'.__('Total (excl. Shipping)', $this->stringTextdomain).'<span class="price">'.(empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale']=='en_US' || self::$shopOptions['shop_locale']=='en_GB' || self::$shopOptions['shop_locale']=='us_US' || self::$shopOptions['shop_locale']=='us_CA' || self::$shopOptions['shop_locale']=='fr_CA'?number_format($priceSum,2,'.',''):number_format($priceSum,2,',','.')).'</span></div>';
 				
 				if ($intSumQuantity>0) {
-					echo '<div id="cart-checkout"><a href="'.$_SESSION['checkoutUrl'].'" target="'.self::$shopOptions['shop_linktarget'].'">'.__('Proceed checkout', $this->stringTextdomain).'</a></div>';
+					echo '<div id="cart-checkout" class="spreadplugin-checkout-button"><a href="'.$_SESSION['checkoutUrl'].'" target="'.self::$shopOptions['shop_linktarget'].'">'.__('Proceed checkout', $this->stringTextdomain).'</a></div>';
 				} else {
-					echo '<div id="cart-checkout"><a title="'.__('Basket is empty', $this->stringTextdomain).'">'.__('Proceed checkout', $this->stringTextdomain).'</a></div>';
+					echo '<div id="cart-checkout" class="spreadplugin-checkout-button"><a title="'.__('Basket is empty', $this->stringTextdomain).'">'.__('Proceed checkout', $this->stringTextdomain).'</a></div>';
 				}
 			}
 			

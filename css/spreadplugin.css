@@ -2,7 +2,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.5
+ * Version: 3.5.1
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -389,7 +389,7 @@ code, pre {
 .spreadplugin-items ul.soc-icons .vk {
 	background-position: -295px -185px
 }
-#cart .cart-row {
+.spreadplugin-cart .cart-row {
 	float: left;
 	padding-bottom: 10px;
 	padding-top: 10px;
@@ -398,14 +398,14 @@ code, pre {
 	width: 100%;
 	white-space: normal
 }
-#cart {
+.spreadplugin-cart {
 	position: absolute;
 	right: 0;
 	top: 50px;
 	background-color: #FFF;
 	padding: 10px
 }
-#cart-contents {
+.spreadplugin-cart-contents {
 	width: 400px;
 	height: 400px;
 	overflow-y: scroll;
@@ -413,47 +413,47 @@ code, pre {
 	padding-left: 10px;
 	padding-right: 10px
 }
-#cart-contents div {
+.spreadplugin-cart-contents div {
 	float: left
 }
-#cart .cart-preview {
+.spreadplugin-cart .cart-preview {
 	width: 70px
 }
-#cart .cart-price {
+.spreadplugin-cart .cart-price {
 	float: left;
 	text-align: right
 }
-#cart .cart-delete {
+.spreadplugin-cart .cart-delete {
 	float: right;
 	padding: 2px
 }
-#cart .cart-delete a img {
+.spreadplugin-cart .cart-delete a img {
 	border: 0 !important
 }
-#cart .cart-description {
+.spreadplugin-cart .cart-description {
 	width: 200px;
 	padding-left: 10px;
 	padding-right: 10px
 }
-#cart-checkout {
+.spreadplugin-checkout-button {
 	text-align: right;
 	padding: 10px
 }
-#cart-checkout a, #cart-checkout a:hover {
+.spreadplugin-checkout-button a, .spreadplugin-checkout-button a:hover {
 	color: #fff;
 	text-decoration: none
 }
-#cart-checkout a {
+.spreadplugin-checkout-button a {
 	background-color: #666;
 	padding: 15px 30px
 }
-#cart-checkout a:hover {
+.spreadplugin-checkout-button a:hover {
 	background-color: #999
 }
-#cart-total {
+.spreadplugin-cart-total {
 	padding: 10px
 }
-#cart-total .price {
+.spreadplugin-cart-total .price {
 	float: right
 }
 .spreadplugin-article-detail form table td {
