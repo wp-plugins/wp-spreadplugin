@@ -338,7 +338,7 @@ if(!class_exists('WP_Spreadplugin')) {
 						$output .= '</select>';
 		
 						// url not needed here, but just in case if js won't work for some reason
-						$output .= '<div id="checkout" class="spreadplugin-checkout"><span></span> <a href="'.$_SESSION['checkoutUrl'].'" target="'.self::$shopOptions['shop_linktarget'].'" id="basketLink" class="spreadplugin-basket-link">'.__('Basket', $this->stringTextdomain).'</a></div>';
+						$output .= '<div id="checkout" class="spreadplugin-checkout"><span></span> <a href="'.$_SESSION['checkoutUrl'].'" target="'.self::$shopOptions['shop_linktarget'].'" id="basketLink" class="spreadplugin-checkout-link">'.__('Basket', $this->stringTextdomain).'</a></div>';
 						$output .= '<div id="cart" class="spreadplugin-cart"></div>';
 		
 						$output .= '</div>';
@@ -1870,9 +1870,9 @@ if(!class_exists('WP_Spreadplugin')) {
 				echo '<div class="spreadplugin-cart-total">'.__('Total (excl. Shipping)', $this->stringTextdomain).'<span class="price">'.(empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale']=='en_US' || self::$shopOptions['shop_locale']=='en_GB' || self::$shopOptions['shop_locale']=='us_US' || self::$shopOptions['shop_locale']=='us_CA' || self::$shopOptions['shop_locale']=='fr_CA'?number_format($priceSum,2,'.',''):number_format($priceSum,2,',','.')).'</span></div>';
 				
 				if ($intSumQuantity>0) {
-					echo '<div id="cart-checkout" class="spreadplugin-checkout-button"><a href="'.$_SESSION['checkoutUrl'].'" target="'.self::$shopOptions['shop_linktarget'].'">'.__('Proceed checkout', $this->stringTextdomain).'</a></div>';
+					echo '<div id="cart-checkout" class="spreadplugin-cart-checkout"><a href="'.$_SESSION['checkoutUrl'].'" target="'.self::$shopOptions['shop_linktarget'].'">'.__('Proceed checkout', $this->stringTextdomain).'</a></div>';
 				} else {
-					echo '<div id="cart-checkout" class="spreadplugin-checkout-button"><a title="'.__('Basket is empty', $this->stringTextdomain).'">'.__('Proceed checkout', $this->stringTextdomain).'</a></div>';
+					echo '<div id="cart-checkout" class="spreadplugin-cart-checkout"><a title="'.__('Basket is empty', $this->stringTextdomain).'">'.__('Proceed checkout', $this->stringTextdomain).'</a></div>';
 				}
 			}
 			

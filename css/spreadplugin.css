@@ -435,19 +435,19 @@ code, pre {
 	padding-left: 10px;
 	padding-right: 10px
 }
-.spreadplugin-checkout-button {
+.spreadplugin-cart-checkout {
 	text-align: right;
 	padding: 10px
 }
-.spreadplugin-checkout-button a, .spreadplugin-checkout-button a:hover {
+.spreadplugin-cart-checkout a, .spreadplugin-cart-checkout a:hover {
 	color: #fff;
 	text-decoration: none
 }
-.spreadplugin-checkout-button a {
+.spreadplugin-cart-checkout a {
 	background-color: #666;
 	padding: 15px 30px
 }
-.spreadplugin-checkout-button a:hover {
+.spreadplugin-cart-checkout a:hover {
 	background-color: #999
 }
 .spreadplugin-cart-total {

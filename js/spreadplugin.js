@@ -32,7 +32,7 @@ jQuery(function($) {
 	
 	// hide cart when user clicks outside
 	$(document).click(function(e) {
-	    if (e.target.className != 'spreadplugin-basket-link' && $('.spreadplugin-cart').is(':visible') && !$('.spreadplugin-cart').find(e.target).length) {
+	    if (e.target.className != 'spreadplugin-checkout-link' && $('.spreadplugin-cart').is(':visible') && !$('.spreadplugin-cart').find(e.target).length) {
     	    $(".spreadplugin-cart").hide();
     	}
 	});
@@ -325,7 +325,7 @@ jQuery(function($) {
 			});
 
 
-	$('.spreadplugin-basket-link').click(function(event) {
+	$('.spreadplugin-checkout-link').click(function(event) {
 		event.preventDefault();
 		
 		//mergeBasket();
@@ -359,7 +359,7 @@ jQuery(function($) {
 		$('.spreadplugin-checkout a').attr('href', json.c.u);
 		$('.spreadplugin-checkout a').removeAttr('title');
 		$('.spreadplugin-checkout span').text(json.c.q);
-		$('.spreadplugin-checkout-button a').attr('href', json.c.u);
+		$('.spreadplugin-cart-checkout a').attr('href', json.c.u);
 		
 		// &'+sid
 		$.get(ajaxLocation,'action=myCart',function (data) {
@@ -368,7 +368,7 @@ jQuery(function($) {
 			
 			// checkout in an iframe in page
 			if (pageCheckoutUseIframe == 1) {
-						$('.spreadplugin-checkout-button a').click(function(event) {
+						$('.spreadplugin-cart-checkout a').click(function(event) {
 									event.preventDefault();
 		
 									var checkoutLink = $(this).attr('href');
@@ -393,11 +393,11 @@ jQuery(function($) {
 		
 			// checkout in an iframe with modal window (fancybox)
 			if (pageCheckoutUseIframe == 2) {
-					var checkoutLink = $('.spreadplugin-checkout-button a').attr('href');
+					var checkoutLink = $('.spreadplugin-cart-checkout a').attr('href');
 		
 					if (typeof checkoutLink !== "undefined" && checkoutLink.length > 0) {
 					
-							$('.spreadplugin-checkout-button a').fancybox({
+							$('.spreadplugin-cart-checkout a').fancybox({
 								type : 'iframe',
 								autoSize: true,
 								autoResize: true,
