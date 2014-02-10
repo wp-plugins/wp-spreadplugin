@@ -166,7 +166,7 @@ if (is_user_logged_in() && is_admin()) {
                   <?php _e('Opens an iframe in the page content','spreadplugin'); ?>
                   <br />
                   <input type="radio" name="shop_checkoutiframe" value="2"<?php echo ($adminOptions['shop_checkoutiframe']==2?" checked":"") ?> />
-                  <?php _e('Opens an iframe in a modal window (fancybox)','spreadplugin'); ?></td>
+                  <?php _e('Opens an iframe in a modal window','spreadplugin'); ?></td>
               </tr>
               <tr>
                 <td valign="top"><?php _e('Designer Shop ID:','spreadplugin'); ?></td>

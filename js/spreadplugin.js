@@ -2,7 +2,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.5.1
+ * Version: 3.5.2
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -14,7 +14,6 @@ jQuery(function($) {
 	var prod2 = getParameterByName('productSubCategory');
 	var sor = getParameterByName('articleSortBy');
 	var infiniteItemSel = '.spreadplugin-article';
-	var fancyBoxWidth = 840;
 	var appearance = '';
 	var view = '';
 //	var sid = document.cookie.match(/PHPSESSID=[^;]+/);
@@ -175,29 +174,28 @@ jQuery(function($) {
 
 
 		if (pageCheckoutUseIframe == 2) {
-			$('.spreadplugin-article .edit-wrapper a,.spreadplugin-article-detail .edit-wrapper a').fancybox({
-				type : 'iframe',								
-				autoSize: true,
-				autoResize: true,
-				fitToView: true,
-				autoCenter:true
+			$('.spreadplugin-article .edit-wrapper a,.spreadplugin-article-detail .edit-wrapper a').magnificPopup({
+			type: 'iframe',
+			callbacks: {
+				open: function() {
+					$('.mfp-iframe-holder .mfp-content').css('height',$(window).height()-200);
+				},
+				resize: function () {
+					$('.mfp-iframe-holder .mfp-content').css('height',$(window).height()-200);
+				}
+			}
 			});
 
-			$('.spreadplugin-article .details-wrapper a,.spreadplugin-article-detail .details-wrapper a').fancybox({
-				type : 'iframe',								
-				autoSize: true,
-				autoResize: true,
-				fitToView: true,
-				autoCenter:true
+
+			$('.spreadplugin-article .details-wrapper a,.spreadplugin-article-detail .details-wrapper a').magnificPopup({
+				type: 'iframe',
+				preloader: true
 			});
 		}
 
-		$('.spreadplugin-article .image-wrapper a,.spreadplugin-article-detail .image-wrapper a').fancybox({
-			type : 'iframe',
-			autoSize: true,
-			autoResize: true,
-			fitToView: true,
-			autoCenter:true
+		$('.spreadplugin-article .image-wrapper a,.spreadplugin-article-detail .image-wrapper a').magnificPopup({
+			type: 'iframe',
+			preloader: true
 		});
 
 		$('.spreadplugin-design .image-wrapper').click(function() {
@@ -391,19 +389,21 @@ jQuery(function($) {
 		
 			}
 		
-			// checkout in an iframe with modal window (fancybox)
+			// checkout in an iframe with modal window (magnific)
 			if (pageCheckoutUseIframe == 2) {
 					var checkoutLink = $('.spreadplugin-cart-checkout a').attr('href');
 		
 					if (typeof checkoutLink !== "undefined" && checkoutLink.length > 0) {
 					
-							$('.spreadplugin-cart-checkout a').fancybox({
-								type : 'iframe',
-								autoSize: true,
-								autoResize: true,
-								fitToView: true,
-								autoCenter:true
-							});
+							$('.spreadplugin-cart-checkout a').magnificPopup({
+					type: 'iframe',
+					callbacks: {
+						close: function() {
+							location.reload();
+							return;
+						}
+					}
+					});
 				}
 			}
 			

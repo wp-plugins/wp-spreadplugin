@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.5.1
+ * Version: 3.5.2
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -1413,8 +1413,8 @@ if(!class_exists('WP_Spreadplugin')) {
 			}
 
 			// Fancybox
-			wp_register_script('fancy_box', plugins_url('/js/jquery.fancybox.pack.js', __FILE__),array('jquery'));
-			wp_enqueue_script('fancy_box');
+			wp_register_script('magnific_popup', plugins_url('/js/jquery.magnific-popup.min.js', __FILE__),array('jquery'));
+			wp_enqueue_script('magnific_popup');
 				
 			// Zoom
 			wp_register_script('zoom', plugins_url('/js/jquery.elevateZoom-2.5.5.min.js', __FILE__),array('jquery'));
@@ -1427,8 +1427,8 @@ if(!class_exists('WP_Spreadplugin')) {
 			// Respects SSL, Style.css is relative to the current file
 			wp_register_style('spreadplugin', plugins_url('/css/spreadplugin.css', __FILE__));
 			wp_enqueue_style('spreadplugin');
-			wp_register_style('fancy_box_css', plugins_url('/css/jquery.fancybox.css', __FILE__));
-			wp_enqueue_style('fancy_box_css');
+			wp_register_style('magnific_popup_css', plugins_url('/css/magnific-popup.css', __FILE__));
+			wp_enqueue_style('magnific_popup_css');
 				
 		}
 

@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: spreadshirt,wordpress,plugin,shop,store,shirt,t-shirt,integration,online store,online shop
 Requires at least: 3.3
 Tested up to: 3.8
-Stable tag: 3.5
+Stable tag: 3.5.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -137,7 +137,7 @@ Add or change in the [spreadplugin] code the value from `shop_checkoutiframe="0"
 
 * `shop_checkoutiframe="0"` opens basket in separate window
 * `shop_checkoutiframe="1"` opens basket in an iframe in the page content 
-* `shop_checkoutiframe="2"` opens basket in an iframe in a modal window (fancybox) 
+* `shop_checkoutiframe="2"` opens basket in an iframe in a modal window 
 
 = How to default sort? =
 
@@ -194,6 +194,12 @@ Please have a look here: http://themeforest.net/category/wordpress?ref=thimo
 3. Settings page
 
 == Changelog ==
+
+= 3.5.2 =
+* Replaced fancyBox 2 with magnific-popup
+
+= 3.5 =
+* Bugfixes
 
 = 3.4.2 =
 * Bugfixes
