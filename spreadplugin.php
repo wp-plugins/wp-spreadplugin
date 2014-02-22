@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.5.3.1
+ * Version: 3.5.3.2
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -428,8 +428,8 @@ if(!class_exists('WP_Spreadplugin')) {
 						// add simple spreadplugin-menu
 						$output .= '<div id="spreadplugin-menu" class="spreadplugin-menu">';
 						$output .= '<a href="'.get_page_link().'">'.__('Back', $this->stringTextdomain);
-						$output .= '<div id="checkout"><span></span> <a href="'.$_SESSION['checkoutUrl'].'" target="'.self::$shopOptions['shop_linktarget'].'" id="basketLink">'.__('Basket', $this->stringTextdomain).'</a></div>';
-						$output .= '<div id="cart"></div>';
+						$output .= '<div id="checkout" class="spreadplugin-checkout"><span></span> <a href="'.$_SESSION['checkoutUrl'].'" target="'.self::$shopOptions['shop_linktarget'].'" id="basketLink" class="spreadplugin-checkout-link">'.__('Basket', $this->stringTextdomain).'</a></div>';
+						$output .= '<div id="cart" class="spreadplugin-cart"></div>';
 						$output .= '</div>';
 
 						// product
