@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.5.3.2
+ * Version: 3.5.3.3
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -125,6 +125,7 @@ if(!class_exists('WP_Spreadplugin')) {
 		public function Spreadplugin($atts) {
 
 			$articleCleanData = array(); // Array with article informations for sorting and filtering
+			$articleCleanDataComplete = array(); // Array with article informations for sorting and filtering
 			$articleData = array();
 			$designsData = array();
 
@@ -207,6 +208,7 @@ if(!class_exists('WP_Spreadplugin')) {
 						if (!empty($articleData[$designId])) {
 							foreach ($articleData[$designId] as $articleId => $arrArticle) {
 								$articleCleanData[$articleId] = $arrArticle;
+								$articleCleanDataComplete[$articleId] = $arrArticle;
 							}
 						}
 					}
@@ -216,6 +218,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				if (isset($articleData) && is_array($articleData[0])) {
 					foreach ($articleData[0] as $articleId => $arrArticle) {
 						$articleCleanData[$articleId] = $arrArticle;
+						$articleCleanDataComplete[$articleId] = $arrArticle;
 					}
 				}
 
@@ -433,8 +436,8 @@ if(!class_exists('WP_Spreadplugin')) {
 						$output .= '</div>';
 
 						// product
-						if (!empty($articleCleanData[intval($_GET['product'])])) {
-							$output .= $this->displayDetailPage(intval($_GET['product']),$articleCleanData[intval($_GET['product'])],self::$shopOptions['shop_zoomimagebackground']);
+						if (!empty($articleCleanDataComplete[intval($_GET['product'])])) {
+							$output .= $this->displayDetailPage(intval($_GET['product']),$articleCleanDataComplete[intval($_GET['product'])],self::$shopOptions['shop_zoomimagebackground']);
 						}
 						
 						$output .= '</div>';
