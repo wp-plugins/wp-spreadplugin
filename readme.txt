@@ -64,6 +64,7 @@ Or follow my sites on Twitter!
 http://twitter.com/lovetee_de
 
 Or you want to buy some of my shirts? 
+
 http://welovetee.spreadshirt.net or http://welovetee.spreadshirt.com
 
 == Installation ==
