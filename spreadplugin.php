@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.5.3.3
+ * Version: 3.5.3.4
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -301,7 +301,7 @@ if(!class_exists('WP_Spreadplugin')) {
 
 				} else {
 					// Listing product
-					if (!isset($_GET['product'])&&intval($_GET['product'])==0) {
+					if (!isset($_GET['splproduct'])&&intval($_GET['splproduct'])==0) {
 	
 						// add spreadplugin-menu
 						$output .= '<div id="spreadplugin-menu" class="spreadplugin-menu">';
@@ -436,8 +436,8 @@ if(!class_exists('WP_Spreadplugin')) {
 						$output .= '</div>';
 
 						// product
-						if (!empty($articleCleanDataComplete[intval($_GET['product'])])) {
-							$output .= $this->displayDetailPage(intval($_GET['product']),$articleCleanDataComplete[intval($_GET['product'])],self::$shopOptions['shop_zoomimagebackground']);
+						if (!empty($articleCleanDataComplete[intval($_GET['splproduct'])])) {
+							$output .= $this->displayDetailPage(intval($_GET['splproduct']),$articleCleanDataComplete[intval($_GET['splproduct'])],self::$shopOptions['shop_zoomimagebackground']);
 						}
 						
 						$output .= '</div>';
@@ -732,7 +732,7 @@ if(!class_exists('WP_Spreadplugin')) {
 
 
 			if (self::$shopOptions['shop_enablelink']==1) {
-				$output .= '<div class="details-wrapper2 clearfix"><a href="'.add_query_arg('product',$id,get_permalink()).'" target="'.self::$shopOptions['shop_linktarget'].'">'.__('Details', $this->stringTextdomain).'</a></div>';
+				$output .= '<div class="details-wrapper2 clearfix"><a href="'.add_query_arg('splproduct',$id,get_permalink()).'" target="'.self::$shopOptions['shop_linktarget'].'">'.__('Details', $this->stringTextdomain).'</a></div>';
 			}
 
 			$output .= '<div class="separator"></div>';
@@ -816,10 +816,10 @@ if(!class_exists('WP_Spreadplugin')) {
 			if (self::$shopOptions['shop_social']==true) {
 				$output .= '
 				<ul class="soc-icons">
-				<li><a target="_blank" data-color="#5481de" class="fb" href="//www.facebook.com/sharer.php?u='.urlencode(add_query_arg( 'product', $id, get_permalink())).'&t='.rawurlencode(get_the_title()).'" title="Facebook"></a></li>
-				<li><a target="_blank" data-color="#06ad18" class="goog" href="//plus.google.com/share?url='.urlencode(add_query_arg( 'product', $id, get_permalink())).'" title="Google"></a></li>
-				<li><a target="_blank" data-color="#2cbbea" class="twt" href="//twitter.com/home?status='.rawurlencode(get_the_title()).' - '.urlencode(add_query_arg( 'product', $id, get_permalink())).'" title="Twitter"></a></li>
-				<li><a target="_blank" data-color="#e84f61" class="pin" href="//pinterest.com/pin/create/button/?url='.rawurlencode(add_query_arg( 'product', $id, get_permalink())).'&media='.rawurlencode('http://image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width='.self::$shopOptions['shop_imagesize'].',height='.self::$shopOptions['shop_imagesize'].'').',width='.self::$shopOptions['shop_imagesize'].',height='.self::$shopOptions['shop_imagesize'].'&description='.(!empty($article['description'])?htmlspecialchars($article['description'],ENT_QUOTES):'Product').'" title="Pinterest"></a></li>
+				<li><a target="_blank" data-color="#5481de" class="fb" href="//www.facebook.com/sharer.php?u='.urlencode(add_query_arg('splproduct', $id, get_permalink())).'&t='.rawurlencode(get_the_title()).'" title="Facebook"></a></li>
+				<li><a target="_blank" data-color="#06ad18" class="goog" href="//plus.google.com/share?url='.urlencode(add_query_arg('splproduct', $id, get_permalink())).'" title="Google"></a></li>
+				<li><a target="_blank" data-color="#2cbbea" class="twt" href="//twitter.com/home?status='.rawurlencode(get_the_title()).' - '.urlencode(add_query_arg('splproduct', $id, get_permalink())).'" title="Twitter"></a></li>
+				<li><a target="_blank" data-color="#e84f61" class="pin" href="//pinterest.com/pin/create/button/?url='.rawurlencode(add_query_arg('splproduct', $id, get_permalink())).'&media='.rawurlencode('http://image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width='.self::$shopOptions['shop_imagesize'].',height='.self::$shopOptions['shop_imagesize'].'').',width='.self::$shopOptions['shop_imagesize'].',height='.self::$shopOptions['shop_imagesize'].'&description='.(!empty($article['description'])?htmlspecialchars($article['description'],ENT_QUOTES):'Product').'" title="Pinterest"></a></li>
 				</ul>
 				';
 
@@ -898,7 +898,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			$output .= '</div>';
 			
 			if (self::$shopOptions['shop_enablelink']==1) {
-				$output .= '<div class="details-wrapper2 clearfix"><a href="'.add_query_arg('product',$id,get_permalink()).'" target="'.self::$shopOptions['shop_linktarget'].'">'.__('Details', $this->stringTextdomain).'</a></div>';
+				$output .= '<div class="details-wrapper2 clearfix"><a href="'.add_query_arg('splproduct',$id,get_permalink()).'" target="'.self::$shopOptions['shop_linktarget'].'">'.__('Details', $this->stringTextdomain).'</a></div>';
 			}
 
 			$output .= '</div><div class="articleContentRight"><h3>'.htmlspecialchars($article['name'],ENT_QUOTES).'</h3>';
@@ -978,10 +978,10 @@ if(!class_exists('WP_Spreadplugin')) {
 			if (self::$shopOptions['shop_social']==true) {
 				$output .= '
 				<ul class="soc-icons">
-				<li><a target="_blank" data-color="#5481de" class="fb" href="//www.facebook.com/sharer.php?u='.urlencode(add_query_arg( 'product', $id, get_permalink())).'&t='.rawurlencode(get_the_title()).'" title="Facebook"></a></li>
-				<li><a target="_blank" data-color="#06ad18" class="goog" href="//plus.google.com/share?url='.urlencode(add_query_arg( 'product', $id, get_permalink())).'" title="Google"></a></li>
-				<li><a target="_blank" data-color="#2cbbea" class="twt" href="//twitter.com/home?status='.rawurlencode(get_the_title()).' - '.urlencode(add_query_arg( 'product', $id, get_permalink())).'" title="Twitter"></a></li>
-				<li><a target="_blank" data-color="#e84f61" class="pin" href="//pinterest.com/pin/create/button/?url='.rawurlencode(add_query_arg( 'product', $id, get_permalink())).'&media='.rawurlencode('http://image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width='.self::$shopOptions['shop_imagesize'].',height='.self::$shopOptions['shop_imagesize'].'').',width='.self::$shopOptions['shop_imagesize'].',height='.self::$shopOptions['shop_imagesize'].'&description='.(!empty($article['description'])?htmlspecialchars($article['description'],ENT_QUOTES):'Product').'" title="Pinterest"></a></li>
+				<li><a target="_blank" data-color="#5481de" class="fb" href="//www.facebook.com/sharer.php?u='.urlencode(add_query_arg('splproduct', $id, get_permalink())).'&t='.rawurlencode(get_the_title()).'" title="Facebook"></a></li>
+				<li><a target="_blank" data-color="#06ad18" class="goog" href="//plus.google.com/share?url='.urlencode(add_query_arg('splproduct', $id, get_permalink())).'" title="Google"></a></li>
+				<li><a target="_blank" data-color="#2cbbea" class="twt" href="//twitter.com/home?status='.rawurlencode(get_the_title()).' - '.urlencode(add_query_arg('splproduct', $id, get_permalink())).'" title="Twitter"></a></li>
+				<li><a target="_blank" data-color="#e84f61" class="pin" href="//pinterest.com/pin/create/button/?url='.rawurlencode(add_query_arg('splproduct', $id, get_permalink())).'&media='.rawurlencode('http://image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width='.self::$shopOptions['shop_imagesize'].',height='.self::$shopOptions['shop_imagesize'].'').',width='.self::$shopOptions['shop_imagesize'].',height='.self::$shopOptions['shop_imagesize'].'&description='.(!empty($article['description'])?htmlspecialchars($article['description'],ENT_QUOTES):'Product').'" title="Pinterest"></a></li>
 				</ul>
 				';
 
@@ -1655,10 +1655,10 @@ if(!class_exists('WP_Spreadplugin')) {
 			if (self::$shopOptions['shop_social']==true) {
 				$output .= '
 				<ul class="soc-icons">
-				<li><a target="_blank" data-color="#5481de" class="fb" href="//www.facebook.com/sharer.php?u='.urlencode(add_query_arg( 'product', $id, get_permalink())).'&t='.rawurlencode(get_the_title()).'" title="Facebook"></a></li>
-				<li><a target="_blank" data-color="#06ad18" class="goog" href="//plus.google.com/share?url='.urlencode(add_query_arg( 'product', $id, get_permalink())).'" title="Google"></a></li>
-				<li><a target="_blank" data-color="#2cbbea" class="twt" href="//twitter.com/home?status='.rawurlencode(get_the_title()).' - '.urlencode(add_query_arg( 'product', $id, get_permalink())).'" title="Twitter"></a></li>
-				<li><a target="_blank" data-color="#e84f61" class="pin" href="//pinterest.com/pin/create/button/?url='.rawurlencode(add_query_arg( 'product', $id, get_permalink())).'&media='.rawurlencode('http://image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width=280,height=280').',width='.self::$shopOptions['shop_imagesize'].',height='.self::$shopOptions['shop_imagesize'].'&description='.(!empty($article['description'])?htmlspecialchars($article['description'],ENT_QUOTES):'Product').'" title="Pinterest"></a></li>
+				<li><a target="_blank" data-color="#5481de" class="fb" href="//www.facebook.com/sharer.php?u='.urlencode(add_query_arg('splproduct', $id, get_permalink())).'&t='.rawurlencode(get_the_title()).'" title="Facebook"></a></li>
+				<li><a target="_blank" data-color="#06ad18" class="goog" href="//plus.google.com/share?url='.urlencode(add_query_arg('splproduct', $id, get_permalink())).'" title="Google"></a></li>
+				<li><a target="_blank" data-color="#2cbbea" class="twt" href="//twitter.com/home?status='.rawurlencode(get_the_title()).' - '.urlencode(add_query_arg('splproduct', $id, get_permalink())).'" title="Twitter"></a></li>
+				<li><a target="_blank" data-color="#e84f61" class="pin" href="//pinterest.com/pin/create/button/?url='.rawurlencode(add_query_arg('splproduct', $id, get_permalink())).'&media='.rawurlencode('http://image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width=280,height=280').',width='.self::$shopOptions['shop_imagesize'].',height='.self::$shopOptions['shop_imagesize'].'&description='.(!empty($article['description'])?htmlspecialchars($article['description'],ENT_QUOTES):'Product').'" title="Pinterest"></a></li>
 				</ul>
 				';
 
