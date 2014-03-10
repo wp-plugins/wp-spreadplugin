@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spreadplugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-17 02:16+0100\n"
-"PO-Revision-Date: 2013-12-17 02:18+0100\n"
+"POT-Creation-Date: 2014-03-10 23:36+0100\n"
+"PO-Revision-Date: 2014-03-10 23:36+0100\n"
 "Last-Translator: Thimo Grauerholz <thimo@grauerholz.de>\n"
 "Language-Team: \n"
 "Language: nl_NL\n"
@@ -17,47 +17,49 @@ msgstr ""
 "X-Generator: Poedit 1.6.2\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: options.php:32 spreadplugin.php:1610
+#: options.php:32 spreadplugin.php:1773 _sources/1und1/spreadplugin.php:1781
 msgid "Settings"
-msgstr ""
+msgstr "Instellingen"
 
 #: options.php:36
 msgid ""
 "These settings will be used as default and can be overwritten by the "
 "extended shortcode."
 msgstr ""
+"Dit zijn de instellingen die als standaard worden beschouwd. Je kunt deze "
+"overschrijven door gebruik te maken van de uitgebreide shortcode."
 
 #: options.php:42
 msgid "Shop id:"
-msgstr ""
+msgstr "Shop id:"
 
 #: options.php:46
 msgid "Shop country:"
-msgstr ""
+msgstr "Shop country:"
 
 #: options.php:69
 msgid "Shop source:"
-msgstr ""
+msgstr "Shop source:"
 
 #: options.php:76
 msgid "Spreadshirt API Key:"
-msgstr ""
+msgstr "Spreadshirt API Key:"
 
 #: options.php:80
 msgid "Spreadshirt API Secret:"
-msgstr ""
+msgstr "Spreadshirt API Secret:"
 
 #: options.php:84
 msgid "Limit articles per page:"
-msgstr ""
+msgstr "Maximaal aantal artikelen per pagina:"
 
 #: options.php:88
 msgid "Image size:"
-msgstr ""
+msgstr "Afbeeldingsgrootte:"
 
 #: options.php:96
 msgid "Product category:"
-msgstr ""
+msgstr "Productcategorie:"
 
 #: options.php:99
 msgid "All products"
@@ -85,25 +87,25 @@ msgstr "Nieuwe producten"
 
 #: options.php:119
 msgid "Article category:"
-msgstr ""
+msgstr "Eigen categorie:"
 
 #: options.php:125
 msgid "Social buttons:"
-msgstr ""
+msgstr "Social buttons:"
 
 #: options.php:127 options.php:135 options.php:192 options.php:200
-#: options.php:208 options.php:216 options.php:228
+#: options.php:208 options.php:216 options.php:236
 msgid "Disabled"
-msgstr ""
+msgstr "Uitschakelen"
 
 #: options.php:130 options.php:138 options.php:195 options.php:203
-#: options.php:211 options.php:219 options.php:231
+#: options.php:211 options.php:219 options.php:239
 msgid "Enabled"
-msgstr ""
+msgstr "Inschakelen"
 
 #: options.php:133
 msgid "Product linking:"
-msgstr ""
+msgstr "Product linking:"
 
 #: options.php:141
 msgid "Sort articles by:"
@@ -111,260 +113,304 @@ msgstr "Sorteer op"
 
 #: options.php:154
 msgid "Target of links:"
-msgstr ""
+msgstr "Doelpagina van links:"
 
 #: options.php:155
 msgid ""
 "Enter the name of your target iframe or frame, if available. Default is "
 "_blank (new window)."
 msgstr ""
+"Vul hier, indien nodig, de doelpagina in van je iframe of frame. Standaard "
+"staat deze op _blank (nieuw venster)"
 
 #: options.php:161
 msgid "Use iframe for checkout:"
-msgstr ""
+msgstr "De betaalpagina weergeven:"
 
 #: options.php:163
 msgid "Opens in separate window"
-msgstr ""
+msgstr "In een nieuw venster"
 
 #: options.php:166
 msgid "Opens an iframe in the page content"
-msgstr ""
+msgstr "In een iframe binnen de website"
 
 #: options.php:169
-msgid "Opens an iframe in a modal window (fancybox)"
-msgstr ""
+msgid "Opens an iframe in a modal window"
+msgstr "In een iframe in een modal window"
 
 #: options.php:172
 msgid "Designer Shop ID:"
-msgstr ""
+msgstr "Designer Shop ID:"
 
 #: options.php:173
 msgid ""
 "If you have a designer Shop (Spreadshirt premium account), enter the ID "
 "here. A new link will appear where the customer can change the design."
 msgstr ""
+"Indien je een Spreadshirt Premium Account hebt kun je hier het ID van de "
+"designer shop invoeren. Zo kunnen je bezoekers de producten die je aanbied "
+"aanpassen."
 
 #: options.php:179
 msgid "Default display:"
-msgstr ""
+msgstr "Standaard weergave:"
 
 #: options.php:181
 msgid "Articles"
-msgstr ""
+msgstr "Artikelen"
 
 #: options.php:184
 msgid "Designs"
-msgstr ""
+msgstr "Designs"
 
 #: options.php:187
 msgid "Designs with background:"
-msgstr ""
+msgstr "Designs met achtergrond:"
 
 #: options.php:188
 msgid ""
 "Displays designs with background color of each first given article/shirt"
 msgstr ""
+"Geef de designs weer met een achtergrond in de eerstgekozen kleur van het "
+"artikel/shirt:"
 
 #: options.php:198
 msgid "Always show article description:"
-msgstr ""
+msgstr "Altijd de artikelbeschrijving laten zien:"
 
 #: options.php:206
 msgid "Show product description under article description:"
-msgstr ""
+msgstr "Laat de productbeschrijving zien onder de artikelbeschrijving:"
 
 #: options.php:214
 msgid "Display price without and with tax:"
-msgstr ""
+msgstr "Laat prijs zien in- en exclusief BTW:"
 
 #: options.php:222
 msgid "Zoom image background color:"
-msgstr ""
+msgstr "Achtergrond kleur afbeelding bij inzoomen:"
 
 #: options.php:226
-msgid "Infinity scrolling:"
+msgid "View:"
+msgstr ""
+
+#: options.php:228
+msgid "Grid view"
+msgstr ""
+
+#: options.php:231
+msgid "List view"
 msgstr ""
 
 #: options.php:234
+msgid "Infinity scrolling:"
+msgstr "Eindeloos scrollen:"
+
+#: options.php:242
 msgid "Custom CSS"
-msgstr ""
+msgstr "Custom CSS:"
 
-#: options.php:238
+#: options.php:246
 msgid "Update settings"
-msgstr ""
+msgstr "Update instellingen"
 
-#: options.php:248
+#: options.php:256
 msgid "Minimum required shortcode"
-msgstr ""
+msgstr "Korte shortcode"
 
-#: options.php:252
+#: options.php:260
 msgid "Extended sample shortcode"
-msgstr ""
+msgstr "Uitgebreide shortcode"
 
-#: options.php:255
+#: options.php:263
 msgid ""
 "The extended shortcodes will overwrite the default settings. You may use it "
 "to create a different shop with the same plugin."
 msgstr ""
+"The uitgebreide shortcodes overschrijven de standaardinstellingen. Je kunt "
+"deze dus gebruiken om bijvoorbeeld een andere shop te integreren met "
+"dezelfde plugin."
 
-#: options.php:277
+#: options.php:285
 msgid "Options"
-msgstr ""
+msgstr "Opties"
 
-#: options.php:281
+#: options.php:289
 msgid "Clear cache"
-msgstr ""
+msgstr "Leeg cache"
 
-#: options.php:302
+#: options.php:310
 msgid "Successfully cleared the cache"
-msgstr ""
+msgstr "De cache is succesvol geleegd"
 
-#: options.php:342
+#: options.php:350
 msgid "Please fill in the highlighted fields!"
-msgstr ""
+msgstr "Vul alle gemarkeerde velden in!"
 
-#: options.php:359
+#: options.php:367
 msgid "Successfully saved settings"
-msgstr ""
+msgstr "Instellingen zijn succesvol opgeslagen"
 
-#: spreadplugin.php:307
+#: spreadplugin.php:311 _sources/1und1/spreadplugin.php:315
 msgid "Product category"
 msgstr "Product categorie"
 
-#: spreadplugin.php:332
+#: spreadplugin.php:336 _sources/1und1/spreadplugin.php:340
 msgid "Sort by"
 msgstr "Sorteer op"
 
-#: spreadplugin.php:333
+#: spreadplugin.php:337 _sources/1und1/spreadplugin.php:341
 msgid "name"
 msgstr "Naam"
 
-#: spreadplugin.php:334
+#: spreadplugin.php:338 _sources/1und1/spreadplugin.php:342
 msgid "price"
 msgstr "Prijs"
 
-#: spreadplugin.php:335
+#: spreadplugin.php:339 _sources/1und1/spreadplugin.php:343
 msgid "recent"
-msgstr "Recent"
+msgstr "Meest recent"
 
-#: spreadplugin.php:336
+#: spreadplugin.php:340 _sources/1und1/spreadplugin.php:344
 msgid "weight"
-msgstr "Weging"
+msgstr "Gewicht"
 
-#: spreadplugin.php:339 spreadplugin.php:416
+#: spreadplugin.php:344 spreadplugin.php:434
+#: _sources/1und1/spreadplugin.php:348 _sources/1und1/spreadplugin.php:438
 msgid "Basket"
 msgstr "Winkelmandje"
 
-#: spreadplugin.php:402
+#: spreadplugin.php:420 _sources/1und1/spreadplugin.php:424
 msgid "next"
 msgstr "volgende"
 
-#: spreadplugin.php:415
+#: spreadplugin.php:433 _sources/1und1/spreadplugin.php:437
 msgid "Back"
-msgstr ""
+msgstr "Terug"
 
-#: spreadplugin.php:696 spreadplugin.php:1400
+#: spreadplugin.php:714 spreadplugin.php:887 spreadplugin.php:1566
+#: _sources/1und1/spreadplugin.php:718 _sources/1und1/spreadplugin.php:891
+#: _sources/1und1/spreadplugin.php:1574
 msgid "Edit article"
 msgstr "Bewerk artikel"
 
-#: spreadplugin.php:719
+#: spreadplugin.php:735 spreadplugin.php:901
+#: _sources/1und1/spreadplugin.php:739 _sources/1und1/spreadplugin.php:905
 msgid "Details"
-msgstr ""
+msgstr "Meer info"
 
-#: spreadplugin.php:758 spreadplugin.php:1238
+#: spreadplugin.php:777 spreadplugin.php:910 spreadplugin.php:1387
+#: _sources/1und1/spreadplugin.php:781 _sources/1und1/spreadplugin.php:914
+#: _sources/1und1/spreadplugin.php:1391
 msgid "Show article description"
-msgstr "Tonen artikelbeschrijving"
+msgstr "Toon artikelbeschrijving"
 
-#: spreadplugin.php:769 spreadplugin.php:1240
+#: spreadplugin.php:788 spreadplugin.php:1389
+#: _sources/1und1/spreadplugin.php:792 _sources/1und1/spreadplugin.php:1393
 msgid "Show product description"
-msgstr "Tonen productbeschrijving"
+msgstr "Toon productbeschrijving"
 
-#: spreadplugin.php:782 spreadplugin.php:1477
+#: spreadplugin.php:801 spreadplugin.php:963 spreadplugin.php:1640
+#: _sources/1und1/spreadplugin.php:805 _sources/1und1/spreadplugin.php:967
+#: _sources/1und1/spreadplugin.php:1648
 msgid "Price (without tax):"
 msgstr "Prijs (excl. btw):"
 
-#: spreadplugin.php:783 spreadplugin.php:1478
+#: spreadplugin.php:802 spreadplugin.php:964 spreadplugin.php:1641
+#: _sources/1und1/spreadplugin.php:806 _sources/1und1/spreadplugin.php:968
+#: _sources/1und1/spreadplugin.php:1649
 msgid "Price (with tax):"
 msgstr "Prijs (incl. btw):"
 
-#: spreadplugin.php:785 spreadplugin.php:1480
+#: spreadplugin.php:804 spreadplugin.php:966 spreadplugin.php:1643
+#: _sources/1und1/spreadplugin.php:808 _sources/1und1/spreadplugin.php:970
+#: _sources/1und1/spreadplugin.php:1651
 msgid "excl. Shipping"
-msgstr ""
+msgstr "Excl. Verzendkosten"
 
-#: spreadplugin.php:788 spreadplugin.php:1483
+#: spreadplugin.php:807 spreadplugin.php:969 spreadplugin.php:1646
+#: _sources/1und1/spreadplugin.php:811 _sources/1und1/spreadplugin.php:973
+#: _sources/1und1/spreadplugin.php:1654
 msgid "Price:"
 msgstr "Prijs:"
 
-#: spreadplugin.php:794 spreadplugin.php:1246 spreadplugin.php:1489
+#: spreadplugin.php:813 spreadplugin.php:975 spreadplugin.php:1395
+#: spreadplugin.php:1652 _sources/1und1/spreadplugin.php:817
+#: _sources/1und1/spreadplugin.php:979 _sources/1und1/spreadplugin.php:1399
+#: _sources/1und1/spreadplugin.php:1660
 msgid "Add to basket"
 msgstr "Plaats in winkelwagen"
 
-#: spreadplugin.php:869
-msgid "Click to view the articles"
-msgstr ""
+#: spreadplugin.php:919 spreadplugin.php:1612 spreadplugin.php:1880
+#: _sources/1und1/spreadplugin.php:923 _sources/1und1/spreadplugin.php:1620
+#: _sources/1und1/spreadplugin.php:1888
+msgid "Size"
+msgstr "Maat"
 
-#: spreadplugin.php:876
+#: spreadplugin.php:931 spreadplugin.php:1623
+#: _sources/1und1/spreadplugin.php:935 _sources/1und1/spreadplugin.php:1631
+msgid "Color"
+msgstr "Kleur"
+
+#: spreadplugin.php:1018 _sources/1und1/spreadplugin.php:1022
+msgid "Click to view the articles"
+msgstr "Klik om de artikelen te zien"
+
+#: spreadplugin.php:1025 _sources/1und1/spreadplugin.php:1029
 msgid "Show description"
 msgstr "Geef omschrijving weer"
 
-#: spreadplugin.php:1237
+#: spreadplugin.php:1386 _sources/1und1/spreadplugin.php:1390
 msgid "Hide article description"
-msgstr "Artikel beschrijving verbergen"
+msgstr "Artikelbeschrijving verbergen"
 
-#: spreadplugin.php:1239
+#: spreadplugin.php:1388 _sources/1und1/spreadplugin.php:1392
 msgid "Hide product description"
-msgstr "Product beschrijving verbergen"
+msgstr "Productbeschrijving verbergen"
 
-#: spreadplugin.php:1242
+#: spreadplugin.php:1391 _sources/1und1/spreadplugin.php:1395
 msgid "Loading new articles..."
-msgstr "Laadt nieuwe artikelen..."
+msgstr "Nieuwe artikelen worden geladen..."
 
-#: spreadplugin.php:1243
+#: spreadplugin.php:1392 _sources/1und1/spreadplugin.php:1396
 msgid "You have reached the end"
 msgstr "Je hebt het einde bereikt "
 
-#: spreadplugin.php:1247
+#: spreadplugin.php:1396 _sources/1und1/spreadplugin.php:1400
 msgid "Adding..."
 msgstr "Toevoegen..."
 
-#: spreadplugin.php:1417
+#: spreadplugin.php:1594 _sources/1und1/spreadplugin.php:1602
 msgid "Additional details"
-msgstr ""
+msgstr "Aanvullende informatie"
 
-#: spreadplugin.php:1430
+#: spreadplugin.php:1607 _sources/1und1/spreadplugin.php:1615
 msgid "Product details"
-msgstr ""
+msgstr "Product informatie"
 
-#: spreadplugin.php:1435 spreadplugin.php:1716
-msgid "Size"
-msgstr ""
-
-#: spreadplugin.php:1448
-msgid "Color"
-msgstr ""
-
-#: spreadplugin.php:1583
+#: spreadplugin.php:1746 _sources/1und1/spreadplugin.php:1754
 msgid "You do not have sufficient permissions to access this page."
-msgstr ""
+msgstr "Je hebt niet de rechten om deze pagina te bezoeken"
 
-#: spreadplugin.php:1716
-msgid "Quantity"
-msgstr ""
-
-#: spreadplugin.php:1718
+#: spreadplugin.php:1878 _sources/1und1/spreadplugin.php:1886
 msgid "Remove"
-msgstr ""
+msgstr "Verwijderen"
 
-#: spreadplugin.php:1728
+#: spreadplugin.php:1880 _sources/1und1/spreadplugin.php:1888
+msgid "Quantity"
+msgstr "Aantal"
+
+#: spreadplugin.php:1891 _sources/1und1/spreadplugin.php:1899
 msgid "Total (excl. Shipping)"
-msgstr ""
+msgstr "Totaal (excl. Verzending)"
 
-#: spreadplugin.php:1731 spreadplugin.php:1733
+#: spreadplugin.php:1894 spreadplugin.php:1896
+#: _sources/1und1/spreadplugin.php:1902 _sources/1und1/spreadplugin.php:1904
 msgid "Proceed checkout"
-msgstr ""
+msgstr "Bestelling afronden"
 
-#: spreadplugin.php:1733
+#: spreadplugin.php:1896 _sources/1und1/spreadplugin.php:1904
 msgid "Basket is empty"
 msgstr "Winkelmandje is leeg"
 
