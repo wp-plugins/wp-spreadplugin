@@ -2,7 +2,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.5.3.4
+ * Version: 3.5.4
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -518,10 +518,59 @@ spreadplugin-items img {
 	width: 100% !important;
 }
 }
-
 .mfp-wrap {
 	z-index: 1060 !important;
 }
 .mfp-bg {
 	z-index: 1059 !important;
+}
+#spreadplugin-tabs_wrapper {
+	padding-top: 50px;
+}
+#spreadplugin-tabs_wrapper td {
+	min-width: inherit;
+}
+#spreadplugin-tabs_container {
+	border-bottom: 1px solid #ccc;
+}
+#spreadplugin-tabs {
+	list-style: none;
+	margin: 0 0 0 10px;
+}
+#spreadplugin-tabs li {
+	display: inline;
+}
+#spreadplugin-tabs li a {
+	border: 1px solid #ccc;
+	padding: 4px 6px;
+	text-decoration: none;
+	background-color: #eeeeee;
+	border-bottom: none;
+}
+#spreadplugin-tabs li a:hover {
+	background-color: #dddddd;
+	padding: 4px 6px;
+}
+#spreadplugin-tabs li.active a {
+	border-bottom: 1px solid #fff;
+	background-color: #fff;
+	padding: 4px 6px 5px 6px;
+	border-bottom: none;
+}
+#spreadplugin-tabs li.active a:hover {
+	background-color: #eeeeee;
+	padding: 4px 6px 5px 6px;
+	border-bottom: none;
+}
+#spreadplugin-tabs_content_container {
+	padding: 10px;
+	margin: 0;
+}
+.spreadplugin-tab_content {
+	display: none;
+}
+#spreadplugin-tabs .active {
+	clear: none;
+	float: none;
+	background-color: inherit !important;
 }

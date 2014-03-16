@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.5.3.4
+ * Version: 3.5.4
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -545,6 +545,7 @@ if(!class_exists('WP_Spreadplugin')) {
 						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['pricebrut']=(float)$article->price->vatIncluded;
 						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['currencycode']=(string)$objCurrencyData->isoCode;
 						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['productname']=(string)$objArticleData->name;
+						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['productshortdescription']=(string)$objArticleData->shortDescription;
 						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['productdescription']=(string)$objArticleData->description;
 						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['weight']=(float)$article['weight'];
 						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['id']=(int)$article['id'];
@@ -582,10 +583,25 @@ if(!class_exists('WP_Spreadplugin')) {
 						}
 						*/
 					
-					
-						// replace this lines with above, if stock states needed	
+						// replace to use stock states || weiter unten ist neuer
+						// sizes
 						foreach($objArticleData->sizes->size as $val) {
-							$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['sizes'][(int)$val['id']]=(string)$val->name;
+														
+							$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['sizes'][(int)$val['id']]['name']=(string)$val->name;
+							$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['sizes'][(int)$val['id']]['measures'][0]['name']=(string)$val->measures->measure[0]->name;
+							$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['sizes'][(int)$val['id']]['measures'][0]['value']=(string)$val->measures->measure[0]->value;
+							$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['sizes'][(int)$val['id']]['measures'][1]['name']=(string)$val->measures->measure[1]->name;
+							$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['sizes'][(int)$val['id']]['measures'][1]['value']=(string)$val->measures->measure[1]->value;
+						}
+						foreach($objArticleData->resources as $val) {
+							foreach($val->resource as $vr) {								
+								if ($vr['type']=='size') {							
+									$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['product-resource-size']=(string)$vr->attributes('xlink', true);
+								}
+								if ($vr['type']=='detail') {							
+									$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['product-resource-detail']=(string)$vr->attributes('xlink', true);
+								}
+							}
 						}
 
 						foreach($objArticleData->appearances->appearance as $appearance) {
@@ -724,7 +740,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				$output .= '<select id="size-select" name="size">';
 
 				foreach($article['sizes'] as $k => $v) {
-					$output .= '<option value="'.$k.'">'.$v.'</option>';
+					$output .= '<option value="'.$k.'">'.$v['name'].'</option>';
 				}
 
 				$output .= '</select>';
@@ -919,7 +935,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				$output .= '<div class="size-wrapper clearfix">'.__('Size', $this->stringTextdomain).': <select id="size-select" name="size">';
 
 				foreach($article['sizes'] as $k => $v) {
-					$output .= '<option value="'.$k.'">'.$v.'</option>';
+					$output .= '<option value="'.$k.'">'.$v['name'].'</option>';
 				}
 
 				$output .= '</select></div>';
@@ -1604,7 +1620,7 @@ if(!class_exists('WP_Spreadplugin')) {
 
 
 			// Show product description
-			$output .= '<div class="product-description-wrapper clearfix"><h4>'.__('Product details', $this->stringTextdomain).'</h4>'.$article['productdescription'].'</div>';
+			$output .= '<div class="product-description-wrapper clearfix"><h4>'.__('Product details', $this->stringTextdomain).'</h4>'.$article['productshortdescription'].'</div>';
 
 
 			// add a select with available sizes
@@ -1612,7 +1628,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				$output .= '<div class="size-wrapper clearfix">'.__('Size', $this->stringTextdomain).': <select id="size-select" name="size">';
 
 				foreach($article['sizes'] as $k => $v) {
-					$output .= '<option value="'.$k.'">'.$v.'</option>';
+					$output .= '<option value="'.$k.'">'.$v['name'].'</option>';
 				}
 
 				$output .= '</select></div>';
@@ -1697,11 +1713,89 @@ if(!class_exists('WP_Spreadplugin')) {
 				<li><a href="#" class="vk" title="Vkontakte" data-color="#5f84ab" target="_blank"></a></li>
 				*/
 			}
-
 			$output .= '
-</td></tr></table>
-					</form>
-					</div>';
+			</td>
+			</tr>
+			</table>
+			</form>
+			';
+					
+					
+		$output .= '
+<div id="spreadplugin-tabs_wrapper">
+	<div id="spreadplugin-tabs_container">
+		<ul id="spreadplugin-tabs">
+			<li class="active"><a href="#tab1">'.__('Product images', $this->stringTextdomain).'</a></li>
+			<li><a href="#tab2">'.__('Sizes', $this->stringTextdomain).'</a></li>
+			<li><a href="#tab3">'.__('Description', $this->stringTextdomain).'</a></li>
+			<!--<li><a href="#tab4">'.__('Print Technique', $this->stringTextdomain).'</a></li>-->
+ 		</ul>
+	</div>
+	<div id="spreadplugin-tabs_content_container">
+		<div id="tab1" class="spreadplugin-tab_content" style="display: block;">
+			<p><img alt="" src="'.$article['product-resource-detail'].',width=560,height=150.png"></p>
+		</div>
+		<div id="tab2" class="spreadplugin-tab_content">
+			<p><img alt="" src="'.$article['product-resource-size'].',width=130,height=130.png"></p>
+			
+			<table class="assort_sizes">
+			<thead>
+			<tr>
+			<th>'.__('Size', $this->stringTextdomain).'</th>
+			';
+			
+			if (isset($article['sizes'])&&is_array($article['sizes'])) {
+				foreach($article['sizes'] as $k => $v) {
+					$output .= '<th>'.$v['name'].'</th>';
+				}
+			}
+			
+			$output .= '
+			</tr>
+			</thead>
+			<tbody>
+			<tr>
+			<td>'.__('Dimension', $this->stringTextdomain).' A (mm)</td>
+			';
+			
+			if (isset($article['sizes'])&&is_array($article['sizes'])) {
+				foreach($article['sizes'] as $k => $v) {
+					$output .= '<td>'.$v['measures'][0]['value'].'</td>';
+				}
+			}
+			
+			$output .= '
+			</tr>
+			<tr class="even">
+			<td>'.__('Dimension', $this->stringTextdomain).' B (mm)</td>
+			';
+			
+			if (isset($article['sizes'])&&is_array($article['sizes'])) {
+				foreach($article['sizes'] as $k => $v) {
+					$output .= '<td>'.$v['measures'][1]['value'].'</td>';
+				}
+			}
+			
+			$output .= '
+			</tr>
+			</tbody>
+			</table>
+			';
+						
+			$output .= '
+		</div>
+		<div id="tab3" class="spreadplugin-tab_content">
+			<p>'.$article['productdescription'].'</p>
+		</div>
+		<!--<div id="tab4" class="spreadplugin-tab_content">
+			<p>Druckart fehlt noch</p>
+		</div>-->
+	</div>
+</div>
+			';
+					
+					
+			$output .= '</div>';
 
 
 			return $output;
