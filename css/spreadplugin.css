@@ -525,7 +525,9 @@ spreadplugin-items img {
 	z-index: 1059 !important;
 }
 #spreadplugin-tabs_wrapper {
-	padding-top: 50px;
+	margin: 0 auto;
+	padding-top:50px;
+	display:table;
 }
 #spreadplugin-tabs_wrapper td {
 	min-width: inherit;
