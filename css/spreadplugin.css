@@ -576,3 +576,8 @@ spreadplugin-items img {
 	float: none;
 	background-color: inherit !important;
 }
+.spreadplugin-items .image-wrapper .preview {
+    width: inherit !important;
+    height: inherit !important;
+    max-width: inherit !important;
+}
