@@ -407,7 +407,7 @@ code, pre {
 }
 .spreadplugin-cart-contents {
 	width: 400px;
-	height: 400px;
+	height: 300px;
 	overflow-y: scroll;
 	overflow-x: hidden;
 	padding-left: 10px;
@@ -513,10 +513,14 @@ spreadplugin-items img {
 .spreadplugin-article.list h3 {
 	min-height: inherit !important;
 }
- @media only screen and (max-width: 480px) {
-.spreadplugin-article, .spreadplugin-design, .spreadplugin-article-detail {
-	width: 100% !important;
-}
+@media only screen and (max-width: 480px) {
+	.spreadplugin-article, .spreadplugin-design, .spreadplugin-article-detail {
+		width: 100% !important;
+	}
+	.spreadplugin-cart-contents {
+		width: 180px;
+		height: 180px;
+	}
 }
 .mfp-wrap {
 	z-index: 1060 !important;
