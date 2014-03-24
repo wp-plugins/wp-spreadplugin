@@ -238,6 +238,14 @@ if (is_user_logged_in() && is_admin()) {
                   <input type="radio" name="shop_infinitescroll" value="1"<?php echo ($adminOptions['shop_infinitescroll']==1 || $adminOptions['shop_infinitescroll']==''?" checked":"") ?> />
                   <?php _e('Enabled','spreadplugin'); ?></td>
               </tr>
+                            <tr>
+                <td valign="top"><?php _e('Zoom type:','spreadplugin'); ?></td>
+                <td><input type="radio" name="shop_zoomtype" value="0"<?php echo ($adminOptions['shop_zoomtype']==0 || $adminOptions['shop_zoomtype']==''?" checked":"") ?> />
+                  <?php _e('Inner','spreadplugin'); ?>
+                  <br />
+                  <input type="radio" name="shop_zoomtype" value="1"<?php echo ($adminOptions['shop_zoomtype']==1?" checked":"") ?> />
+                  <?php _e('Lens','spreadplugin'); ?></td>
+              </tr>
               <tr>
                 <td valign="top"><?php _e('Custom CSS'); ?></td>
                 <td><textarea style="width: 300px; height: 215px; background: #EEE;" name="shop_customcss" class="custom-css"><?php echo htmlspecialchars($adminOptions['shop_customcss'], ENT_QUOTES); ?></textarea></td>

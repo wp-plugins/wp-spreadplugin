@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.5.4
+ * Version: 3.5.5
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -52,7 +52,8 @@ if(!class_exists('WP_Spreadplugin')) {
 				'shop_infinitescroll' => '',
 				'shop_customcss' => '',
 				'shop_design' => '',
-				'shop_view' => ''
+				'shop_view' => '',
+				'shop_zoomtype' => ''
 		);
 		private static $shopCache = 8760; // Shop article cache in hours 24*365 => 1 year
 
@@ -155,7 +156,8 @@ if(!class_exists('WP_Spreadplugin')) {
 			self::$shopOptions['shop_imagesize'] = (intval($conOp['shop_imagesize'])==0?190:intval($conOp['shop_imagesize']));
 			self::$shopOptions['shop_zoomimagebackground'] = (empty($conOp['shop_zoomimagebackground'])?'FFFFFF':str_replace("#", "", $conOp['shop_zoomimagebackground']));
 			self::$shopOptions['shop_infinitescroll'] = ($conOp['shop_infinitescroll']==''?1:$conOp['shop_infinitescroll']);
-				
+			self::$shopOptions['shop_zoomtype'] = ($conOp['shop_zoomtype']==''?0:$conOp['shop_zoomtype']);
+			
 
 			if (isset($_GET['productCategory'])) {
 				$c = urldecode($_GET['productCategory']);
@@ -1413,10 +1415,30 @@ if(!class_exists('WP_Spreadplugin')) {
 					var ajaxLocation = '".admin_url( 'admin-ajax.php' )."?pageid=".get_the_ID()."&nonce=".wp_create_nonce('spreadplugin')."';
 					var display = '".self::$shopOptions['shop_display']."';
 					var infiniteScroll = '".(self::$shopOptions['shop_infinitescroll']==1 || self::$shopOptions['shop_infinitescroll']==''?1:0)."';
+					var zoomConfig = {
+						";
+						
+					if (self::$shopOptions['shop_zoomtype']==0) {
+						echo '
+						zoomType : "inner",
+						cursor: "crosshair",
+						easing: true
+						';
+					} else {
+						echo '
+						zoomType: "lens",
+						lensShape: "round",
+						lensSize: 150
+						';
+					}
+					
+					echo "
+					}
+
 					</script>";
 
 			echo "
-					<script language='javascript' type='text/javascript' src='".plugins_url('/js/spreadplugin.min.js', __FILE__)."'></script>";
+					<script language='javascript' type='text/javascript' src='".plugins_url('/js/spreadplugin.js', __FILE__)."'></script>";
 
 		}
 
