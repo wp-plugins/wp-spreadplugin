@@ -32,10 +32,10 @@ if (is_user_logged_in() && is_admin()) {
           <?php _e('Settings','spreadplugin'); ?>
         </h3>
         <div class="inside">
-   <p>
-    <?php _e('These settings will be used as default and can be overwritten by the extended shortcode.','spreadplugin'); ?>
-  </p>
-         <form action="options-general.php?page=splg_options&saved" method="post" id="splg_options_form" name="splg_options_form">
+          <p>
+            <?php _e('These settings will be used as default and can be overwritten by the extended shortcode.','spreadplugin'); ?>
+          </p>
+          <form action="options-general.php?page=splg_options&saved" method="post" id="splg_options_form" name="splg_options_form">
             <?php wp_nonce_field('splg_options'); ?>
             <table border="0" cellpadding="3" cellspacing="0" class="form-table">
               <tr>
@@ -185,7 +185,7 @@ if (is_user_logged_in() && is_admin()) {
               </tr>
               <tr>
                 <td valign="top"><?php _e('Designs with background:','spreadplugin'); ?></td>
-                <td><?php _e('Displays designs with background color of each first given article/shirt'); ?>
+                <td><?php _e('Displays designs with background color of each first given article/shirt','spreadplugin'); ?>
                   <br />
                   <br />
                   <input type="radio" name="shop_designsbackground" value="0"<?php echo ($adminOptions['shop_designsbackground']==0?" checked":"") ?> />
@@ -202,7 +202,7 @@ if (is_user_logged_in() && is_admin()) {
                   <input type="radio" name="shop_showdescription" value="1"<?php echo ($adminOptions['shop_showdescription']==1?" checked":"") ?> />
                   <?php _e('Enabled','spreadplugin'); ?></td>
               </tr>
-               <tr>
+              <tr>
                 <td valign="top"><?php _e('Show product description under article description:','spreadplugin'); ?></td>
                 <td><input type="radio" name="shop_showproductdescription" value="0"<?php echo ($adminOptions['shop_showproductdescription']==0?" checked":"") ?> />
                   <?php _e('Disabled','spreadplugin'); ?>
@@ -210,7 +210,7 @@ if (is_user_logged_in() && is_admin()) {
                   <input type="radio" name="shop_showproductdescription" value="1"<?php echo ($adminOptions['shop_showproductdescription']==1?" checked":"") ?> />
                   <?php _e('Enabled','spreadplugin'); ?></td>
               </tr>
-             <tr>
+              <tr>
                 <td valign="top"><?php _e('Display price without and with tax:','spreadplugin'); ?></td>
                 <td><input type="radio" name="shop_showextendprice" value="0"<?php echo ($adminOptions['shop_showextendprice']==0?" checked":"") ?> />
                   <?php _e('Disabled','spreadplugin'); ?>
@@ -238,7 +238,18 @@ if (is_user_logged_in() && is_admin()) {
                   <input type="radio" name="shop_infinitescroll" value="1"<?php echo ($adminOptions['shop_infinitescroll']==1 || $adminOptions['shop_infinitescroll']==''?" checked":"") ?> />
                   <?php _e('Enabled','spreadplugin'); ?></td>
               </tr>
-                            <tr>
+              <tr>
+                <td valign="top"><?php _e('Lazy load:','spreadplugin'); ?></td>
+                <td><input type="radio" name="shop_lazyload" value="0"<?php echo ($adminOptions['shop_lazyload']==0?" checked":"") ?> />
+                  <?php _e('Disabled','spreadplugin'); ?>
+                  <br />
+                  <input type="radio" name="shop_lazyload" value="1"<?php echo ($adminOptions['shop_lazyload']==1 || $adminOptions['shop_lazyload']==''?" checked":"") ?> />
+                  <?php _e('Enabled','spreadplugin'); ?>
+                  <br />
+                  <br />
+                  <?php _e('If active, load images on view (speed up page load).','spreadplugin'); ?></td>
+              </tr>
+              <tr>
                 <td valign="top"><?php _e('Zoom type:','spreadplugin'); ?></td>
                 <td><input type="radio" name="shop_zoomtype" value="0"<?php echo ($adminOptions['shop_zoomtype']==0 || $adminOptions['shop_zoomtype']==''?" checked":"") ?> />
                   <?php _e('Inner','spreadplugin'); ?>

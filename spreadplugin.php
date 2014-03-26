@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.5.5
+ * Version: 3.5.5.1
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -53,7 +53,8 @@ if(!class_exists('WP_Spreadplugin')) {
 				'shop_customcss' => '',
 				'shop_design' => '',
 				'shop_view' => '',
-				'shop_zoomtype' => ''
+				'shop_zoomtype' => '',
+				'shop_lazyload' => ''
 		);
 		private static $shopCache = 8760; // Shop article cache in hours 24*365 => 1 year
 
@@ -157,6 +158,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			self::$shopOptions['shop_zoomimagebackground'] = (empty($conOp['shop_zoomimagebackground'])?'FFFFFF':str_replace("#", "", $conOp['shop_zoomimagebackground']));
 			self::$shopOptions['shop_infinitescroll'] = ($conOp['shop_infinitescroll']==''?1:$conOp['shop_infinitescroll']);
 			self::$shopOptions['shop_zoomtype'] = ($conOp['shop_zoomtype']==''?0:$conOp['shop_zoomtype']);
+			self::$shopOptions['shop_lazyload'] = ($conOp['shop_lazyload']==''?1:$conOp['shop_lazyload']);
 			
 
 			if (isset($_GET['productCategory'])) {
@@ -721,6 +723,8 @@ if(!class_exists('WP_Spreadplugin')) {
 		 * @return html
 		 */
 		private function displayArticles($id,$article,$backgroundColor='') {
+			
+			$imgSrc = 'http://image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width='.self::$shopOptions['shop_imagesize'].',height='.self::$shopOptions['shop_imagesize'];
 
 			$output = '<div class="spreadplugin-article clearfix" id="article_'.$id.'" style="width:'.(self::$shopOptions['shop_imagesize']+7).'px">';
 			$output .= '<a name="'.$id.'"></a>';
@@ -734,7 +738,15 @@ if(!class_exists('WP_Spreadplugin')) {
 				
 			// display preview image
 			$output .= '<div class="image-wrapper">';
-			$output .= '<img src="'.plugins_url('/img/blank.gif', __FILE__).'" alt="' . htmlspecialchars($article['name'],ENT_QUOTES) . '" id="previewimg_'.$id.'" data-zoom-image="http://image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width=800,height=800'.(!empty($backgroundColor)?',backgroundColor='.$backgroundColor:'').'" class="preview lazyimg" data-original="http://image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width='.self::$shopOptions['shop_imagesize'].',height='.self::$shopOptions['shop_imagesize'].'" />';
+			$output .= '<img src="';
+			
+			if (self::$shopOptions['shop_lazyload']==0) {
+				$output .= $imgSrc;
+			} else {
+				$output .= plugins_url('/img/blank.gif', __FILE__);
+			}
+			
+			$output .= '" alt="' . htmlspecialchars($article['name'],ENT_QUOTES) . '" id="previewimg_'.$id.'" data-zoom-image="http://image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width=800,height=800'.(!empty($backgroundColor)?',backgroundColor='.$backgroundColor:'').'" class="preview lazyimg" data-original="'.$imgSrc.'" />';
 			$output .= '</div>';
 
 			// add a select with available sizes
@@ -773,7 +785,14 @@ if(!class_exists('WP_Spreadplugin')) {
 				
 				$_vc=0;
 				foreach($article['views'] as $k=>$v) {
-					$output .= '<li value="'.$k.'"><img src="'.plugins_url('/img/blank.gif', __FILE__).'" data-original="'. $this->cleanURL($v)  .',viewId='.$k.',width=42,height=42" class="previewview lazyimg" alt="" id="viewimg_'.$id.'" /></li>';
+										
+					if (self::$shopOptions['shop_lazyload']==0) {
+						$liSrc = $this->cleanURL($v).',viewId='.$k.',width=42,height=42';
+					} else {
+						$liSrc = plugins_url('/img/blank.gif', __FILE__);
+					}
+					
+					$output .= '<li value="'.$k.'"><img src="'.$liSrc.'" data-original="'. $this->cleanURL($v).',viewId='.$k.',width=42,height=42" class="previewview lazyimg" alt="" id="viewimg_'.$id.'" /></li>';
 					if ($_vc==3) break;
 					$_vc++;
 				}
@@ -895,6 +914,8 @@ if(!class_exists('WP_Spreadplugin')) {
 		 * @return html
 		 */
 		private function displayListArticles($id,$article,$backgroundColor='') {
+			
+			$imgSrc = 'http://image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width='.self::$shopOptions['shop_imagesize'].',height='.self::$shopOptions['shop_imagesize'];
 
 			$output = '<div class="spreadplugin-article list" id="article_'.$id.'">';
 			$output .= '<a name="'.$id.'"></a>';
@@ -907,7 +928,15 @@ if(!class_exists('WP_Spreadplugin')) {
 				
 			// display preview image
 			$output .= '<div class="image-wrapper">';
-			$output .= '<img src="'.plugins_url('/img/blank.gif', __FILE__).'" alt="' . htmlspecialchars($article['name'],ENT_QUOTES) . '" id="previewimg_'.$id.'" data-zoom-image="http://image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width=800,height=800'.(!empty($backgroundColor)?',backgroundColor='.$backgroundColor:'').'" class="preview lazyimg" data-original="http://image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width='.self::$shopOptions['shop_imagesize'].',height='.self::$shopOptions['shop_imagesize'].'" />';
+			$output .= '<img src="';
+			
+			if (self::$shopOptions['shop_lazyload']==0) {
+				$output .= $imgSrc;
+			} else {
+				$output .= plugins_url('/img/blank.gif', __FILE__);
+			}
+
+			$output .= '" alt="' . htmlspecialchars($article['name'],ENT_QUOTES) . '" id="previewimg_'.$id.'" data-zoom-image="http://image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width=800,height=800'.(!empty($backgroundColor)?',backgroundColor='.$backgroundColor:'').'" class="preview lazyimg" data-original="'.$imgSrc.'" />';
 			$output .= '</div>';
 
 			// Short product description
@@ -962,7 +991,14 @@ if(!class_exists('WP_Spreadplugin')) {
 				
 				$_vc=0;
 				foreach($article['views'] as $k=>$v) {
-					$output .= '<li value="'.$k.'"><img src="'.plugins_url('/img/blank.gif', __FILE__).'" data-original="'. $this->cleanURL($v)  .',viewId='.$k.',width=42,height=42" class="previewview lazyimg" alt="" id="viewimg_'.$id.'" /></li>';
+					
+					if (self::$shopOptions['shop_lazyload']==0) {
+						$liSrc = $this->cleanURL($v) .',viewId='.$k.',width=42,height=42';
+					} else {
+						$liSrc = plugins_url('/img/blank.gif', __FILE__);
+					}
+					
+					$output .= '<li value="'.$k.'"><img src="'.$liSrc.'" data-original="'. $this->cleanURL($v)  .',viewId='.$k.',width=42,height=42" class="previewview lazyimg" alt="" id="viewimg_'.$id.'" /></li>';
 					if ($_vc==3) break;
 					$_vc++;
 				}
@@ -1415,6 +1451,7 @@ if(!class_exists('WP_Spreadplugin')) {
 					var ajaxLocation = '".admin_url( 'admin-ajax.php' )."?pageid=".get_the_ID()."&nonce=".wp_create_nonce('spreadplugin')."';
 					var display = '".self::$shopOptions['shop_display']."';
 					var infiniteScroll = '".(self::$shopOptions['shop_infinitescroll']==1 || self::$shopOptions['shop_infinitescroll']==''?1:0)."';
+					var lazyLoad = '".(self::$shopOptions['shop_lazyload']==1 || self::$shopOptions['shop_lazyload']==''?1:0)."';
 					var zoomConfig = {
 						";
 						
@@ -1462,8 +1499,10 @@ if(!class_exists('WP_Spreadplugin')) {
 			wp_enqueue_script('zoom');
 			
 			// lazyload
-			wp_register_script('lazyload', plugins_url('/js/jquery.lazyload.min.js', __FILE__),array('jquery'));
-			wp_enqueue_script('lazyload');
+			if ($conOp['shop_lazyload']==1 || $conOp['shop_lazyload']=='') {
+				wp_register_script('lazyload', plugins_url('/js/jquery.lazyload.min.js', __FILE__),array('jquery'));
+				wp_enqueue_script('lazyload');
+			}
 
 			// Respects SSL, Style.css is relative to the current file
 			wp_register_style('spreadplugin', plugins_url('/css/spreadplugin.css', __FILE__));
