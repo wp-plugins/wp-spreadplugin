@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: Spreadplugin\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-12-17 02:11+0100\n"
-"PO-Revision-Date: 2013-12-17 02:12+0100\n"
-"Last-Translator: Thimo Grauerholz <thimo@grauerholz.de>\n"
+"PO-Revision-Date: 2014-03-27 14:53+0100\n"
+"Last-Translator: eïrwendïl <contact@eirwendil.fr>\n"
 "Language-Team: \n"
 "Language: fr_FR\n"
 "MIME-Version: 1.0\n"
@@ -14,52 +14,52 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_e\n"
 "X-Poedit-Basepath: ../\n"
 "X-Textdomain-Support: yes\n"
-"X-Generator: Poedit 1.6.2\n"
+"X-Generator: Poedit 1.6.4\n"
 "X-Poedit-SearchPath-0: .\n"
 
 #: options.php:32 spreadplugin.php:1610
 msgid "Settings"
-msgstr ""
+msgstr "Réglages"
 
 #: options.php:36
 msgid ""
 "These settings will be used as default and can be overwritten by the "
 "extended shortcode."
 msgstr ""
+"Ces réglages seront utilisés par défaut mais peuvent être remplacés par le "
+"shortcode."
 
 #: options.php:42
 msgid "Shop id:"
-msgstr ""
+msgstr "Id magasin:"
 
 #: options.php:46
 msgid "Shop country:"
-msgstr ""
+msgstr "Pays du magasin:"
 
 #: options.php:69
 msgid "Shop source:"
-msgstr ""
+msgstr "Source du magasin:"
 
 #: options.php:76
 msgid "Spreadshirt API Key:"
-msgstr ""
+msgstr "Clé API Spreadshirt:"
 
 #: options.php:80
 msgid "Spreadshirt API Secret:"
-msgstr ""
+msgstr "Secret API Spreadshirt:"
 
 #: options.php:84
-#, fuzzy
 msgid "Limit articles per page:"
-msgstr "Trier par"
+msgstr "Nombre d'articles par page:"
 
 #: options.php:88
-#, fuzzy
 msgid "Image size:"
-msgstr "Taille"
+msgstr "Taille des images:"
 
 #: options.php:96
 msgid "Product category:"
-msgstr ""
+msgstr "Catégorie de produits:"
 
 #: options.php:99
 msgid "All products"
@@ -87,25 +87,25 @@ msgstr "Nouveaux produits"
 
 #: options.php:119
 msgid "Article category:"
-msgstr ""
+msgstr "Catégorie d'articles:"
 
 #: options.php:125
 msgid "Social buttons:"
-msgstr ""
+msgstr "Boutons \"Social\":"
 
 #: options.php:127 options.php:135 options.php:192 options.php:200
 #: options.php:208 options.php:216 options.php:228
 msgid "Disabled"
-msgstr ""
+msgstr "Hors-service"
 
 #: options.php:130 options.php:138 options.php:195 options.php:203
 #: options.php:211 options.php:219 options.php:231
 msgid "Enabled"
-msgstr ""
+msgstr "Autorisé"
 
 #: options.php:133
 msgid "Product linking:"
-msgstr ""
+msgstr "Lien vers produit:"
 
 #: options.php:141
 msgid "Sort articles by:"
@@ -113,130 +113,130 @@ msgstr "Trier par"
 
 #: options.php:154
 msgid "Target of links:"
-msgstr ""
+msgstr "Cible des liens:"
 
 #: options.php:155
-#, fuzzy
 msgid ""
 "Enter the name of your target iframe or frame, if available. Default is "
 "_blank (new window)."
-msgstr "Nom"
+msgstr ""
+"Entrer le nom de cible de votre \"iframe ou frame\", si disponible. target="
+"\"_blank\", par défaut (nouvelle onglet)."
 
 #: options.php:161
-#, fuzzy
 msgid "Use iframe for checkout:"
-msgstr "Commander"
+msgstr "Utiliser une \"iframe\" pour payer:"
 
 #: options.php:163
 msgid "Opens in separate window"
-msgstr ""
+msgstr "Ouvrir dans une nouvelle fenêtre"
 
 #: options.php:166
 msgid "Opens an iframe in the page content"
-msgstr ""
+msgstr "Ouvrir une \"iframe\" dans le contenu de la page"
 
 #: options.php:169
 msgid "Opens an iframe in a modal window (fancybox)"
-msgstr ""
+msgstr "Ouvrir une \"iframe\" dans une lightbox (fancybox)"
 
 #: options.php:172
 msgid "Designer Shop ID:"
-msgstr ""
+msgstr "ID du Designer:"
 
 #: options.php:173
-#, fuzzy
 msgid ""
 "If you have a designer Shop (Spreadshirt premium account), enter the ID "
 "here. A new link will appear where the customer can change the design."
-msgstr "Félicitations, vous avez atteint la fin des Internets"
+msgstr ""
+"Si vous avez un Designer Shop (compte Premium seulement), entrer son ID ici. "
+"Un nouveau lien apparaîtra quand le client peut changer le design."
 
 #: options.php:179
 msgid "Default display:"
-msgstr ""
+msgstr "Affichage par défaut:"
 
 #: options.php:181
-#, fuzzy
 msgid "Articles"
-msgstr "Trier par"
+msgstr "Articles"
 
 #: options.php:184
 msgid "Designs"
-msgstr ""
+msgstr "Designs"
 
 #: options.php:187
 msgid "Designs with background:"
-msgstr ""
+msgstr "Conception de l'arrière-plan:"
 
 #: options.php:188
-#, fuzzy
 msgid ""
 "Displays designs with background color of each first given article/shirt"
-msgstr "Couleur"
+msgstr ""
+"Afficher le design avec comme couleur de fond celle de chaque premier "
+"article/T-shirt donné"
 
 #: options.php:198
 msgid "Always show article description:"
-msgstr ""
+msgstr "Toujours voir la description des articles:"
 
 #: options.php:206
 msgid "Show product description under article description:"
-msgstr ""
+msgstr "Voir la description du produit sous la description de l'article:"
 
 #: options.php:214
-#, fuzzy
 msgid "Display price without and with tax:"
-msgstr "Montant sans taxes:"
+msgstr "Afficher le prix avec et sans taxes:"
 
 #: options.php:222
-#, fuzzy
 msgid "Zoom image background color:"
-msgstr "Couleur"
+msgstr "Couleur d'arrière-plan du zoom:"
 
 #: options.php:226
 msgid "Infinity scrolling:"
-msgstr ""
+msgstr "Défilement infini:"
 
 #: options.php:234
 msgid "Custom CSS"
-msgstr ""
+msgstr "CSS Perso"
 
 #: options.php:238
 msgid "Update settings"
-msgstr ""
+msgstr "Mettre à jour les réglages"
 
 #: options.php:248
 msgid "Minimum required shortcode"
-msgstr ""
+msgstr "Shortcode minimum requis"
 
 #: options.php:252
 msgid "Extended sample shortcode"
-msgstr ""
+msgstr "Echantillon de shortcode évolué"
 
 #: options.php:255
-#, fuzzy
 msgid ""
 "The extended shortcodes will overwrite the default settings. You may use it "
 "to create a different shop with the same plugin."
-msgstr "Félicitations, vous avez atteint la fin des Internets"
+msgstr ""
+"Les Shortcodes évolués écraseront les réglages par défaut. Vous pouvez les "
+"utiliser pour créer un magasin différent avec le même plugin."
 
 #: options.php:277
 msgid "Options"
-msgstr ""
+msgstr "Options"
 
 #: options.php:281
 msgid "Clear cache"
-msgstr ""
+msgstr "Nettoyé le cache"
 
 #: options.php:302
 msgid "Successfully cleared the cache"
-msgstr ""
+msgstr "Nettoyage du cache avec succès"
 
 #: options.php:342
 msgid "Please fill in the highlighted fields!"
-msgstr ""
+msgstr "Merci de remplir les champs en surbrillance!"
 
 #: options.php:359
 msgid "Successfully saved settings"
-msgstr ""
+msgstr "Réglages sauvegardés avec succès"
 
 #: spreadplugin.php:307
 msgid "Product category"
@@ -260,7 +260,7 @@ msgstr "Récent"
 
 #: spreadplugin.php:336
 msgid "weight"
-msgstr "Pondération"
+msgstr "Poids"
 
 #: spreadplugin.php:339 spreadplugin.php:416
 msgid "Basket"
@@ -272,7 +272,7 @@ msgstr "suivant"
 
 #: spreadplugin.php:415
 msgid "Back"
-msgstr ""
+msgstr "Retour"
 
 #: spreadplugin.php:696 spreadplugin.php:1400
 msgid "Edit article"
@@ -280,15 +280,15 @@ msgstr "Modifier l'article"
 
 #: spreadplugin.php:719
 msgid "Details"
-msgstr ""
+msgstr "Détails"
 
 #: spreadplugin.php:758 spreadplugin.php:1238
 msgid "Show article description"
-msgstr ""
+msgstr "Voir la déscription de l'article"
 
 #: spreadplugin.php:769 spreadplugin.php:1240
 msgid "Show product description"
-msgstr ""
+msgstr "Voir la déscription du produit"
 
 #: spreadplugin.php:782 spreadplugin.php:1477
 msgid "Price (without tax):"
@@ -299,9 +299,8 @@ msgid "Price (with tax):"
 msgstr "Montant avec taxes:"
 
 #: spreadplugin.php:785 spreadplugin.php:1480
-#, fuzzy
 msgid "excl. Shipping"
-msgstr "Total (sans frais d'expédition)"
+msgstr "sans frais d'expédition"
 
 #: spreadplugin.php:788 spreadplugin.php:1483
 msgid "Price:"
@@ -312,9 +311,8 @@ msgid "Add to basket"
 msgstr "Ajouter au panier"
 
 #: spreadplugin.php:869
-#, fuzzy
 msgid "Click to view the articles"
-msgstr "Trier par"
+msgstr "Cliquer pour voir les articles"
 
 #: spreadplugin.php:876
 msgid "Show description"
@@ -322,11 +320,11 @@ msgstr "Afficher la description"
 
 #: spreadplugin.php:1237
 msgid "Hide article description"
-msgstr ""
+msgstr "Caché la déscription de l'article"
 
 #: spreadplugin.php:1239
 msgid "Hide product description"
-msgstr ""
+msgstr "Caché la déscription du produit"
 
 #: spreadplugin.php:1242
 msgid "Loading new articles..."
@@ -334,7 +332,7 @@ msgstr "Chargement des autres articles..."
 
 #: spreadplugin.php:1243
 msgid "You have reached the end"
-msgstr "Félicitations, vous avez atteint la fin des Internets"
+msgstr "Vous êtes arrivés à la fin"
 
 #: spreadplugin.php:1247
 msgid "Adding..."
@@ -342,11 +340,11 @@ msgstr "Ajouter..."
 
 #: spreadplugin.php:1417
 msgid "Additional details"
-msgstr ""
+msgstr "Détails supplémentaires"
 
 #: spreadplugin.php:1430
 msgid "Product details"
-msgstr ""
+msgstr "Détails du produit"
 
 #: spreadplugin.php:1435 spreadplugin.php:1716
 msgid "Size"
@@ -357,9 +355,8 @@ msgid "Color"
 msgstr "Couleur"
 
 #: spreadplugin.php:1583
-#, fuzzy
 msgid "You do not have sufficient permissions to access this page."
-msgstr "Félicitations, vous avez atteint la fin des Internets"
+msgstr "Vous n'avez pas l'autorisation pour accéder à cette page."
 
 #: spreadplugin.php:1716
 msgid "Quantity"
