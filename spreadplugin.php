@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.5.5.1
+ * Version: 3.5.5.2
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -1437,17 +1437,17 @@ if(!class_exists('WP_Spreadplugin')) {
 					* Spreadplugin vars
 					*/
 
-					var textHideDesc = '".__('Hide article description', $this->stringTextdomain)."';
-					var textShowDesc = '".__('Show article description', $this->stringTextdomain)."';
-					var textProdHideDesc = '".__('Hide product description', $this->stringTextdomain)."';
-					var textProdShowDesc = '".__('Show product description', $this->stringTextdomain)."';
+					var textHideDesc = '".esc_attr__('Hide article description', $this->stringTextdomain)."';
+					var textShowDesc = '".esc_attr__('Show article description', $this->stringTextdomain)."';
+					var textProdHideDesc = '".esc_attr__('Hide product description', $this->stringTextdomain)."';
+					var textProdShowDesc = '".esc_attr__('Show product description', $this->stringTextdomain)."';
 					var loadingImage = '".plugins_url('/img/loading.gif', __FILE__)."';
-					var loadingMessage = '".__('Loading new articles...', $this->stringTextdomain)."';
-					var loadingFinishedMessage = '".__('You have reached the end', $this->stringTextdomain)."';
+					var loadingMessage = '".esc_attr__('Loading new articles...', $this->stringTextdomain)."';
+					var loadingFinishedMessage = '".esc_attr__('You have reached the end', $this->stringTextdomain)."';
 					var pageLink = '".get_page_link()."';
 					var pageCheckoutUseIframe = '".self::$shopOptions['shop_checkoutiframe']."';
-					var textButtonAdd = '".__('Add to basket', $this->stringTextdomain)."';
-					var textButtonAdded = '".__('Adding...', $this->stringTextdomain)."';
+					var textButtonAdd = '".esc_attr__('Add to basket', $this->stringTextdomain)."';
+					var textButtonAdded = '".esc_attr__('Adding...', $this->stringTextdomain)."';
 					var ajaxLocation = '".admin_url( 'admin-ajax.php' )."?pageid=".get_the_ID()."&nonce=".wp_create_nonce('spreadplugin')."';
 					var display = '".self::$shopOptions['shop_display']."';
 					var infiniteScroll = '".(self::$shopOptions['shop_infinitescroll']==1 || self::$shopOptions['shop_infinitescroll']==''?1:0)."';
