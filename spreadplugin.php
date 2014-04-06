@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.5.5.2
+ * Version: 3.5.5.3
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -531,6 +531,8 @@ if(!class_exists('WP_Spreadplugin')) {
 						
 						$stockstates_size=array();
 						$stockstates_appearance=array();
+						$objProductData=array();
+						$objPrintData=array();
 
 						$stringXmlArticle = wp_remote_retrieve_body(wp_remote_get($article->product->productType->attributes('xlink', true).'?'.(!empty(self::$shopOptions['shop_locale'])?'locale=' . self::$shopOptions['shop_locale'].'&noCache=true':'?noCache=true')));
 						if(substr($stringXmlArticle, 0, 5) !== "<?xml") continue;
@@ -538,6 +540,16 @@ if(!class_exists('WP_Spreadplugin')) {
 						$stringXmlCurreny = wp_remote_retrieve_body(wp_remote_get($article->price->currency->attributes('http://www.w3.org/1999/xlink')));
 						if(substr($stringXmlArticle, 0, 5) !== "<?xml") continue;
 						$objCurrencyData = new SimpleXmlElement($stringXmlCurreny);
+
+						$stringXmlProduct = wp_remote_retrieve_body(wp_remote_get($article->product->attributes('xlink', true).'?'.(!empty(self::$shopOptions['shop_locale'])?'locale=' . self::$shopOptions['shop_locale'].'&noCache=true':'?noCache=true')));
+						if(substr($stringXmlProduct, 0, 5) == "<?xml") {
+							$objProductData = new SimpleXmlElement($stringXmlProduct);
+							
+							$stringXmlPrint = wp_remote_retrieve_body(wp_remote_get($objProductData->configurations->configuration->printType->attributes('xlink', true).'?'.(!empty(self::$shopOptions['shop_locale'])?'locale=' . self::$shopOptions['shop_locale'].'&noCache=true':'?noCache=true')));
+							if(substr($stringXmlPrint, 0, 5) == "<?xml") {
+								$objPrintData = new SimpleXmlElement($stringXmlPrint);
+							}
+						}
 
 						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['name']=(string)$article->name;
 						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['description']=(string)$article->description;
@@ -555,6 +567,8 @@ if(!class_exists('WP_Spreadplugin')) {
 						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['id']=(int)$article['id'];
 						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['place']=$i;
 						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['designid']=(int)$article->product->defaultValues->defaultDesign['id'];
+						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['printtypename']=(string)$objPrintData->name;
+						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['printtypedescription']=(string)$objPrintData->description;
 
 
 						/**
@@ -1789,7 +1803,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			<li class="active"><a href="#tab1">'.__('Product images', $this->stringTextdomain).'</a></li>
 			<li><a href="#tab2">'.__('Sizes', $this->stringTextdomain).'</a></li>
 			<li><a href="#tab3">'.__('Description', $this->stringTextdomain).'</a></li>
-			<!--<li><a href="#tab4">'.__('Print Technique', $this->stringTextdomain).'</a></li>-->
+			<li><a href="#tab4">'.__('Print Technique', $this->stringTextdomain).'</a></li>
  		</ul>
 	</div>
 	<div id="spreadplugin-tabs_content_container">
@@ -1848,9 +1862,10 @@ if(!class_exists('WP_Spreadplugin')) {
 		<div id="tab3" class="spreadplugin-tab_content">
 			<p>'.$article['productdescription'].'</p>
 		</div>
-		<!--<div id="tab4" class="spreadplugin-tab_content">
-			<p>Druckart fehlt noch</p>
-		</div>-->
+		<div id="tab4" class="spreadplugin-tab_content">
+			<p><strong>'.$article['printtypename'].'</strong></p>
+			<p>'.$article['printtypedescription'].'</p>
+		</div>
 	</div>
 </div>
 			';
