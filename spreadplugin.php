@@ -192,7 +192,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			// check
 			if(!empty(self::$shopOptions['shop_id']) && !empty(self::$shopOptions['shop_api']) && !empty(self::$shopOptions['shop_secret'])) {
 
-				$paged = ((int)$_GET['pagesp']>0)?(int)$_GET['pagesp']:1;	
+				$paged = (isset($_GET['pagesp']) && (int)$_GET['pagesp']>0)?(int)$_GET['pagesp']:1;	
 
 				$offset=($paged-1)*self::$shopOptions['shop_limit'];
 				
@@ -483,7 +483,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				$apiUrl = $apiUrlBase . '&limit='.rand(2,999); // randomize to avoid spreadshirt caching issues
 
 				$stringXmlShop = wp_remote_get($apiUrl);
-				if (count($stringXmlShop->errors)>0) die('Error getting articles. Please check Shop-ID, API and secret.');
+				if (!is_object($stringXmlShop) || count($stringXmlShop->errors)>0) die('Error getting articles. Please check Shop-ID, API and secret.');
 				if ($stringXmlShop['body'][0]!='<') die($stringXmlShop['body']);
 				$stringXmlShop = wp_remote_retrieve_body($stringXmlShop);
 				$objArticles = new SimpleXmlElement($stringXmlShop);
@@ -494,11 +494,11 @@ if(!class_exists('WP_Spreadplugin')) {
 				$apiUrl = $apiUrlBase . '&limit='.($objArticles['count']<=1?2:($objArticles['count']<1000?$objArticles['count']:1000));
 
 				$stringXmlShop = wp_remote_get($apiUrl);
-				if (count($stringXmlShop->errors)>0) die('Error getting articles. Please check your Shop-ID.');
+				if (!is_object($stringXmlShop) || count($stringXmlShop->errors)>0) die('Error re-getting articles. Please check your Shop-ID.');
 				if ($stringXmlShop['body'][0]!='<') die($stringXmlShop['body']);
 				$stringXmlShop = wp_remote_retrieve_body($stringXmlShop);
 				$objArticles = new SimpleXmlElement($stringXmlShop);
-				if (!is_object($objArticles)) die('Articles not loaded');
+				if (!is_object($objArticles)) die('Articles empty');
 
 
 				if ($objArticles['count']>0) {
@@ -538,7 +538,7 @@ if(!class_exists('WP_Spreadplugin')) {
 						if(substr($stringXmlArticle, 0, 5) !== "<?xml") continue;
 						$objArticleData = new SimpleXmlElement($stringXmlArticle);
 						$stringXmlCurreny = wp_remote_retrieve_body(wp_remote_get($article->price->currency->attributes('http://www.w3.org/1999/xlink')));
-						if(substr($stringXmlArticle, 0, 5) !== "<?xml") continue;
+						if(substr($stringXmlCurreny, 0, 5) !== "<?xml") continue;
 						$objCurrencyData = new SimpleXmlElement($stringXmlCurreny);
 
 						$stringXmlProduct = wp_remote_retrieve_body(wp_remote_get($article->product->attributes('xlink', true).'?'.(!empty(self::$shopOptions['shop_locale'])?'locale=' . self::$shopOptions['shop_locale'].'&noCache=true':'?noCache=true')));
