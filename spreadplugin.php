@@ -1497,7 +1497,7 @@ if(!class_exists('WP_Spreadplugin')) {
 					</script>";
 
 			echo "
-					<script language='javascript' type='text/javascript' src='".plugins_url('/js/spreadplugin.js', __FILE__)."'></script>";
+					<script language='javascript' type='text/javascript' src='".plugins_url('/js/spreadplugin.min.js', __FILE__)."'></script>";
 
 		}
 
