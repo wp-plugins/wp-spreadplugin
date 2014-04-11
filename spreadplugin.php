@@ -542,9 +542,10 @@ if(!class_exists('WP_Spreadplugin')) {
 						$objCurrencyData = new SimpleXmlElement($stringXmlCurreny);
 
 						$stringXmlProduct = wp_remote_retrieve_body(wp_remote_get($article->product->attributes('xlink', true).'?'.(!empty(self::$shopOptions['shop_locale'])?'locale=' . self::$shopOptions['shop_locale'].'&noCache=true':'?noCache=true')));
-						if(substr($stringXmlProduct, 0, 5) == "<?xml") {
-							$objProductData = new SimpleXmlElement($stringXmlProduct);
-							
+						if(substr($stringXmlProduct, 0, 5) !== "<?xml") continue;
+						$objProductData = new SimpleXmlElement($stringXmlProduct);
+						
+						if (is_object($objProductData)) {
 							$stringXmlPrint = wp_remote_retrieve_body(wp_remote_get($objProductData->configurations->configuration->printType->attributes('xlink', true).'?'.(!empty(self::$shopOptions['shop_locale'])?'locale=' . self::$shopOptions['shop_locale'].'&noCache=true':'?noCache=true')));
 							if(substr($stringXmlPrint, 0, 5) == "<?xml") {
 								$objPrintData = new SimpleXmlElement($stringXmlPrint);
@@ -567,8 +568,15 @@ if(!class_exists('WP_Spreadplugin')) {
 						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['id']=(int)$article['id'];
 						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['place']=$i;
 						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['designid']=(int)$article->product->defaultValues->defaultDesign['id'];
-						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['printtypename']=(string)$objPrintData->name;
-						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['printtypedescription']=(string)$objPrintData->description;
+						
+						
+						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['printtypename']='';
+						$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['printtypedescription']='';
+
+						if (is_object($objPrintData)) {
+							$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['printtypename']=(string)$objPrintData->name;
+							$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['printtypedescription']=(string)$objPrintData->description;
+						}
 
 
 						/**
@@ -1802,8 +1810,15 @@ if(!class_exists('WP_Spreadplugin')) {
 		<ul id="spreadplugin-tabs">
 			<li class="active"><a href="#tab1">'.__('Product images', $this->stringTextdomain).'</a></li>
 			<li><a href="#tab2">'.__('Sizes', $this->stringTextdomain).'</a></li>
-			<li><a href="#tab3">'.__('Description', $this->stringTextdomain).'</a></li>
-			<li><a href="#tab4">'.__('Print Technique', $this->stringTextdomain).'</a></li>
+			<li><a href="#tab3">'.__('Description', $this->stringTextdomain).'</a></li>';
+			
+			if (!empty($article['printtypename'])) {
+				$output .= '
+				<li><a href="#tab4">'.__('Print Technique', $this->stringTextdomain).'</a></li>
+				';
+			}
+			
+			$output .= '
  		</ul>
 	</div>
 	<div id="spreadplugin-tabs_content_container">
@@ -1861,12 +1876,17 @@ if(!class_exists('WP_Spreadplugin')) {
 		</div>
 		<div id="tab3" class="spreadplugin-tab_content">
 			<p>'.$article['productdescription'].'</p>
-		</div>
-		<div id="tab4" class="spreadplugin-tab_content">
-			<p><strong>'.$article['printtypename'].'</strong></p>
-			<p>'.$article['printtypedescription'].'</p>
-		</div>
-	</div>
+		</div>';
+		
+		if (!empty($article['printtypename'])) {
+			$output .= '
+			<div id="tab4" class="spreadplugin-tab_content">
+				<p><strong>'.$article['printtypename'].'</strong></p>
+				<p>'.$article['printtypedescription'].'</p>
+			</div>
+			';
+		}
+	$output .= '</div>
 </div>
 			';
 					
