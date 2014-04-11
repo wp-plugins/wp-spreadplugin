@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.5.5.4
+ * Version: 3.5.5.5
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -483,7 +483,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				$apiUrl = $apiUrlBase . '&limit='.rand(2,999); // randomize to avoid spreadshirt caching issues
 
 				$stringXmlShop = wp_remote_get($apiUrl);
-				if (!is_object($stringXmlShop) || count($stringXmlShop->errors)>0) die('Error getting articles. Please check Shop-ID, API and secret.');
+				if (!isset($stringXmlShop) || count($stringXmlShop->errors)>0) die('Error getting articles. Please check Shop-ID, API and secret.');
 				if ($stringXmlShop['body'][0]!='<') die($stringXmlShop['body']);
 				$stringXmlShop = wp_remote_retrieve_body($stringXmlShop);
 				$objArticles = new SimpleXmlElement($stringXmlShop);
@@ -494,7 +494,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				$apiUrl = $apiUrlBase . '&limit='.($objArticles['count']<=1?2:($objArticles['count']<1000?$objArticles['count']:1000));
 
 				$stringXmlShop = wp_remote_get($apiUrl);
-				if (!is_object($stringXmlShop) || count($stringXmlShop->errors)>0) die('Error re-getting articles. Please check your Shop-ID.');
+				if (!isset($stringXmlShop) || count($stringXmlShop->errors)>0) die('Error re-getting articles. Please check your Shop-ID.');
 				if ($stringXmlShop['body'][0]!='<') die($stringXmlShop['body']);
 				$stringXmlShop = wp_remote_retrieve_body($stringXmlShop);
 				$objArticles = new SimpleXmlElement($stringXmlShop);
