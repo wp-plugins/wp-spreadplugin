@@ -534,19 +534,19 @@ if(!class_exists('WP_Spreadplugin')) {
 						$objProductData=array();
 						$objPrintData=array();
 
-						$stringXmlArticle = wp_remote_retrieve_body(wp_remote_get($article->product->productType->attributes('xlink', true).'?'.(!empty(self::$shopOptions['shop_locale'])?'locale=' . self::$shopOptions['shop_locale'].'&noCache=true':'?noCache=true')));
+						$stringXmlArticle = wp_remote_retrieve_body(wp_remote_get($article->product->productType->attributes('xlink', true).'?'.(!empty(self::$shopOptions['shop_locale'])?'locale=' . self::$shopOptions['shop_locale'].'&noCache=true':'noCache=true')));
 						if(substr($stringXmlArticle, 0, 5) !== "<?xml") continue;
 						$objArticleData = new SimpleXmlElement($stringXmlArticle);
 						$stringXmlCurreny = wp_remote_retrieve_body(wp_remote_get($article->price->currency->attributes('http://www.w3.org/1999/xlink')));
 						if(substr($stringXmlCurreny, 0, 5) !== "<?xml") continue;
 						$objCurrencyData = new SimpleXmlElement($stringXmlCurreny);
 
-						$stringXmlProduct = wp_remote_retrieve_body(wp_remote_get($article->product->attributes('xlink', true).'?'.(!empty(self::$shopOptions['shop_locale'])?'locale=' . self::$shopOptions['shop_locale'].'&noCache=true':'?noCache=true')));
+						$stringXmlProduct = wp_remote_retrieve_body(wp_remote_get($article->product->attributes('xlink', true).'?'.(!empty(self::$shopOptions['shop_locale'])?'locale=' . self::$shopOptions['shop_locale'].'&noCache=true':'noCache=true')));
 						if(substr($stringXmlProduct, 0, 5) !== "<?xml") continue;
 						$objProductData = new SimpleXmlElement($stringXmlProduct);
 						
 						if (is_object($objProductData)) {
-							$stringXmlPrint = wp_remote_retrieve_body(wp_remote_get($objProductData->configurations->configuration->printType->attributes('xlink', true).'?'.(!empty(self::$shopOptions['shop_locale'])?'locale=' . self::$shopOptions['shop_locale'].'&noCache=true':'?noCache=true')));
+							$stringXmlPrint = wp_remote_retrieve_body(wp_remote_get($objProductData->configurations->configuration->printType->attributes('xlink', true).'?'.(!empty(self::$shopOptions['shop_locale'])?'locale=' . self::$shopOptions['shop_locale'].'&noCache=true':'noCache=true')));
 							if(substr($stringXmlPrint, 0, 5) == "<?xml") {
 								$objPrintData = new SimpleXmlElement($stringXmlPrint);
 							}
