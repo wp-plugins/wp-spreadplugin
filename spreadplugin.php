@@ -746,7 +746,7 @@ if(!class_exists('WP_Spreadplugin')) {
 		 */
 		private function displayArticles($id,$article,$backgroundColor='') {
 			
-			$imgSrc = 'http://image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width='.self::$shopOptions['shop_imagesize'].',height='.self::$shopOptions['shop_imagesize'];
+			$imgSrc = '//image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width='.self::$shopOptions['shop_imagesize'].',height='.self::$shopOptions['shop_imagesize'];
 
 			$output = '<div class="spreadplugin-article clearfix" id="article_'.$id.'" style="width:'.(self::$shopOptions['shop_imagesize']+7).'px">';
 			$output .= '<a name="'.$id.'"></a>';
@@ -768,7 +768,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				$output .= plugins_url('/img/blank.gif', __FILE__);
 			}
 			
-			$output .= '" alt="' . htmlspecialchars($article['name'],ENT_QUOTES) . '" id="previewimg_'.$id.'" data-zoom-image="http://image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width=800,height=800'.(!empty($backgroundColor)?',backgroundColor='.$backgroundColor:'').'" class="preview lazyimg" data-original="'.$imgSrc.'" />';
+			$output .= '" alt="' . htmlspecialchars($article['name'],ENT_QUOTES) . '" id="previewimg_'.$id.'" data-zoom-image="//image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width=800,height=800'.(!empty($backgroundColor)?',backgroundColor='.$backgroundColor:'').'" class="preview lazyimg" data-original="'.$imgSrc.'" />';
 			$output .= '</div>';
 
 			// add a select with available sizes
@@ -937,7 +937,7 @@ if(!class_exists('WP_Spreadplugin')) {
 		 */
 		private function displayListArticles($id,$article,$backgroundColor='') {
 			
-			$imgSrc = 'http://image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width='.self::$shopOptions['shop_imagesize'].',height='.self::$shopOptions['shop_imagesize'];
+			$imgSrc = '//image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width='.self::$shopOptions['shop_imagesize'].',height='.self::$shopOptions['shop_imagesize'];
 
 			$output = '<div class="spreadplugin-article list" id="article_'.$id.'">';
 			$output .= '<a name="'.$id.'"></a>';
@@ -958,7 +958,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				$output .= plugins_url('/img/blank.gif', __FILE__);
 			}
 
-			$output .= '" alt="' . htmlspecialchars($article['name'],ENT_QUOTES) . '" id="previewimg_'.$id.'" data-zoom-image="http://image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width=800,height=800'.(!empty($backgroundColor)?',backgroundColor='.$backgroundColor:'').'" class="preview lazyimg" data-original="'.$imgSrc.'" />';
+			$output .= '" alt="' . htmlspecialchars($article['name'],ENT_QUOTES) . '" id="previewimg_'.$id.'" data-zoom-image="//image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width=800,height=800'.(!empty($backgroundColor)?',backgroundColor='.$backgroundColor:'').'" class="preview lazyimg" data-original="'.$imgSrc.'" />';
 			$output .= '</div>';
 
 			// Short product description
@@ -1667,7 +1667,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				
 			// display preview image
 			$output .= '<div class="image-wrapper">';
-			$output .= '<img src="http://image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width=280,height=280" class="preview"  alt="' . htmlspecialchars($article['name'],ENT_QUOTES) . '" id="previewimg_'.$id.'" data-zoom-image="http://image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width=600,height=600'.(!empty($backgroundColor)?',backgroundColor='.$backgroundColor:'').'" />';
+			$output .= '<img src="//image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width=280,height=280" class="preview"  alt="' . htmlspecialchars($article['name'],ENT_QUOTES) . '" id="previewimg_'.$id.'" data-zoom-image="//image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width=600,height=600'.(!empty($backgroundColor)?',backgroundColor='.$backgroundColor:'').'" />';
 			$output .= '</div>';
 
 
@@ -2066,7 +2066,7 @@ if(!class_exists('WP_Spreadplugin')) {
 						
 						echo '<div class="cart-row" data-id="'.(string)$item['id'].'">
 							<div class="cart-delete"><a href="javascript:;" class="deleteCartItem" title="'.__('Remove', $this->stringTextdomain).'"><img src="'.plugins_url('/img/delete.png', __FILE__).'"></a></div>
-							<div class="cart-preview"><img src="http://image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.(string)$objArticles->product['id'].'/views/'.(string)$objArticles->product->defaultValues->defaultView['id'].',viewId='.(string)$objArticles->product->defaultValues->defaultView['id'].',width=60,height=60,appearanceId='.(string)$item->element->properties->property[1].'"></div>
+							<div class="cart-preview"><img src="//image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.(string)$objArticles->product['id'].'/views/'.(string)$objArticles->product->defaultValues->defaultView['id'].',viewId='.(string)$objArticles->product->defaultValues->defaultView['id'].',width=60,height=60,appearanceId='.(string)$item->element->properties->property[1].'"></div>
 							<div class="cart-description"><strong>'.htmlspecialchars((empty($objArticles->name)?$item->description:$objArticles->name),ENT_QUOTES).'</strong><br>'.__('Size', $this->stringTextdomain).': '.(string)$item->element->properties->property[0].'<br>'.__('Quantity', $this->stringTextdomain).': '.(int)$item->quantity.'</div>
 							<div class="cart-price"><strong>'.(empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale']=='en_US' || self::$shopOptions['shop_locale']=='en_GB' || self::$shopOptions['shop_locale']=='us_US' || self::$shopOptions['shop_locale']=='us_CA' || self::$shopOptions['shop_locale']=='fr_CA'?number_format((float)$item->price->vatIncluded*(int)$item->quantity,2,'.',''):number_format((float)$item->price->vatIncluded*(int)$item->quantity,2,',','.')).'</strong></div>
 							</div>';
