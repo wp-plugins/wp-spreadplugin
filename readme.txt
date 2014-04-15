@@ -119,8 +119,8 @@ Depending on what kind of price you want to hide uncomment the line.
 1. You must have already created a category in your spreadshirt shop, if not, please do so, now. Please refer to spreadshirt, if you don't know how.
 2. Please open your normal spreadshirt shop (shopid.spreadshirt.net). In my case: http://welovetee.spreadshirt.de/
 3. Choose a category from the category selection.
-4. The url of your shop has changed to `http://welovetee.spreadshirt.de/winter-C269237` in my case
-5. The category Id in this case is `269237` (the numbers after the "-C" part)
+4. The url of your shop has changed to `http://welovetee.spreadshirt.de/alsterwasser-C300890` in my case
+5. The category Id in this case is `300890` (the numbers after the "-C" part)
 6. Paste this number in the `shop_category=""` variable.
 7. Save and done.
 
