@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Spreadplugin\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-03-30 19:03+0100\n"
-"PO-Revision-Date: 2014-04-02 22:15+0100\n"
+"PO-Revision-Date: 2014-04-17 22:37+0100\n"
 "Last-Translator: Thimo Grauerholz <thimo@grauerholz.de>\n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -316,11 +316,11 @@ msgstr "Détails"
 
 #: spreadplugin.php:814 spreadplugin.php:957 spreadplugin.php:1441
 msgid "Show article description"
-msgstr "Voir la déscription de l'article"
+msgstr "Voir la description"
 
 #: spreadplugin.php:825 spreadplugin.php:1443
 msgid "Show product description"
-msgstr "Voir la déscription du produit"
+msgstr "Voir la description"
 
 #: spreadplugin.php:838 spreadplugin.php:1017 spreadplugin.php:1717
 msgid "Price (without tax):"
@@ -358,15 +358,15 @@ msgstr "Cliquer pour voir les articles"
 
 #: spreadplugin.php:1079
 msgid "Show description"
-msgstr "Afficher la description"
+msgstr "Voir la description"
 
 #: spreadplugin.php:1440
 msgid "Hide article description"
-msgstr "Caché la déscription de l'article"
+msgstr "Cacher la description"
 
 #: spreadplugin.php:1442
 msgid "Hide product description"
-msgstr "Caché la déscription du produit"
+msgstr "Cacher la description"
 
 #: spreadplugin.php:1445
 msgid "Loading new articles..."
