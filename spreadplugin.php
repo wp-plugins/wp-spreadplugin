@@ -616,11 +616,17 @@ if(!class_exists('WP_Spreadplugin')) {
 						foreach($objArticleData->sizes->size as $val) {
 														
 							$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['sizes'][(int)$val['id']]['name']=(string)$val->name;
-							$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['sizes'][(int)$val['id']]['measures'][0]['name']=(string)$val->measures->measure[0]->name;
-							$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['sizes'][(int)$val['id']]['measures'][0]['value']=(string)$val->measures->measure[0]->value;
-							$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['sizes'][(int)$val['id']]['measures'][1]['name']=(string)$val->measures->measure[1]->name;
-							$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['sizes'][(int)$val['id']]['measures'][1]['value']=(string)$val->measures->measure[1]->value;
+							
+							if (!empty($val->measures->measure[0]->name)) {
+								$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['sizes'][(int)$val['id']]['measures'][0]['name']=(string)$val->measures->measure[0]->name;
+								$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['sizes'][(int)$val['id']]['measures'][0]['value']=(string)$val->measures->measure[0]->value;
+							}
+							if (!empty($val->measures->measure[1]->name)) {
+								$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['sizes'][(int)$val['id']]['measures'][1]['name']=(string)$val->measures->measure[1]->name;
+								$articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['sizes'][(int)$val['id']]['measures'][1]['value']=(string)$val->measures->measure[1]->value;
+							}
 						}
+						
 						foreach($objArticleData->resources as $val) {
 							foreach($val->resource as $vr) {								
 								if ($vr['type']=='size') {							
