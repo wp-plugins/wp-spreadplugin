@@ -1093,13 +1093,20 @@ if(!class_exists('WP_Spreadplugin')) {
 		private function displayDesigns($id,$designData,$articleData,$bgc=false) {
 
 			$addStyle = '';
+			$dSrc = '';
 			if ($bgc) $addStyle='style="background-color:rgba('.$bgc[0].','.$bgc[1].','.$bgc[2].',0.4);"';
+			
+			if (self::$shopOptions['shop_lazyload']==0) {
+				$dSrc = $this->cleanURL($designData['resource2']) . ',width='.self::$shopOptions['shop_imagesize'].',height='.self::$shopOptions['shop_imagesize'];
+			} else {
+				$dSrc = plugins_url('/img/blank.gif', __FILE__);
+			}
 
 			$output = '<div class="spreadplugin-design clearfix" id="design_'.$id.'" style="width:187px">';
 			$output .= '<a name="'.$id.'"></a>';
 			$output .= '<h3>'.htmlspecialchars($designData['name'],ENT_QUOTES).'</h3>';
 			$output .= '<div class="image-wrapper" '.$addStyle.'>';
-			$output .= '<img src="'.plugins_url('/img/blank.gif', __FILE__).'" class="lazyimg" data-original="' . $this->cleanURL($designData['resource2']) . ',width='.self::$shopOptions['shop_imagesize'].',height='.self::$shopOptions['shop_imagesize'].'" alt="' . htmlspecialchars($designData['name'],ENT_QUOTES) . '" id="compositedesignimg_'.$id.'" />'; // style="display:none;" // title="'.htmlspecialchars($designData['productdescription'],ENT_QUOTES).'"
+			$output .= '<img src="'.$dSrc.'" class="lazyimg" data-original="' . $this->cleanURL($designData['resource2']) . ',width='.self::$shopOptions['shop_imagesize'].',height='.self::$shopOptions['shop_imagesize'].'" alt="' . htmlspecialchars($designData['name'],ENT_QUOTES) . '" id="compositedesignimg_'.$id.'" />'; // style="display:none;" // title="'.htmlspecialchars($designData['productdescription'],ENT_QUOTES).'"
 			$output .= '<span class="img-caption">'.__('Click to view the articles', $this->stringTextdomain).'</em></span>';
 			$output .= '</div>';
 
