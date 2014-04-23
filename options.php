@@ -6,7 +6,9 @@ if (is_user_logged_in() && is_admin()) {
 
 	if (isset($_POST['update-splg_options'])) {//save option changes
 		foreach ($adminSettings as $key => $val){
-			$adminSettings[$key] = trim($_POST[$key]);
+			if (isset($_POST[$key])) {
+				$adminSettings[$key] = trim($_POST[$key]);
+			}
 		}
 	
 		update_option('splg_options', $adminSettings);
