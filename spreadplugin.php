@@ -782,13 +782,13 @@ if(!class_exists('WP_Spreadplugin')) {
 
 			// add a select with available sizes
 			if (isset($article['sizes'])&&is_array($article['sizes'])) {
-				$output .= '<select id="size-select" name="size">';
+				$output .= '<div class="size-wrapper clearfix">'.__('Size', $this->stringTextdomain).': <select id="size-select" name="size">';
 
 				foreach($article['sizes'] as $k => $v) {
 					$output .= '<option value="'.$k.'">'.$v['name'].'</option>';
 				}
 
-				$output .= '</select>';
+				$output .= '</select></div>';
 			}
 
 
@@ -800,13 +800,13 @@ if(!class_exists('WP_Spreadplugin')) {
 
 			// add a list with availabel product colors
 			if (isset($article['appearances'])&&is_array($article['appearances'])) {
-				$output .= '<ul class="colors" name="color">';
+				$output .= '<div class="color-wrapper clearfix">'.__('Color', $this->stringTextdomain).': <ul class="colors" name="color">';
 
 				foreach($article['appearances'] as $k=>$v) {
 					$output .= '<li value="'.$k.'"><img src="'. $this->cleanURL($v) .'" alt="" /></li>';
 				}
 
-				$output .= '</ul>';
+				$output .= '</ul></div>';
 			}
 
 
@@ -1456,7 +1456,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			if (!empty($conOp['shop_customcss'])) {
 				echo '
 				<style type="text/css">
-				' . $conOp['shop_customcss'] . '
+				' . stripslashes($conOp['shop_customcss']) . '
 				</style>
 				';
 			}

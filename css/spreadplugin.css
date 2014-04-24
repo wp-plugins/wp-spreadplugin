@@ -78,7 +78,7 @@ code, pre {
 	min-height: 55px
 }
 .spreadplugin-article div, .spreadplugin-article-detail div {
-	text-align: left
+	text-align: left;
 }
 .spreadplugin-article #size-select, .spreadplugin-article input, .spreadplugin-article p, .spreadplugin-article ul, .spreadplugin-article ul li, .spreadplugin-article-detail ul, .spreadplugin-items .colors li {
 	list-style: none;
@@ -515,13 +515,13 @@ spreadplugin-items img {
 	min-height: inherit !important;
 }
 @media only screen and (max-width: 480px) {
-	.spreadplugin-article, .spreadplugin-design, .spreadplugin-article-detail {
-		width: 100% !important;
-	}
-	.spreadplugin-cart-contents {
-		width: 180px;
-		height: 180px;
-	}
+.spreadplugin-article, .spreadplugin-design, .spreadplugin-article-detail {
+	width: 100% !important;
+}
+.spreadplugin-cart-contents {
+	width: 180px;
+	height: 180px;
+}
 }
 .mfp-wrap {
 	z-index: 1060 !important;
@@ -586,4 +586,7 @@ spreadplugin-items img {
 	height: inherit !important;
 	max-width: inherit !important;
 	max-height: inherit !important;
+}
+.spreadplugin-article .description-wrapper {
+	width: 100%;
 }

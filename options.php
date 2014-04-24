@@ -157,7 +157,7 @@ if (is_user_logged_in() && is_admin()) {
                 <td><?php _e('Enter the name of your target iframe or frame, if available. Default is _blank (new window).','spreadplugin'); ?>
                   <br />
                   <br />
-                  <input type="text" name="shop_linktarget" value="<?php echo ($adminOptions['shop_linktarget']?'_blank':$adminOptions['shop_linktarget']); ?>" /></td>
+                  <input type="text" name="shop_linktarget" value="<?php echo (empty($adminOptions['shop_linktarget'])?'_blank':$adminOptions['shop_linktarget']); ?>" /></td>
               </tr>
               <tr>
                 <td valign="top"><?php _e('Use iframe for checkout:','spreadplugin'); ?></td>
@@ -261,7 +261,7 @@ if (is_user_logged_in() && is_admin()) {
               </tr>
               <tr>
                 <td valign="top"><?php _e('Custom CSS'); ?></td>
-                <td><textarea style="width: 300px; height: 215px; background: #EEE;" name="shop_customcss" class="custom-css"><?php echo htmlspecialchars($adminOptions['shop_customcss'], ENT_QUOTES); ?></textarea></td>
+                <td><textarea style="width: 300px; height: 215px; background: #EEE;" name="shop_customcss" class="custom-css"><?php echo stripslashes(htmlspecialchars($adminOptions['shop_customcss'], ENT_QUOTES)); ?></textarea></td>
               </tr>
             </table>
             <input type="submit" name="update-splg_options" id="update-splg_options" class="button-primary" value="<?php _e('Update settings','spreadplugin'); ?>" />
