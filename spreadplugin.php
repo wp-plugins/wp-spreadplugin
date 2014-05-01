@@ -347,7 +347,7 @@ if(!class_exists('WP_Spreadplugin')) {
 						$output .= '</select>';
 		
 						// url not needed here, but just in case if js won't work for some reason
-						$output .= '<div id="checkout" class="spreadplugin-checkout"><span></span> <a href="'.$_SESSION['checkoutUrl'].'" target="'.self::$shopOptions['shop_linktarget'].'" id="basketLink" class="spreadplugin-checkout-link">'.__('Basket', $this->stringTextdomain).'</a></div>';
+						$output .= '<div id="checkout" class="spreadplugin-checkout"><span></span> <a href="'.(!empty($_SESSION['checkoutUrl'])?$_SESSION['checkoutUrl']:'').'" target="'.self::$shopOptions['shop_linktarget'].'" id="basketLink" class="spreadplugin-checkout-link">'.__('Basket', $this->stringTextdomain).'</a></div>';
 						$output .= '<div id="cart" class="spreadplugin-cart"></div>';
 		
 						$output .= '</div>';
