@@ -758,7 +758,7 @@ if(!class_exists('WP_Spreadplugin')) {
 
 			$output = '<div class="spreadplugin-article clearfix" id="article_'.$id.'" style="width:'.(self::$shopOptions['shop_imagesize']+7).'px">';
 			$output .= '<a name="'.$id.'"></a>';
-			$output .= '<h3>'.htmlspecialchars($article['name'],ENT_QUOTES).'</h3>';
+			$output .= '<h3>'.(!empty($article['name'])?htmlspecialchars($article['name'],ENT_QUOTES):'').'</h3>';
 			$output .= '<form method="post" id="form_'.$id.'">';
 				
 			// edit article button
@@ -776,7 +776,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				$output .= plugins_url('/img/blank.gif', __FILE__);
 			}
 			
-			$output .= '" alt="' . htmlspecialchars($article['name'],ENT_QUOTES) . '" id="previewimg_'.$id.'" data-zoom-image="//image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width=800,height=800'.(!empty($backgroundColor)?',backgroundColor='.$backgroundColor:'').'" class="preview lazyimg" data-original="'.$imgSrc.'" />';
+			$output .= '" alt="' . (!empty($article['name'])?htmlspecialchars($article['name'],ENT_QUOTES):'') . '" id="previewimg_'.$id.'" data-zoom-image="//image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width=800,height=800'.(!empty($backgroundColor)?',backgroundColor='.$backgroundColor:'').'" class="preview lazyimg" data-original="'.$imgSrc.'" />';
 			$output .= '</div>';
 
 
@@ -967,7 +967,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				$output .= plugins_url('/img/blank.gif', __FILE__);
 			}
 
-			$output .= '" alt="' . htmlspecialchars($article['name'],ENT_QUOTES) . '" id="previewimg_'.$id.'" data-zoom-image="//image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width=800,height=800'.(!empty($backgroundColor)?',backgroundColor='.$backgroundColor:'').'" class="preview lazyimg" data-original="'.$imgSrc.'" />';
+			$output .= '" alt="' . (!empty($article['name'])?htmlspecialchars($article['name'],ENT_QUOTES):'') . '" id="previewimg_'.$id.'" data-zoom-image="//image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width=800,height=800'.(!empty($backgroundColor)?',backgroundColor='.$backgroundColor:'').'" class="preview lazyimg" data-original="'.$imgSrc.'" />';
 			$output .= '</div>';
 
 			// Short product description
@@ -979,7 +979,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				$output .= '<div class="details-wrapper2 clearfix"><a href="'.add_query_arg('splproduct',$id,get_permalink()).'" target="'.self::$shopOptions['shop_linktarget'].'">'.__('Details', $this->stringTextdomain).'</a></div>';
 			}
 
-			$output .= '</div><div class="articleContentRight"><h3>'.htmlspecialchars($article['name'],ENT_QUOTES).'</h3>';
+			$output .= '</div><div class="articleContentRight"><h3>'.(!empty($article['name'])?htmlspecialchars($article['name'],ENT_QUOTES):'').'</h3>';
 
 
 			// Show description link if not empty
@@ -1690,7 +1690,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				
 			// display preview image
 			$output .= '<div class="image-wrapper">';
-			$output .= '<img src="//image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width=280,height=280" class="preview"  alt="' . htmlspecialchars($article['name'],ENT_QUOTES) . '" id="previewimg_'.$id.'" data-zoom-image="//image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width=600,height=600'.(!empty($backgroundColor)?',backgroundColor='.$backgroundColor:'').'" />';
+			$output .= '<img src="//image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width=280,height=280" class="preview"  alt="' . (!empty($article['name'])?htmlspecialchars($article['name'],ENT_QUOTES):'') . '" id="previewimg_'.$id.'" data-zoom-image="//image.spreadshirt.'.self::$shopOptions['shop_source'].'/image-server/v1/products/'.$article['productId'].'/views/'.$article['view'].',width=600,height=600'.(!empty($backgroundColor)?',backgroundColor='.$backgroundColor:'').'" />';
 			$output .= '</div>';
 
 
@@ -1717,7 +1717,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			}
 
 
-			$output .= '</td><td><h3>'.htmlspecialchars($article['name'],ENT_QUOTES).'</h3>';
+			$output .= '</td><td><h3>'.(!empty($article['name'])?htmlspecialchars($article['name'],ENT_QUOTES):'').'</h3>';
 
 			// Show description link if not empty
 			if (!empty($article['description'])) {
