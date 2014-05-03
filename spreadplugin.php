@@ -1678,6 +1678,13 @@ if(!class_exists('WP_Spreadplugin')) {
 		 * @return html
 		 */
 		private function displayDetailPage($id,$article,$backgroundColor='') {
+			
+			$_toInches=false;
+			if (self::$shopOptions['shop_locale']=='en_US' || self::$shopOptions['shop_locale']=='en_GB' || self::$shopOptions['shop_locale']=='us_US' || self::$shopOptions['shop_locale']=='us_CA' || self::$shopOptions['shop_locale']=='fr_CA') {
+				$_toInches=true;
+			}
+			
+			
 
 			$output = '<div class="spreadplugin-article-detail" id="article_'.$id.'">';
 			$output .= '<a name="'.$id.'"></a>';
@@ -1868,12 +1875,12 @@ if(!class_exists('WP_Spreadplugin')) {
 			</thead>
 			<tbody>
 			<tr>
-			<td>'.__('Dimension', $this->stringTextdomain).' A (mm)</td>
+			<td>'.__('Dimension', $this->stringTextdomain).' A ('.($_toInches?'inch':'mm').')</td>
 			';
 			
 			if (isset($article['sizes'])&&is_array($article['sizes'])) {
 				foreach($article['sizes'] as $k => $v) {
-					$output .= '<td>'.$v['measures'][0]['value'].'</td>';
+					$output .= '<td>'.($_toInches?self::mmToIn($v['measures'][0]['value']):$v['measures'][0]['value']).'</td>';
 				}
 			}
 			
@@ -1885,7 +1892,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			
 			if (isset($article['sizes'])&&is_array($article['sizes'])) {
 				foreach($article['sizes'] as $k => $v) {
-					$output .= '<td>'.$v['measures'][1]['value'].'</td>';
+					$output .= '<td>'.($_toInches?self::mmToIn($v['measures'][1]['value']):$v['measures'][1]['value']).'</td>';
 				}
 			}
 			
@@ -2131,6 +2138,11 @@ if(!class_exists('WP_Spreadplugin')) {
 			}
 			
 			die();
+		}
+		
+		
+		public static function mmToIn($val) {
+		  return number_format($val * 0.0393701,1);
 		}
 		
 		
