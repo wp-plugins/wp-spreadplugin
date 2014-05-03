@@ -1887,7 +1887,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			$output .= '
 			</tr>
 			<tr class="even">
-			<td>'.__('Dimension', $this->stringTextdomain).' B (mm)</td>
+			<td>'.__('Dimension', $this->stringTextdomain).' B ('.($_toInches?'inch':'mm').')</td>
 			';
 			
 			if (isset($article['sizes'])&&is_array($article['sizes'])) {
