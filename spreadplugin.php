@@ -437,7 +437,7 @@ if(!class_exists('WP_Spreadplugin')) {
 						// add simple spreadplugin-menu
 						$output .= '<div id="spreadplugin-menu" class="spreadplugin-menu">';
 						$output .= '<a href="'.get_page_link().'">'.__('Back', $this->stringTextdomain);
-						$output .= '<div id="checkout" class="spreadplugin-checkout"><span></span> <a href="'.$_SESSION['checkoutUrl'].'" target="'.self::$shopOptions['shop_linktarget'].'" id="basketLink" class="spreadplugin-checkout-link">'.__('Basket', $this->stringTextdomain).'</a></div>';
+						$output .= '<div id="checkout" class="spreadplugin-checkout"><span></span> <a href="'.(!empty($_SESSION['checkoutUrl'])?$_SESSION['checkoutUrl']:'').'" target="'.self::$shopOptions['shop_linktarget'].'" id="basketLink" class="spreadplugin-checkout-link">'.__('Basket', $this->stringTextdomain).'</a></div>';
 						$output .= '<div id="cart" class="spreadplugin-cart"></div>';
 						$output .= '</div>';
 
