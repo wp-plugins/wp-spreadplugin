@@ -99,12 +99,6 @@ EU:
 
 Check if your Spreadshirt Shop has a language and country setting.
 
-= How can I reduce the space between color selection and price? =
-
-I added a spacer div to give you the ability to change the space/appearance.
-You can reduce the space by editing the style css in following folder: `/wp-content/plugins/wp-spreadplugin/css/spreadplugin.css` on line 82. 
-Change padding-top and padding-bottom to a value you like.
-
 = I want to use a different currency. Is this possible? =
 
 The currency bases on the currency you're using for your Spreadshirt Shop. So if you want to use DKK instead of EUR, change the currency in the Shop options of your Spreadshirt Shop. But be sure to not have any products in your shop, because Spreadshirt doesn't allow changing it, when you've already products in it. (The solution would be to create a new shop) Please clear the cache of the Spreadplugin plugin in the Spreadplugin settings page when done (you may wait some hours to the spreadshirt cache to refresh).
