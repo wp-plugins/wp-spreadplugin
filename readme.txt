@@ -103,11 +103,6 @@ Check if your Spreadshirt Shop has a language and country setting.
 
 The currency bases on the currency you're using for your Spreadshirt Shop. So if you want to use DKK instead of EUR, change the currency in the Shop options of your Spreadshirt Shop. But be sure to not have any products in your shop, because Spreadshirt doesn't allow changing it, when you've already products in it. (The solution would be to create a new shop) Please clear the cache of the Spreadplugin plugin in the Spreadplugin settings page when done (you may wait some hours to the spreadshirt cache to refresh).
 
-= I just want to display one price. What to do? =
-
-Please have look at the file `/wp-content/plugins/wp-spreadplugin/css/spreadplugin.css` and search for `.spreadshirt-article #price-`.
-Depending on what kind of price you want to hide uncomment the line.
-
 = How do I get the category Id? =
 
 1. You must have already created a category in your spreadshirt shop, if not, please do so, now. Please refer to spreadshirt, if you don't know how.
