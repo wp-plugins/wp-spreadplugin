@@ -260,6 +260,19 @@ if (is_user_logged_in() && is_admin()) {
                   <?php _e('Lens','spreadplugin'); ?></td>
               </tr>
               <tr>
+                <td valign="top"><?php _e('Shop language:','spreadplugin'); ?></td>
+                <td><select name="shop_language" id="shop_language">
+                     <option value=""<?php echo (empty($adminOptions['shop_language'])?" selected":"") ?>><?php _e('Wordpress installation language (default)','spreadplugin'); ?></option>
+                    <option value="da_DK"<?php echo ($adminOptions['shop_language']=='da_DK'?" selected":"") ?>>Dansk</option>
+                   <option value="de_DE"<?php echo ($adminOptions['shop_language']=='de_DE'?" selected":"") ?>>Deutsch</option>
+                    <option value="nl_NL"<?php echo ($adminOptions['shop_language']=='nl_NL'?" selected":"") ?>>Dutch (Nederlands)</option>
+                    <option value="fr_FR"<?php echo ($adminOptions['shop_language']=='fr_FR'?" selected":"") ?>>Français</option>
+                    <option value="it_IT"<?php echo ($adminOptions['shop_language']=='it_IT'?" selected":"") ?>>Italiano</option>
+                   <option value="nb_NO"<?php echo ($adminOptions['shop_language']=='nb_NO'?" selected":"") ?>>Norsk (Bokmål)</option>
+                   <option value="nb_NO"<?php echo ($adminOptions['shop_language']=='nn_NO'?" selected":"") ?>>Nynorsk</option>
+                  </select></td>
+              </tr>
+              <tr>
                 <td valign="top"><?php _e('Custom CSS'); ?></td>
                 <td><textarea style="width: 300px; height: 215px; background: #EEE;" name="shop_customcss" class="custom-css"><?php echo stripslashes(htmlspecialchars($adminOptions['shop_customcss'], ENT_QUOTES)); ?></textarea></td>
               </tr>

@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.5.6.3
+ * Version: 3.5.7
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -54,13 +54,15 @@ if(!class_exists('WP_Spreadplugin')) {
 				'shop_design' => '',
 				'shop_view' => '',
 				'shop_zoomtype' => '',
-				'shop_lazyload' => ''
+				'shop_lazyload' => '',
+				'shop_language' => ''
 		);
 		private static $shopCache = 8760; // Shop article cache in hours 24*365 => 1 year
 
 
+
 		public function __construct() {
-			add_action('init', array(&$this,'plugin_init'));
+			//add_action('init', array(&$this,'plugin_init'));
 			add_action('init', array(&$this,'startSession'), 1);
 			add_action('wp_logout', array(&$this,'endSession'));
 			add_action('wp_login', array(&$this,'endSession'));
@@ -111,12 +113,7 @@ if(!class_exists('WP_Spreadplugin')) {
 		 * Initialize Plugin
 		 */
 		public function plugin_init() {
-
-			// get translation
-			if(function_exists('load_plugin_textdomain')) {
-				load_plugin_textdomain($this->stringTextdomain, false, dirname(plugin_basename( __FILE__ )) . '/translation');
-			}
-
+			load_plugin_textdomain($this->stringTextdomain, false, dirname(plugin_basename( __FILE__ )) . '/translation');
 		}
 
 
@@ -162,6 +159,15 @@ if(!class_exists('WP_Spreadplugin')) {
 			self::$shopOptions['shop_zoomtype'] = ($conOp['shop_zoomtype']==''?0:$conOp['shop_zoomtype']);
 			self::$shopOptions['shop_lazyload'] = ($conOp['shop_lazyload']==''?1:$conOp['shop_lazyload']);
 			
+			// overwrite translation if language available and set
+			if (!empty(self::$shopOptions['shop_language'])) {
+				$_ol = dirname( __FILE__ ) . '/translation/'.$this->stringTextdomain.'-'.self::$shopOptions['shop_language'].'.mo';
+				if (file_exists($_ol)) {
+					load_textdomain($this->stringTextdomain, $_ol);
+				}
+			} 
+			
+
 
 			if (isset($_GET['productCategory'])) {
 				$c = urldecode($_GET['productCategory']);

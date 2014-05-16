@@ -5,7 +5,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: spreadshirt,wordpress,plugin,shop,store,shirt,t-shirt,integration,online store,online shop
 Requires at least: 3.3
 Tested up to: 3.9
-Stable tag: 3.5.6.3
+Stable tag: 3.5.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -190,6 +190,10 @@ You get the `DESIGNID` from your spreadshirt admin panel.
 Please check your `Locale` setting in your user-data of spreadshirt.
 You can find it here: http://www.spreadshirt.net/user-data-C162 or http://www.spreadshirt.com/user-data-C162
 
+= How can I change the language of different shop instances? =
+
+If you change the language in your wordpress installation, the language of the plugin changes, too. Well, but you can change the language only for the plugin by selecting your language in the spreadplugin options, now. If you have multiple pages with different shops on it and want to use a different language on each page, please use the shortcode and extend your already used shortcode by - for example `shop_language="de_DE"` - possible values are: de_DE, en_GB, fr_FR, nl_NL, nn_NO, nb_NO, da_DK, it_IT. Your new shortcode could look like this: `[spreadplugin shop_language="de_DE"]`
+
 = Where do I find great website templates for wordpress? =
 
 Please have a look here: http://themeforest.net/category/wordpress?ref=thimo
@@ -201,6 +205,9 @@ Please have a look here: http://themeforest.net/category/wordpress?ref=thimo
 3. Settings page
 
 == Changelog ==
+
+= 3.5.7 =
+* Language of the plugin is now selectable / changeable through shortcode. On questions please see faq
 
 = 3.5.6.3 =
 * Some minor fixes
