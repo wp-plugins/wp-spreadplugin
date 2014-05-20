@@ -195,7 +195,13 @@ jQuery(function($) {
 								.animate({opacity: 0.9}, 100 )
 								.animate({opacity: 0.1, marginLeft: gotoX, marginTop: gotoY, width: newImageWidth, height: newImageHeight}, 1200, function() { 
 									$.post(ajaxLocation,data,function(json) {
-															button.val(textButtonAdd);
+										
+															if (json.c.m==1) {
+																button.val(textButtonAdd);
+															} else {
+																button.val(textButtonFailed);
+															}
+															
 															refreshCart(json);
 														}, 'json');
 									$(this).remove();	

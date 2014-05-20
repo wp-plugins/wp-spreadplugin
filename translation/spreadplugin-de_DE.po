@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spreadplugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-16 14:27+0100\n"
-"PO-Revision-Date: 2014-05-16 14:28+0100\n"
+"POT-Creation-Date: 2014-05-20 22:40+0100\n"
+"PO-Revision-Date: 2014-05-20 22:40+0100\n"
 "Last-Translator: Thimo Grauerholz <thimo@grauerholz.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -11,13 +11,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-KeywordsList: __;_e;esc_attr__\n"
 "X-Poedit-Basepath: ../\n"
 "X-Textdomain-Support: yes\n"
-"X-Generator: Poedit 1.6.4\n"
+"X-Generator: Poedit 1.6.5\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: options.php:34 spreadplugin.php:1999
+#: options.php:34 spreadplugin.php:2000
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -317,12 +317,12 @@ msgstr "weiter"
 msgid "Back"
 msgstr "Zurück"
 
-#: spreadplugin.php:772 spreadplugin.php:963 spreadplugin.php:1701
+#: spreadplugin.php:772 spreadplugin.php:963 spreadplugin.php:1702
 msgid "Edit article"
 msgstr "Artikel anpassen"
 
-#: spreadplugin.php:791 spreadplugin.php:1003 spreadplugin.php:1747
-#: spreadplugin.php:1870 spreadplugin.php:2106
+#: spreadplugin.php:791 spreadplugin.php:1003 spreadplugin.php:1748
+#: spreadplugin.php:1871 spreadplugin.php:2107
 msgid "Size"
 msgstr "Größe"
 
@@ -330,35 +330,36 @@ msgstr "Größe"
 msgid "Details"
 msgstr "Details"
 
-#: spreadplugin.php:809 spreadplugin.php:1015 spreadplugin.php:1758
+#: spreadplugin.php:809 spreadplugin.php:1015 spreadplugin.php:1759
 msgid "Color"
 msgstr "Farbe"
 
-#: spreadplugin.php:851 spreadplugin.php:994
+#: spreadplugin.php:851 spreadplugin.php:994 spreadplugin.php:1485
 msgid "Show article description"
 msgstr "Zeige Artikelbeschreibung"
 
-#: spreadplugin.php:862
+#: spreadplugin.php:862 spreadplugin.php:1487
 msgid "Show product description"
 msgstr "Zeige Produktbeschreibung"
 
-#: spreadplugin.php:875 spreadplugin.php:1054 spreadplugin.php:1775
+#: spreadplugin.php:875 spreadplugin.php:1054 spreadplugin.php:1776
 msgid "Price (without tax):"
 msgstr "Preis (exkl. MwSt.):"
 
-#: spreadplugin.php:876 spreadplugin.php:1055 spreadplugin.php:1776
+#: spreadplugin.php:876 spreadplugin.php:1055 spreadplugin.php:1777
 msgid "Price (with tax):"
 msgstr "Preis (inkl. MwSt.):"
 
-#: spreadplugin.php:878 spreadplugin.php:1057 spreadplugin.php:1778
+#: spreadplugin.php:878 spreadplugin.php:1057 spreadplugin.php:1779
 msgid "excl. Shipping"
 msgstr "zzgl. Versandkosten"
 
-#: spreadplugin.php:881 spreadplugin.php:1060 spreadplugin.php:1781
+#: spreadplugin.php:881 spreadplugin.php:1060 spreadplugin.php:1782
 msgid "Price:"
 msgstr "Preis:"
 
-#: spreadplugin.php:887 spreadplugin.php:1066 spreadplugin.php:1787
+#: spreadplugin.php:887 spreadplugin.php:1066 spreadplugin.php:1493
+#: spreadplugin.php:1788
 msgid "Add to basket"
 msgstr "In den Warenkorb"
 
@@ -370,72 +371,81 @@ msgstr "Klicken Sie hier, um die Artikel anzusehen"
 msgid "Show description"
 msgstr "Zeige Beschreibung"
 
-#: spreadplugin.php:1729
+#: spreadplugin.php:1484
+msgid "Hide article description"
+msgstr "Verstecke Artikelbeschreibung"
+
+#: spreadplugin.php:1486
+msgid "Hide product description"
+msgstr "Verstecke Produktbeschreibung"
+
+#: spreadplugin.php:1489
+msgid "Loading new articles..."
+msgstr "Artikel werden geladen..."
+
+#: spreadplugin.php:1490
+msgid "You have reached the end"
+msgstr "Keine weiteren Artikel verfügbar"
+
+#: spreadplugin.php:1494
+msgid "Adding..."
+msgstr "Füge ein..."
+
+#: spreadplugin.php:1495
+msgid "Add failed"
+msgstr "Hinzufügen fehlgeschlagen"
+
+#: spreadplugin.php:1730
 msgid "Additional details"
 msgstr "Weitere Informationen"
 
-#: spreadplugin.php:1742
+#: spreadplugin.php:1743
 msgid "Product details"
 msgstr "Produkt Informationen"
 
-#: spreadplugin.php:1847
+#: spreadplugin.php:1848
 msgid "Product images"
 msgstr "Produkt Fotos"
 
-#: spreadplugin.php:1848
+#: spreadplugin.php:1849
 msgid "Sizes"
 msgstr "Größen"
 
-#: spreadplugin.php:1849
+#: spreadplugin.php:1850
 msgid "Description"
 msgstr "Beschreibung"
 
-#: spreadplugin.php:1853
+#: spreadplugin.php:1854
 msgid "Print Technique"
 msgstr "Druckart"
 
-#: spreadplugin.php:1884 spreadplugin.php:1896
+#: spreadplugin.php:1885 spreadplugin.php:1897
 msgid "Dimension"
 msgstr "Maß"
 
-#: spreadplugin.php:1972
+#: spreadplugin.php:1973
 msgid "You do not have sufficient permissions to access this page."
 msgstr "Permissions missing!"
 
-#: spreadplugin.php:2104
+#: spreadplugin.php:2105
 msgid "Remove"
 msgstr "Entfernen"
 
-#: spreadplugin.php:2106
+#: spreadplugin.php:2107
 msgid "Quantity"
 msgstr "Menge"
 
-#: spreadplugin.php:2117
+#: spreadplugin.php:2118
 msgid "Total (excl. Shipping)"
 msgstr "Gesamt (ohne Versand)"
 
-#: spreadplugin.php:2120 spreadplugin.php:2122
+#: spreadplugin.php:2121 spreadplugin.php:2123
 msgid "Proceed checkout"
 msgstr "Zur Kasse"
 
-#: spreadplugin.php:2122
+#: spreadplugin.php:2123
 msgid "Basket is empty"
 msgstr "Warenkorb ist leer"
-
-#~ msgid "Hide article description"
-#~ msgstr "Verstecke Artikelbeschreibung"
-
-#~ msgid "Hide product description"
-#~ msgstr "Verstecke Produktbeschreibung"
-
-#~ msgid "Loading new articles..."
-#~ msgstr "Artikel werden geladen..."
-
-#~ msgid "You have reached the end"
-#~ msgstr "Keine weiteren Artikel verfügbar"
-
-#~ msgid "Adding..."
-#~ msgstr "Füge ein..."
 
 #~ msgid "Hide description"
 #~ msgstr "Verstecke Beschreibung"

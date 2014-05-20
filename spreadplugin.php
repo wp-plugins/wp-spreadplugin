@@ -1168,10 +1168,10 @@ if(!class_exists('WP_Spreadplugin')) {
 			$result = self::oldHttpRequest($basketItemsUrl, $header, 'POST', $basketItem->asXML());
 
 			if ($result) {
-			} else {
-				die('ERROR: Item not added.');
-			}
-
+				return '1';
+			} 
+			
+			return '0';
 		}
 
 
@@ -1492,6 +1492,7 @@ if(!class_exists('WP_Spreadplugin')) {
 					var pageCheckoutUseIframe = '".self::$shopOptions['shop_checkoutiframe']."';
 					var textButtonAdd = '".esc_attr__('Add to basket', $this->stringTextdomain)."';
 					var textButtonAdded = '".esc_attr__('Adding...', $this->stringTextdomain)."';
+					var textButtonFailed = '".esc_attr__('Add failed', $this->stringTextdomain)."';
 					var ajaxLocation = '".admin_url( 'admin-ajax.php' )."?pageid=".get_the_ID()."&nonce=".wp_create_nonce('spreadplugin')."';
 					var display = '".self::$shopOptions['shop_display']."';
 					var infiniteScroll = '".(self::$shopOptions['shop_infinitescroll']==1 || self::$shopOptions['shop_infinitescroll']==''?1:0)."';
@@ -1592,6 +1593,7 @@ if(!class_exists('WP_Spreadplugin')) {
 
 			$_langCode = "";
 			$_urlParts = array();
+			$_m = '';
 
 			if (!wp_verify_nonce($_GET['nonce'], 'spreadplugin')) die('Security check');
 
@@ -1656,14 +1658,14 @@ if(!class_exists('WP_Spreadplugin')) {
 				);
 
 				// add to basket
-				self::addBasketItem($_SESSION['basketUrl'][self::$shopOptions['shop_source']], $_SESSION['namespaces'][self::$shopOptions['shop_source']], $data);
+				$_m = self::addBasketItem($_SESSION['basketUrl'][self::$shopOptions['shop_source']], $_SESSION['namespaces'][self::$shopOptions['shop_source']], $data);
 
 			}
 
 
 			$intInBasket=self::getInBasketQuantity(self::$shopOptions['shop_source']);
 			
-			echo json_encode(array("c" => array("u" => $_SESSION['checkoutUrl'][self::$shopOptions['shop_source']],"q" => intval($intInBasket))));
+			echo json_encode(array("c" => array("u" => $_SESSION['checkoutUrl'][self::$shopOptions['shop_source']],"q" => intval($intInBasket), "m" => $_m)));
 			die();
 		}
 
