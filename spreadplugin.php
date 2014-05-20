@@ -2133,7 +2133,6 @@ if(!class_exists('WP_Spreadplugin')) {
 			if (!wp_verify_nonce($_GET['nonce'], 'spreadplugin')) die('Security check');
 			
 			$this->reparseShortcodeData();
-print_r( $_SESSION['basketUrl']);
 
 			// create an new basket if not exist
 			if (isset($_SESSION['basketUrl'][self::$shopOptions['shop_source']])) {
