@@ -353,7 +353,7 @@ if(!class_exists('WP_Spreadplugin')) {
 						$output .= '</select>';
 		
 						// url not needed here, but just in case if js won't work for some reason
-						$output .= '<div id="checkout" class="spreadplugin-checkout"><span></span> <a href="'.(!empty($_SESSION['checkoutUrl'])?$_SESSION['checkoutUrl']:'').'" target="'.self::$shopOptions['shop_linktarget'].'" id="basketLink" class="spreadplugin-checkout-link">'.__('Basket', $this->stringTextdomain).'</a></div>';
+						$output .= '<div id="checkout" class="spreadplugin-checkout"><span></span> <a href="'.(!empty($_SESSION['checkoutUrl'][self::$shopOptions['shop_source']])?$_SESSION['checkoutUrl'][self::$shopOptions['shop_source']]:'').'" target="'.self::$shopOptions['shop_linktarget'].'" id="basketLink" class="spreadplugin-checkout-link">'.__('Basket', $this->stringTextdomain).'</a></div>';
 						$output .= '<div id="cart" class="spreadplugin-cart"></div>';
 		
 						$output .= '</div>';
@@ -443,7 +443,7 @@ if(!class_exists('WP_Spreadplugin')) {
 						// add simple spreadplugin-menu
 						$output .= '<div id="spreadplugin-menu" class="spreadplugin-menu">';
 						$output .= '<a href="'.get_page_link().'">'.__('Back', $this->stringTextdomain);
-						$output .= '<div id="checkout" class="spreadplugin-checkout"><span></span> <a href="'.(!empty($_SESSION['checkoutUrl'])?$_SESSION['checkoutUrl']:'').'" target="'.self::$shopOptions['shop_linktarget'].'" id="basketLink" class="spreadplugin-checkout-link">'.__('Basket', $this->stringTextdomain).'</a></div>';
+						$output .= '<div id="checkout" class="spreadplugin-checkout"><span></span> <a href="'.(!empty($_SESSION['checkoutUrl'][self::$shopOptions['shop_source']])?$_SESSION['checkoutUrl'][self::$shopOptions['shop_source']]:'').'" target="'.self::$shopOptions['shop_linktarget'].'" id="basketLink" class="spreadplugin-checkout-link">'.__('Basket', $this->stringTextdomain).'</a></div>';
 						$output .= '<div id="cart" class="spreadplugin-cart"></div>';
 						$output .= '</div>';
 
@@ -1204,7 +1204,7 @@ if(!class_exists('WP_Spreadplugin')) {
 		 * @return string $basketUrl
 		 *
 		 */
-		private static function createBasket($platform, $shop, $namespaces) {
+		private static function createBasket($shop, $namespaces) {
 
 			$basket = new SimpleXmlElement('<basket xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://api.spreadshirt.net">
 					<shop id="' . $shop['id'] . '"/>
@@ -1340,12 +1340,12 @@ if(!class_exists('WP_Spreadplugin')) {
 		 * @return int $intInBasket Quantity of articles
 		 *
 		 */
-		private static function getInBasketQuantity() {
+		private static function getInBasketQuantity($source) {
 			$intInBasket = 0;
 			
-			if (isset($_SESSION['basketUrl'])) {
+			if (isset($_SESSION['basketUrl'][$source])) {
 					
-				$basketItems=self::getBasket($_SESSION['basketUrl']);
+				$basketItems=self::getBasket($_SESSION['basketUrl'][$source]);
 
 				if(!empty($basketItems)) {
 					foreach($basketItems->basketItems->basketItem as $item) {
@@ -1433,9 +1433,9 @@ if(!class_exists('WP_Spreadplugin')) {
 			$basketId = "";
 			$coolUrl = "";
 
-			if (!empty($_SESSION['basketUrl'])) {
+			if (!empty($_SESSION['basketUrl'][self::$shopOptions['shop_source']])) {
 				
-				if (preg_match("/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}/",$_SESSION['basketUrl'],$found)) {
+				if (preg_match("/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}/",$_SESSION['basketUrl'][self::$shopOptions['shop_source']],$found)) {
 					$basketId = $found[0];
 				}
 				
@@ -1600,7 +1600,7 @@ if(!class_exists('WP_Spreadplugin')) {
 			
 
 			// create an new basket if not exist
-			if (!isset($_SESSION['basketUrl'])) {
+			if (!isset($_SESSION['basketUrl'][self::$shopOptions['shop_source']])) {
 
 				// gets basket
 				$apiUrl = 'http://api.spreadshirt.'.self::$shopOptions['shop_source'].'/api/v1/shops/' . self::$shopOptions['shop_id'];
@@ -1613,7 +1613,7 @@ if(!class_exists('WP_Spreadplugin')) {
 
 				// create the basket
 				$namespaces = $objShop->getNamespaces(true);
-				$basketUrl = self::createBasket('net', $objShop, $namespaces);
+				$basketUrl = self::createBasket($objShop, $namespaces);
 					
 				if (empty($namespaces)) die('Namespaces empty');
 				if (empty($basketUrl)) die('Basket url empty');
@@ -1637,9 +1637,9 @@ if(!class_exists('WP_Spreadplugin')) {
 				}
 
 				// saving to session
-				$_SESSION['basketUrl'] = $basketUrl;
-				$_SESSION['namespaces'] = $namespaces;
-				$_SESSION['checkoutUrl'] = $checkoutUrl;
+				$_SESSION['basketUrl'][self::$shopOptions['shop_source']] = $basketUrl;
+				$_SESSION['namespaces'][self::$shopOptions['shop_source']] = $namespaces;
+				$_SESSION['checkoutUrl'][self::$shopOptions['shop_source']] = $checkoutUrl;
 
 			}
 
@@ -1657,14 +1657,14 @@ if(!class_exists('WP_Spreadplugin')) {
 				);
 
 				// add to basket
-				self::addBasketItem($_SESSION['basketUrl'] , $_SESSION['namespaces'] , $data);
+				self::addBasketItem($_SESSION['basketUrl'][self::$shopOptions['shop_source']], $_SESSION['namespaces'][self::$shopOptions['shop_source']], $data);
 
 			}
 
 
-			$intInBasket=self::getInBasketQuantity();
+			$intInBasket=self::getInBasketQuantity(self::$shopOptions['shop_source']);
 			
-			echo json_encode(array("c" => array("u" => $_SESSION['checkoutUrl'],"q" => intval($intInBasket))));
+			echo json_encode(array("c" => array("u" => $_SESSION['checkoutUrl'][self::$shopOptions['shop_source']],"q" => intval($intInBasket))));
 			die();
 		}
 
@@ -2079,9 +2079,9 @@ if(!class_exists('WP_Spreadplugin')) {
 			$this->reparseShortcodeData();
 
 			// create an new basket if not exist
-			if (isset($_SESSION['basketUrl'])) {
+			if (isset($_SESSION['basketUrl'][self::$shopOptions['shop_source']])) {
 							
-				$basketItems=self::getBasket($_SESSION['basketUrl']);
+				$basketItems=self::getBasket($_SESSION['basketUrl'][self::$shopOptions['shop_source']]);
 
 				$priceSum=0;
 				$intSumQuantity=0;
@@ -2094,7 +2094,7 @@ if(!class_exists('WP_Spreadplugin')) {
 						
 						$apiUrl='http://api.spreadshirt.'.self::$shopOptions['shop_source'].'/api/v1/shops/'.(string)$item->shop['id'].'/articles/'.(string)$item->element['id'];						
 						$stringXmlShop = wp_remote_get($apiUrl);
-						if (count($stringXmlShop->errors)>0) die('Error getting articles. Please check Shop-ID, API and secret.');
+						if (isset($stringXmlShop->errors) && count($stringXmlShop->errors)>0) die('Error getting articles. Please check Shop-ID, API and secret.');
 						if ($stringXmlShop['body'][0]!='<') die($stringXmlShop['body']);
 						$stringXmlShop = @wp_remote_retrieve_body($stringXmlShop);
 						$objArticles = new SimpleXmlElement($stringXmlShop);
@@ -2117,7 +2117,7 @@ if(!class_exists('WP_Spreadplugin')) {
 				echo '<div class="spreadplugin-cart-total">'.__('Total (excl. Shipping)', $this->stringTextdomain).'<strong class="price">'.(empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale']=='en_US' || self::$shopOptions['shop_locale']=='en_GB' || self::$shopOptions['shop_locale']=='us_US' || self::$shopOptions['shop_locale']=='us_CA' || self::$shopOptions['shop_locale']=='fr_CA'?number_format($priceSum,2,'.',''):number_format($priceSum,2,',','.')).'</strong></div>';
 				
 				if ($intSumQuantity>0) {
-					echo '<div id="cart-checkout" class="spreadplugin-cart-checkout"><a href="'.$_SESSION['checkoutUrl'].'" target="'.self::$shopOptions['shop_linktarget'].'">'.__('Proceed checkout', $this->stringTextdomain).'</a></div>';
+					echo '<div id="cart-checkout" class="spreadplugin-cart-checkout"><a href="'.$_SESSION['checkoutUrl'][self::$shopOptions['shop_source']].'" target="'.self::$shopOptions['shop_linktarget'].'">'.__('Proceed checkout', $this->stringTextdomain).'</a></div>';
 				} else {
 					echo '<div id="cart-checkout" class="spreadplugin-cart-checkout"><a title="'.__('Basket is empty', $this->stringTextdomain).'">'.__('Proceed checkout', $this->stringTextdomain).'</a></div>';
 				}
@@ -2133,13 +2133,13 @@ if(!class_exists('WP_Spreadplugin')) {
 			if (!wp_verify_nonce($_GET['nonce'], 'spreadplugin')) die('Security check');
 			
 			$this->reparseShortcodeData();
-
+print_r( $_SESSION['basketUrl']);
 
 			// create an new basket if not exist
-			if (isset($_SESSION['basketUrl'])) {
+			if (isset($_SESSION['basketUrl'][self::$shopOptions['shop_source']])) {
 				// uuid test
 				if(preg_match('/\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/',$_POST['id'])) {
-					self::deleteBasketItem($_SESSION['basketUrl'],$_POST['id']);
+					self::deleteBasketItem($_SESSION['basketUrl'][self::$shopOptions['shop_source']],$_POST['id']);
 				}
 			}
 			
