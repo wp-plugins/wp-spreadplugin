@@ -208,6 +208,7 @@ Please have a look here: http://themeforest.net/category/wordpress?ref=thimo
 
 = 3.5.7 =
 * Language of the plugin is now selectable / changeable through shortcode. On questions please see faq
+* Small error message when adding a product failes.
 
 = 3.5.6.3 =
 * Some minor fixes
