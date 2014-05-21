@@ -161,7 +161,7 @@
 	-webkit-box-shadow: 0 0 9px 0 rgba(0,0,0,.1);
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
-	border-radius: 5px
+	border-radius: 5px;
 }
 .spreadplugin-items #infscr-loading img {
 	position: absolute;
@@ -228,7 +228,8 @@
 	width: 100%;
 	border: 1px solid #DBDBDB;
 	box-shadow: 0 5px 10px rgba(0,0,0,.1);
-	z-index: 400
+	z-index: 400;
+	animation: 0.8s ease 0s normal none 1 headerFloating;
 }
 .spreadplugin-menu #articleSortBy, .spreadplugin-menu #checkout, .spreadplugin-menu #productCategory, .spreadplugin-menu #productSubCategory {
 	position: relative;

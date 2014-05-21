@@ -168,17 +168,24 @@ if(!class_exists('WP_Spreadplugin')) {
 			} 
 			
 
-
 			if (isset($_GET['productCategory'])) {
-				$c = urldecode($_GET['productCategory']);
+				$c = $_GET['productCategory'];
 				self::$shopOptions['shop_productcategory'] = $c;
 				self::$shopOptions['shop_productsubcategory'] = 'all';
 
 				if (!empty($_GET['productSubCategory'])) {
-					$c = urldecode($_GET['productSubCategory']);
+					$c = $_GET['productSubCategory'];
 					self::$shopOptions['shop_productsubcategory'] = $c;
 				}
 			}
+			
+			if (!empty(self::$shopOptions['shop_productcategory'])) {
+				self::$shopOptions['shop_productcategory'] = htmlspecialchars_decode(self::$shopOptions['shop_productcategory']);
+			}
+			if (!empty(self::$shopOptions['shop_productsubcategory'])) {
+				self::$shopOptions['shop_productsubcategory'] = htmlspecialchars_decode(self::$shopOptions['shop_productsubcategory']);
+			}
+			
 			
 			if (!empty(self::$shopOptions['shop_productcategory']) && empty(self::$shopOptions['shop_productsubcategory'])) {
 				self::$shopOptions['shop_productsubcategory']="all";
