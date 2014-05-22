@@ -2,25 +2,25 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.5.7
+ * Version: 3.5.1
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
 
-.spreadplugin-items ul {
+ul {
 	margin: 0;
 	padding: 0;
 	list-style: none outside none
 }
-.spreadplugin-items code, .spreadplugin-items pre {
+code, pre {
 	font-family: Arial, Helvetica, Tahoma, sans-serif;
 	font-size: 13px
 }
-.spreadplugin-items .clearfix:after, .spreadplugin-items .clearfix:before {
+.clearfix:after, .clearfix:before {
 	content: "";
 	display: table
 }
-.spreadplugin-items .clearfix:after {
+.clearfix:after {
 	clear: both
 }
 .spreadplugin-items {
@@ -78,13 +78,12 @@
 	min-height: 55px
 }
 .spreadplugin-article div, .spreadplugin-article-detail div {
-	text-align: left;
+	text-align: left
 }
 .spreadplugin-article #size-select, .spreadplugin-article input, .spreadplugin-article p, .spreadplugin-article ul, .spreadplugin-article ul li, .spreadplugin-article-detail ul, .spreadplugin-items .colors li {
 	list-style: none;
 	margin: 0;
-	padding: 0;
-	background: none;
+	padding: 0
 }
 .spreadplugin-article input[type=text], .spreadplugin-article-detail input[type=text] {
 	clear: both;
@@ -161,7 +160,7 @@
 	-webkit-box-shadow: 0 0 9px 0 rgba(0,0,0,.1);
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
-	border-radius: 5px;
+	border-radius: 5px
 }
 .spreadplugin-items #infscr-loading img {
 	position: absolute;
@@ -228,8 +227,7 @@
 	width: 100%;
 	border: 1px solid #DBDBDB;
 	box-shadow: 0 5px 10px rgba(0,0,0,.1);
-	z-index: 400;
-	animation: 0.8s ease 0s normal none 1 headerFloating;
+	z-index: 400
 }
 .spreadplugin-menu #articleSortBy, .spreadplugin-menu #checkout, .spreadplugin-menu #productCategory, .spreadplugin-menu #productSubCategory {
 	position: relative;
@@ -409,7 +407,7 @@
 }
 .spreadplugin-cart-contents {
 	width: 400px;
-	height: 300px;
+	height: 400px;
 	overflow-y: scroll;
 	overflow-x: hidden;
 	padding-left: 10px;
@@ -515,79 +513,8 @@ spreadplugin-items img {
 .spreadplugin-article.list h3 {
 	min-height: inherit !important;
 }
-@media only screen and (max-width: 480px) {
+ @media only screen and (max-width: 480px) {
 .spreadplugin-article, .spreadplugin-design, .spreadplugin-article-detail {
 	width: 100% !important;
 }
-.spreadplugin-cart-contents {
-	width: 180px;
-	height: 180px;
-}
-}
-.mfp-wrap {
-	z-index: 1060 !important;
-}
-.mfp-bg {
-	z-index: 1059 !important;
-}
-#spreadplugin-tabs_wrapper {
-	margin: 0 auto;
-	padding-top: 50px;
-	display: table;
-}
-#spreadplugin-tabs_wrapper td {
-	min-width: inherit;
-}
-#spreadplugin-tabs_container {
-	border-bottom: 1px solid #ccc;
-}
-#spreadplugin-tabs {
-	list-style: none;
-	margin: 0 0 0 10px;
-}
-#spreadplugin-tabs li {
-	display: inline;
-}
-#spreadplugin-tabs li a {
-	border: 1px solid #ccc;
-	padding: 4px 6px;
-	text-decoration: none;
-	background-color: #eeeeee;
-	border-bottom: none;
-}
-#spreadplugin-tabs li a:hover {
-	background-color: #dddddd;
-	padding: 4px 6px;
-}
-#spreadplugin-tabs li.active a {
-	border-bottom: 1px solid #fff;
-	background-color: #fff;
-	padding: 4px 6px 5px 6px;
-	border-bottom: none;
-}
-#spreadplugin-tabs li.active a:hover {
-	background-color: #eeeeee;
-	padding: 4px 6px 5px 6px;
-	border-bottom: none;
-}
-#spreadplugin-tabs_content_container {
-	padding: 10px;
-	margin: 0;
-}
-.spreadplugin-tab_content {
-	display: none;
-}
-#spreadplugin-tabs .active {
-	clear: none;
-	float: none;
-	background-color: inherit !important;
-}
-.spreadplugin-items .image-wrapper img {
-	width: inherit !important;
-	height: inherit !important;
-	max-width: inherit !important;
-	max-height: inherit !important;
-}
-.spreadplugin-article .description-wrapper {
-	width: 100%;
 }
