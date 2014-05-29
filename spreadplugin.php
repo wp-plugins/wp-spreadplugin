@@ -464,9 +464,6 @@ if(!class_exists('WP_Spreadplugin')) {
 					
 				}
 
-				// footer
-				$output .= "<!-- <div id=\"copyright\"><a href=\"http://lovetee.de\">lovetee - we love t-shirts</a></div> -->";
-
 				$output .= '</div>';
 
 				return $output;
