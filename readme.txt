@@ -5,7 +5,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: spreadshirt,wordpress,plugin,shop,store,shirt,t-shirt,integration,online store,online shop
 Requires at least: 3.3
 Tested up to: 3.9
-Stable tag: 3.5.8
+Stable tag: 3.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -205,6 +205,12 @@ Please have a look here: http://themeforest.net/category/wordpress?ref=thimo
 3. Settings page
 
 == Changelog ==
+
+= 3.6 =
+* Added new minimal view - please be sure to improve the display by adding css
+* Added new configuration option `shop_basket_text_icon` to enable or disable basket icon
+* Some minor changes
+* Support me by code improvements - if you've got some
 
 = 3.5.8 =
 * Language of the plugin is now selectable / changeable through shortcode. On questions please see faq

@@ -2,7 +2,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.5.8
+ * Version: 3.6
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -29,7 +29,7 @@
 .spreadplugin-items img {
 	padding: 0 !important
 }
-.spreadplugin-article, .spreadplugin-article-detail, .spreadplugin-design, .spreadplugin-article.list {
+.spreadplugin-article, .spreadplugin-article-detail, .spreadplugin-design {
 	float: left;
 	margin-top: 20px;
 	margin-right: 2px;
@@ -39,11 +39,11 @@
 	overflow: hidden;
 	white-space: normal
 }
-.spreadplugin-article.list {
+.spreadplugin-article.list-view {
 	min-height: 450px; /* fixing the height of each Article */
 	width: 450px;
 }
-.spreadplugin-article table, .spreadplugin-article-detail table, .spreadplugin-design table, .spreadplugin-article.list table {
+.spreadplugin-article table, .spreadplugin-article-detail table, .spreadplugin-design table {
 	border: 0
 }
 .spreadplugin-article-detail {
@@ -60,18 +60,18 @@
 	height: 300px !important;
 	text-align: center
 }
-.spreadplugin-article img, .spreadplugin-article-detail img, .spreadplugin-article.list img {
+.spreadplugin-article img, .spreadplugin-article-detail img {
 	padding: 0;
 	border: 0;
 	border-radius: 0;
 	background: 0 0
 }
-.spreadplugin-article h3, .spreadplugin-article img, .spreadplugin-article-detail h3, .spreadplugin-article-detail img, .spreadplugin-design h3, .spreadplugin-article.list h3, .spreadplugin-article.list img {
+.spreadplugin-article h3, .spreadplugin-article img, .spreadplugin-article-detail h3, .spreadplugin-article-detail img, .spreadplugin-design h3 {
 	display: block;
 	text-align: center;
 	margin: 0 auto
 }
-.spreadplugin-article .image-wrapper, .spreadplugin-article-detail .image-wrapper, .spreadplugin-article.list .image-wrapper {
+.spreadplugin-article .image-wrapper, .spreadplugin-article-detail .image-wrapper {
 	min-height: 200px
 }
 .spreadplugin-article h3, .spreadplugin-design h3 {
@@ -273,8 +273,8 @@
 	list-style: none outside none;
 	vertical-align: top
 }
-.spreadplugin-items ul.soc-icons a {
-	background-image: url(../img/social-buttons.svg);
+.spreadplugin-items ul.soc-icons a, .spreadplugin-items .add-basket-button,.spreadplugin-checkout-link.button {
+	background-image: url(../img/buttons.svg);
 	background-repeat: no-repeat;
 	background-size: 570px 240px;
 	display: block;
@@ -282,6 +282,13 @@
 	position: relative;
 	white-space: normal;
 	width: 35px
+}
+
+.spreadplugin-items .add-basket-button,.spreadplugin-checkout-link.button {
+	background-position: -350px -185px;
+	cursor:pointer;
+	border:none;
+	min-width:35px;
 }
 .spreadplugin-items ul.soc-icons .twt {
 	background-position: -20px -20px
@@ -490,29 +497,29 @@
 spreadplugin-items img {
 	max-width: none !important
 }
-.spreadplugin-article.list .articleContentLeft, .spreadplugin-article.list .articleContentRight {
+.spreadplugin-article.list-view .articleContentLeft, .spreadplugin-article.list-view .articleContentRight {
 	float: left;
 }
-.spreadplugin-article.list .articleContentLeft {
+.spreadplugin-article.list-view .articleContentLeft {
 	width: 40%;
 	min-width: 190px;
 }
-.spreadplugin-article.list .articleContentRight {
+.spreadplugin-article.list-view .articleContentRight {
 	margin-left: 20px;
 	width: 50%;
 	min-width: 225px;
 }
-.spreadplugin-article.list .articleContentLeft * {
+.spreadplugin-article.list-view .articleContentLeft * {
 	text-align: center !important
 }
-.spreadplugin-article.list .articleContentLeft .details-wrapper2 {
+.spreadplugin-article.list-view .articleContentLeft .details-wrapper2 {
 	float: none;
 	clear: both;
 }
-.spreadplugin-article.list .articleContentRight * {
+.spreadplugin-article.list-view .articleContentRight * {
 	text-align: left !important
 }
-.spreadplugin-article.list h3 {
+.spreadplugin-article.list-view h3 {
 	min-height: inherit !important;
 }
 @media only screen and (max-width: 480px) {
@@ -591,3 +598,18 @@ spreadplugin-items img {
 .spreadplugin-article .description-wrapper {
 	width: 100%;
 }
+
+/* define min-view */
+.spreadplugin-article.min-view {
+	min-height:300px;
+}
+.spreadplugin-article.min-view .price-wrapper,.spreadplugin-article.min-view .add-basket-button {
+	float:left;
+	display:inherit;
+	min-height:35px;
+}
+
+.spreadplugin-article.min-view .size-wrapper {
+	padding:10px 0;
+}
+
