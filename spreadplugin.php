@@ -63,7 +63,6 @@ if(!class_exists('WP_Spreadplugin')) {
 
 
 		public function __construct() {
-			//add_action('init', array(&$this,'plugin_init'));
 			add_action('init', array(&$this,'startSession'), 1);
 			add_action('wp_logout', array(&$this,'endSession'));
 			add_action('wp_login', array(&$this,'endSession'));
@@ -108,14 +107,6 @@ if(!class_exists('WP_Spreadplugin')) {
 		 * PHP 4 Compatible Constructor
 		 */
 		function WP_Spreadplugin() {$this->__construct();}
-
-
-		/**
-		 * Initialize Plugin
-		 */
-		public function plugin_init() {
-			load_plugin_textdomain($this->stringTextdomain, false, dirname(plugin_basename( __FILE__ )) . '/translation');
-		}
 
 
 		/**
@@ -166,7 +157,9 @@ if(!class_exists('WP_Spreadplugin')) {
 				if (file_exists($_ol)) {
 					load_textdomain($this->stringTextdomain, $_ol);
 				}
-			} 
+			} else {
+				load_plugin_textdomain($this->stringTextdomain, false, dirname(plugin_basename( __FILE__ )) . '/translation');	
+			}
 			
 
 			if (isset($_GET['productCategory'])) {
@@ -2168,13 +2161,15 @@ if(!class_exists('WP_Spreadplugin')) {
 
 			$this->reparseShortcodeData();
 			
-						// overwrite translation if language available and set
+			// overwrite translation if language available and set
 			if (!empty(self::$shopOptions['shop_language'])) {
 				$_ol = dirname( __FILE__ ) . '/translation/'.$this->stringTextdomain.'-'.self::$shopOptions['shop_language'].'.mo';
 				if (file_exists($_ol)) {
 					load_textdomain($this->stringTextdomain, $_ol);
 				}
-			} 
+			} else {
+				load_plugin_textdomain($this->stringTextdomain, false, dirname(plugin_basename( __FILE__ )) . '/translation');	
+			}
 
 			
 
