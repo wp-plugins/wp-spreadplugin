@@ -2,7 +2,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.6.1
+ * Version: 3.6.2
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -273,7 +273,7 @@
 	list-style: none outside none;
 	vertical-align: top
 }
-.spreadplugin-items ul.soc-icons a, .spreadplugin-items .add-basket-button,.spreadplugin-checkout-link.button {
+.spreadplugin-items ul.soc-icons a, .spreadplugin-items .add-basket-button, .spreadplugin-checkout-link.button {
 	background-image: url(../img/buttons.svg);
 	background-repeat: no-repeat;
 	background-size: 570px 240px;
@@ -283,12 +283,11 @@
 	white-space: normal;
 	width: 35px
 }
-
-.spreadplugin-items .add-basket-button,.spreadplugin-checkout-link.button {
+.spreadplugin-items .add-basket-button, .spreadplugin-checkout-link.button {
 	background-position: -350px -185px;
-	cursor:pointer;
-	border:none;
-	min-width:35px;
+	cursor: pointer;
+	border: none;
+	min-width: 35px;
 }
 .spreadplugin-items ul.soc-icons .twt {
 	background-position: -20px -20px
@@ -598,18 +597,15 @@ spreadplugin-items img {
 .spreadplugin-article .description-wrapper {
 	width: 100%;
 }
-
 /* define min-view */
 .spreadplugin-article.min-view {
-	min-height:300px;
+	min-height: 300px;
 }
-.spreadplugin-article.min-view .price-wrapper,.spreadplugin-article.min-view .add-basket-button {
-	float:left;
-	display:inherit;
-	min-height:35px;
+.spreadplugin-article.min-view .price-wrapper, .spreadplugin-article.min-view .add-basket-button {
+	float: left;
+	display: inherit;
+	min-height: 35px;
 }
-
 .spreadplugin-article.min-view .size-wrapper {
-	padding:10px 0;
+	padding: 10px 0;
 }
-

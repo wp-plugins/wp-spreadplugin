@@ -289,6 +289,17 @@ if (is_user_logged_in() && is_admin()) {
                 <td valign="top"><?php _e('Custom CSS'); ?></td>
                 <td><textarea style="width: 300px; height: 215px; background: #EEE;" name="shop_customcss" class="custom-css"><?php echo stripslashes(htmlspecialchars($adminOptions['shop_customcss'], ENT_QUOTES)); ?></textarea></td>
               </tr>
+              <tr>
+                <td valign="top"><?php _e('Debug mode:','spreadplugin'); ?></td>
+                <td><input type="radio" name="shop_debug" value="0"<?php echo ($adminOptions['shop_debug']==0 || $adminOptions['shop_debug']==''?" checked":"") ?> />
+                  <?php _e('Off','spreadplugin'); ?>
+                  <br />
+                  <input type="radio" name="shop_debug" value="1"<?php echo ($adminOptions['shop_debug']==1?" checked":"") ?> />
+                  <?php _e('On','spreadplugin'); ?>
+                  <br />
+                  <br />
+If active, all your spreadshirt/spreadplugin data could be exposed, so please be carefull with this option!</td>
+              </tr>
             </table>
             <input type="submit" name="update-splg_options" id="update-splg_options" class="button-primary" value="<?php _e('Update settings','spreadplugin'); ?>" />
           </form>
