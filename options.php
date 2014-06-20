@@ -325,7 +325,7 @@ If active, all your spreadshirt/spreadplugin data could be exposed, so please be
   
   $_plgop = '';
   foreach ($adminOptions as $k => $v) {
-	  if ($k != 'shop_infinitescroll' && $k != 'shop_customcss') {	
+	  if ($k != 'shop_infinitescroll' && $k != 'shop_customcss' && $k != 'shop_debug') {	
 		$_plgop .= $k.'="'.$v.'" ';
 	  }
   }
@@ -344,7 +344,7 @@ If active, all your spreadshirt/spreadplugin data could be exposed, so please be
         </h3>
         <div class="inside">
           <p><a href="javascript:;" onclick="rebuild();"><strong>
-            <?php _e('Clear cache','spreadplugin'); ?>
+            <?php _e('Rebuild cache','spreadplugin'); ?>
             </strong></a></p>
         </div>
       </div>
@@ -364,10 +364,47 @@ function setMessage(msg) {
 }
 
 function rebuild() {
-	jQuery.post("<?php echo admin_url('admin-ajax.php'); ?>","action=regenCache", function() {
-		setMessage("<p><?php _e('Successfully cleared the cache','spreadplugin'); ?></p>");
+	jQuery.ajax({
+		url: "<?php echo admin_url('admin-ajax.php'); ?>",
+		type: "POST",
+		data: "action=rebuildCache&do=getlist",
+		success: function(result) {
+			var list = eval(result);
+			var curr = 0;
+	
+			if (!list) {
+				setMessage("<?php _e('No items found.', 'spreadplugin')?>");
+				return;
+			}
+	
+			function rebuildItem() {
+				if (curr >= list.length) {
+					setMessage("<?php _e('Done.', 'spreadplugin') ?>");
+					return;
+				}
+				setMessage(<?php printf( __('"Rebuilding Page " + %s + " of " + %s + " (" + %s + ")...<br>"', 'spreadplugin'), "(curr+1)", "list.length", "list[curr].title"); ?>);
+	
+				jQuery.ajax({
+					url: "<?php echo admin_url('admin-ajax.php'); ?>",
+					type: "POST",
+					timeout: 900000,
+					data: "action=rebuildCache&do=rebuild&id=" + list[curr].id,
+					success: function(result) {
+						curr = curr + 1;
+						//if (result != '-1') {}
+						rebuildItem();
+					}
+				});
+			}
+	
+			rebuildItem();
+		},
+		error: function(request, status, error) {
+			setMessage("<?php _e('Error', 'spreadplugin') ?>" + request.status);
+		}
 	});
 }
+			
 
 jQuery('.only-digit').keyup(function() {
 	if (/\D/g.test(this.value)) {

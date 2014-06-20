@@ -19,6 +19,7 @@ if ( !class_exists('WP_Spreadplugin')) {
         private $stringTextdomain = 'spreadplugin';
 
         public static $shopOptions;
+		public static $_tempArticleStore = array();
 
         public static $shopArticleSortOptions = array(
             
@@ -65,111 +66,71 @@ if ( !class_exists('WP_Spreadplugin')) {
 
         private static $shopCache = 8760; // Shop article cache in hours 24*365 => 1 year
         public function __construct() {
-            add_action('init', array(
-                
-                &$this, 
+            add_action('init', array(&$this, 
                 'startSession'
             ), 1);
-            add_action('wp_logout', array(
-                
-                &$this, 
+            add_action('wp_logout', array(&$this, 
                 'endSession'
             ));
-            add_action('wp_login', array(
-                
-                &$this, 
+            add_action('wp_login', array(&$this, 
                 'endSession'
             ));
             
-            add_shortcode('spreadplugin', array(
-                
-                $this, 
+            add_shortcode('spreadplugin', array($this, 
                 'Spreadplugin'
             ));
             
             // Ajax actions
-            add_action('wp_ajax_nopriv_mergeBasket', array(
-                
-                &$this, 
+            add_action('wp_ajax_nopriv_mergeBasket', array(&$this, 
                 'mergeBaskets'
             ));
-            add_action('wp_ajax_mergeBasket', array(
-                
-                &$this, 
+            add_action('wp_ajax_mergeBasket', array(&$this, 
                 'mergeBaskets'
             ));
-            add_action('wp_ajax_nopriv_myAjax', array(
-                
-                &$this, 
+            add_action('wp_ajax_nopriv_myAjax', array(&$this, 
                 'doAjax'
             ));
-            add_action('wp_ajax_myAjax', array(
-                
-                &$this, 
+            add_action('wp_ajax_myAjax', array(&$this, 
                 'doAjax'
             ));
-            add_action('wp_ajax_nopriv_myCart', array(
-                
-                &$this, 
+            add_action('wp_ajax_nopriv_myCart', array(&$this, 
                 'doCart'
             ));
-            add_action('wp_ajax_myCart', array(
-                
-                &$this, 
+            add_action('wp_ajax_myCart', array(&$this, 
                 'doCart'
             ));
-            add_action('wp_ajax_nopriv_myDelete', array(
-                
-                &$this, 
+            add_action('wp_ajax_nopriv_myDelete', array(&$this, 
                 'doCartItemDelete'
             ));
-            add_action('wp_ajax_myDelete', array(
-                
-                &$this, 
+            add_action('wp_ajax_myDelete', array(&$this, 
                 'doCartItemDelete'
             ));
-            add_action('wp_ajax_regenCache', array(
-                
-                &$this, 
-                'doRegenerateCache'
+            add_action('wp_ajax_rebuildCache', array(&$this, 
+                'doRebuildCache'
             ));
             
-            add_action('wp_enqueue_scripts', array(
-                
-                &$this, 
+            add_action('wp_enqueue_scripts', array(&$this, 
                 'enqueueJs'
             ));
-            add_action('wp_head', array(
-                
-                &$this, 
+            add_action('wp_head', array(&$this, 
                 'loadHead'
             ));
             
             // admin check
             if (is_admin()) {
                 // Regenerate cache after activation of the plugin
-                register_activation_hook(__FILE__, array(
-                    
-                    &$this, 
-                    'setRegenerateCacheQuery'
-                ));
+                // register_activation_hook(__FILE__, array(&$this,'helperClearCacheQuery'));
                 
                 // add Admin menu
-                add_action('admin_menu', array(
-                    
-                    &$this, 
+                add_action('admin_menu', array(&$this, 
                     'addPluginPage'
                 ));
                 // add Plugin settings link
-                add_filter('plugin_action_links', array(
-                    
-                    &$this, 
+                add_filter('plugin_action_links', array(&$this, 
                     'addPluginSettingsLink'
                 ), 10, 2);
                 
-                add_action('admin_enqueue_scripts', array(
-                    
-                    &$this, 
+                add_action('admin_enqueue_scripts', array(&$this, 
                     'enqueueAdminJs'
                 ));
             }
@@ -194,11 +155,7 @@ if ( !class_exists('WP_Spreadplugin')) {
             $articleData = array();
             $designsData = array();
             
-            add_action('wp_footer', array(
-                
-                &$this, 
-                'loadFoot'
-            ));
+            add_action('wp_footer', array(&$this, 'loadFoot'));
             
             // get admin options (default option set on admin page)
             $conOp = $this->getAdminOptions();
@@ -380,7 +337,7 @@ if ( !class_exists('WP_Spreadplugin')) {
                 // display
                 if (count($articleData) == 0 || $articleData == false) {
                     
-                    $output .= '<br>No articles in Shop';
+                    $output .= '<br>No articles in Shop. Please rebuild cache.';
                 } else {
                     // Listing product
                     if (empty($_GET['splproduct'])) {
@@ -545,131 +502,138 @@ if ( !class_exists('WP_Spreadplugin')) {
         /**
          * Function getArticleData
          *
-         * Retrieves article data and save into cache
-         *
          * @return array Article data
          */
         private static function getArticleData() {
-            $_limit = 20; // Limit to read at once
-            
-            $arrTypes = array();
-            
-            if (self::$shopOptions['shop_debug'] == 0) {
-                // retrieve id of post to save as different content, if shortcode is available in more than one post (more than one shop in the wordpress website)
-                $articleData = get_transient('spreadplugin2-article-cache-' . get_the_ID());
-            } else {
-                // In debug mode, try to always retrieve new data
-                $articleData = false;
-            }
-            
-            // no cache data available
-            if ($articleData === false) {
-                
-                $articleData = array();
-                $articleDataObj = array();
-                $articleDataRaw = array();
-                
-                $apiUrlBase = 'http://api.spreadshirt.' . self::$shopOptions['shop_source'] . '/api/v1/shops/' . self::$shopOptions['shop_id'];
-                $apiUrlBase .= ( !empty(self::$shopOptions['shop_category'])?'/articleCategories/' . self::$shopOptions['shop_category'] : '');
-                $apiUrlBase .= '/articles?' . ( !empty(self::$shopOptions['shop_locale'])?'locale=' . self::$shopOptions['shop_locale'] . '&' : '') . 'fullData=true&noCache=true';
-                
-                // call first to get count of articles
-                $apiUrl = $apiUrlBase . '&limit=1'; // randomize to avoid spreadshirt caching issues
-                
-                $stringXmlShopBase = wp_remote_get($apiUrl, array('timeout' => 120));
-                if (isset($stringXmlShopBase->errors) && count($stringXmlShopBase->errors) > 0) {
-                    if (self::$shopOptions['shop_debug'] == 1) {
-                        echo '<br>Base read error: <br>';
-                        print_r($stringXmlShopBase->errors);
-                    }
-                    die('Error getting articles. Please check Shop-ID, API and secret.');
-                }
-                if ($stringXmlShopBase['body'][0] != '<') die($stringXmlShopBase['body']);
-                $stringXmlShopBase = @wp_remote_retrieve_body($stringXmlShopBase);
-                $objArticlesBase = new SimpleXmlElement($stringXmlShopBase);
-                if ( !is_object($objArticlesBase)) {
-                    if (self::$shopOptions['shop_debug'] == 1) {
-                        echo '<br>Base articles error: <br>';
-                        print_r($objArticlesBase);
-                    }
-                    
-                    die('Articles not loaded');
-                }
-                
-                // check base count
-                if ($objArticlesBase['count'] > 0) {
-                    
-                    // Get ProductTypeDepartments
-                    $stringTypeApiUrl = 'http://api.spreadshirt.' . self::$shopOptions['shop_source'] . '/api/v1/shops/' . self::$shopOptions['shop_id'] . '/productTypeDepartments?' . ( !empty(self::$shopOptions['shop_locale'])?'locale=' . self::$shopOptions['shop_locale'] . '&' : '') . 'fullData=true&noCache=true';
-                    $stringTypeXml = wp_remote_get($stringTypeApiUrl, array('timeout' => 120));
-                    $stringTypeXml = @wp_remote_retrieve_body($stringTypeXml);
-                    $objTypes = new SimpleXmlElement($stringTypeXml);
-                    
-                    if (is_object($objTypes)) {
-                        foreach ($objTypes->productTypeDepartment as $row) {
-                            foreach ($row->categories->category as $subrow) {
-                                foreach ($subrow->productTypes as $subrow2) {
-                                    foreach ($subrow2->productType as $subrow3) {
-                                        $arrTypes[(string)$row->name][(string)$subrow->name][(int)$subrow3['id']] = 1;
-                                        $arrTypes[(string)$row->name]['all'][(int)$subrow3['id']] = 1;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    
-                    $articleData['types'] = $arrTypes;
-                    
-                    // read each $_limit articles (20 Default)
-                    for ($g = 0; $g <= ($objArticlesBase['count'] / $_limit); $g ++ ) {
-                        
-                        // re-call to read articles with count
-                        $apiUrl = $apiUrlBase . '&limit=' . $_limit . '&offset=' . ($g * $_limit);
-                        
-                        $stringXmlShop = @wp_remote_get($apiUrl, array('timeout' => 120));
-                        
-                        if (isset($stringXmlShop->errors) && count($stringXmlShop->errors) > 0) {
-                            if (self::$shopOptions['shop_debug'] == 1) {
-                                print_r($stringXmlShop->errors);
-                            }
-                            
-                            echo '<br>Could only read ' . ($g * $_limit) . ' Articles';
-                            break;
-                        }
-                        if ($stringXmlShop['body'][0] != '<') die($stringXmlShop['body']);
-                        $stringXmlShop = @wp_remote_retrieve_body($stringXmlShop);
-                        $objArticles = new SimpleXmlElement($stringXmlShop);
-                        if ( !is_object($objArticles)) die('Articles empty');
-                        
-                        if ( !empty($objArticles->article)) {
-                            foreach ($objArticles->article as $articles) {
-                                $articleDataObj[] = $articles;
-                            }
-                        }
-                    }
-                    
-                    $articleData = self::parseArticleData($articleDataObj);
-                }
-                
-                if (self::$shopOptions['shop_debug'] == 0) {
-                    set_transient('spreadplugin2-article-cache-' . get_the_ID(), $articleData, self::$shopCache * 3600);
-                }
-                
-                if (self::$shopOptions['shop_debug'] == 1 && is_array($articleData)) {
-                    echo '<br>Read Articles: <br>' . count($articleData);
-                }
-            }
-            
-            return $articleData;
+            return get_transient('spreadplugin2-article-cache-' . get_the_ID());
         }
 
+
+		/**
+		* function parseArticleData
+		* Retrieves article data and save into cache
+		**/
+		private function parseArticleData($pageId=0) {
+				
+			// get page Id if not set in args
+			$pageId = ($pageId==0?get_the_ID():$pageId);
+			
+			// Limit to read at once
+			$_limit = 20;
+			// Limit to read max articles
+			$_maxlimit = 1000;
+			
+			$arrTypes = array();
+			$articleData = array();
+			$articleDataObj = array();
+			
+			$apiUrlBase = 'http://api.spreadshirt.' . self::$shopOptions['shop_source'] . '/api/v1/shops/' . self::$shopOptions['shop_id'];
+			$apiUrlBase .= ( !empty(self::$shopOptions['shop_category'])?'/articleCategories/' . self::$shopOptions['shop_category'] : '');
+			$apiUrlBase .= '/articles?' . ( !empty(self::$shopOptions['shop_locale'])?'locale=' . self::$shopOptions['shop_locale'] . '&' : '') . 'fullData=true&noCache=true';
+			
+			// call first to get count of articles
+			$apiUrl = $apiUrlBase . '&limit=1'; // randomize to avoid spreadshirt caching issues
+			
+			$stringXmlShopBase = wp_remote_get($apiUrl, array('timeout' => 120));
+			if (isset($stringXmlShopBase->errors) && count($stringXmlShopBase->errors) > 0) {
+				if (self::$shopOptions['shop_debug'] == 1) {
+					echo '<br>Base read error: <br>';
+					print_r($stringXmlShopBase->errors);
+				}
+				die('Error getting articles. Please check Shop-ID, API and secret.');
+			}
+			if ($stringXmlShopBase['body'][0] != '<') die($stringXmlShopBase['body']);
+			$stringXmlShopBase = @wp_remote_retrieve_body($stringXmlShopBase);
+			$objArticlesBase = new SimpleXmlElement($stringXmlShopBase);
+			if ( !is_object($objArticlesBase)) {
+				if (self::$shopOptions['shop_debug'] == 1) {
+					echo '<br>Base articles error: <br>';
+					print_r($objArticlesBase);
+				}
+				
+				die('Articles not loaded');
+			}
+			
+			
+			// limit setzen
+			if ($objArticlesBase['count']>$_maxlimit) {
+				$objArticlesBase['count']=$_maxlimit;
+			}
+							
+			
+			
+			// check base count
+			if ($objArticlesBase['count'] > 0) {
+				
+				// Get ProductTypeDepartments
+				$stringTypeApiUrl = 'http://api.spreadshirt.' . self::$shopOptions['shop_source'] . '/api/v1/shops/' . self::$shopOptions['shop_id'] . '/productTypeDepartments?' . ( !empty(self::$shopOptions['shop_locale'])?'locale=' . self::$shopOptions['shop_locale'] . '&' : '') . 'fullData=true&noCache=true';
+				$stringTypeXml = wp_remote_get($stringTypeApiUrl, array('timeout' => 120));
+				$stringTypeXml = @wp_remote_retrieve_body($stringTypeXml);
+				$objTypes = new SimpleXmlElement($stringTypeXml);
+				
+				if (is_object($objTypes)) {
+					foreach ($objTypes->productTypeDepartment as $row) {
+						foreach ($row->categories->category as $subrow) {
+							foreach ($subrow->productTypes as $subrow2) {
+								foreach ($subrow2->productType as $subrow3) {
+									$arrTypes[(string)$row->name][(string)$subrow->name][(int)$subrow3['id']] = 1;
+									$arrTypes[(string)$row->name]['all'][(int)$subrow3['id']] = 1;
+								}
+							}
+						}
+					}
+				}
+				
+				$articleData['types'] = $arrTypes;
+				
+				// read each $_limit articles (20 Default)
+				for ($g = 0; $g <= ($objArticlesBase['count'] / $_limit); $g ++ ) {
+					
+					// re-call to read articles with count
+					$apiUrl = $apiUrlBase . '&limit=' . $_limit . '&offset=' . ($g * $_limit);
+					
+					$stringXmlShop = @wp_remote_get($apiUrl, array('timeout' => 120));
+					
+					if (isset($stringXmlShop->errors) && count($stringXmlShop->errors) > 0) {
+						if (self::$shopOptions['shop_debug'] == 1) {
+							print_r($stringXmlShop->errors);
+						}
+						
+						echo '<br>Could only read ' . ($g * $_limit) . ' Articles';
+						break;
+					}
+					if ($stringXmlShop['body'][0] != '<') die($stringXmlShop['body']);
+					$stringXmlShop = @wp_remote_retrieve_body($stringXmlShop);
+					$objArticles = new SimpleXmlElement($stringXmlShop);
+					if ( !is_object($objArticles)) die('Articles empty');
+					
+					if ( !empty($objArticles->article)) {
+						foreach ($objArticles->article as $articles) {
+							$articleDataObj[] = $articles;
+						}
+					}
+				}
+				
+				$articleData = self::helperParseArticleData($articleDataObj);
+			}
+			
+			if (self::$shopOptions['shop_debug'] == 0) {
+				set_transient('spreadplugin2-article-cache-' . $pageId, $articleData, self::$shopCache * 3600);
+			}
+			
+			if (self::$shopOptions['shop_debug'] == 1 && is_array($articleData)) {
+				echo '<br>Read Articles: <br>' . count($articleData);
+			}
+		}
+	
+	
         /**
          * Function parseArticleData
          * Helper function to parse Article Data
          *
          * @return array Articles
          */
-        private static function parseArticleData($arrayArticles) {
+        private static function helperParseArticleData($arrayArticles) {
             // read articles
             $articleData = array();
             $i = 0;
@@ -802,75 +766,78 @@ if ( !class_exists('WP_Spreadplugin')) {
 
         /**
          * Function getDesignsData
-         *
-         * Retrieves design data and save into cache
-         *
          * @return array designs data
          */
         private static function getDesignsData() {
-            $arrTypes = array();
-            
-            // retrieve id of post to save as different content, if shortcode is available in more than one post (more than one shop in the wordpress website)
-            $articleData = get_transient('spreadplugin2-designs-cache-' . get_the_ID());
-            
-            if ($articleData === false) {
-                
-                $apiUrlBase = 'http://api.spreadshirt.' . self::$shopOptions['shop_source'] . '/api/v1/shops/' . self::$shopOptions['shop_id'];
-                // $apiUrlBase .= (!empty(self::$shopOptions['shop_category'])?'/articleCategories/'.self::$shopOptions['shop_category']:'');
-                $apiUrlBase .= '/designs?' . ( !empty(self::$shopOptions['shop_locale'])?'locale=' . self::$shopOptions['shop_locale'] . '&' : '') . 'fullData=true&noCache=true';
-                
-                // call first to get count of articles
-                $apiUrl = $apiUrlBase . '&limit=' . rand(2, 999); // randomize to avoid spreadshirt caching issues
-                
-                $stringXmlShop = wp_remote_get($apiUrl, array('timeout' => 120));
-                if (isset($stringXmlShop->errors) && count($stringXmlShop->errors) > 0) die('Error getting articles. Please check Shop-ID, API and secret.');
-                if ($stringXmlShop['body'][0] != '<') die($stringXmlShop['body']);
-                $stringXmlShop = @wp_remote_retrieve_body($stringXmlShop);
-                $objArticles = new SimpleXmlElement($stringXmlShop);
-                if ( !isset($objArticles) ||  !is_object($objArticles)) die('Articles not loaded');
-                
-                // re-call to read articles with count
-                // read max 1000 articles because of spreadshirt max. limit
-                $apiUrl = $apiUrlBase . '&limit=' . ($objArticles['count'] <= 1?2 : ($objArticles['count'] < 1000?$objArticles['count'] : 1000));
-                
-                $stringXmlShop = wp_remote_get($apiUrl, array('timeout' => 120));
-                if (isset($stringXmlShop->errors) && count($stringXmlShop->errors) > 0) die('Error getting articles. Please check your Shop-ID.');
-                if ($stringXmlShop['body'][0] != '<') die($stringXmlShop['body']);
-                $stringXmlShop = @wp_remote_retrieve_body($stringXmlShop);
-                $objArticles = new SimpleXmlElement($stringXmlShop);
-                if ( !is_object($objArticles)) die('Articles not loaded');
-                
-                if ($objArticles['count'] > 0) {
-                    
-                    // read articles
-                    $i = 0;
-                    foreach ($objArticles->design as $article) {
-                        
-                        $articleData[(int)$article['id']]['name'] = (string)$article->name;
-                        $articleData[(int)$article['id']]['description'] = (string)$article->description;
-                        $articleData[(int)$article['id']]['appearance'] = (int)$article->product->appearance['id'];
-                        // $articleData[(int)$article['id']]['view']=(int)$article->product->defaultValues->defaultView['id'];
-                        $articleData[(int)$article['id']]['type'] = (int)$article->product->productType['id'];
-                        $articleData[(int)$article['id']]['productId'] = (int)$article->product['id'];
-                        $articleData[(int)$article['id']]['pricenet'] = (float)$article->price->vatExcluded;
-                        $articleData[(int)$article['id']]['pricebrut'] = (float)$article->price->vatIncluded;
-                        // $articleData[(int)$article['id']]['currencycode']=(string)$objCurrencyData->isoCode; // @TODO Check
-                        $articleData[(int)$article['id']]['resource0'] = (string)$article->resources->resource[0]->attributes('xlink', true);
-                        $articleData[(int)$article['id']]['resource2'] = (string)$article->resources->resource[1]->attributes('xlink', true);
-                        // $articleData[(int)$article['id']]['productdescription']=(string)$objArticleData->description;
-                        $articleData[(int)$article['id']]['weight'] = (float)$article['weight'];
-                        $articleData[(int)$article['id']]['place'] = $i;
-                        $articleData[(int)$article['id']]['designid'] = (int)$article['id'];
-                        
-                        $i ++ ;
-                    }
-                    
-                    set_transient('spreadplugin2-designs-cache-' . get_the_ID(), $articleData, self::$shopCache * 3600);
-                }
-            }
-            
-            return $articleData;
+            return get_transient('spreadplugin2-designs-cache-' . get_the_ID());
         }
+		
+		/**
+		* Function getDesignsData
+		*
+		* Retrieves design data and save into cache
+		**/		
+		private function parseDesignsData($pageId=0) {
+			
+			// get page Id if not set in args
+			$pageId = ($pageId==0?get_the_ID():$pageId);
+
+            $arrTypes = array();
+			$apiUrlBase = 'http://api.spreadshirt.' . self::$shopOptions['shop_source'] . '/api/v1/shops/' . self::$shopOptions['shop_id'];
+			// $apiUrlBase .= (!empty(self::$shopOptions['shop_category'])?'/articleCategories/'.self::$shopOptions['shop_category']:'');
+			$apiUrlBase .= '/designs?' . ( !empty(self::$shopOptions['shop_locale'])?'locale=' . self::$shopOptions['shop_locale'] . '&' : '') . 'fullData=true&noCache=true';
+			
+			// call first to get count of articles
+			$apiUrl = $apiUrlBase . '&limit=' . rand(2, 999); // randomize to avoid spreadshirt caching issues
+			
+			$stringXmlShop = wp_remote_get($apiUrl, array('timeout' => 120));
+			if (isset($stringXmlShop->errors) && count($stringXmlShop->errors) > 0) die('Error getting articles. Please check Shop-ID, API and secret.');
+			if ($stringXmlShop['body'][0] != '<') die($stringXmlShop['body']);
+			$stringXmlShop = @wp_remote_retrieve_body($stringXmlShop);
+			$objArticles = new SimpleXmlElement($stringXmlShop);
+			if ( !isset($objArticles) ||  !is_object($objArticles)) die('Articles not loaded');
+			
+			// re-call to read articles with count
+			// read max 1000 articles because of spreadshirt max. limit
+			$apiUrl = $apiUrlBase . '&limit=' . ($objArticles['count'] <= 1?2 : ($objArticles['count'] < 1000?$objArticles['count'] : 1000));
+			
+			$stringXmlShop = wp_remote_get($apiUrl, array('timeout' => 120));
+			if (isset($stringXmlShop->errors) && count($stringXmlShop->errors) > 0) die('Error getting articles. Please check your Shop-ID.');
+			if ($stringXmlShop['body'][0] != '<') die($stringXmlShop['body']);
+			$stringXmlShop = @wp_remote_retrieve_body($stringXmlShop);
+			$objArticles = new SimpleXmlElement($stringXmlShop);
+			if ( !is_object($objArticles)) die('Articles not loaded');
+			
+			if ($objArticles['count'] > 0) {
+				
+				// read articles
+				$i = 0;
+				foreach ($objArticles->design as $article) {
+					
+					$articleData[(int)$article['id']]['name'] = (string)$article->name;
+					$articleData[(int)$article['id']]['description'] = (string)$article->description;
+					$articleData[(int)$article['id']]['appearance'] = (int)$article->product->appearance['id'];
+					// $articleData[(int)$article['id']]['view']=(int)$article->product->defaultValues->defaultView['id'];
+					$articleData[(int)$article['id']]['type'] = (int)$article->product->productType['id'];
+					$articleData[(int)$article['id']]['productId'] = (int)$article->product['id'];
+					$articleData[(int)$article['id']]['pricenet'] = (float)$article->price->vatExcluded;
+					$articleData[(int)$article['id']]['pricebrut'] = (float)$article->price->vatIncluded;
+					// $articleData[(int)$article['id']]['currencycode']=(string)$objCurrencyData->isoCode; // @TODO Check
+					$articleData[(int)$article['id']]['resource0'] = (string)$article->resources->resource[0]->attributes('xlink', true);
+					$articleData[(int)$article['id']]['resource2'] = (string)$article->resources->resource[1]->attributes('xlink', true);
+					// $articleData[(int)$article['id']]['productdescription']=(string)$objArticleData->description;
+					$articleData[(int)$article['id']]['weight'] = (float)$article['weight'];
+					$articleData[(int)$article['id']]['place'] = $i;
+					$articleData[(int)$article['id']]['designid'] = (int)$article['id'];
+					
+					$i ++ ;
+				}
+				
+				set_transient('spreadplugin2-designs-cache-' . get_the_ID(), $articleData, self::$shopCache * 3600);
+			}	
+		}
+		
+		
 
         /**
          * Function displayArticles
@@ -1523,7 +1490,6 @@ if ( !class_exists('WP_Spreadplugin')) {
             @curl_close($ch);
             
             if (in_array($status, array(
-                
                 200, 
                 201, 
                 204, 
@@ -1639,33 +1605,21 @@ if ( !class_exists('WP_Spreadplugin')) {
             
             // Scrolling
             if ($conOp['shop_infinitescroll'] == 1 || $conOp['shop_infinitescroll'] == '') {
-                wp_register_script('infinite_scroll', plugins_url('/js/jquery.infinitescroll.min.js', __FILE__), array(
-                    
-                    'jquery'
-                ));
+                wp_register_script('infinite_scroll', plugins_url('/js/jquery.infinitescroll.min.js', __FILE__), array('jquery'));
                 wp_enqueue_script('infinite_scroll');
             }
             
             // Fancybox
-            wp_register_script('magnific_popup', plugins_url('/js/jquery.magnific-popup.min.js', __FILE__), array(
-                
-                'jquery'
-            ));
+            wp_register_script('magnific_popup', plugins_url('/js/jquery.magnific-popup.min.js', __FILE__), array('jquery'));
             wp_enqueue_script('magnific_popup');
             
             // Zoom
-            wp_register_script('zoom', plugins_url('/js/jquery.elevateZoom-2.5.5.min.js', __FILE__), array(
-                
-                'jquery'
-            ));
+            wp_register_script('zoom', plugins_url('/js/jquery.elevateZoom-2.5.5.min.js', __FILE__), array('jquery'));
             wp_enqueue_script('zoom');
             
             // lazyload
             if ($conOp['shop_lazyload'] == 1 || $conOp['shop_lazyload'] == '') {
-                wp_register_script('lazyload', plugins_url('/js/jquery.lazyload.min.js', __FILE__), array(
-                    
-                    'jquery'
-                ));
+                wp_register_script('lazyload', plugins_url('/js/jquery.lazyload.min.js', __FILE__), array('jquery'));
                 wp_enqueue_script('lazyload');
             }
         }
@@ -2013,18 +1967,49 @@ if ( !class_exists('WP_Spreadplugin')) {
             
             // display options page
             include (plugin_dir_path(__FILE__) . '/options.php');
-        }
-        
-        // Ajax delete the transient
-        public function doRegenerateCache() {
-            $this->setRegenerateCacheQuery();
-            die();
-        }
-        // delete the transient
-        public function setRegenerateCacheQuery() {
+        }		
+		
+		// Rebuild Cache Ajax Call
+		public function doRebuildCache() {
             global $wpdb;
+			
+			// delete transient cache
             $wpdb->query("DELETE FROM `" . $wpdb->options . "` WHERE `option_name` LIKE '_transient_%spreadplugin%cache%'");
-        }
+			
+			$res = array();
+			$action = $_POST["do"];
+
+			if ($action == "getlist") {
+		
+				$result = $wpdb->get_results("SELECT id,post_title FROM `" . $wpdb->posts . "` WHERE post_type <> 'revision' and post_content like '%[spreadplugin%'");
+
+				if ($result) {
+					foreach($result as $item) {
+						$res[] = array('id' => $item->id, 'title' => $item->post_title);
+					}
+				}
+				
+				die(json_encode($res));
+			} else if ($action == "rebuild") {
+				$id = intval($_POST['id']);
+
+				set_time_limit(900);
+
+				$this->reparseShortcodeData($id);
+				$this->parseArticleData($id);
+				$this->parseDesignsData($id);
+
+				die($id);
+			}
+		
+		}
+		
+		
+		
+		
+		
+		
+		
 
         /**
          * Add Settings link to plugin
@@ -2074,15 +2059,15 @@ if ( !class_exists('WP_Spreadplugin')) {
             return $scOptions;
         }
         
-        // read page config and admin options
-        public function reparseShortcodeData() {
-            
-            /**
-             * re-parse the shortcode to get the authentication details
-             *
-             * @TODO find a different way
-             */
-            $pageData = get_page(intval($_GET['pageid']));
+
+		/**
+		 * re-parse the shortcode to get the authentication details
+		 * read page config and admin options
+		 * @TODO find a different way
+		 */
+        public function reparseShortcodeData($pageId=0) {
+			
+            $pageData = get_page(($pageId==0?intval($_GET['pageid']):$pageId));
             $pageContent = $pageData->post_content;
             
             // get admin options (default option set on admin page)
