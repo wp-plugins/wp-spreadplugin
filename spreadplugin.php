@@ -599,7 +599,6 @@ if ( !class_exists('WP_Spreadplugin')) {
 			$objProductData = array();
 			
 			$apiUrlBase = 'http://api.spreadshirt.' . self::$shopOptions['shop_source'] . '/api/v1/shops/' . self::$shopOptions['shop_id'];
-			$apiUrlBase .= ( !empty(self::$shopOptions['shop_category'])?'/articleCategories/' . self::$shopOptions['shop_category'] : '');
 			$apiUrlBase .= '/articles/'.$articleId.'?' . ( !empty(self::$shopOptions['shop_locale'])?'locale=' . self::$shopOptions['shop_locale'] . '&' : '') . 'fullData=true&noCache=true';
 			
 			$apiUrl = $apiUrlBase; 
@@ -607,6 +606,11 @@ if ( !class_exists('WP_Spreadplugin')) {
 			$stringXmlShop = @wp_remote_get($apiUrl, array('timeout' => 120));
 			if ($stringXmlShop['body'][0] != '<') return 'Body error: '.$stringXmlShop['body'];
 			$stringXmlShop = @wp_remote_retrieve_body($stringXmlShop);
+			
+			if (substr($stringXmlShop, 0, 5) != "<?xml") {
+				return 'Error fetching URL: '. $apiUrl;
+			}
+			
 			$article = new SimpleXmlElement($stringXmlShop);
 			if (!is_object($article)) return 'Article empty (object)';
 
