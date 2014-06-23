@@ -320,20 +320,18 @@ If active, all your spreadshirt/spreadplugin data could be exposed, so please be
           <p>
             <?php _e('The extended shortcodes will overwrite the default settings. You may use it to create a different shop with the same plugin.'); ?>
           </p>
-          <p> [spreadplugin
-            <?php
+          <p><?php
   
-  $_plgop = '';
+  $_plgop = '[spreadplugin ';
   foreach ($adminOptions as $k => $v) {
 	  if ($k != 'shop_infinitescroll' && $k != 'shop_customcss' && $k != 'shop_debug') {	
 		$_plgop .= $k.'="'.$v.'" ';
 	  }
   }
   
-  echo trim($_plgop);
+  echo trim($_plgop).']';
   
-  ?>
-            ] </p>
+  ?></p>
         </div>
       </div>
       <div class="postbox">
@@ -356,106 +354,7 @@ If active, all your spreadshirt/spreadplugin data could be exposed, so please be
   <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EZLKTKW8UR6PQ" target="_blank"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" alt="Jetzt einfach, schnell und sicher online bezahlen – mit PayPal." /></a>
   <p>All donations or backlinks to <a href="http://lovetee.de/" target="_blank">http://lovetee.de/</a> valued greatly</p>
 </div>
-<script language="javascript">
-function setMessage(msg) {
-	jQuery("#message").append(msg); //.html(msg)
-	jQuery("#message").show();
-	jQuery('html, body').animate({scrollTop: 0}, 800);
-}
-
-function rebuild() {
-	jQuery.ajax({
-		url: "<?php echo admin_url('admin-ajax.php'); ?>",
-		type: "POST",
-		data: "action=rebuildCache&do=getlist",
-		success: function(result) {
-			var list = eval(result);
-			var curr = 0;
-	
-			if (!list) {
-				setMessage("<?php _e('No items found.', 'spreadplugin')?>");
-				return;
-			}
-	
-			function rebuildItem() {
-				if (curr >= list.length) {
-					setMessage("<?php _e('Done.', 'spreadplugin') ?>");
-					return;
-				}
-				setMessage(<?php printf( __('"Rebuilding Page " + %s + " of " + %s + " (" + %s + ")...<br>"', 'spreadplugin'), "(curr+1)", "list.length", "list[curr].title"); ?>);
-	
-				jQuery.ajax({
-					url: "<?php echo admin_url('admin-ajax.php'); ?>",
-					type: "POST",
-					timeout: 900000,
-					data: "action=rebuildCache&do=rebuild&id=" + list[curr].id,
-					success: function(result) {
-						curr = curr + 1;
-						//if (result != '-1') {}
-						rebuildItem();
-					}
-				});
-			}
-	
-			rebuildItem();
-		},
-		error: function(request, status, error) {
-			setMessage("<?php _e('Error', 'spreadplugin') ?>" + request.status);
-		}
-	});
-}
-			
-
-jQuery('.only-digit').keyup(function() {
-	if (/\D/g.test(this.value)) {
-		// Filter non-digits from input value.
-		this.value = this.value.replace(/\D/g, '');
-	}
-});
-
-// select different locale if north america is set
-jQuery('#shop_locale').change(function() {
-	var sel = jQuery(this).val();
-
-	if (sel == 'us_US' || sel == 'us_CA' || sel == 'fr_CA') {
-		jQuery('#shop_source').val('com');
-	} else {
-		jQuery('#shop_source').val('net');
-	}
-});
-
-
-// bind to the form's submit event
-jQuery('#splg_options_form').submit(function() {
-
-	var isFormValid = true;
-		
-	jQuery("#splg_options_form .required").each(function() { 
-		if (jQuery.trim(jQuery(this).val()).length == 0) {
-			jQuery(this).parent().addClass("highlight");
-			isFormValid = false;
-		} else {
-			jQuery(this).parent().removeClass("highlight");
-		}
-	});
-	
-	
-	// Formularprüfung
-	if (!isFormValid) { 	
-		setMessage("<p><?php _e('Please fill in the highlighted fields!','spreadplugin'); ?></p>");
-	} else {
-		return true;
-	}
-
-	return false;
-});
-
-// add color picker
-jQuery(document).ready(function() {  
-	jQuery('.colorpicker').wpColorPicker();  
-});  
-
-</script>
+<script language='javascript' type='text/javascript' src='<?php echo plugins_url('/js/options.min.js', __FILE__); ?>'></script>
 <?php 
 if (isset($_GET['saved'])) {
 	echo '<script language="javascript">rebuild();</script>';

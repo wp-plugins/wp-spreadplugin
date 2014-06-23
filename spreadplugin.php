@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.6.2
+ * Version: 3.7
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -17,20 +17,14 @@ if ( !class_exists('WP_Spreadplugin')) {
     class WP_Spreadplugin {
 
         private $stringTextdomain = 'spreadplugin';
-
         public static $shopOptions;
-		public static $_tempArticleStore = array();
-
         public static $shopArticleSortOptions = array(
-            
             'name', 
             'price', 
             'recent', 
             'weight'
         );
-
         public $defaultOptions = array(
-            
             'shop_id' => '', 
             'shop_locale' => '', 
             'shop_api' => '', 
@@ -234,13 +228,13 @@ if ( !class_exists('WP_Spreadplugin')) {
                 $offset = ($paged - 1) * self::$shopOptions['shop_limit'];
                 
                 // get article data
-                $articleData = self::getArticleData();
+                $articleData = self::getCacheArticleData();
                 // get rid of types in array
                 $typesData = $articleData['types'];
                 unset($articleData['types']);
                 
                 // get designs data
-                $designsData = self::getDesignsData();
+                $designsData = self::getCacheDesignsData();
                 
                 // built array with articles for sorting and filtering
                 if (is_array($designsData)) {
@@ -282,7 +276,7 @@ if ( !class_exists('WP_Spreadplugin')) {
                 
                 // default sort
                 @uasort($designsData, create_function('$a,$b', "return (\$a[place] > \$b[place])?-1:1;"));
-                @uasort($articleCleanData, create_function('$a,$b', "return (\$a[place] < \$b[place])?-1:1;"));
+                @uasort($articleCleanData, create_function('$a,$b', "return (\$a[id] > \$b[id])?-1:1;")); // 2014-06-22 Changed from place to id, place is not set anymore (and sort direction to desc)
                 
                 // sorting
                 if (self::$shopOptions['shop_display'] == 1) {
@@ -414,7 +408,7 @@ if ( !class_exists('WP_Spreadplugin')) {
                                     if ( !empty($articleData[$designId])) {
                                         
                                         // default sort
-                                        @uasort($articleData[$designId], create_function('$a,$b', "return (\$a[place] < \$b[place])?-1:1;"));
+                                        @uasort($articleData[$designId], create_function('$a,$b', "return (\$a[id] > \$b[id])?-1:1;")); // 2014-06-22 Changed from place to id, place is not set anymore (and sort direction to desc
                                         
                                         switch (self::$shopOptions['shop_view']) {
                                             case 1:
@@ -500,30 +494,24 @@ if ( !class_exists('WP_Spreadplugin')) {
         }
 
         /**
-         * Function getArticleData
+         * Function getCacheArticleData
          *
          * @return array Article data
          */
-        private static function getArticleData() {
+        private static function getCacheArticleData() {
             return get_transient('spreadplugin2-article-cache-' . get_the_ID());
         }
-
-
+		
+	
 		/**
 		* function parseArticleData
-		* Retrieves article data and save into cache
+		* Retrieves article data and collect
 		**/
-		private function parseArticleData($pageId=0) {
-				
-			// get page Id if not set in args
-			$pageId = ($pageId==0?get_the_ID():$pageId);
-			
-			// Limit to read at once
-			$_limit = 20;
+		private function getRawArticleData($pageId) {
+						
 			// Limit to read max articles
 			$_maxlimit = 1000;
 			
-			$arrTypes = array();
 			$articleData = array();
 			$articleDataObj = array();
 			
@@ -532,7 +520,7 @@ if ( !class_exists('WP_Spreadplugin')) {
 			$apiUrlBase .= '/articles?' . ( !empty(self::$shopOptions['shop_locale'])?'locale=' . self::$shopOptions['shop_locale'] . '&' : '') . 'fullData=true&noCache=true';
 			
 			// call first to get count of articles
-			$apiUrl = $apiUrlBase . '&limit=1'; // randomize to avoid spreadshirt caching issues
+			$apiUrl = $apiUrlBase . '&limit='.$_maxlimit;
 			
 			$stringXmlShopBase = wp_remote_get($apiUrl, array('timeout' => 120));
 			if (isset($stringXmlShopBase->errors) && count($stringXmlShopBase->errors) > 0) {
@@ -555,229 +543,215 @@ if ( !class_exists('WP_Spreadplugin')) {
 			}
 			
 			
-			// limit setzen
-			if ($objArticlesBase['count']>$_maxlimit) {
-				$objArticlesBase['count']=$_maxlimit;
-			}
-							
+			return $objArticlesBase;
 			
+		}
+		
+		
+		
+		/**
+		* function getTypesData
+		* Retrieves types data
+		**/
+		private function getTypesData() {
+
+			$arrTypes = array();
 			
-			// check base count
-			if ($objArticlesBase['count'] > 0) {
-				
-				// Get ProductTypeDepartments
-				$stringTypeApiUrl = 'http://api.spreadshirt.' . self::$shopOptions['shop_source'] . '/api/v1/shops/' . self::$shopOptions['shop_id'] . '/productTypeDepartments?' . ( !empty(self::$shopOptions['shop_locale'])?'locale=' . self::$shopOptions['shop_locale'] . '&' : '') . 'fullData=true&noCache=true';
-				$stringTypeXml = wp_remote_get($stringTypeApiUrl, array('timeout' => 120));
-				$stringTypeXml = @wp_remote_retrieve_body($stringTypeXml);
-				$objTypes = new SimpleXmlElement($stringTypeXml);
-				
-				if (is_object($objTypes)) {
-					foreach ($objTypes->productTypeDepartment as $row) {
-						foreach ($row->categories->category as $subrow) {
-							foreach ($subrow->productTypes as $subrow2) {
-								foreach ($subrow2->productType as $subrow3) {
-									$arrTypes[(string)$row->name][(string)$subrow->name][(int)$subrow3['id']] = 1;
-									$arrTypes[(string)$row->name]['all'][(int)$subrow3['id']] = 1;
-								}
+			//	 Get ProductTypeDepartments
+			$stringTypeApiUrl = 'http://api.spreadshirt.' . self::$shopOptions['shop_source'] . '/api/v1/shops/' . self::$shopOptions['shop_id'] . '/productTypeDepartments?' . ( !empty(self::$shopOptions['shop_locale'])?'locale=' . self::$shopOptions['shop_locale'] . '&' : '') . 'fullData=true&noCache=true';
+			$stringTypeXml = wp_remote_get($stringTypeApiUrl, array('timeout' => 120));
+			$stringTypeXml = @wp_remote_retrieve_body($stringTypeXml);
+			$objTypes = new SimpleXmlElement($stringTypeXml);
+			
+			if (is_object($objTypes)) {
+				foreach ($objTypes->productTypeDepartment as $row) {
+					foreach ($row->categories->category as $subrow) {
+						foreach ($subrow->productTypes as $subrow2) {
+							foreach ($subrow2->productType as $subrow3) {
+								$arrTypes[(string)$row->name][(string)$subrow->name][(int)$subrow3['id']] = 1;
+								$arrTypes[(string)$row->name]['all'][(int)$subrow3['id']] = 1;
 							}
 						}
 					}
 				}
+			}
+			
+			return $arrTypes;
+		}
+
+
+
+
+
+		/**
+		* function getSingleArticleData
+		* Retrieves article data and save into cache
+		**/
+		private function getSingleArticleData($pageId,$articleId) {
 				
-				$articleData['types'] = $arrTypes;
+			$articleData = array();
+			
+			$stockstates_size = array();
+			$stockstates_appearance = array();
+			$objProductData = array();
+			$objPrintData = array();
+			$objArticleData = array();
+			$objCurrencyData = array();
+			$objProductData = array();
+			
+			$apiUrlBase = 'http://api.spreadshirt.' . self::$shopOptions['shop_source'] . '/api/v1/shops/' . self::$shopOptions['shop_id'];
+			$apiUrlBase .= ( !empty(self::$shopOptions['shop_category'])?'/articleCategories/' . self::$shopOptions['shop_category'] : '');
+			$apiUrlBase .= '/articles/'.$articleId.'?' . ( !empty(self::$shopOptions['shop_locale'])?'locale=' . self::$shopOptions['shop_locale'] . '&' : '') . 'fullData=true&noCache=true';
+			
+			$apiUrl = $apiUrlBase; 
+			
+			$stringXmlShop = @wp_remote_get($apiUrl, array('timeout' => 120));
+			if ($stringXmlShop['body'][0] != '<') die($stringXmlShop['body']);
+			$stringXmlShop = @wp_remote_retrieve_body($stringXmlShop);
+			$article = new SimpleXmlElement($stringXmlShop);
+			if ( !is_object($article)) die('Article empty');
+			
+			$stringXmlArticle = @wp_remote_retrieve_body(wp_remote_get($article->product->productType->attributes('xlink', true) . '?' . ( !empty(self::$shopOptions['shop_locale'])?'locale=' . self::$shopOptions['shop_locale'] . '&noCache=true' : '&noCache=true'), array('timeout' => 120)));
+			if (substr($stringXmlArticle, 0, 5) == "<?xml") {
+				$objArticleData = new SimpleXmlElement($stringXmlArticle);
+			}
+			$stringXmlCurreny = @wp_remote_retrieve_body(wp_remote_get($article->price->currency->attributes('http://www.w3.org/1999/xlink')));
+			if (substr($stringXmlCurreny, 0, 5) == "<?xml") {
+				$objCurrencyData = new SimpleXmlElement($stringXmlCurreny);
+			}
+			$stringXmlProduct = @wp_remote_retrieve_body(wp_remote_get($article->product->attributes('xlink', true) . '?' . ( !empty(self::$shopOptions['shop_locale'])?'locale=' . self::$shopOptions['shop_locale'] . '&noCache=true' : '&noCache=true'), array('timeout' => 120)));
+			if (substr($stringXmlProduct, 0, 5) == "<?xml") {
+				$objProductData = new SimpleXmlElement($stringXmlProduct);
+			}
+			
+			if (is_object($objProductData)) {
+				$stringXmlPrint = @wp_remote_retrieve_body(wp_remote_get($objProductData->configurations->configuration->printType->attributes('xlink', true) . '?' . ( !empty(self::$shopOptions['shop_locale'])?'locale=' . self::$shopOptions['shop_locale'] . '&noCache=true' : '&noCache=true'), array('timeout' => 120)));
+				if (substr($stringXmlPrint, 0, 5) == "<?xml") {
+					$objPrintData = new SimpleXmlElement($stringXmlPrint);
+				}
+			}
+			
+			$articleData['name'] = (string)$article->name;
+			$articleData['description'] = (string)$article->description;
+			$articleData['appearance'] = (int)$article->product->appearance['id'];
+			$articleData['view'] = (int)$article->product->defaultValues->defaultView['id'];
+			$articleData['type'] = (int)$article->product->productType['id'];
+			$articleData['productId'] = (int)$article->product['id'];
+			$articleData['pricenet'] = (float)$article->price->vatExcluded;
+			$articleData['pricebrut'] = (float)$article->price->vatIncluded;
+			$articleData['currencycode'] = (string)$objCurrencyData->isoCode;
+			$articleData['productname'] = (string)$objArticleData->name;
+			$articleData['productshortdescription'] = (string)$objArticleData->shortDescription;
+			$articleData['productdescription'] = (string)$objArticleData->description;
+
+			$articleData['weight'] = (float)$article['weight'];
+			$articleData['id'] = (int)$article['id'];
+			//$articleData['place'] = $i;
+			$articleData['designid'] = (int)$article->product->defaultValues->defaultDesign['id'];
+			
+			$articleData['printtypename'] = '';
+			$articleData['printtypedescription'] = '';
+			
+			if (is_object($objPrintData)) {
+				$articleData['printtypename'] = (string)$objPrintData->name;
+				$articleData['printtypedescription'] = (string)$objPrintData->description;
+			}
+			
+			/**
+			 * Stock States disabled at the moment - the informations provided by spreadshirt aren't such reliable as needed
+			 * *
+			 *
+			 * // Assignment of stock availability and matching to articles
+			 * // echo (string)$article->name."<br>";
+			 * foreach($objArticleData->stockStates->stockState as $val) {
+			 * $stockstates_size[(int)$val->size['id']]=(string)$val->available;
+			 * $stockstates_appearance[(int)$val->appearance['id']]=(string)$val->available;
+			 * }
+			 *
+			 * foreach($objArticleData->sizes->size as $val) {
+			 * // echo (int)$val['id']." ".$stockstates_size[(int)$val['id']]." ". (string)$val->name."<br>";
+			 * if ($stockstates_size[(int)$val['id']] == "true") {
+			 * $articleData['sizes'][(int)$val['id']]=(string)$val->name;
+			 * }
+			 * }
+			 *
+			 * foreach($objArticleData->appearances->appearance as $appearance) {
+			 * if ((int)$article->product->appearance['id'] == (int)$appearance['id']) {
+			 * $articleData['default_bgc'] = (string)$appearance->colors->color;
+			 * }
+			 *
+			 * // echo (int)$val['id']." ".$stockstates_appearance[(int)$val['id']]." ". (string)$appearance->resources->resource->attributes('xlink', true)."<br>";
+			 * if (($article->product->restrictions->freeColorSelection == 'true' && $stockstates_appearance[(int)$appearance['id']] == "true") || (int)$article->product->appearance['id'] == (int)$appearance['id']) {
+			 * $articleData['appearances'][(int)$appearance['id']]=(string)$appearance->resources->resource->attributes('xlink', true);
+			 * }
+			 * }
+			 */
+			
+			// replace to use stock states || weiter unten ist neuer
+			// sizes
+			foreach ($objArticleData->sizes->size as $val) {
 				
-				// read each $_limit articles (20 Default)
-				for ($g = 0; $g <= ($objArticlesBase['count'] / $_limit); $g ++ ) {
-					
-					// re-call to read articles with count
-					$apiUrl = $apiUrlBase . '&limit=' . $_limit . '&offset=' . ($g * $_limit);
-					
-					$stringXmlShop = @wp_remote_get($apiUrl, array('timeout' => 120));
-					
-					if (isset($stringXmlShop->errors) && count($stringXmlShop->errors) > 0) {
-						if (self::$shopOptions['shop_debug'] == 1) {
-							print_r($stringXmlShop->errors);
-						}
-						
-						echo '<br>Could only read ' . ($g * $_limit) . ' Articles';
-						break;
+				$articleData['sizes'][(int)$val['id']]['name'] = (string)$val->name;
+				
+				if ( !empty($val->measures->measure[0]->name)) {
+					$articleData['sizes'][(int)$val['id']]['measures'][0]['name'] = (string)$val->measures->measure[0]->name;
+					$articleData['sizes'][(int)$val['id']]['measures'][0]['value'] = (string)$val->measures->measure[0]->value;
+				}
+				if ( !empty($val->measures->measure[1]->name)) {
+					$articleData['sizes'][(int)$val['id']]['measures'][1]['name'] = (string)$val->measures->measure[1]->name;
+					$articleData['sizes'][(int)$val['id']]['measures'][1]['value'] = (string)$val->measures->measure[1]->value;
+				}
+			}
+			
+			foreach ($objArticleData->resources as $val) {
+				foreach ($val->resource as $vr) {
+					if ($vr['type'] == 'size') {
+						$articleData['product-resource-size'] = (string)$vr->attributes('xlink', true);
 					}
-					if ($stringXmlShop['body'][0] != '<') die($stringXmlShop['body']);
-					$stringXmlShop = @wp_remote_retrieve_body($stringXmlShop);
-					$objArticles = new SimpleXmlElement($stringXmlShop);
-					if ( !is_object($objArticles)) die('Articles empty');
-					
-					if ( !empty($objArticles->article)) {
-						foreach ($objArticles->article as $articles) {
-							$articleDataObj[] = $articles;
-						}
+					if ($vr['type'] == 'detail') {
+						$articleData['product-resource-detail'] = (string)$vr->attributes('xlink', true);
 					}
 				}
+			}
+			
+			foreach ($objArticleData->appearances->appearance as $appearance) {
+				if ((int)$article->product->appearance['id'] == (int)$appearance['id']) {
+					$articleData['default_bgc'] = (string)$appearance->colors->color;
+				}
 				
-				$articleData = self::helperParseArticleData($articleDataObj);
+				if ($article->product->restrictions->freeColorSelection == 'true' || (int)$article->product->appearance['id'] == (int)$appearance['id']) {
+					$articleData['appearances'][(int)$appearance['id']] = (string)$appearance->resources->resource->attributes('xlink', true);
+				}
+			}
+			// replace end
+			
+			foreach ($objArticleData->views->view as $view) {
+				$articleData['views'][(int)$view['id']] = (string)$article->resources->resource->attributes('xlink', true);
 			}
 			
-			if (self::$shopOptions['shop_debug'] == 0) {
-				set_transient('spreadplugin2-article-cache-' . $pageId, $articleData, self::$shopCache * 3600);
-			}
-			
-			if (self::$shopOptions['shop_debug'] == 1 && is_array($articleData)) {
-				echo '<br>Read Articles: <br>' . count($articleData);
-			}
+			$i++;
+				
+			return $articleData;
 		}
-	
-	
-        /**
-         * Function parseArticleData
-         * Helper function to parse Article Data
-         *
-         * @return array Articles
-         */
-        private static function helperParseArticleData($arrayArticles) {
-            // read articles
-            $articleData = array();
-            $i = 0;
-            foreach ($arrayArticles as $article) {
-                $stockstates_size = array();
-                $stockstates_appearance = array();
-                $objProductData = array();
-                $objPrintData = array();
-                
-                $stringXmlArticle = @wp_remote_retrieve_body(wp_remote_get($article->product->productType->attributes('xlink', true) . '?' . ( !empty(self::$shopOptions['shop_locale'])?'locale=' . self::$shopOptions['shop_locale'] . '&noCache=true' : '&noCache=true'), array('timeout' => 120)));
-                if (substr($stringXmlArticle, 0, 5) !== "<?xml") continue;
-                $objArticleData = new SimpleXmlElement($stringXmlArticle);
-                $stringXmlCurreny = @wp_remote_retrieve_body(wp_remote_get($article->price->currency->attributes('http://www.w3.org/1999/xlink')));
-                if (substr($stringXmlCurreny, 0, 5) !== "<?xml") continue;
-                $objCurrencyData = new SimpleXmlElement($stringXmlCurreny);
-                
-                $stringXmlProduct = @wp_remote_retrieve_body(wp_remote_get($article->product->attributes('xlink', true) . '?' . ( !empty(self::$shopOptions['shop_locale'])?'locale=' . self::$shopOptions['shop_locale'] . '&noCache=true' : '&noCache=true'), array('timeout' => 120)));
-                if (substr($stringXmlProduct, 0, 5) !== "<?xml") continue;
-                $objProductData = new SimpleXmlElement($stringXmlProduct);
-                
-                if (is_object($objProductData)) {
-                    $stringXmlPrint = @wp_remote_retrieve_body(wp_remote_get($objProductData->configurations->configuration->printType->attributes('xlink', true) . '?' . ( !empty(self::$shopOptions['shop_locale'])?'locale=' . self::$shopOptions['shop_locale'] . '&noCache=true' : '&noCache=true'), array('timeout' => 120)));
-                    if (substr($stringXmlPrint, 0, 5) == "<?xml") {
-                        $objPrintData = new SimpleXmlElement($stringXmlPrint);
-                    }
-                }
-                
-                $articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['name'] = (string)$article->name;
-                $articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['description'] = (string)$article->description;
-                $articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['appearance'] = (int)$article->product->appearance['id'];
-                $articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['view'] = (int)$article->product->defaultValues->defaultView['id'];
-                $articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['type'] = (int)$article->product->productType['id'];
-                $articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['productId'] = (int)$article->product['id'];
-                $articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['pricenet'] = (float)$article->price->vatExcluded;
-                $articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['pricebrut'] = (float)$article->price->vatIncluded;
-                $articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['currencycode'] = (string)$objCurrencyData->isoCode;
-                $articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['productname'] = (string)$objArticleData->name;
-                $articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['productshortdescription'] = (string)$objArticleData->shortDescription;
-                $articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['productdescription'] = (string)$objArticleData->description;
-                $articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['weight'] = (float)$article['weight'];
-                $articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['id'] = (int)$article['id'];
-                $articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['place'] = $i;
-                $articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['designid'] = (int)$article->product->defaultValues->defaultDesign['id'];
-                
-                $articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['printtypename'] = '';
-                $articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['printtypedescription'] = '';
-                
-                if (is_object($objPrintData)) {
-                    $articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['printtypename'] = (string)$objPrintData->name;
-                    $articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['printtypedescription'] = (string)$objPrintData->description;
-                }
-                
-                /**
-                 * Stock States disabled at the moment - the informations provided by spreadshirt aren't such reliable as needed
-                 * *
-                 *
-                 * // Assignment of stock availability and matching to articles
-                 * // echo (string)$article->name."<br>";
-                 * foreach($objArticleData->stockStates->stockState as $val) {
-                 * $stockstates_size[(int)$val->size['id']]=(string)$val->available;
-                 * $stockstates_appearance[(int)$val->appearance['id']]=(string)$val->available;
-                 * }
-                 *
-                 * foreach($objArticleData->sizes->size as $val) {
-                 * // echo (int)$val['id']." ".$stockstates_size[(int)$val['id']]." ". (string)$val->name."<br>";
-                 * if ($stockstates_size[(int)$val['id']] == "true") {
-                 * $articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['sizes'][(int)$val['id']]=(string)$val->name;
-                 * }
-                 * }
-                 *
-                 * foreach($objArticleData->appearances->appearance as $appearance) {
-                 * if ((int)$article->product->appearance['id'] == (int)$appearance['id']) {
-                 * $articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['default_bgc'] = (string)$appearance->colors->color;
-                 * }
-                 *
-                 * // echo (int)$val['id']." ".$stockstates_appearance[(int)$val['id']]." ". (string)$appearance->resources->resource->attributes('xlink', true)."<br>";
-                 * if (($article->product->restrictions->freeColorSelection == 'true' && $stockstates_appearance[(int)$appearance['id']] == "true") || (int)$article->product->appearance['id'] == (int)$appearance['id']) {
-                 * $articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['appearances'][(int)$appearance['id']]=(string)$appearance->resources->resource->attributes('xlink', true);
-                 * }
-                 * }
-                 */
-                
-                // replace to use stock states || weiter unten ist neuer
-                // sizes
-                foreach ($objArticleData->sizes->size as $val) {
-                    
-                    $articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['sizes'][(int)$val['id']]['name'] = (string)$val->name;
-                    
-                    if ( !empty($val->measures->measure[0]->name)) {
-                        $articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['sizes'][(int)$val['id']]['measures'][0]['name'] = (string)$val->measures->measure[0]->name;
-                        $articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['sizes'][(int)$val['id']]['measures'][0]['value'] = (string)$val->measures->measure[0]->value;
-                    }
-                    if ( !empty($val->measures->measure[1]->name)) {
-                        $articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['sizes'][(int)$val['id']]['measures'][1]['name'] = (string)$val->measures->measure[1]->name;
-                        $articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['sizes'][(int)$val['id']]['measures'][1]['value'] = (string)$val->measures->measure[1]->value;
-                    }
-                }
-                
-                foreach ($objArticleData->resources as $val) {
-                    foreach ($val->resource as $vr) {
-                        if ($vr['type'] == 'size') {
-                            $articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['product-resource-size'] = (string)$vr->attributes('xlink', true);
-                        }
-                        if ($vr['type'] == 'detail') {
-                            $articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['product-resource-detail'] = (string)$vr->attributes('xlink', true);
-                        }
-                    }
-                }
-                
-                foreach ($objArticleData->appearances->appearance as $appearance) {
-                    if ((int)$article->product->appearance['id'] == (int)$appearance['id']) {
-                        $articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['default_bgc'] = (string)$appearance->colors->color;
-                    }
-                    
-                    if ($article->product->restrictions->freeColorSelection == 'true' || (int)$article->product->appearance['id'] == (int)$appearance['id']) {
-                        $articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['appearances'][(int)$appearance['id']] = (string)$appearance->resources->resource->attributes('xlink', true);
-                    }
-                }
-                // replace end
-                
-                foreach ($objArticleData->views->view as $view) {
-                    $articleData[(int)$article->product->defaultValues->defaultDesign['id']][(int)$article['id']]['views'][(int)$view['id']] = (string)$article->resources->resource->attributes('xlink', true);
-                }
-                
-                $i ++ ;
-            }
-            
-            return $articleData;
-        }
+
+
+
 
         /**
-         * Function getDesignsData
+         * Function getCacheDesignsData
          * @return array designs data
          */
-        private static function getDesignsData() {
+        private static function getCacheDesignsData() {
             return get_transient('spreadplugin2-designs-cache-' . get_the_ID());
         }
 		
 		/**
 		* Function getDesignsData
 		*
-		* Retrieves design data and save into cache
+		* Retrieves design data and saves directly into cache
+		* Has a quick load time, so possible to save directly to cache
 		**/		
-		private function parseDesignsData($pageId=0) {
+		private function getDesignsData($pageId=0) {
 			
 			// get page Id if not set in args
 			$pageId = ($pageId==0?get_the_ID():$pageId);
@@ -833,7 +807,7 @@ if ( !class_exists('WP_Spreadplugin')) {
 					$i ++ ;
 				}
 				
-				set_transient('spreadplugin2-designs-cache-' . get_the_ID(), $articleData, self::$shopCache * 3600);
+				set_transient('spreadplugin2-designs-cache-' . $pageId, $articleData, self::$shopCache * 3600);
 			}	
 		}
 		
@@ -1973,33 +1947,84 @@ if ( !class_exists('WP_Spreadplugin')) {
 		public function doRebuildCache() {
             global $wpdb;
 			
-			// delete transient cache
-            $wpdb->query("DELETE FROM `" . $wpdb->options . "` WHERE `option_name` LIKE '_transient_%spreadplugin%cache%'");
-			
 			$res = array();
+			
 			$action = $_POST["do"];
 
-			if ($action == "getlist") {
+			if ($action == 'getlist') {
 		
+				// delete transient cache
+				$wpdb->query("DELETE FROM `" . $wpdb->options . "` WHERE `option_name` LIKE '_transient_%spreadplugin%cache%'");
+				
+				// read posts/pages,... with shortcode
 				$result = $wpdb->get_results("SELECT id,post_title FROM `" . $wpdb->posts . "` WHERE post_type <> 'revision' and post_content like '%[spreadplugin%'");
 
 				if ($result) {
 					foreach($result as $item) {
-						$res[] = array('id' => $item->id, 'title' => $item->post_title);
+						
+						$items = array();
+						$_items = array();
+						$_types = array();
+						$this->reparseShortcodeData($item->id);
+						// get and store designs data directly to cache
+						$this->getDesignsData($item->id);
+						// get raw article data for later usage
+						$_items = $this->getRawArticleData($item->id);
+						// storing producttypedepartments for later use
+						$_types = $this->getTypesData();
+
+						if (is_object($_items) && !empty($_items->article)) {
+							foreach ($_items->article as $article) {
+																
+								$items[] = array(
+									'articleid' => (int)$article['id'], 
+									'previewimage' => '//image.spreadshirt.' . self::$shopOptions['shop_source'] . '/image-server/v1/products/' . (int)$article->product['id'] . '/views/' . (int)$article->product->defaultValues->defaultView['id'] . ',width=100,height=100',
+									'articlename' => (string)$article->name
+								);
+							}
+						}						
+						
+						$res[] = array('id' => $item->id, 'title' => $item->post_title, 'items' => $items);
+						// need to use session, because otherwise we can't transport the types and article data further down. (ajax/wordpress thingy)
+						$_SESSION['_tempArticleCache'][$item->id]['types'] = $_types;
 					}
 				}
 				
 				die(json_encode($res));
-			} else if ($action == "rebuild") {
-				$id = intval($_POST['id']);
+				
+			} else if ($action == 'rebuild') {
+				$_pageid = intval($_POST['_pageid']);
+				$_articleid = intval($_POST['_articleid']);
+				$this->reparseShortcodeData($_pageid);
+				
+				$_articleData = $this->getSingleArticleData($_pageid,$_articleid);
+				
+				if ($_articleData) {
+					// store each article in a session for later use
+					$_SESSION['_tempArticleCache'][$_pageid][(int)$_articleData['designid']][(int)$_articleData['id']] = $_articleData;
+					die('Done');
+				} else {
+					die('Error');
+				}
 
-				set_time_limit(900);
 
-				$this->reparseShortcodeData($id);
-				$this->parseArticleData($id);
-				$this->parseDesignsData($id);
+			} else if ($action == 'save') {
+				$_pageid = intval($_POST['_pageid']);						
 
-				die($id);
+				if (!empty($_SESSION['_tempArticleCache'])) {
+					
+					if (!empty($_SESSION['_tempArticleCache'][$_pageid])) {
+						
+						// build cache from session data
+						set_transient('spreadplugin2-article-cache-' . $_pageid, $_SESSION['_tempArticleCache'][$_pageid], self::$shopCache * 3600);
+						
+						die('Done');
+					}
+
+				} else {
+					die('Error');
+				}
+
 			}
 		
 		}
@@ -2037,12 +2062,7 @@ if ( !class_exists('WP_Spreadplugin')) {
                 $g = hexdec(substr($hex, 2, 2));
                 $b = hexdec(substr($hex, 4, 2));
             }
-            $rgb = array(
-                
-                $r, 
-                $g, 
-                $b
-            );
+            $rgb = array($r, $g, $b);
             return $rgb; // returns an array with the rgb values
         }
         
