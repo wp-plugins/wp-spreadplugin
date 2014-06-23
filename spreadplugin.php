@@ -588,9 +588,8 @@ if ( !class_exists('WP_Spreadplugin')) {
 		* Retrieves article data and save into cache
 		**/
 		private function getSingleArticleData($pageId,$articleId) {
-				
+
 			$articleData = array();
-			
 			$stockstates_size = array();
 			$stockstates_appearance = array();
 			$objProductData = array();
@@ -606,132 +605,145 @@ if ( !class_exists('WP_Spreadplugin')) {
 			$apiUrl = $apiUrlBase; 
 			
 			$stringXmlShop = @wp_remote_get($apiUrl, array('timeout' => 120));
-			if ($stringXmlShop['body'][0] != '<') die($stringXmlShop['body']);
+			if ($stringXmlShop['body'][0] != '<') return 'Body error: '.$stringXmlShop['body'];
 			$stringXmlShop = @wp_remote_retrieve_body($stringXmlShop);
 			$article = new SimpleXmlElement($stringXmlShop);
-			if ( !is_object($article)) die('Article empty');
-			
-			$stringXmlArticle = @wp_remote_retrieve_body(wp_remote_get($article->product->productType->attributes('xlink', true) . '?' . ( !empty(self::$shopOptions['shop_locale'])?'locale=' . self::$shopOptions['shop_locale'] . '&noCache=true' : '&noCache=true'), array('timeout' => 120)));
-			if (substr($stringXmlArticle, 0, 5) == "<?xml") {
-				$objArticleData = new SimpleXmlElement($stringXmlArticle);
-			}
-			$stringXmlCurreny = @wp_remote_retrieve_body(wp_remote_get($article->price->currency->attributes('http://www.w3.org/1999/xlink')));
-			if (substr($stringXmlCurreny, 0, 5) == "<?xml") {
-				$objCurrencyData = new SimpleXmlElement($stringXmlCurreny);
-			}
-			$stringXmlProduct = @wp_remote_retrieve_body(wp_remote_get($article->product->attributes('xlink', true) . '?' . ( !empty(self::$shopOptions['shop_locale'])?'locale=' . self::$shopOptions['shop_locale'] . '&noCache=true' : '&noCache=true'), array('timeout' => 120)));
-			if (substr($stringXmlProduct, 0, 5) == "<?xml") {
-				$objProductData = new SimpleXmlElement($stringXmlProduct);
-			}
-			
-			if (is_object($objProductData)) {
-				$stringXmlPrint = @wp_remote_retrieve_body(wp_remote_get($objProductData->configurations->configuration->printType->attributes('xlink', true) . '?' . ( !empty(self::$shopOptions['shop_locale'])?'locale=' . self::$shopOptions['shop_locale'] . '&noCache=true' : '&noCache=true'), array('timeout' => 120)));
-				if (substr($stringXmlPrint, 0, 5) == "<?xml") {
-					$objPrintData = new SimpleXmlElement($stringXmlPrint);
-				}
-			}
-			
-			$articleData['name'] = (string)$article->name;
-			$articleData['description'] = (string)$article->description;
-			$articleData['appearance'] = (int)$article->product->appearance['id'];
-			$articleData['view'] = (int)$article->product->defaultValues->defaultView['id'];
-			$articleData['type'] = (int)$article->product->productType['id'];
-			$articleData['productId'] = (int)$article->product['id'];
-			$articleData['pricenet'] = (float)$article->price->vatExcluded;
-			$articleData['pricebrut'] = (float)$article->price->vatIncluded;
-			$articleData['currencycode'] = (string)$objCurrencyData->isoCode;
-			$articleData['productname'] = (string)$objArticleData->name;
-			$articleData['productshortdescription'] = (string)$objArticleData->shortDescription;
-			$articleData['productdescription'] = (string)$objArticleData->description;
+			if (!is_object($article)) return 'Article empty (object)';
 
-			$articleData['weight'] = (float)$article['weight'];
-			$articleData['id'] = (int)$article['id'];
-			//$articleData['place'] = $i;
-			$articleData['designid'] = (int)$article->product->defaultValues->defaultDesign['id'];
 			
-			$articleData['printtypename'] = '';
-			$articleData['printtypedescription'] = '';
+			if ((int)$article['id']>0) {
 			
-			if (is_object($objPrintData)) {
-				$articleData['printtypename'] = (string)$objPrintData->name;
-				$articleData['printtypedescription'] = (string)$objPrintData->description;
-			}
-			
-			/**
-			 * Stock States disabled at the moment - the informations provided by spreadshirt aren't such reliable as needed
-			 * *
-			 *
-			 * // Assignment of stock availability and matching to articles
-			 * // echo (string)$article->name."<br>";
-			 * foreach($objArticleData->stockStates->stockState as $val) {
-			 * $stockstates_size[(int)$val->size['id']]=(string)$val->available;
-			 * $stockstates_appearance[(int)$val->appearance['id']]=(string)$val->available;
-			 * }
-			 *
-			 * foreach($objArticleData->sizes->size as $val) {
-			 * // echo (int)$val['id']." ".$stockstates_size[(int)$val['id']]." ". (string)$val->name."<br>";
-			 * if ($stockstates_size[(int)$val['id']] == "true") {
-			 * $articleData['sizes'][(int)$val['id']]=(string)$val->name;
-			 * }
-			 * }
-			 *
-			 * foreach($objArticleData->appearances->appearance as $appearance) {
-			 * if ((int)$article->product->appearance['id'] == (int)$appearance['id']) {
-			 * $articleData['default_bgc'] = (string)$appearance->colors->color;
-			 * }
-			 *
-			 * // echo (int)$val['id']." ".$stockstates_appearance[(int)$val['id']]." ". (string)$appearance->resources->resource->attributes('xlink', true)."<br>";
-			 * if (($article->product->restrictions->freeColorSelection == 'true' && $stockstates_appearance[(int)$appearance['id']] == "true") || (int)$article->product->appearance['id'] == (int)$appearance['id']) {
-			 * $articleData['appearances'][(int)$appearance['id']]=(string)$appearance->resources->resource->attributes('xlink', true);
-			 * }
-			 * }
-			 */
-			
-			// replace to use stock states || weiter unten ist neuer
-			// sizes
-			foreach ($objArticleData->sizes->size as $val) {
-				
-				$articleData['sizes'][(int)$val['id']]['name'] = (string)$val->name;
-				
-				if ( !empty($val->measures->measure[0]->name)) {
-					$articleData['sizes'][(int)$val['id']]['measures'][0]['name'] = (string)$val->measures->measure[0]->name;
-					$articleData['sizes'][(int)$val['id']]['measures'][0]['value'] = (string)$val->measures->measure[0]->value;
+				$stringXmlArticle = @wp_remote_retrieve_body(wp_remote_get($article->product->productType->attributes('xlink', true) . '?' . ( !empty(self::$shopOptions['shop_locale'])?'locale=' . self::$shopOptions['shop_locale'] . '&noCache=true' : '&noCache=true'), array('timeout' => 120)));
+				if (substr($stringXmlArticle, 0, 5) == "<?xml") {
+					$objArticleData = new SimpleXmlElement($stringXmlArticle);
 				}
-				if ( !empty($val->measures->measure[1]->name)) {
-					$articleData['sizes'][(int)$val['id']]['measures'][1]['name'] = (string)$val->measures->measure[1]->name;
-					$articleData['sizes'][(int)$val['id']]['measures'][1]['value'] = (string)$val->measures->measure[1]->value;
+				$stringXmlCurreny = @wp_remote_retrieve_body(wp_remote_get($article->price->currency->attributes('http://www.w3.org/1999/xlink')));
+				if (substr($stringXmlCurreny, 0, 5) == "<?xml") {
+					$objCurrencyData = new SimpleXmlElement($stringXmlCurreny);
 				}
-			}
-			
-			foreach ($objArticleData->resources as $val) {
-				foreach ($val->resource as $vr) {
-					if ($vr['type'] == 'size') {
-						$articleData['product-resource-size'] = (string)$vr->attributes('xlink', true);
-					}
-					if ($vr['type'] == 'detail') {
-						$articleData['product-resource-detail'] = (string)$vr->attributes('xlink', true);
+				$stringXmlProduct = @wp_remote_retrieve_body(wp_remote_get($article->product->attributes('xlink', true) . '?' . ( !empty(self::$shopOptions['shop_locale'])?'locale=' . self::$shopOptions['shop_locale'] . '&noCache=true' : '&noCache=true'), array('timeout' => 120)));
+				if (substr($stringXmlProduct, 0, 5) == "<?xml") {
+					$objProductData = new SimpleXmlElement($stringXmlProduct);
+				}
+				
+				if (is_object($objProductData)) {
+					$stringXmlPrint = @wp_remote_retrieve_body(wp_remote_get($objProductData->configurations->configuration->printType->attributes('xlink', true) . '?' . ( !empty(self::$shopOptions['shop_locale'])?'locale=' . self::$shopOptions['shop_locale'] . '&noCache=true' : '&noCache=true'), array('timeout' => 120)));
+					if (substr($stringXmlPrint, 0, 5) == "<?xml") {
+						$objPrintData = new SimpleXmlElement($stringXmlPrint);
 					}
 				}
-			}
-			
-			foreach ($objArticleData->appearances->appearance as $appearance) {
-				if ((int)$article->product->appearance['id'] == (int)$appearance['id']) {
-					$articleData['default_bgc'] = (string)$appearance->colors->color;
+				
+				$articleData['name'] = (string)$article->name;
+				$articleData['description'] = (string)$article->description;
+				$articleData['appearance'] = (int)$article->product->appearance['id'];
+				$articleData['view'] = (int)$article->product->defaultValues->defaultView['id'];
+				$articleData['type'] = (int)$article->product->productType['id'];
+				$articleData['productId'] = (int)$article->product['id'];
+				$articleData['pricenet'] = (float)$article->price->vatExcluded;
+				$articleData['pricebrut'] = (float)$article->price->vatIncluded;
+				$articleData['currencycode'] = (string)$objCurrencyData->isoCode;
+				$articleData['productname'] = (string)$objArticleData->name;
+				$articleData['productshortdescription'] = (string)$objArticleData->shortDescription;
+				$articleData['productdescription'] = (string)$objArticleData->description;
+	
+				$articleData['weight'] = (float)$article['weight'];
+				$articleData['id'] = (int)$article['id'];
+				//$articleData['place'] = $i;
+				$articleData['designid'] = (int)$article->product->defaultValues->defaultDesign['id'];
+				
+				$articleData['printtypename'] = '';
+				$articleData['printtypedescription'] = '';
+				
+				if (is_object($objPrintData)) {
+					$articleData['printtypename'] = (string)$objPrintData->name;
+					$articleData['printtypedescription'] = (string)$objPrintData->description;
 				}
 				
-				if ($article->product->restrictions->freeColorSelection == 'true' || (int)$article->product->appearance['id'] == (int)$appearance['id']) {
-					$articleData['appearances'][(int)$appearance['id']] = (string)$appearance->resources->resource->attributes('xlink', true);
-				}
-			}
-			// replace end
-			
-			foreach ($objArticleData->views->view as $view) {
-				$articleData['views'][(int)$view['id']] = (string)$article->resources->resource->attributes('xlink', true);
-			}
-			
-			$i++;
+				/**
+				 * Stock States disabled at the moment - the informations provided by spreadshirt aren't such reliable as needed
+				 * *
+				 *
+				 * // Assignment of stock availability and matching to articles
+				 * // echo (string)$article->name."<br>";
+				 * foreach($objArticleData->stockStates->stockState as $val) {
+				 * $stockstates_size[(int)$val->size['id']]=(string)$val->available;
+				 * $stockstates_appearance[(int)$val->appearance['id']]=(string)$val->available;
+				 * }
+				 *
+				 * foreach($objArticleData->sizes->size as $val) {
+				 * // echo (int)$val['id']." ".$stockstates_size[(int)$val['id']]." ". (string)$val->name."<br>";
+				 * if ($stockstates_size[(int)$val['id']] == "true") {
+				 * $articleData['sizes'][(int)$val['id']]=(string)$val->name;
+				 * }
+				 * }
+				 *
+				 * foreach($objArticleData->appearances->appearance as $appearance) {
+				 * if ((int)$article->product->appearance['id'] == (int)$appearance['id']) {
+				 * $articleData['default_bgc'] = (string)$appearance->colors->color;
+				 * }
+				 *
+				 * // echo (int)$val['id']." ".$stockstates_appearance[(int)$val['id']]." ". (string)$appearance->resources->resource->attributes('xlink', true)."<br>";
+				 * if (($article->product->restrictions->freeColorSelection == 'true' && $stockstates_appearance[(int)$appearance['id']] == "true") || (int)$article->product->appearance['id'] == (int)$appearance['id']) {
+				 * $articleData['appearances'][(int)$appearance['id']]=(string)$appearance->resources->resource->attributes('xlink', true);
+				 * }
+				 * }
+				 */
 				
-			return $articleData;
+				// replace to use stock states || weiter unten ist neuer
+				// sizes
+				if (!empty($objArticleData->sizes->size)) {
+					foreach ($objArticleData->sizes->size as $val) {
+						
+						$articleData['sizes'][(int)$val['id']]['name'] = (string)$val->name;
+						
+						if ( !empty($val->measures->measure[0]->name)) {
+							$articleData['sizes'][(int)$val['id']]['measures'][0]['name'] = (string)$val->measures->measure[0]->name;
+							$articleData['sizes'][(int)$val['id']]['measures'][0]['value'] = (string)$val->measures->measure[0]->value;
+						}
+						if ( !empty($val->measures->measure[1]->name)) {
+							$articleData['sizes'][(int)$val['id']]['measures'][1]['name'] = (string)$val->measures->measure[1]->name;
+							$articleData['sizes'][(int)$val['id']]['measures'][1]['value'] = (string)$val->measures->measure[1]->value;
+						}
+					}
+				}
+				
+				if (!empty($objArticleData->resources)) {
+					foreach ($objArticleData->resources as $val) {
+						foreach ($val->resource as $vr) {
+							if ($vr['type'] == 'size') {
+								$articleData['product-resource-size'] = (string)$vr->attributes('xlink', true);
+							}
+							if ($vr['type'] == 'detail') {
+								$articleData['product-resource-detail'] = (string)$vr->attributes('xlink', true);
+							}
+						}
+					}
+				}
+				
+				
+				if (!empty($objArticleData->appearances->appearance)) {
+					foreach ($objArticleData->appearances->appearance as $appearance) {
+						if ((int)$article->product->appearance['id'] == (int)$appearance['id']) {
+							$articleData['default_bgc'] = (string)$appearance->colors->color;
+						}
+						
+						if ($article->product->restrictions->freeColorSelection == 'true' || (int)$article->product->appearance['id'] == (int)$appearance['id']) {
+							$articleData['appearances'][(int)$appearance['id']] = (string)$appearance->resources->resource->attributes('xlink', true);
+						}
+					}
+				}
+				// replace end
+				
+				if (!empty($objArticleData->views->view)) {
+					foreach ($objArticleData->views->view as $view) {
+						$articleData['views'][(int)$view['id']] = (string)$article->resources->resource->attributes('xlink', true);
+					}
+				}
+			
+				return $articleData;
+			}
+			
+			return 'Article empty';
 		}
 
 
@@ -1999,12 +2011,12 @@ if ( !class_exists('WP_Spreadplugin')) {
 				
 				$_articleData = $this->getSingleArticleData($_pageid,$_articleid);
 				
-				if ($_articleData) {
+				if (array_key_exists('id',$_articleData) && $_articleData['id']>0) {				
 					// store each article in a session for later use
 					$_SESSION['_tempArticleCache'][$_pageid][(int)$_articleData['designid']][(int)$_articleData['id']] = $_articleData;
 					die('Done');
 				} else {
-					die('Error');
+					die('Error: '.$_articleData);
 				}
 
 
