@@ -55,7 +55,8 @@ if ( !class_exists('WP_Spreadplugin')) {
             'shop_lazyload' => '', 
             'shop_language' => '', 
             'shop_basket_text_icon' => '', 
-            'shop_debug' => ''
+            'shop_debug' => '',
+			'shop_sleep' => ''
         );
 
         private static $shopCache = 8760; // Shop article cache in hours 24*365 => 1 year
@@ -2018,6 +2019,11 @@ if ( !class_exists('WP_Spreadplugin')) {
 				$this->reparseShortcodeData($_pageid);
 				
 				$_articleData = $this->getSingleArticleData($_pageid,$_articleid);
+				
+				// sleep timer, for some users reaching their request limits - 20 sec will avoid it.
+				if (!empty(self::$shopOptions['shop_sleep']) && self::$shopOptions['shop_sleep']>0) {
+					sleep(self::$shopOptions['shop_sleep']);
+				}
 				
 				if (array_key_exists('id',$_articleData) && $_articleData['id']>0) {				
 					// store each article in a session for later use

@@ -300,6 +300,12 @@ if (is_user_logged_in() && is_admin()) {
                   <br />
 If active, all your spreadshirt/spreadplugin data could be exposed, so please be carefull with this option!</td>
               </tr>
+              <tr>
+                <td valign="top"><?php _e('Sleep timer:','spreadplugin'); ?></td>
+                <td><input type="text" name="shop_sleep" value="<?php echo (empty($adminOptions['shop_sleep'])?0:intval($adminOptions['shop_sleep'])); ?>" class="only-digit" /><br />
+<br />
+<strong>Don't change this value, if you have no problems rebuilding your article cache otherwise it would take very long! </strong>Changing this value is only neccessary if you are experiencing problems when rebuilding cache. Some webspaces have request limits, which you can avoid by setting this value to for example 20.</td>
+              </tr>
             </table>
             <input type="submit" name="update-splg_options" id="update-splg_options" class="button-primary" value="<?php _e('Update settings','spreadplugin'); ?>" />
           </form>
@@ -324,7 +330,7 @@ If active, all your spreadshirt/spreadplugin data could be exposed, so please be
   
   $_plgop = '[spreadplugin ';
   foreach ($adminOptions as $k => $v) {
-	  if ($k != 'shop_infinitescroll' && $k != 'shop_customcss' && $k != 'shop_debug') {	
+	  if ($k != 'shop_infinitescroll' && $k != 'shop_customcss' && $k != 'shop_debug' && $k != 'shop_sleep') {	
 		$_plgop .= $k.'="'.$v.'" ';
 	  }
   }
