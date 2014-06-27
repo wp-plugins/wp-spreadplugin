@@ -32,10 +32,10 @@ if ( !class_exists('WP_Spreadplugin')) {
             'shop_secret' => '', 
             'shop_limit' => '', 
             'shop_category' => '', 
-            'shop_subcategory' => '', 
             'shop_social' => '', 
             'shop_enablelink' => '', 
             'shop_productcategory' => '', 
+            'shop_productsubcategory' => '', 
             'shop_sortby' => '', 
             'shop_linktarget' => '', 
             'shop_checkoutiframe' => '', 
@@ -220,6 +220,7 @@ if ( !class_exists('WP_Spreadplugin')) {
             if (self::$shopOptions['shop_display'] == 1 && self::$shopOptions['shop_productcategory'] == '' && self::$shopOptions['shop_design'] == 0) {} else {
                 self::$shopOptions['shop_display'] = 0;
             }
+			
             
             // check
             if ( !empty(self::$shopOptions['shop_id']) &&  !empty(self::$shopOptions['shop_api']) &&  !empty(self::$shopOptions['shop_secret'])) {
