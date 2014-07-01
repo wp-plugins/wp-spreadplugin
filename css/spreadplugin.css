@@ -612,3 +612,6 @@ spreadplugin-items img {
 .spreadplugin-article .edit-wrapper-integrated {
 	cursor: pointer;
 }
+#spreadplugin-designer-wrapper, .mfp-content {
+	max-width: 800px
+}

@@ -327,9 +327,16 @@ if ( !class_exists('WP_Spreadplugin')) {
 				
 				// check if curl is enabled
 				$output .= (function_exists('curl_version') ? '' : '<span class="error">Curl seems to be disabled. In order to use Shop functionality, it should be enabled</span>');
-				
+				// wrapper for integrated designer
+				if (self::$shopOptions['shop_designer']==1) {
+					$output .= '
+					<div id="spreadplugin-designer-wrapper"><div id="spreadplugin-designer" class="spreadplugin-designer clearfix"></div></div>
+					';
+				}
 				// Start div                
-                $output .= '<div id="spreadplugin-designer" class="spreadplugin-designer clearfix"></div><div id="spreadplugin-items" class="spreadplugin-items clearfix">';
+				 $output .= '
+				<div id="spreadplugin-items" class="spreadplugin-items clearfix">
+				';
                 
                 // display
                 if (count($articleData) == 0 || $articleData == false) {
@@ -1586,7 +1593,7 @@ if ( !class_exists('WP_Spreadplugin')) {
 					}
 				
 		
-						designerShopId = ".self::$shopOptions['shop_id'].",
+						designerShopId = '".self::$shopOptions['shop_id']."',
 						designerTargetId = 'spreadplugin-designer',
 						designerPlatform = '".(self::$shopOptions['shop_source']=='net'?'EU':'NA')."',
 						designerLocale = '".self::$shopOptions['shop_locale']."',
