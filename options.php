@@ -18,7 +18,11 @@ if (is_user_logged_in() && is_admin()) {
 	
 
 ?>
-
+<style>
+.form-table td {
+    vertical-align: top;
+}
+</style>
 <div class="wrap">
   <?php 
   screen_icon(); 
@@ -171,11 +175,16 @@ if (is_user_logged_in() && is_admin()) {
                   <?php _e('Opens an iframe in a modal window','spreadplugin'); ?></td>
               </tr>
               <tr>
-                <td valign="top"><?php _e('Designer Shop ID:','spreadplugin'); ?></td>
-                <td><?php _e('If you have a designer Shop (Spreadshirt premium account), enter the ID here. A new link will appear where the customer can change the design.','spreadplugin'); ?>
-                  <br />
-                  <br />
-                  <input type="text" name="shop_designershop" value="<?php echo $adminOptions['shop_designershop']; ?>" class="only-digit" /></td>
+                <td valign="top"><?php _e('Use designer:','spreadplugin'); ?></td>
+                <td><input type="radio" name="shop_designer" value="0"<?php echo ($adminOptions['shop_designer']==0?" checked":"") ?> /> <?php _e('None','spreadplugin'); ?><br />
+
+				<input type="radio" name="shop_designer" value="1"<?php echo ($adminOptions['shop_designer']==1?" checked":"") ?> /> <?php _e('Integrated [BETA] (All marketplace designs are shown on design tab)','spreadplugin'); ?><br />
+
+								<input type="radio" name="shop_designer" value="2"<?php echo ($adminOptions['shop_designer']==2?" checked":"") ?> /> <?php _e('Premium (Only designs in your premium designer shop are shown)','spreadplugin'); ?><br /><br />
+
+
+                  <?php _e('Premium Designer Shop Id','spreadplugin'); ?> <input type="text" name="shop_designershop" value="<?php echo $adminOptions['shop_designershop']; ?>" class="only-digit" /><br />
+<?php _e('If you have a designer Shop (Spreadshirt premium account), enter the ID here. A new link will appear where the customer can change the design.','spreadplugin'); ?></td>
               </tr>
               <tr>
                 <td valign="top"><?php _e('Default display:','spreadplugin'); ?></td>

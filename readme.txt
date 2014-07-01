@@ -206,6 +206,10 @@ Please have a look here: http://themeforest.net/category/wordpress?ref=thimo
 
 == Changelog ==
 
+= 3.7.5b =
+* Added new integrated designer shop called confomat (by spreadshirt)
+* This is a beta release!
+
 = 3.7.3 =
 * Bugfix: On some newly created shops, the articles didn't get loaded completly.
 * Bugfix: Error when reading articles with category definded.
