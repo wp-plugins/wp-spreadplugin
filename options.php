@@ -20,7 +20,7 @@ if (is_user_logged_in() && is_admin()) {
 ?>
 <style>
 .form-table td {
-    vertical-align: top;
+	vertical-align: top;
 }
 </style>
 <div class="wrap">
@@ -176,15 +176,20 @@ if (is_user_logged_in() && is_admin()) {
               </tr>
               <tr>
                 <td valign="top"><?php _e('Use designer:','spreadplugin'); ?></td>
-                <td><input type="radio" name="shop_designer" value="0"<?php echo ($adminOptions['shop_designer']==0?" checked":"") ?> /> <?php _e('None','spreadplugin'); ?><br />
-
-				<input type="radio" name="shop_designer" value="1"<?php echo ($adminOptions['shop_designer']==1?" checked":"") ?> /> <?php _e('Integrated [BETA] (All marketplace designs are shown on design tab)','spreadplugin'); ?><br />
-
-								<input type="radio" name="shop_designer" value="2"<?php echo ($adminOptions['shop_designer']==2?" checked":"") ?> /> <?php _e('Premium (Only designs in your premium designer shop are shown)','spreadplugin'); ?><br /><br />
-
-
-                  <?php _e('Premium Designer Shop Id','spreadplugin'); ?> <input type="text" name="shop_designershop" value="<?php echo $adminOptions['shop_designershop']; ?>" class="only-digit" /><br />
-<?php _e('If you have a designer Shop (Spreadshirt premium account), enter the ID here. A new link will appear where the customer can change the design.','spreadplugin'); ?></td>
+                <td><input type="radio" name="shop_designer" value="0"<?php echo ($adminOptions['shop_designer']==0?" checked":"") ?> />
+                  <?php _e('None','spreadplugin'); ?>
+                  <br />
+                  <input type="radio" name="shop_designer" value="1"<?php echo ($adminOptions['shop_designer']==1?" checked":"") ?> />
+                  <?php _e('Integrated [BETA] (All marketplace designs are shown on design tab)','spreadplugin'); ?>
+                  <br />
+                  <input type="radio" name="shop_designer" value="2"<?php echo ($adminOptions['shop_designer']==2?" checked":"") ?> />
+                  <?php _e('Premium (Only designs in your premium designer shop are shown)','spreadplugin'); ?><div id="premium-shop-span">
+                  <br />
+                  <br />
+                  <?php _e('Premium Designer Shop Id','spreadplugin'); ?>
+                  <input type="text" name="shop_designershop" value="<?php echo $adminOptions['shop_designershop']; ?>" class="only-digit" />
+                  <br />
+                  <?php _e('If you have a designer Shop (Spreadshirt premium account), enter the ID here. A new link will appear where the customer can change the design.','spreadplugin'); ?></div></td>
               </tr>
               <tr>
                 <td valign="top"><?php _e('Default display:','spreadplugin'); ?></td>
@@ -307,13 +312,14 @@ if (is_user_logged_in() && is_admin()) {
                   <?php _e('On','spreadplugin'); ?>
                   <br />
                   <br />
-If active, all your spreadshirt/spreadplugin data could be exposed, so please be carefull with this option!</td>
+                  If active, all your spreadshirt/spreadplugin data could be exposed, so please be carefull with this option!</td>
               </tr>
               <tr>
                 <td valign="top"><?php _e('Sleep timer:','spreadplugin'); ?></td>
-                <td><input type="text" name="shop_sleep" value="<?php echo (empty($adminOptions['shop_sleep'])?0:intval($adminOptions['shop_sleep'])); ?>" class="only-digit" /><br />
-<br />
-<strong>Don't change this value, if you have no problems rebuilding your article cache otherwise it would take very long!</strong> Changing this value is only neccessary if you are experiencing problems when rebuilding cache. Some webspaces (e.g. godaddy.com) have request limits, which you can avoid by setting this value to for example 10.</td>
+                <td><input type="text" name="shop_sleep" value="<?php echo (empty($adminOptions['shop_sleep'])?0:intval($adminOptions['shop_sleep'])); ?>" class="only-digit" />
+                  <br />
+                  <br />
+                  <strong>Don't change this value, if you have no problems rebuilding your article cache otherwise it would take very long!</strong> Changing this value is only neccessary if you are experiencing problems when rebuilding cache. Some webspaces (e.g. godaddy.com) have request limits, which you can avoid by setting this value to for example 10.</td>
               </tr>
             </table>
             <input type="submit" name="update-splg_options" id="update-splg_options" class="button-primary" value="<?php _e('Update settings','spreadplugin'); ?>" />
@@ -335,7 +341,8 @@ If active, all your spreadshirt/spreadplugin data could be exposed, so please be
           <p>
             <?php _e('The extended shortcodes will overwrite the default settings. You may use it to create a different shop with the same plugin.'); ?>
           </p>
-          <p><?php
+          <p>
+            <?php
   
   $_plgop = '[spreadplugin ';
   foreach ($adminOptions as $k => $v) {
@@ -346,7 +353,8 @@ If active, all your spreadshirt/spreadplugin data could be exposed, so please be
   
   echo trim($_plgop).']';
   
-  ?></p>
+  ?>
+          </p>
         </div>
       </div>
       <div class="postbox">
@@ -369,8 +377,8 @@ If active, all your spreadshirt/spreadplugin data could be exposed, so please be
   <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EZLKTKW8UR6PQ" target="_blank"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" alt="Jetzt einfach, schnell und sicher online bezahlen – mit PayPal." /></a>
   <p>All donations or backlinks to <a href="http://lovetee.de/" target="_blank">http://lovetee.de/</a> valued greatly</p>
 </div>
-<script language='javascript' type='text/javascript'>
-function setMessage(e){jQuery("#message").append(e);jQuery("#message").show()}function rebuildItem(e,t,n){if(n==0){setMessage("Rebuilding Page "+(t+1)+" of "+e.length+" ("+e[t].title+")...<br>")}if(n>=e[t].items.length){setMessage("Done<br>");jQuery.ajax({url:"<?php echo admin_url('admin-ajax.php'); ?>",type:"POST",data:"action=rebuildCache&do=save&_pageid="+e[t].id,timeout:36e4,cache:false,success:function(e){setMessage("Successfully stored page "+t+"<br>")},error:function(e,n,r){setMessage("Error "+e.status+" storing page "+t+"<br>")}});t=t+1;if(e[t]){rebuildItem(e,t,0)}return}setMessage("Rebuilding Item "+(n+1)+" of "+e[t].items.length+" ("+e[t].items[n].articlename+") <img src='"+e[t].items[n].previewimage+"' width='32' height='32'>... ");jQuery.ajax({url:"<?php echo admin_url('admin-ajax.php'); ?>",type:"POST",data:"action=rebuildCache&do=rebuild&_pageid="+e[t].id+"&_articleid="+e[t].items[n].articleid,success:function(r){setMessage(r+" <br>");n=n+1;rebuildItem(e,t,n)},error:function(r,i,s){setMessage("Error "+r.status+". Try next<br>");n=n+1;rebuildItem(e,t,n)}})}function rebuild(){jQuery("html, body").animate({scrollTop:0},800);setMessage("Reading pages. Please wait.<br>");jQuery.ajax({url:"<?php echo admin_url('admin-ajax.php'); ?>",type:"POST",data:"action=rebuildCache&do=getlist",timeout:36e4,cache:false,dataType:"json",success:function(e){var t=e;if(!t){setMessage("No pages found.<br>");return}var n=0;var r=0;rebuildItem(t,n,r)},error:function(e,t,n){setMessage("Error"+" "+e.status+"<br>")}})}jQuery(".only-digit").keyup(function(){if(/\D/g.test(this.value)){this.value=this.value.replace(/\D/g,"")}});jQuery("#shop_locale").change(function(){var e=jQuery(this).val();if(e=="us_US"||e=="us_CA"||e=="fr_CA"){jQuery("#shop_source").val("com")}else{jQuery("#shop_source").val("net")}});jQuery("#splg_options_form").submit(function(){var e=true;jQuery("#splg_options_form .required").each(function(){if(jQuery.trim(jQuery(this).val()).length==0){jQuery(this).parent().addClass("highlight");e=false}else{jQuery(this).parent().removeClass("highlight")}});if(!e){setMessage("<p><?php _e('Please fill in the highlighted fields!','spreadplugin'); ?></p>")}else{return true}return false});jQuery(document).ready(function(){jQuery(".colorpicker").wpColorPicker()})</script><?php 
+<script language='javascript' type='text/javascript'>function setMessage(e){jQuery("#message").append(e);jQuery("#message").show()}function rebuildItem(e,t,n){if(n==0){setMessage("Rebuilding Page "+(t+1)+" of "+e.length+" ("+e[t].title+")...<br>")}if(n>=e[t].items.length){setMessage("Done<br>");jQuery.ajax({url:"<?php echo admin_url('admin-ajax.php'); ?>",type:"POST",data:"action=rebuildCache&do=save&_pageid="+e[t].id,timeout:36e4,cache:false,success:function(e){setMessage("Successfully stored page "+t+"<br>")},error:function(e,n,r){setMessage("Error "+e.status+" storing page "+t+"<br>")}});t=t+1;if(e[t]){rebuildItem(e,t,0)}return}setMessage("Rebuilding Item "+(n+1)+" of "+e[t].items.length+" ("+e[t].items[n].articlename+") <img src='"+e[t].items[n].previewimage+"' width='32' height='32'>... ");jQuery.ajax({url:"<?php echo admin_url('admin-ajax.php'); ?>",type:"POST",data:"action=rebuildCache&do=rebuild&_pageid="+e[t].id+"&_articleid="+e[t].items[n].articleid,success:function(r){setMessage(r+" <br>");n=n+1;rebuildItem(e,t,n)},error:function(r,i,s){setMessage("Error "+r.status+". Try next<br>");n=n+1;rebuildItem(e,t,n)}})}function rebuild(){jQuery("html, body").animate({scrollTop:0},800);setMessage("Reading pages. Please wait.<br>");jQuery.ajax({url:"<?php echo admin_url('admin-ajax.php'); ?>",type:"POST",data:"action=rebuildCache&do=getlist",timeout:36e4,cache:false,dataType:"json",success:function(e){var t=e;if(!t){setMessage("No pages found.<br>");return}var n=0;var r=0;rebuildItem(t,n,r)},error:function(e,t,n){setMessage("Error"+" "+e.status+"<br>")}})}jQuery("#premium-shop-span").hide();jQuery(".only-digit").keyup(function(){if(/\D/g.test(this.value)){this.value=this.value.replace(/\D/g,"")}});jQuery("#shop_locale").change(function(){var e=jQuery(this).val();if(e=="us_US"||e=="us_CA"||e=="fr_CA"){jQuery("#shop_source").val("com")}else{jQuery("#shop_source").val("net")}});jQuery("input[type=radio][name=shop_designer]").click(function(){jQuery("#premium-shop-span").hide()});jQuery("input[type=radio][name=shop_designer][value=2]").not(":selected").click(function(){jQuery("#premium-shop-span").show()});jQuery("#splg_options_form").submit(function(){var e=true;jQuery("#splg_options_form .required").each(function(){if(jQuery.trim(jQuery(this).val()).length==0){jQuery(this).parent().addClass("highlight");e=false}else{jQuery(this).parent().removeClass("highlight")}});if(!e){setMessage("<p><?php _e('Please fill in the highlighted fields!','spreadplugin'); ?></p>")}else{return true}return false});jQuery(document).ready(function(){jQuery(".colorpicker").wpColorPicker()})</script>
+<?php 
 if (isset($_GET['saved'])) {
 	echo '<script language="javascript">rebuild();</script>';
 	echo '<script language="javascript">setMessage("<p>'.__('Successfully saved settings','spreadplugin').'</p>");</script>';
