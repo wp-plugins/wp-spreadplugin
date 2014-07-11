@@ -2,7 +2,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.7.5b
+ * Version: 3.7.6
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -614,4 +614,43 @@ spreadplugin-items img {
 }
 #spreadplugin-designer-wrapper, .mfp-content {
 	max-width: 800px
+}
+#spreadplugin-shipment-wrapper {
+	display:none;
+}	
+
+#spreadplugin-shipment-wrapper {
+	max-width: 400px;
+}
+
+#spreadplugin-shipment-wrapper > table {
+	color: #666;
+	text-shadow: 1px 1px 0px #fff;
+	background: #FFF;
+	border: #ccc solid;
+	border-width: 1px 0px 1px 1px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	border-collapse: inherit;
+	width:300px;
+	border-spacing: 0;
+}
+#spreadplugin-shipment-wrapper > table tr:first-child th:first-child {
+	border-top-left-radius: 3px;
+}
+#spreadplugin-shipment-wrapper > table th, #spreadplugin-shipment-wrapper > table td.colored {
+	background: none repeat scroll 0 0 #fbfbfb;
+}
+#spreadplugin-shipment-wrapper > table th, #spreadplugin-shipment-wrapper > table td.rightBorder {
+	border-right: 1px solid #ccc;
+}
+#spreadplugin-shipment-wrapper > table th {
+	border-bottom: 1px solid #ccc;
+}
+#spreadplugin-shipment-wrapper > table th, #spreadplugin-shipment-wrapper > table td {
+	padding: 1%;
+}
+.shipping-window {
+	cursor:pointer;
 }

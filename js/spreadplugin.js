@@ -2,7 +2,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.7.5b
+ * Version: 3.7.6
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -37,7 +37,7 @@ jQuery(function($) {
     	}
 	});
 	
-
+	
 	/*
 	 * change article color and view
 	 */
@@ -53,7 +53,9 @@ jQuery(function($) {
 		$('.spreadplugin-article .edit-wrapper-integrated a,.spreadplugin-article-detail .edit-wrapper-integrated a').unbind();
 		$('.spreadplugin-article .details-wrapper a,.spreadplugin-article-detail .details-wrapper a').unbind();
 		$('.spreadplugin-article .image-wrapper,.spreadplugin-article-detail .image-wrapper').unbind();
-
+		$('.spreadplugin-article .shipping-window,.spreadplugin-article-detail .shipping-window').unbind();
+		
+		
 		$('.spreadplugin-article .colors li,.spreadplugin-article-detail .colors li').click(function() {	
 	
 			var id = '#' + $(this).closest('.spreadplugin-article,.spreadplugin-article-detail').attr('id');
@@ -208,18 +210,38 @@ jQuery(function($) {
 														}, 'json');
 									$(this).remove();	
 								});
-							
-							
 
 			return false;
 		});
 
+		/*
+		 $('.spreadplugin-article .shipping-window,.spreadplugin-article-detail .shipping-window').click(function(){
+			$('#spreadplugin-shipment-wrapper').show();
+			$('#spreadplugin-shipment-wrapper').position({at: 'bottom center', of: $(this), my: 'top'});
+		 });
+	*/
+	
+		$('.spreadplugin-article .shipping-window,.spreadplugin-article-detail .shipping-window').magnificPopup({
+			
+			items: {
+			  src: '#spreadplugin-shipment-wrapper'
+			},
+			type: 'inline',
+			callbacks: {
+				open: function() {
+					$('#spreadplugin-shipment-wrapper').show();
+					$('#spreadplugin-shipment-wrapper').parent('.mfp-content').css('width',400);
+				},
+				close: function () {
+					$('#spreadplugin-shipment-wrapper').hide();
+				}
+			}
+			});
 
-
-
+		
 
 		// integrated edit wrapper
-		$('.edit-wrapper-integrated').click(function() {
+		$('.spreadplugin-article .edit-wrapper-integrated,.spreadplugin-article-detail .edit-wrapper-integrated').click(function() {
 			
 			var designid = $(this).data('designid');
 			var productid = $(this).data('productid');

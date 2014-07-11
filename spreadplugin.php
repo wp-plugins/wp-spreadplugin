@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.7.5b
+ * Version: 3.7.6
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -235,6 +235,9 @@ if ( !class_exists('WP_Spreadplugin')) {
                 // get rid of types in array
                 $typesData = $articleData['types'];
                 unset($articleData['types']);
+				// get shipment data and delete
+                $shipmentData = $articleData['shipment'];
+                unset($articleData['shipment']);
                 
                 // get designs data
                 $designsData = self::getCacheDesignsData();
@@ -333,6 +336,7 @@ if ( !class_exists('WP_Spreadplugin')) {
 					<div id="spreadplugin-designer-wrapper"><div id="spreadplugin-designer" class="spreadplugin-designer clearfix"></div></div>
 					';
 				}
+
 				// Start div                
 				 $output .= '
 				<div id="spreadplugin-items" class="spreadplugin-items clearfix">
@@ -498,7 +502,40 @@ if ( !class_exists('WP_Spreadplugin')) {
                 
 				// End div
                 $output .= '</div>';
-                
+				
+				
+				
+				
+				// Shipment Table
+				if (!empty($shipmentData)) {
+					$output .= '<div id="spreadplugin-shipment-wrapper">
+					<table class="shipment-table">';
+					foreach($shipmentData as $c => $v) {
+						$output .= '<tr>';
+						$output .= '<th colspan="2">'.$c.'</th>';
+						$output .= '</tr>';
+						foreach($v as $m => $d) {
+							$output .= '<tr>';
+							$output .= '<td>'.__('Order Value', $this->stringTextdomain).'<br>';
+							if ($d['value-to']==0) {
+								$output .= __('over', $this->stringTextdomain).' ';
+							}
+							if ($d['value-from']>0) {
+								$output .= self::formatPrice($d['value-from'],'').' ';
+							}
+							if ($d['value-to']>0) {
+								$output .= __('up to', $this->stringTextdomain).' '.self::formatPrice($d['value-to'],'');
+							}
+							$output .= ' </td>';
+							$output .= '<td>'.self::formatPrice($d['price'],'').'</td>';
+							$output .= '</tr>';
+						}
+					}
+					$output .= '</table>
+					</div>';
+				}
+
+				
                 return $output;
             }
         }
@@ -580,6 +617,64 @@ if ( !class_exists('WP_Spreadplugin')) {
 							foreach ($subrow2->productType as $subrow3) {
 								$arrTypes[(string)$row->name][(string)$subrow->name][(int)$subrow3['id']] = 1;
 								$arrTypes[(string)$row->name]['all'][(int)$subrow3['id']] = 1;
+							}
+						}
+					}
+				}
+			}
+			
+			return $arrTypes;
+		}
+		/**
+		* function getShipmentData
+		* Retrieves types data
+		**/
+		private function getShipmentData() {
+
+			$arrTypes = array();
+			$name = '';
+			$region = '';
+			
+			//	 Get ProductTypeDepartments
+			$stringTypeApiUrl = 'http://api.spreadshirt.' . self::$shopOptions['shop_source'] . '/api/v1/shops/' . self::$shopOptions['shop_id'] . '/shippingTypes?' . ( !empty(self::$shopOptions['shop_locale'])?'locale=' . self::$shopOptions['shop_locale'] . '&' : '') . 'fullData=true&noCache=true';
+			$stringTypeXml = wp_remote_get($stringTypeApiUrl, array('timeout' => 120));
+			$stringTypeXml = @wp_remote_retrieve_body($stringTypeXml);
+			$objTypes = new SimpleXmlElement($stringTypeXml);
+			
+			$countryCode = explode("_",self::$shopOptions['shop_locale']);
+			
+			if (is_object($objTypes)) {
+				foreach ($objTypes->shippingType as $row) {
+					foreach ($row->shippingCountries as $subrow) {
+						foreach ($subrow->shippingCountry as $subrow2) {
+							if ((string)$subrow2->isoCode==$countryCode[1]) {
+								//$name = (string)$subrow2->name;
+								$region = (int)$subrow2->shippingRegion['id'];
+								break;
+							}
+						}
+					}
+				}
+			}
+			
+			if ($region!=='') {
+				foreach ($objTypes->shippingType as $row) {
+					foreach ($row->shippingRegions as $subrow) {
+
+						foreach ($subrow->shippingRegion as $subrow2) {
+
+							if ((int)$subrow2['id']==$region) {
+								foreach ($subrow2->shippingCosts as $subrow3) {
+									foreach ($subrow3->shippingCost as $subrow4) {
+										// [$name] Landname
+										$arrTypes[(string)$row->name][] = array(
+											'value-from' => (float)$subrow4->orderValueRange->from,
+											'value-to' => (float)$subrow4->orderValueRange->to,
+											'price' => (float)$subrow4->cost->vatIncluded
+										);
+									}
+								}
+								break;
 							}
 						}
 					}
@@ -962,13 +1057,13 @@ if ( !class_exists('WP_Spreadplugin')) {
             $output .= '<div class="separator"></div>';
             $output .= '<div class="price-wrapper">';
             if (self::$shopOptions['shop_showextendprice'] == 1) {
-                $output .= '<span id="price-without-tax">' . __('Price (without tax):', $this->stringTextdomain) . " " . (empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale'] == 'en_US' || self::$shopOptions['shop_locale'] == 'en_GB' || self::$shopOptions['shop_locale'] == 'us_US' || self::$shopOptions['shop_locale'] == 'us_CA' || self::$shopOptions['shop_locale'] == 'fr_CA'?$article['currencycode'] . " " . number_format($article['pricenet'], 2, '.', '') : number_format($article['pricenet'], 2, ',', '.') . " " . $article['currencycode']) . "<br /></span>";
-                $output .= '<span id="price-with-tax">' . __('Price (with tax):', $this->stringTextdomain) . " " . (empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale'] == 'en_US' || self::$shopOptions['shop_locale'] == 'en_GB' || self::$shopOptions['shop_locale'] == 'us_US' || self::$shopOptions['shop_locale'] == 'us_CA' || self::$shopOptions['shop_locale'] == 'fr_CA'?$article['currencycode'] . " " . number_format($article['pricebrut'], 2, '.', '') : number_format($article['pricebrut'], 2, ',', '.') . " " . $article['currencycode']) . "</span>";
+                $output .= '<span id="price-without-tax">' . __('Price (without tax):', $this->stringTextdomain) . " " . self::formatPrice($article['pricenet'],$article['currencycode']) . "<br /></span>";
+                $output .= '<span id="price-with-tax">' . __('Price (with tax):', $this->stringTextdomain) . " " . self::formatPrice($article['pricebrut'],$article['currencycode']) . "</span>";
                 $output .= '<br><div class="additionalshippingcosts">';
-                $output .= __('excl. Shipping', $this->stringTextdomain);
+                $output .= __('excl. <a class="shipping-window">Shipping</a>', $this->stringTextdomain);
                 $output .= '</div>';
             } else {
-                $output .= '<span id="price">' . __('Price:', $this->stringTextdomain) . " " . (empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale'] == 'en_US' || self::$shopOptions['shop_locale'] == 'en_GB' || self::$shopOptions['shop_locale'] == 'us_US' || self::$shopOptions['shop_locale'] == 'us_CA' || self::$shopOptions['shop_locale'] == 'fr_CA'?$article['currencycode'] . " " . number_format($article['pricebrut'], 2, '.', '') : number_format($article['pricebrut'], 2, ',', '.') . " " . $article['currencycode']) . "</span>";
+                $output .= '<span id="price">' . __('Price:', $this->stringTextdomain) . " " . self::formatPrice($article['pricebrut'],$article['currencycode']) . "</span>";
             }
             $output .= '</div>';
             
@@ -1102,13 +1197,13 @@ if ( !class_exists('WP_Spreadplugin')) {
             
             $output .= '<div class="price-wrapper clearfix">';
             if (self::$shopOptions['shop_showextendprice'] == 1) {
-                $output .= '<span id="price-without-tax">' . __('Price (without tax):', $this->stringTextdomain) . " " . (empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale'] == 'en_US' || self::$shopOptions['shop_locale'] == 'en_GB' || self::$shopOptions['shop_locale'] == 'us_US' || self::$shopOptions['shop_locale'] == 'us_CA' || self::$shopOptions['shop_locale'] == 'fr_CA'?$article['currencycode'] . " " . number_format($article['pricenet'], 2, '.', '') : number_format($article['pricenet'], 2, ',', '.') . " " . $article['currencycode']) . "<br /></span>";
-                $output .= '<span id="price-with-tax">' . __('Price (with tax):', $this->stringTextdomain) . " " . (empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale'] == 'en_US' || self::$shopOptions['shop_locale'] == 'en_GB' || self::$shopOptions['shop_locale'] == 'us_US' || self::$shopOptions['shop_locale'] == 'us_CA' || self::$shopOptions['shop_locale'] == 'fr_CA'?$article['currencycode'] . " " . number_format($article['pricebrut'], 2, '.', '') : number_format($article['pricebrut'], 2, ',', '.') . " " . $article['currencycode']) . "</span>";
+                $output .= '<span id="price-without-tax">' . __('Price (without tax):', $this->stringTextdomain) . " " . self::formatPrice($article['pricenet'],$article['currencycode']) . "<br /></span>";
+                $output .= '<span id="price-with-tax">' . __('Price (with tax):', $this->stringTextdomain) . " " . self::formatPrice($article['pricebrut'],$article['currencycode']) . "</span>";
                 $output .= '<br><div class="additionalshippingcosts">';
-                $output .= __('excl. Shipping', $this->stringTextdomain);
+                $output .= __('excl. <a class="shipping-window">Shipping</a>', $this->stringTextdomain);
                 $output .= '</div>';
             } else {
-                $output .= '<span id="price">' . __('Price:', $this->stringTextdomain) . " " . (empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale'] == 'en_US' || self::$shopOptions['shop_locale'] == 'en_GB' || self::$shopOptions['shop_locale'] == 'us_US' || self::$shopOptions['shop_locale'] == 'us_CA' || self::$shopOptions['shop_locale'] == 'fr_CA'?$article['currencycode'] . " " . number_format($article['pricebrut'], 2, '.', '') : number_format($article['pricebrut'], 2, ',', '.') . " " . $article['currencycode']) . "</span>";
+                $output .= '<span id="price">' . __('Price:', $this->stringTextdomain) . " " . self::formatPrice($article['pricebrut'],$article['currencycode']) . "</span>";
             }
             $output .= '</div>';
             
@@ -1185,7 +1280,7 @@ if ( !class_exists('WP_Spreadplugin')) {
             $output .= '<input type="hidden" value="' . $article['view'] . '" id="view" name="view" />';
             $output .= '<input type="hidden" value="' . $id . '" id="article" name="article" />';
             
-            $output .= '<input type="submit" name="submit" class="add-basket-button" value=""> <div class="price-wrapper">' . (empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale'] == 'en_US' || self::$shopOptions['shop_locale'] == 'en_GB' || self::$shopOptions['shop_locale'] == 'us_US' || self::$shopOptions['shop_locale'] == 'us_CA' || self::$shopOptions['shop_locale'] == 'fr_CA'?$article['currencycode'] . " " . number_format($article['pricebrut'], 2, '.', '') : number_format($article['pricebrut'], 2, ',', '.') . " " . $article['currencycode']);
+            $output .= '<input type="submit" name="submit" class="add-basket-button" value=""> <div class="price-wrapper">' . self::formatPrice($article['pricebrut'],$article['currencycode']);
             
             $output .= '</div>';
             
@@ -1590,14 +1685,13 @@ if ( !class_exists('WP_Spreadplugin')) {
             }
             
             echo "
-					}
-				
+					};
 		
-						designerShopId = '".self::$shopOptions['shop_id']."',
-						designerTargetId = 'spreadplugin-designer',
-						designerPlatform = '".(self::$shopOptions['shop_source']=='net'?'EU':'NA')."',
-						designerLocale = '".self::$shopOptions['shop_locale']."',
-						designerWidth = '750'
+					var designerShopId = '".self::$shopOptions['shop_id']."';
+					var designerTargetId = 'spreadplugin-designer';
+					var designerPlatform = '".(self::$shopOptions['shop_source']=='net'?'EU':'NA')."';
+					var designerLocale = '".self::$shopOptions['shop_locale']."';
+					var designerWidth = '750';
 					</script>
 					
 					<script language='javascript' type='text/javascript' src='http://cache.spreadshirt.net/Public/Confomat/Js/confomat-embed.js'></script>
@@ -1633,6 +1727,10 @@ if ( !class_exists('WP_Spreadplugin')) {
                 wp_register_script('lazyload', plugins_url('/js/jquery.lazyload.min.js', __FILE__), array('jquery'));
                 wp_enqueue_script('lazyload');
             }
+			
+			// tooltip
+			wp_enqueue_script('jquery-ui-core');
+			wp_enqueue_script('jquery-ui-tooltip');
         }
 
         public function enqueueAdminJs() {
@@ -1831,13 +1929,13 @@ if ( !class_exists('WP_Spreadplugin')) {
             // $output .= '<div class="separator"></div>';
             $output .= '<div class="price-wrapper clearfix">';
             if (self::$shopOptions['shop_showextendprice'] == 1) {
-                $output .= '<span id="price-without-tax">' . __('Price (without tax):', $this->stringTextdomain) . " " . (empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale'] == 'en_US' || self::$shopOptions['shop_locale'] == 'en_GB' || self::$shopOptions['shop_locale'] == 'us_US' || self::$shopOptions['shop_locale'] == 'us_CA' || self::$shopOptions['shop_locale'] == 'fr_CA'?$article['currencycode'] . " " . number_format($article['pricenet'], 2, '.', '') : number_format($article['pricenet'], 2, ',', '.') . " " . $article['currencycode']) . "<br /></span>";
-                $output .= '<span id="price-with-tax">' . __('Price (with tax):', $this->stringTextdomain) . " " . (empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale'] == 'en_US' || self::$shopOptions['shop_locale'] == 'en_GB' || self::$shopOptions['shop_locale'] == 'us_US' || self::$shopOptions['shop_locale'] == 'us_CA' || self::$shopOptions['shop_locale'] == 'fr_CA'?$article['currencycode'] . " " . number_format($article['pricebrut'], 2, '.', '') : number_format($article['pricebrut'], 2, ',', '.') . " " . $article['currencycode']) . "</span>";
+                $output .= '<span id="price-without-tax">' . __('Price (without tax):', $this->stringTextdomain) . " " . self::formatPrice($article['pricenet'],$article['currencycode']) . "<br /></span>";
+                $output .= '<span id="price-with-tax">' . __('Price (with tax):', $this->stringTextdomain) . " " . self::formatPrice($article['pricebrut'],$article['currencycode']) . "</span>";
                 $output .= '<br><div class="additionalshippingcosts">';
-                $output .= __('excl. Shipping', $this->stringTextdomain);
+                $output .= __('excl. <a class="shipping-window">Shipping</a>', $this->stringTextdomain);
                 $output .= '</div>';
             } else {
-                $output .= '<span id="price">' . __('Price:', $this->stringTextdomain) . " " . (empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale'] == 'en_US' || self::$shopOptions['shop_locale'] == 'en_GB' || self::$shopOptions['shop_locale'] == 'us_US' || self::$shopOptions['shop_locale'] == 'us_CA' || self::$shopOptions['shop_locale'] == 'fr_CA'?$article['currencycode'] . " " . number_format($article['pricebrut'], 2, '.', '') : number_format($article['pricebrut'], 2, ',', '.') . " " . $article['currencycode']) . "</span>";
+                $output .= '<span id="price">' . __('Price:', $this->stringTextdomain) . " " . self::formatPrice($article['pricebrut'],$article['currencycode']) . "</span>";
             }
             $output .= '</div>';
             
@@ -2009,6 +2107,7 @@ if ( !class_exists('WP_Spreadplugin')) {
 						$_items = $this->getRawArticleData($item->id);
 						// storing producttypedepartments for later use
 						$_types = $this->getTypesData();
+						$_shipping = $this->getShipmentData();
 
 						if (is_object($_items) && !empty($_items->article)) {
 							foreach ($_items->article as $article) {
@@ -2024,6 +2123,7 @@ if ( !class_exists('WP_Spreadplugin')) {
 						$res[] = array('id' => $item->id, 'title' => $item->post_title, 'items' => $items);
 						// need to use session, because otherwise we can't transport the types and article data further down. (ajax/wordpress thingy)
 						$_SESSION['_tempArticleCache'][$item->id]['types'] = $_types;
+						$_SESSION['_tempArticleCache'][$item->id]['shipment'] = $_shipping;
 					}
 				}
 				
@@ -2107,6 +2207,11 @@ if ( !class_exists('WP_Spreadplugin')) {
             $rgb = array($r, $g, $b);
             return $rgb; // returns an array with the rgb values
         }
+		
+		private static function formatPrice($price,$currency) {
+			return (empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale'] == 'en_US' || self::$shopOptions['shop_locale'] == 'en_GB' || self::$shopOptions['shop_locale'] == 'us_US' || self::$shopOptions['shop_locale'] == 'us_CA' || self::$shopOptions['shop_locale'] == 'fr_CA'?$currency . " " . number_format($price, 2, '.', '') : number_format($price, 2, ',', '.') . " " . $currency);
+		}
+		
         
         // read admin options
         public function getAdminOptions() {
@@ -2196,7 +2301,7 @@ if ( !class_exists('WP_Spreadplugin')) {
 							<div class="cart-delete"><a href="javascript:;" class="deleteCartItem" title="' . __('Remove', $this->stringTextdomain) . '"><img src="' . plugins_url('/img/delete.png', __FILE__) . '"></a></div>
 							<div class="cart-preview"><img src="//image.spreadshirt.' . self::$shopOptions['shop_source'] . '/image-server/v1/products/' . (string)$item->element['id'] . '/views/1,width=60,height=60,appearanceId=' . (string)$item->element->properties->property[1] . '"></div>
 							<div class="cart-description"><strong>' . htmlspecialchars((empty($objArticles->name)?$item->description : $objArticles->name), ENT_QUOTES) . '</strong><br>' . __('Size', $this->stringTextdomain) . ': ' . (string)$item->element->properties->property[0] . '<br>' . __('Quantity', $this->stringTextdomain) . ': ' . (int)$item->quantity . '</div>
-							<div class="cart-price"><strong>' . (empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale'] == 'en_US' || self::$shopOptions['shop_locale'] == 'en_GB' || self::$shopOptions['shop_locale'] == 'us_US' || self::$shopOptions['shop_locale'] == 'us_CA' || self::$shopOptions['shop_locale'] == 'fr_CA'?number_format((float)$item->price->vatIncluded * (int)$item->quantity, 2, '.', '') : number_format((float)$item->price->vatIncluded * (int)$item->quantity, 2, ',', '.')) . '</strong></div>
+							<div class="cart-price"><strong>' . self::formatPrice((float)$item->price->vatIncluded * (int)$item->quantity,'') . '</strong></div>
 							</div>';
 														
 							
@@ -2215,7 +2320,7 @@ if ( !class_exists('WP_Spreadplugin')) {
 							<div class="cart-delete"><a href="javascript:;" class="deleteCartItem" title="' . __('Remove', $this->stringTextdomain) . '"><img src="' . plugins_url('/img/delete.png', __FILE__) . '"></a></div>
 							<div class="cart-preview"><img src="//image.spreadshirt.' . self::$shopOptions['shop_source'] . '/image-server/v1/products/' . (string)$objArticles->product['id'] . '/views/' . (string)$objArticles->product->defaultValues->defaultView['id'] . ',viewId=' . (string)$objArticles->product->defaultValues->defaultView['id'] . ',width=60,height=60,appearanceId=' . (string)$item->element->properties->property[1] . '"></div>
 							<div class="cart-description"><strong>' . htmlspecialchars((empty($objArticles->name)?$item->description : $objArticles->name), ENT_QUOTES) . '</strong><br>' . __('Size', $this->stringTextdomain) . ': ' . (string)$item->element->properties->property[0] . '<br>' . __('Quantity', $this->stringTextdomain) . ': ' . (int)$item->quantity . '</div>
-							<div class="cart-price"><strong>' . (empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale'] == 'en_US' || self::$shopOptions['shop_locale'] == 'en_GB' || self::$shopOptions['shop_locale'] == 'us_US' || self::$shopOptions['shop_locale'] == 'us_CA' || self::$shopOptions['shop_locale'] == 'fr_CA'?number_format((float)$item->price->vatIncluded * (int)$item->quantity, 2, '.', '') : number_format((float)$item->price->vatIncluded * (int)$item->quantity, 2, ',', '.')) . '</strong></div>
+							<div class="cart-price"><strong>' . self::formatPrice((float)$item->price->vatIncluded * (int)$item->quantity,'') . '</strong></div>
 							</div>';
 						}
                         
@@ -2225,7 +2330,7 @@ if ( !class_exists('WP_Spreadplugin')) {
                 }
                 
                 echo '</div>';
-                echo '<div class="spreadplugin-cart-total">' . __('Total (excl. Shipping)', $this->stringTextdomain) . '<strong class="price">' . (empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale'] == 'en_US' || self::$shopOptions['shop_locale'] == 'en_GB' || self::$shopOptions['shop_locale'] == 'us_US' || self::$shopOptions['shop_locale'] == 'us_CA' || self::$shopOptions['shop_locale'] == 'fr_CA'?number_format($priceSum, 2, '.', '') : number_format($priceSum, 2, ',', '.')) . '</strong></div>';
+                echo '<div class="spreadplugin-cart-total">' . __('Total (excl. Shipping)', $this->stringTextdomain) . '<strong class="price">' . self::formatPrice($priceSum,'') . '</strong></div>';
                 
                 if ($intSumQuantity > 0) {
                     echo '<div id="cart-checkout" class="spreadplugin-cart-checkout"><a href="' . $_SESSION['checkoutUrl'][self::$shopOptions['shop_source'] . self::$shopOptions['shop_language']] . '" target="' . self::$shopOptions['shop_linktarget'] . '">' . __('Proceed checkout', $this->stringTextdomain) . '</a></div>';
