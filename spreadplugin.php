@@ -1412,6 +1412,7 @@ if ( !class_exists('WP_Spreadplugin')) {
             $result = self::oldHttpRequest($basketsUrl, $header, 'POST', $basket->asXML());
             
 			if (self::$shopOptions['shop_debug'] == 1) {
+				print_r($result);
 				$debug = explode("\r\n\r\n", $result);
 				print_r(gzdecode($debug[1]));
 			}
