@@ -1411,6 +1411,11 @@ if ( !class_exists('WP_Spreadplugin')) {
             $header[] = "Content-Type: application/xml";
             $result = self::oldHttpRequest($basketsUrl, $header, 'POST', $basket->asXML());
             
+			if (self::$shopOptions['shop_debug'] == 1) {
+				$debug = explode("\r\n\r\n", $result);
+				print_r(gzdecode($debug[1]));
+			}
+			
             if ($result) {
                 $basketUrl = self::parseHttpHeaders($result, "Location");
             } else {
