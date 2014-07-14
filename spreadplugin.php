@@ -1410,14 +1410,6 @@ if ( !class_exists('WP_Spreadplugin')) {
             $header[] = self::createAuthHeader("POST", $basketsUrl);
             $header[] = "Content-Type: application/xml";
             $result = self::oldHttpRequest($basketsUrl, $header, 'POST', $basket->asXML());
-            
-			if (self::$shopOptions['shop_debug'] == 1) {
-				print_r($result);
-				$debug = explode("\r\n\r\n", $result);
-				if (!empty($debug[1])) {
-					print_r(gzdecode($debug[1]));
-				}
-			}
 			
             if ($result) {
                 $basketUrl = self::parseHttpHeaders($result, "Location");
@@ -1602,6 +1594,17 @@ if ( !class_exists('WP_Spreadplugin')) {
             $status = isset($info['http_code'])?$info['http_code'] : null;
             @curl_close($ch);
             
+			
+			// debug output        
+			if (self::$shopOptions['shop_debug'] == 1) {
+				print_r($result);
+				$debug = explode("\r\n\r\n", $result);
+				if (!empty($debug[1])) {
+					print_r(gzdecode($debug[1]));
+				}
+			}
+
+			
             if (in_array($status, array(200, 201, 204, 403, 406))) {
                 return $result;
             }
