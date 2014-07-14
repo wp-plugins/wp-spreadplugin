@@ -1414,7 +1414,9 @@ if ( !class_exists('WP_Spreadplugin')) {
 			if (self::$shopOptions['shop_debug'] == 1) {
 				print_r($result);
 				$debug = explode("\r\n\r\n", $result);
-				print_r(gzdecode($debug[1]));
+				if (!empty($debug[1])) {
+					print_r(gzdecode($debug[1]));
+				}
 			}
 			
             if ($result) {
