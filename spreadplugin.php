@@ -1701,6 +1701,19 @@ if ( !class_exists('WP_Spreadplugin')) {
             
             echo "
 					};
+					";
+            
+            if (self::$shopOptions['shop_zoomtype'] == 2) {
+                echo '
+						var zoomActivated=0;
+						';
+            } else {
+                echo '
+						var zoomActivated=1;
+						';
+            }
+            
+            echo "
 		
 					var designerShopId = '".self::$shopOptions['shop_id']."';
 					var designerTargetId = 'spreadplugin-designer';

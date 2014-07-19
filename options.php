@@ -282,7 +282,9 @@ if (is_user_logged_in() && is_admin()) {
                   <?php _e('Inner','spreadplugin'); ?>
                   <br />
                   <input type="radio" name="shop_zoomtype" value="1"<?php echo ($adminOptions['shop_zoomtype']==1?" checked":"") ?> />
-                  <?php _e('Lens','spreadplugin'); ?></td>
+                  <?php _e('Lens','spreadplugin'); ?><br />
+                  <input type="radio" name="shop_zoomtype" value="2"<?php echo ($adminOptions['shop_zoomtype']==2?" checked":"") ?> />
+                  <?php _e('Disabled','spreadplugin'); ?></td>
               </tr>
               <tr>
                 <td valign="top"><?php _e('Shop language:','spreadplugin'); ?></td>
