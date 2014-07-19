@@ -208,6 +208,7 @@ Please have a look here: http://themeforest.net/category/wordpress?ref=thimo
 
 = 3.7.7 =
 * Sort by place is default again. Place is set via article order in api, which should represent your shop sorting.
+* Zoom can be disabled completly
 
 = 3.7.6 =
 * Added shipping costs popup, please rebuild cache!
