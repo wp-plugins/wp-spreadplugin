@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.7.6
+ * Version: 3.7.7
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -282,7 +282,11 @@ if ( !class_exists('WP_Spreadplugin')) {
                 
                 // default sort
                 @uasort($designsData, create_function('$a,$b', "return (\$a[place] > \$b[place])?-1:1;"));
-                @uasort($articleCleanData, create_function('$a,$b', "return (\$a[id] > \$b[id])?-1:1;")); // 2014-06-22 Changed from place to id, place is not set anymore (and sort direction to desc)
+				/*
+				* 2014-06-22 Changed from place to id, place is not set anymore (and sort direction to desc)
+				* 2014-07-20 Changed back to place and sort direction asc, because place added again
+				*/
+                @uasort($articleCleanData, create_function('$a,$b', "return (\$a[place] < \$b[place])?-1:1;")); 
                 
                 // sorting
                 if (self::$shopOptions['shop_display'] == 1) {
@@ -692,7 +696,7 @@ if ( !class_exists('WP_Spreadplugin')) {
 		* function getSingleArticleData
 		* Retrieves article data and save into cache
 		**/
-		private function getSingleArticleData($pageId,$articleId) {
+		private function getSingleArticleData($pageId,$articleId,$place) {
 
 			$articleData = array();
 			$stockstates_size = array();
@@ -761,7 +765,7 @@ if ( !class_exists('WP_Spreadplugin')) {
 	
 				$articleData['weight'] = (float)$article['weight'];
 				$articleData['id'] = (int)$article['id'];
-				//$articleData['place'] = $i;
+				$articleData['place'] = $place;
 				$articleData['designid'] = (int)$article->product->defaultValues->defaultDesign['id'];
 				
 				$articleData['printtypename'] = '';
@@ -2121,13 +2125,17 @@ if ( !class_exists('WP_Spreadplugin')) {
 						$_shipping = $this->getShipmentData();
 
 						if (is_object($_items) && !empty($_items->article)) {
+							$i=0;
 							foreach ($_items->article as $article) {
 																
 								$items[] = array(
 									'articleid' => (int)$article['id'], 
 									'previewimage' => '//image.spreadshirt.' . self::$shopOptions['shop_source'] . '/image-server/v1/products/' . (int)$article->product['id'] . '/views/' . (int)$article->product->defaultValues->defaultView['id'] . ',width=100,height=100',
-									'articlename' => (string)$article->name
+									'articlename' => (string)$article->name,
+									'place' => $i
 								);
+								
+								$i++;
 							}
 						}						
 						
@@ -2143,9 +2151,10 @@ if ( !class_exists('WP_Spreadplugin')) {
 			} else if ($action == 'rebuild') {
 				$_pageid = intval($_POST['_pageid']);
 				$_articleid = intval($_POST['_articleid']);
+				$_pos = intval($_POST['_pos']);
 				$this->reparseShortcodeData($_pageid);
 				
-				$_articleData = $this->getSingleArticleData($_pageid,$_articleid);
+				$_articleData = $this->getSingleArticleData($_pageid,$_articleid,$_pos);
 				
 				// sleep timer, for some users reaching their request limits - 20 sec will avoid it.
 				if (!empty(self::$shopOptions['shop_sleep']) && self::$shopOptions['shop_sleep']>0) {
