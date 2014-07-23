@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.7.7
+ * Version: 3.7.8
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -179,6 +179,12 @@ if ( !class_exists('WP_Spreadplugin')) {
             self::$shopOptions['shop_zoomtype'] = ($conOp['shop_zoomtype'] == ''?0 : $conOp['shop_zoomtype']);
             self::$shopOptions['shop_lazyload'] = ($conOp['shop_lazyload'] == ''?1 : $conOp['shop_lazyload']);
             self::$shopOptions['shop_debug'] = ($conOp['shop_debug'] == ''?0 : $conOp['shop_debug']);
+			
+			// Disable Zoom on min view, because of the new view
+			if (self::$shopOptions['shop_view']==2) {
+				self::$shopOptions['shop_zoomtype']=2;
+			}
+			
             
             // overwrite translation if language available and set
             if ( !empty(self::$shopOptions['shop_language'])) {
@@ -1268,6 +1274,13 @@ if ( !class_exists('WP_Spreadplugin')) {
             
             $output .= '" alt="' . ( !empty($article['name'])?htmlspecialchars($article['name'], ENT_QUOTES) : '') . '" id="previewimg_' . $id . '" data-zoom-image="//image.spreadshirt.' . self::$shopOptions['shop_source'] . '/image-server/v1/products/' . $article['productId'] . '/views/' . $article['view'] . ',width=600,height=600' . ( !empty($backgroundColor)?',backgroundColor=' . $backgroundColor : '') . '" class="preview lazyimg" data-original="' . $imgSrc . '" /></a>';
             $output .= '</div>';
+			
+			$output .= '<h3>' . ( !empty($article['name'])?htmlspecialchars($article['name'], ENT_QUOTES) : '') . '</h3>';
+			
+			$output .= '<div class="price-wrapper">' . self::formatPrice($article['pricebrut'],$article['currencycode']).'</div>';
+			
+			$output .= '<div class="actions">';
+	
             
             // add a select with available sizes
             if (isset($article['sizes']) && is_array($article['sizes'])) {
@@ -1284,14 +1297,13 @@ if ( !class_exists('WP_Spreadplugin')) {
             $output .= '<input type="hidden" value="' . $article['view'] . '" id="view" name="view" />';
             $output .= '<input type="hidden" value="' . $id . '" id="article" name="article" />';
             
-            $output .= '<input type="submit" name="submit" class="add-basket-button" value=""> <div class="price-wrapper">' . self::formatPrice($article['pricebrut'],$article['currencycode']);
-            
-            $output .= '</div>';
+            $output .= '<div class="add-basket-wrapper clearfix"><input type="submit" name="submit" class="add-basket-button" value=""></div>';
             
             // order buttons
             $output .= '<input type="hidden" value="1" id="quantity" name="quantity" />';
             
             $output .= '
+			</div>
 			</form>
 			</div>';
             
@@ -1737,10 +1749,8 @@ if ( !class_exists('WP_Spreadplugin')) {
             wp_enqueue_style('magnific_popup_css');
             
             // Scrolling
-            if ($conOp['shop_infinitescroll'] == 1 || $conOp['shop_infinitescroll'] == '') {
-                wp_register_script('infinite_scroll', plugins_url('/js/jquery.infinitescroll.min.js', __FILE__), array('jquery'));
-                wp_enqueue_script('infinite_scroll');
-            }
+            wp_register_script('infinite_scroll', plugins_url('/js/jquery.infinitescroll.min.js', __FILE__), array('jquery'));
+            wp_enqueue_script('infinite_scroll');
             
             // Fancybox
             wp_register_script('magnific_popup', plugins_url('/js/jquery.magnific-popup.min.js', __FILE__), array('jquery'));
@@ -1751,14 +1761,8 @@ if ( !class_exists('WP_Spreadplugin')) {
             wp_enqueue_script('zoom');
             
             // lazyload
-            if ($conOp['shop_lazyload'] == 1 || $conOp['shop_lazyload'] == '') {
-                wp_register_script('lazyload', plugins_url('/js/jquery.lazyload.min.js', __FILE__), array('jquery'));
-                wp_enqueue_script('lazyload');
-            }
-			
-			// tooltip
-			wp_enqueue_script('jquery-ui-core');
-			wp_enqueue_script('jquery-ui-tooltip');
+            wp_register_script('lazyload', plugins_url('/js/jquery.lazyload.min.js', __FILE__), array('jquery'));
+            wp_enqueue_script('lazyload');
         }
 
         public function enqueueAdminJs() {

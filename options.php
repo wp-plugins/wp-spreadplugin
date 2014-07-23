@@ -247,7 +247,7 @@ if (is_user_logged_in() && is_admin()) {
                   <?php _e('List view','spreadplugin'); ?>
                   <br />
                   <input type="radio" name="shop_view" value="2"<?php echo ($adminOptions['shop_view']==2?" checked":"") ?> />
-                  <?php _e('Min view','spreadplugin'); ?></td>
+                  <?php _e('Min view','spreadplugin'); ?> (Disables Zoom, too)</td>
               </tr>
               <tr>
                 <td valign="top"><?php _e('Basket text or icon:','spreadplugin'); ?></td>
