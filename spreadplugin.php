@@ -180,8 +180,8 @@ if ( !class_exists('WP_Spreadplugin')) {
             self::$shopOptions['shop_lazyload'] = ($conOp['shop_lazyload'] == ''?1 : $conOp['shop_lazyload']);
             self::$shopOptions['shop_debug'] = ($conOp['shop_debug'] == ''?0 : $conOp['shop_debug']);
 			
-			// Disable Zoom on min view, because of the new view
-			if (self::$shopOptions['shop_view']==2) {
+			// Disable Zoom on min view, because of the new view - not on details page
+			if (self::$shopOptions['shop_view']==2 && empty($_GET['splproduct'])) {
 				self::$shopOptions['shop_zoomtype']=2;
 			}
 			
