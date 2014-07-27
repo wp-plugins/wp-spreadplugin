@@ -567,7 +567,7 @@ if ( !class_exists('WP_Spreadplugin')) {
 		private function getRawArticleData($pageId) {
 						
 			// Limit to read max articles
-			$_maxlimit = 1000;
+			$_maxlimit = 2000;
 			
 			$articleData = array();
 			$articleDataObj = array();
