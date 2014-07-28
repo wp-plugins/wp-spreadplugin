@@ -8,7 +8,6 @@
  * Author URI: http://www.spreadplugin.de
  */
 @set_time_limit(0);
-@session_start();
 
 /**
  * WP_Spreadplugin class
