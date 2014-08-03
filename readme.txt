@@ -43,7 +43,8 @@ The pagination is done via infinity scroll.
 
 **Premium Support**
 
-The Spreadplugin team does not provide support for the plugin on the WordPress.org forums anymore. One on one email support is available to people who donated at least $10 or payed for the premium version.
+One to one email support is available to people who donated at least $10.
+Stylesheet/fitting the plugin into wordpress template only when put a small donation to the plugin, in order to let me buy dog biscuits to keep my dog happy, when having such few time.
 
 **See it in action**
 
