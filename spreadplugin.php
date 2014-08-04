@@ -692,7 +692,7 @@ if (!class_exists('WP_Spreadplugin')) {
 
             if ((int)$article['id'] > 0) {
 				
-				$url = wp_remote_get($article->product->productType->attributes('xlink', true) . '?' . (!empty(self::$shopOptions['shop_locale']) ? 'locale=' . self::$shopOptions['shop_locale'] . '&noCache=true' : '&noCache=true'), array(
+				$url = wp_remote_get((string)$article->product->productType->attributes('http://www.w3.org/1999/xlink') . '?' . (!empty(self::$shopOptions['shop_locale']) ? 'locale=' . self::$shopOptions['shop_locale'] . '&noCache=true' : '&noCache=true'), array(
                     'timeout' => 120
                 ));
                 $stringXmlArticle = wp_remote_retrieve_body($url);
@@ -701,13 +701,14 @@ if (!class_exists('WP_Spreadplugin')) {
                     $objArticleData = new SimpleXmlElement($stringXmlArticle);
                 }
 				
-				$url = wp_remote_get($article->price->currency->attributes('http://www.w3.org/1999/xlink'));
+				$url = wp_remote_get((string)$article->price->currency->attributes('http://www.w3.org/1999/xlink'));
                 $stringXmlCurreny = wp_remote_retrieve_body($url);
                 if (substr($stringXmlCurreny, 0, 5) == "<?xml") {
                     $objCurrencyData = new SimpleXmlElement($stringXmlCurreny);
                 }
 				
-				$url = wp_remote_get($article->product->attributes('xlink', true) . '?' . (!empty(self::$shopOptions['shop_locale']) ? 'locale=' . self::$shopOptions['shop_locale'] . '&noCache=true' : '&noCache=true'), array(
+				
+				$url = wp_remote_get((string)$article->product->attributes('http://www.w3.org/1999/xlink') . '?' . (!empty(self::$shopOptions['shop_locale']) ? 'locale=' . self::$shopOptions['shop_locale'] . '&noCache=true' : '&noCache=true'), array(
                     'timeout' => 120
                 ));
                 $stringXmlProduct = wp_remote_retrieve_body($url);
@@ -717,7 +718,7 @@ if (!class_exists('WP_Spreadplugin')) {
 
                 if (is_object($objProductData)) {
                     if (!empty($objProductData->configurations->configuration->printType)) {
-						$url = wp_remote_get($objProductData->configurations->configuration->printType->attributes('xlink', true) . '?' . (!empty(self::$shopOptions['shop_locale']) ? 'locale=' . self::$shopOptions['shop_locale'] . '&noCache=true' : '&noCache=true'), array(
+						$url = wp_remote_get((string)$objProductData->configurations->configuration->printType->attributes('http://www.w3.org/1999/xlink') . '?' . (!empty(self::$shopOptions['shop_locale']) ? 'locale=' . self::$shopOptions['shop_locale'] . '&noCache=true' : '&noCache=true'), array(
                             'timeout' => 120
                         ));
                         $stringXmlPrint = wp_remote_retrieve_body($url);
@@ -805,10 +806,10 @@ if (!class_exists('WP_Spreadplugin')) {
                     foreach ($objArticleData->resources as $val) {
                         foreach ($val->resource as $vr) {
                             if ($vr['type'] == 'size') {
-                                $articleData['product-resource-size'] = (string)$vr->attributes('xlink', true);
+                                $articleData['product-resource-size'] = (string)$vr->attributes('http://www.w3.org/1999/xlink');
                             }
                             if ($vr['type'] == 'detail') {
-                                $articleData['product-resource-detail'] = (string)$vr->attributes('xlink', true);
+                                $articleData['product-resource-detail'] = (string)$vr->attributes('http://www.w3.org/1999/xlink');
                             }
                         }
                     }
@@ -821,7 +822,7 @@ if (!class_exists('WP_Spreadplugin')) {
                         }
 
                         if ($article->product->restrictions->freeColorSelection == 'true' || (int)$article->product->appearance['id'] == (int)$appearance['id']) {
-                            $articleData['appearances'][(int)$appearance['id']] = (string)$appearance->resources->resource->attributes('xlink', true);
+                            $articleData['appearances'][(int)$appearance['id']] = (string)$appearance->resources->resource->attributes('http://www.w3.org/1999/xlink');
                         }
                     }
                 }
@@ -829,7 +830,7 @@ if (!class_exists('WP_Spreadplugin')) {
 
                 if (!empty($objArticleData->views->view)) {
                     foreach ($objArticleData->views->view as $view) {
-                        $articleData['views'][(int)$view['id']] = (string)$article->resources->resource->attributes('xlink', true);
+                        $articleData['views'][(int)$view['id']] = (string)$article->resources->resource->attributes('http://www.w3.org/1999/xlink');
                     }
                 }
 
@@ -904,8 +905,8 @@ if (!class_exists('WP_Spreadplugin')) {
                     $articleData[(int)$article['id']]['pricenet'] = (float)$article->price->vatExcluded;
                     $articleData[(int)$article['id']]['pricebrut'] = (float)$article->price->vatIncluded;
                     // $articleData[(int)$article['id']]['currencycode']=(string)$objCurrencyData->isoCode; // @TODO Check
-                    $articleData[(int)$article['id']]['resource0'] = (string)$article->resources->resource[0]->attributes('xlink', true);
-                    $articleData[(int)$article['id']]['resource2'] = (string)$article->resources->resource[1]->attributes('xlink', true);
+                    $articleData[(int)$article['id']]['resource0'] = (string)$article->resources->resource[0]->attributes('http://www.w3.org/1999/xlink');
+                    $articleData[(int)$article['id']]['resource2'] = (string)$article->resources->resource[1]->attributes('http://www.w3.org/1999/xlink');
                     // $articleData[(int)$article['id']]['productdescription']=(string)$objArticleData->description;
                     $articleData[(int)$article['id']]['weight'] = (float)$article['weight'];
                     $articleData[(int)$article['id']]['place'] = $i;
