@@ -555,7 +555,7 @@ if (!class_exists('WP_Spreadplugin')) {
                 die('Error getting articles. Please check Shop-ID, API and secret.');
             }
             if ($stringXmlShopBase['body'][0] != '<') die($stringXmlShopBase['body']);
-            $stringXmlShopBase = @wp_remote_retrieve_body($stringXmlShopBase);
+            $stringXmlShopBase = wp_remote_retrieve_body($stringXmlShopBase);
             $objArticlesBase = new SimpleXmlElement($stringXmlShopBase);
             if (!is_object($objArticlesBase)) {
                 if (self::$shopOptions['shop_debug'] == 1) {
@@ -581,7 +581,7 @@ if (!class_exists('WP_Spreadplugin')) {
             $stringTypeXml = wp_remote_get($stringTypeApiUrl, array(
                 'timeout' => 120
             ));
-            $stringTypeXml = @wp_remote_retrieve_body($stringTypeXml);
+            $stringTypeXml = wp_remote_retrieve_body($stringTypeXml);
             $objTypes = new SimpleXmlElement($stringTypeXml);
 
             if (is_object($objTypes)) {
@@ -614,7 +614,7 @@ if (!class_exists('WP_Spreadplugin')) {
             $stringTypeXml = wp_remote_get($stringTypeApiUrl, array(
                 'timeout' => 120
             ));
-            $stringTypeXml = @wp_remote_retrieve_body($stringTypeXml);
+            $stringTypeXml = wp_remote_retrieve_body($stringTypeXml);
             $objTypes = new SimpleXmlElement($stringTypeXml);
 
             $countryCode = explode("_", self::$shopOptions['shop_locale']);
@@ -677,11 +677,11 @@ if (!class_exists('WP_Spreadplugin')) {
 
             $apiUrl = $apiUrlBase;
 
-            $stringXmlShop = @wp_remote_get($apiUrl, array(
+            $stringXmlShop = wp_remote_get($apiUrl, array(
                 'timeout' => 120
             ));
             if ($stringXmlShop['body'][0] != '<') return 'Body error: ' . $stringXmlShop['body'];
-            $stringXmlShop = @wp_remote_retrieve_body($stringXmlShop);
+            $stringXmlShop = wp_remote_retrieve_body($stringXmlShop);
 
             if (substr($stringXmlShop, 0, 5) != "<?xml") {
                 return 'Error fetching URL: ' . $apiUrl;
@@ -691,32 +691,36 @@ if (!class_exists('WP_Spreadplugin')) {
             if (!is_object($article)) return 'Article empty (object)';
 
             if ((int)$article['id'] > 0) {
-
-                $stringXmlArticle = @wp_remote_retrieve_body(wp_remote_get($article->product->productType->attributes('xlink', true) . '?' . (!empty(self::$shopOptions['shop_locale']) ? 'locale=' . self::$shopOptions['shop_locale'] . '&noCache=true' : '&noCache=true'), array(
+				
+				$url = wp_remote_get($article->product->productType->attributes('xlink', true) . '?' . (!empty(self::$shopOptions['shop_locale']) ? 'locale=' . self::$shopOptions['shop_locale'] . '&noCache=true' : '&noCache=true'), array(
                     'timeout' => 120
-                )));
+                ));
+                $stringXmlArticle = wp_remote_retrieve_body($url);
 
                 if (substr($stringXmlArticle, 0, 5) == "<?xml") {
                     $objArticleData = new SimpleXmlElement($stringXmlArticle);
                 }
-
-                $stringXmlCurreny = @wp_remote_retrieve_body(wp_remote_get($article->price->currency->attributes('http://www.w3.org/1999/xlink')));
+				
+				$url = wp_remote_get($article->price->currency->attributes('http://www.w3.org/1999/xlink'));
+                $stringXmlCurreny = wp_remote_retrieve_body($url);
                 if (substr($stringXmlCurreny, 0, 5) == "<?xml") {
                     $objCurrencyData = new SimpleXmlElement($stringXmlCurreny);
                 }
-
-                $stringXmlProduct = @wp_remote_retrieve_body(wp_remote_get($article->product->attributes('xlink', true) . '?' . (!empty(self::$shopOptions['shop_locale']) ? 'locale=' . self::$shopOptions['shop_locale'] . '&noCache=true' : '&noCache=true'), array(
+				
+				$url = wp_remote_get($article->product->attributes('xlink', true) . '?' . (!empty(self::$shopOptions['shop_locale']) ? 'locale=' . self::$shopOptions['shop_locale'] . '&noCache=true' : '&noCache=true'), array(
                     'timeout' => 120
-                )));
+                ));
+                $stringXmlProduct = wp_remote_retrieve_body($url);
                 if (substr($stringXmlProduct, 0, 5) == "<?xml") {
                     $objProductData = new SimpleXmlElement($stringXmlProduct);
                 }
 
                 if (is_object($objProductData)) {
                     if (!empty($objProductData->configurations->configuration->printType)) {
-                        $stringXmlPrint = @wp_remote_retrieve_body(wp_remote_get($objProductData->configurations->configuration->printType->attributes('xlink', true) . '?' . (!empty(self::$shopOptions['shop_locale']) ? 'locale=' . self::$shopOptions['shop_locale'] . '&noCache=true' : '&noCache=true'), array(
+						$url = wp_remote_get($objProductData->configurations->configuration->printType->attributes('xlink', true) . '?' . (!empty(self::$shopOptions['shop_locale']) ? 'locale=' . self::$shopOptions['shop_locale'] . '&noCache=true' : '&noCache=true'), array(
                             'timeout' => 120
-                        )));
+                        ));
+                        $stringXmlPrint = wp_remote_retrieve_body($url);
                         if (substr($stringXmlPrint, 0, 5) == "<?xml") {
                             $objPrintData = new SimpleXmlElement($stringXmlPrint);
                         }
@@ -868,7 +872,7 @@ if (!class_exists('WP_Spreadplugin')) {
             ));
             if (isset($stringXmlShop->errors) && count($stringXmlShop->errors) > 0) die('Error getting articles. Please check Shop-ID, API and secret.');
             if ($stringXmlShop['body'][0] != '<') die($stringXmlShop['body']);
-            $stringXmlShop = @wp_remote_retrieve_body($stringXmlShop);
+            $stringXmlShop = wp_remote_retrieve_body($stringXmlShop);
             $objArticles = new SimpleXmlElement($stringXmlShop);
             if (!isset($objArticles) || !is_object($objArticles)) die('Articles not loaded');
 
@@ -881,7 +885,7 @@ if (!class_exists('WP_Spreadplugin')) {
             ));
             if (isset($stringXmlShop->errors) && count($stringXmlShop->errors) > 0) die('Error getting articles. Please check your Shop-ID.');
             if ($stringXmlShop['body'][0] != '<') die($stringXmlShop['body']);
-            $stringXmlShop = @wp_remote_retrieve_body($stringXmlShop);
+            $stringXmlShop = wp_remote_retrieve_body($stringXmlShop);
             $objArticles = new SimpleXmlElement($stringXmlShop);
             if (!is_object($objArticles)) die('Articles not loaded');
 
@@ -1788,7 +1792,7 @@ if (!class_exists('WP_Spreadplugin')) {
                 ));
                 if (count($stringXmlShop->errors) > 0) die('Error getting basket.');
                 if ($stringXmlShop['body'][0] != '<') die($stringXmlShop['body']);
-                $stringXmlShop = @wp_remote_retrieve_body($stringXmlShop);
+                $stringXmlShop = wp_remote_retrieve_body($stringXmlShop);
                 $objShop = new SimpleXmlElement($stringXmlShop);
                 if (!is_object($objShop)) die('Basket not loaded');
 
@@ -2289,7 +2293,7 @@ if (!class_exists('WP_Spreadplugin')) {
                             ));
                             if (isset($stringXmlShop->errors) && count($stringXmlShop->errors) > 0) die('Error getting articles. Please check Shop-ID, API and secret.');
                             if ($stringXmlShop['body'][0] != '<') die($stringXmlShop['body']);
-                            $stringXmlShop = @wp_remote_retrieve_body($stringXmlShop);
+                            $stringXmlShop = wp_remote_retrieve_body($stringXmlShop);
                             $objArticles = new SimpleXmlElement($stringXmlShop);
                             if (!is_object($objArticles)) die('Articles not loaded');
 
@@ -2308,7 +2312,7 @@ if (!class_exists('WP_Spreadplugin')) {
                             ));
                             if (isset($stringXmlShop->errors) && count($stringXmlShop->errors) > 0) die('Error getting articles. Please check Shop-ID, API and secret.');
                             if ($stringXmlShop['body'][0] != '<') die($stringXmlShop['body']);
-                            $stringXmlShop = @wp_remote_retrieve_body($stringXmlShop);
+                            $stringXmlShop = wp_remote_retrieve_body($stringXmlShop);
                             $objArticles = new SimpleXmlElement($stringXmlShop);
                             if (!is_object($objArticles)) die('Articles not loaded');
 
