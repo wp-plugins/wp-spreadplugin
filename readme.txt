@@ -4,7 +4,7 @@ Author: Thimo Grauerholz
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EZLKTKW8UR6PQ
 Tags: spreadshirt,wordpress,plugin,shop,store,shirt,t-shirt,integration,online store,online shop
 Requires at least: 3.3
-Tested up to: 3.9
+Tested up to: 3.9.2
 Stable tag: 3.7.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
