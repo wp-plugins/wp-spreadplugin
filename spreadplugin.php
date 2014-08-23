@@ -2334,9 +2334,9 @@ if (!class_exists('WP_Spreadplugin')) {
                 echo '<div class="spreadplugin-cart-total">' . __('Total (excl. Shipping)', $this->stringTextdomain) . '<strong class="price">' . self::formatPrice($priceSum, '') . '</strong></div>';
 
                 if ($intSumQuantity > 0) {
-                    echo '<div id="cart-checkout" class="spreadplugin-cart-checkout"><a href="' . $_SESSION['checkoutUrl'][self::$shopOptions['shop_source'] . self::$shopOptions['shop_language']] . '" target="' . self::$shopOptions['shop_linktarget'] . '">' . __('Proceed checkout', $this->stringTextdomain) . '</a></div>';
+                    echo '<div id="cart-checkout" class="spreadplugin-cart-checkout"><a href="' . $_SESSION['checkoutUrl'][self::$shopOptions['shop_source'] . self::$shopOptions['shop_language']] . '" target="' . self::$shopOptions['shop_linktarget'] . '">' . __('Proceed to checkout', $this->stringTextdomain) . '</a></div>';
                 } else {
-                    echo '<div id="cart-checkout" class="spreadplugin-cart-checkout"><a title="' . __('Basket is empty', $this->stringTextdomain) . '">' . __('Proceed checkout', $this->stringTextdomain) . '</a></div>';
+                    echo '<div id="cart-checkout" class="spreadplugin-cart-checkout"><a title="' . __('Basket is empty', $this->stringTextdomain) . '">' . __('Proceed to checkout', $this->stringTextdomain) . '</a></div>';
                 }
             }
 
