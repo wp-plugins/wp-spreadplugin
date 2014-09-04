@@ -235,6 +235,18 @@ if (!class_exists('WP_Spreadplugin')) {
                         $articleCleanDataComplete[$articleId] = $arrArticle;
                     }
                 }
+				
+				// Add those articles which should have designs, but no designs found - in some cases
+				if (empty($designsData) && !empty($articleData) && empty($articleData[0])) {
+					foreach ($articleData as $designId => $arrDesigns) {
+						if (!empty($arrDesigns)) {
+							foreach ($arrDesigns as $articleId => $arrArticle) {
+								$articleCleanData[$articleId] = $arrArticle;
+								$articleCleanDataComplete[$articleId] = $arrArticle;
+							}
+						}
+					}
+				}
 
                 // filter
                 if (is_array($articleCleanData)) {
