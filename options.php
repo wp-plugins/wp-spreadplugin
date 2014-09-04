@@ -161,7 +161,7 @@ if (is_user_logged_in() && is_admin()) {
                 <td><?php _e('Enter the name of your target iframe or frame, if available. Default is _blank (new window).','spreadplugin'); ?>
                   <br />
                   <br />
-                  <input type="text" name="shop_linktarget" value="<?php echo (empty($adminOptions['shop_linktarget'])?'_blank':$adminOptions['shop_linktarget']); ?>" /></td>
+                  <input type="text" name="shop_linktarget" value="<?php echo (empty($adminOptions['shop_linktarget'])?'_self':$adminOptions['shop_linktarget']); ?>" /></td>
               </tr>
               <tr>
                 <td valign="top"><?php _e('Use iframe for checkout:','spreadplugin'); ?></td>
