@@ -235,18 +235,18 @@ if (!class_exists('WP_Spreadplugin')) {
                         $articleCleanDataComplete[$articleId] = $arrArticle;
                     }
                 }
-				
-				// Add those articles which should have designs, but no designs found - in some cases
-				if (empty($designsData) && !empty($articleData) && empty($articleData[0])) {
-					foreach ($articleData as $designId => $arrDesigns) {
-						if (!empty($arrDesigns)) {
-							foreach ($arrDesigns as $articleId => $arrArticle) {
-								$articleCleanData[$articleId] = $arrArticle;
-								$articleCleanDataComplete[$articleId] = $arrArticle;
-							}
-						}
-					}
-				}
+
+                // Add those articles which should have designs, but no designs found - in some cases
+                if (empty($designsData) && !empty($articleData) && empty($articleData[0])) {
+                    foreach ($articleData as $designId => $arrDesigns) {
+                        if (!empty($arrDesigns)) {
+                            foreach ($arrDesigns as $articleId => $arrArticle) {
+                                $articleCleanData[$articleId] = $arrArticle;
+                                $articleCleanDataComplete[$articleId] = $arrArticle;
+                            }
+                        }
+                    }
+                }
 
                 // filter
                 if (is_array($articleCleanData)) {
@@ -278,29 +278,25 @@ if (!class_exists('WP_Spreadplugin')) {
                     if (!empty(self::$shopOptions['shop_sortby']) && is_array($designsData) && in_array(self::$shopOptions['shop_sortby'], self::$shopArticleSortOptions)) {
                         if (self::$shopOptions['shop_sortby'] == "recent") {
                             krsort($designsData);
-                        } else
-                            if (self::$shopOptions['shop_sortby'] == "price") {
-                                uasort($designsData, create_function('$a,$b', "return (\$a[pricenet] < \$b[pricenet])?-1:1;"));
-                            } else
-                                if (self::$shopOptions['shop_sortby'] == "weight") {
-                                    uasort($designsData, create_function('$a,$b', "return (\$a[weight] > \$b[weight])?-1:1;"));
-                                } else {
-                                    uasort($designsData, create_function('$a,$b', "return strnatcmp(\$a[" . self::$shopOptions['shop_sortby'] . "],\$b[" . self::$shopOptions['shop_sortby'] . "]);"));
-                                }
+                        } elseif (self::$shopOptions['shop_sortby'] == "price") {
+                            uasort($designsData, create_function('$a,$b', "return (\$a[pricenet] < \$b[pricenet])?-1:1;"));
+                        } elseif (self::$shopOptions['shop_sortby'] == "weight") {
+                            uasort($designsData, create_function('$a,$b', "return (\$a[weight] > \$b[weight])?-1:1;"));
+                        } else {
+                            uasort($designsData, create_function('$a,$b', "return strnatcmp(\$a[" . self::$shopOptions['shop_sortby'] . "],\$b[" . self::$shopOptions['shop_sortby'] . "]);"));
+                        }
                     }
                 } else {
                     if (!empty(self::$shopOptions['shop_sortby']) && is_array($articleCleanData) && in_array(self::$shopOptions['shop_sortby'], self::$shopArticleSortOptions)) {
                         if (self::$shopOptions['shop_sortby'] == "recent") {
                             krsort($articleCleanData);
-                        } else
-                            if (self::$shopOptions['shop_sortby'] == "price") {
-                                uasort($articleCleanData, create_function('$a,$b', "return (\$a[pricenet] < \$b[pricenet])?-1:1;"));
-                            } else
-                                if (self::$shopOptions['shop_sortby'] == "weight") {
-                                    uasort($articleCleanData, create_function('$a,$b', "return (\$a[weight] > \$b[weight])?-1:1;"));
-                                } else {
-                                    uasort($articleCleanData, create_function('$a,$b', "return strnatcmp(\$a[" . self::$shopOptions['shop_sortby'] . "],\$b[" . self::$shopOptions['shop_sortby'] . "]);"));
-                                }
+                        } elseif (self::$shopOptions['shop_sortby'] == "price") {
+                            uasort($articleCleanData, create_function('$a,$b', "return (\$a[pricenet] < \$b[pricenet])?-1:1;"));
+                        } elseif (self::$shopOptions['shop_sortby'] == "weight") {
+                            uasort($articleCleanData, create_function('$a,$b', "return (\$a[weight] > \$b[weight])?-1:1;"));
+                        } else {
+                            uasort($articleCleanData, create_function('$a,$b', "return strnatcmp(\$a[" . self::$shopOptions['shop_sortby'] . "],\$b[" . self::$shopOptions['shop_sortby'] . "]);"));
+                        }
                     }
                 }
 
@@ -389,55 +385,59 @@ if (!class_exists('WP_Spreadplugin')) {
 
                         // Designs view
                         if (self::$shopOptions['shop_display'] == 1) {
-                            foreach ($designsData as $designId => $arrDesigns) {
-                                $bgc = false;
-                                $addStyle = '';
+                            if (!empty($designsData)) {
+                                foreach ($designsData as $designId => $arrDesigns) {
+                                    $bgc = false;
+                                    $addStyle = '';
 
-                                // Display just Designs with products
-                                if (!empty($articleData[$designId])) {
-
-                                    // check if designs background is enabled
-                                    if (self::$shopOptions['shop_designsbackground'] == 1) {
-                                        // fetch first article background color
-                                        @reset($articleData[$designId]);
-                                        $bgcV = $articleData[$designId][key($articleData[$designId])]['default_bgc'];
-                                        $bgcV = str_replace("#", "", $bgcV);
-                                        // calc to hex
-                                        $bgc = $this->hex2rgb($bgcV);
-                                        $addStyle = "style=\"background-color:rgba(" . $bgc[0] . "," . $bgc[1] . "," . $bgc[2] . ",0.4);\"";
-                                    }
-
-                                    $output .= "<div class=\"spreadplugin-designs\">";
-                                    $output .= $this->displayDesigns($designId, $arrDesigns, $articleData[$designId], $bgc);
-                                    $output .= "<div id=\"designContainer_" . $designId . "\" class=\"design-container clearfix\" " . $addStyle . ">";
-
+                                    // Display just Designs with products
                                     if (!empty($articleData[$designId])) {
 
-                                        // default sort
-                                        @uasort($articleData[$designId], create_function('$a,$b', "return (\$a[id] > \$b[id])?-1:1;")); // 2014-06-22 Changed from place to id, place is not set anymore (and sort direction to desc
-
-                                        switch (self::$shopOptions['shop_view']) {
-                                            case 1:
-                                                foreach ($articleData[$designId] as $articleId => $arrArticle) {
-                                                    $output .= $this->displayListArticles($articleId, $arrArticle, self::$shopOptions['shop_zoomimagebackground']);
-                                                }
-                                                break;
-                                            case 2:
-                                                foreach ($articleData[$designId] as $articleId => $arrArticle) {
-                                                    $output .= $this->displayMinArticles($articleId, $arrArticle, self::$shopOptions['shop_zoomimagebackground']);
-                                                }
-                                                break;
-                                            default:
-                                                foreach ($articleData[$designId] as $articleId => $arrArticle) {
-                                                    $output .= $this->displayArticles($articleId, $arrArticle, self::$shopOptions['shop_zoomimagebackground']);
-                                                }
-                                                break;
+                                        // check if designs background is enabled
+                                        if (self::$shopOptions['shop_designsbackground'] == 1) {
+                                            // fetch first article background color
+                                            @reset($articleData[$designId]);
+                                            $bgcV = $articleData[$designId][key($articleData[$designId])]['default_bgc'];
+                                            $bgcV = str_replace("#", "", $bgcV);
+                                            // calc to hex
+                                            $bgc = $this->hex2rgb($bgcV);
+                                            $addStyle = "style=\"background-color:rgba(" . $bgc[0] . "," . $bgc[1] . "," . $bgc[2] . ",0.4);\"";
                                         }
-                                    }
 
-                                    $output .= "</div>";
-                                    $output .= "</div>";
+                                        $output .= "<div class=\"spreadplugin-designs\">";
+                                        $output .= $this->displayDesigns($designId, $arrDesigns, $articleData[$designId], $bgc);
+                                        $output .= "<div id=\"designContainer_" . $designId . "\" class=\"design-container clearfix\" " . $addStyle . ">";
+
+                                        if (!empty($articleData[$designId])) {
+
+                                            // default sort
+                                            @uasort($articleData[$designId], create_function('$a,$b', "return (\$a[id] > \$b[id])?-1:1;")); // 2014-06-22 Changed from place to id, place is not set anymore (and sort direction to desc
+
+                                            switch (self::$shopOptions['shop_view']) {
+                                                case 1:
+                                                    foreach ($articleData[$designId] as $articleId => $arrArticle) {
+                                                        $output .= $this->displayListArticles($articleId, $arrArticle, self::$shopOptions['shop_zoomimagebackground']);
+                                                    }
+                                                    break;
+                                                case 2:
+                                                    foreach ($articleData[$designId] as $articleId => $arrArticle) {
+                                                        $output .= $this->displayMinArticles($articleId, $arrArticle, self::$shopOptions['shop_zoomimagebackground']);
+                                                    }
+                                                    break;
+                                                default:
+                                                    foreach ($articleData[$designId] as $articleId => $arrArticle) {
+                                                        $output .= $this->displayArticles($articleId, $arrArticle, self::$shopOptions['shop_zoomimagebackground']);
+                                                    }
+                                                    break;
+                                            }
+                                        }
+
+                                        $output .= "</div>";
+                                        $output .= "</div>";
+                                    }
                                 }
+                            } else {
+                                $output .= "No designs available?";
                             }
                         } else {
                             // Article view
@@ -703,8 +703,8 @@ if (!class_exists('WP_Spreadplugin')) {
             if (!is_object($article)) return 'Article empty (object)';
 
             if ((int)$article['id'] > 0) {
-				
-				$url = wp_remote_get((string)$article->product->productType->attributes('http://www.w3.org/1999/xlink') . '?' . (!empty(self::$shopOptions['shop_locale']) ? 'locale=' . self::$shopOptions['shop_locale'] . '&noCache=true' : '&noCache=true'), array(
+
+                $url = wp_remote_get((string)$article->product->productType->attributes('http://www.w3.org/1999/xlink') . '?' . (!empty(self::$shopOptions['shop_locale']) ? 'locale=' . self::$shopOptions['shop_locale'] . '&noCache=true' : '&noCache=true'), array(
                     'timeout' => 120
                 ));
                 $stringXmlArticle = wp_remote_retrieve_body($url);
@@ -712,15 +712,14 @@ if (!class_exists('WP_Spreadplugin')) {
                 if (substr($stringXmlArticle, 0, 5) == "<?xml") {
                     $objArticleData = new SimpleXmlElement($stringXmlArticle);
                 }
-				
-				$url = wp_remote_get((string)$article->price->currency->attributes('http://www.w3.org/1999/xlink'));
+
+                $url = wp_remote_get((string)$article->price->currency->attributes('http://www.w3.org/1999/xlink'));
                 $stringXmlCurreny = wp_remote_retrieve_body($url);
                 if (substr($stringXmlCurreny, 0, 5) == "<?xml") {
                     $objCurrencyData = new SimpleXmlElement($stringXmlCurreny);
                 }
-				
-				
-				$url = wp_remote_get((string)$article->product->attributes('http://www.w3.org/1999/xlink') . '?' . (!empty(self::$shopOptions['shop_locale']) ? 'locale=' . self::$shopOptions['shop_locale'] . '&noCache=true' : '&noCache=true'), array(
+
+                $url = wp_remote_get((string)$article->product->attributes('http://www.w3.org/1999/xlink') . '?' . (!empty(self::$shopOptions['shop_locale']) ? 'locale=' . self::$shopOptions['shop_locale'] . '&noCache=true' : '&noCache=true'), array(
                     'timeout' => 120
                 ));
                 $stringXmlProduct = wp_remote_retrieve_body($url);
@@ -730,7 +729,7 @@ if (!class_exists('WP_Spreadplugin')) {
 
                 if (is_object($objProductData)) {
                     if (!empty($objProductData->configurations->configuration->printType)) {
-						$url = wp_remote_get((string)$objProductData->configurations->configuration->printType->attributes('http://www.w3.org/1999/xlink') . '?' . (!empty(self::$shopOptions['shop_locale']) ? 'locale=' . self::$shopOptions['shop_locale'] . '&noCache=true' : '&noCache=true'), array(
+                        $url = wp_remote_get((string)$objProductData->configurations->configuration->printType->attributes('http://www.w3.org/1999/xlink') . '?' . (!empty(self::$shopOptions['shop_locale']) ? 'locale=' . self::$shopOptions['shop_locale'] . '&noCache=true' : '&noCache=true'), array(
                             'timeout' => 120
                         ));
                         $stringXmlPrint = wp_remote_retrieve_body($url);
@@ -900,7 +899,7 @@ if (!class_exists('WP_Spreadplugin')) {
             if ($stringXmlShop['body'][0] != '<') die($stringXmlShop['body']);
             $stringXmlShop = wp_remote_retrieve_body($stringXmlShop);
             $objArticles = new SimpleXmlElement($stringXmlShop);
-            if (!is_object($objArticles)) die('Articles not loaded');
+            if (!is_object($objArticles)) die('Designs not loaded');
 
             if ($objArticles['count'] > 0) {
 
@@ -2375,120 +2374,118 @@ if (!class_exists('WP_Spreadplugin')) {
         public static function mmToIn($val) {
             return number_format($val * 0.0393701, 1);
         }
-		
-		// alternative für gzdecode
-		private function ownGzDecode($data, &$filename = '', &$error = '', $maxlength = null) {
-			$len = strlen($data);
-			if ($len < 18 || strcmp(substr($data, 0, 2), "\x1f\x8b")) {
-				$error = "Not in GZIP format.";
-				return null; // Not GZIP format (See RFC 1952)
-			}
-			$method = ord(substr($data, 2, 1)); // Compression method
-			$flags = ord(substr($data, 3, 1)); // Flags
-			if ($flags & 31 != $flags) {
-				$error = "Reserved bits not allowed.";
-				return null;
-			}
-			// NOTE: $mtime may be negative (PHP integer limitations)
-			$mtime = unpack("V", substr($data, 4, 4));
-			$mtime = $mtime[1];
-			$xfl = substr($data, 8, 1);
-			$os = substr($data, 8, 1);
-			$headerlen = 10;
-			$extralen = 0;
-			$extra = "";
-			if ($flags & 4) {
-				// 2-byte length prefixed EXTRA data in header
-				if ($len - $headerlen - 2 < 8) {
-					return false; // invalid
-				}
-				$extralen = unpack("v", substr($data, 8, 2));
-				$extralen = $extralen[1];
-				if ($len - $headerlen - 2 - $extralen < 8) {
-					return false; // invalid
-				}
-				$extra = substr($data, 10, $extralen);
-				$headerlen += 2 + $extralen;
-			}
-			$filenamelen = 0;
-			$filename = "";
-			if ($flags & 8) {
-				// C-style string
-				if ($len - $headerlen - 1 < 8) {
-					return false; // invalid
-				}
-				$filenamelen = strpos(substr($data, $headerlen), chr(0));
-				if ($filenamelen === false || $len - $headerlen - $filenamelen - 1 < 8) {
-					return false; // invalid
-				}
-				$filename = substr($data, $headerlen, $filenamelen);
-				$headerlen += $filenamelen + 1;
-			}
-			$commentlen = 0;
-			$comment = "";
-			if ($flags & 16) {
-				// C-style string COMMENT data in header
-				if ($len - $headerlen - 1 < 8) {
-					return false; // invalid
-				}
-				$commentlen = strpos(substr($data, $headerlen), chr(0));
-				if ($commentlen === false || $len - $headerlen - $commentlen - 1 < 8) {
-					return false; // Invalid header format
-				}
-				$comment = substr($data, $headerlen, $commentlen);
-				$headerlen += $commentlen + 1;
-			}
-			$headercrc = "";
-			if ($flags & 2) {
-				// 2-bytes (lowest order) of CRC32 on header present
-				if ($len - $headerlen - 2 < 8) {
-					return false; // invalid
-				}
-				$calccrc = crc32(substr($data, 0, $headerlen)) & 0xffff;
-				$headercrc = unpack("v", substr($data, $headerlen, 2));
-				$headercrc = $headercrc[1];
-				if ($headercrc != $calccrc) {
-					$error = "Header checksum failed.";
-					return false; // Bad header CRC
-				}
-				$headerlen += 2;
-			}
-			// GZIP FOOTER
-			$datacrc = unpack("V", substr($data, -8, 4));
-			$datacrc = sprintf('%u', $datacrc[1] & 0xFFFFFFFF);
-			$isize = unpack("V", substr($data, -4));
-			$isize = $isize[1];
-			// decompression:
-			$bodylen = $len - $headerlen - 8;
-			if ($bodylen < 1) {
-				// IMPLEMENTATION BUG!
-				return null;
-			}
-			$body = substr($data, $headerlen, $bodylen);
-			$data = "";
-			if ($bodylen > 0) {
-				switch ($method) {
-					case 8:
-						// Currently the only supported compression method:
-						$data = gzinflate($body, $maxlength);
-						break;
-					default:
-						$error = "Unknown compression method.";
-						return false;
-				}
-			} // zero-byte body content is allowed
-			  // Verifiy CRC32
-			$crc = sprintf("%u", crc32($data));
-			$crcOK = $crc == $datacrc;
-			$lenOK = $isize == strlen($data);
-			if (!$lenOK || !$crcOK) {
-				$error = ($lenOK ? '' : 'Length check FAILED. ') . ($crcOK ? '' : 'Checksum FAILED.');
-				return false;
-			}
-			return $data;
-		}
-		
-		
+
+        // alternative für gzdecode
+        private function ownGzDecode($data, &$filename = '', &$error = '', $maxlength = null) {
+            $len = strlen($data);
+            if ($len < 18 || strcmp(substr($data, 0, 2), "\x1f\x8b")) {
+                $error = "Not in GZIP format.";
+                return null; // Not GZIP format (See RFC 1952)
+            }
+            $method = ord(substr($data, 2, 1)); // Compression method
+            $flags = ord(substr($data, 3, 1)); // Flags
+            if ($flags & 31 != $flags) {
+                $error = "Reserved bits not allowed.";
+                return null;
+            }
+            // NOTE: $mtime may be negative (PHP integer limitations)
+            $mtime = unpack("V", substr($data, 4, 4));
+            $mtime = $mtime[1];
+            $xfl = substr($data, 8, 1);
+            $os = substr($data, 8, 1);
+            $headerlen = 10;
+            $extralen = 0;
+            $extra = "";
+            if ($flags & 4) {
+                // 2-byte length prefixed EXTRA data in header
+                if ($len - $headerlen - 2 < 8) {
+                    return false; // invalid
+                }
+                $extralen = unpack("v", substr($data, 8, 2));
+                $extralen = $extralen[1];
+                if ($len - $headerlen - 2 - $extralen < 8) {
+                    return false; // invalid
+                }
+                $extra = substr($data, 10, $extralen);
+                $headerlen += 2 + $extralen;
+            }
+            $filenamelen = 0;
+            $filename = "";
+            if ($flags & 8) {
+                // C-style string
+                if ($len - $headerlen - 1 < 8) {
+                    return false; // invalid
+                }
+                $filenamelen = strpos(substr($data, $headerlen), chr(0));
+                if ($filenamelen === false || $len - $headerlen - $filenamelen - 1 < 8) {
+                    return false; // invalid
+                }
+                $filename = substr($data, $headerlen, $filenamelen);
+                $headerlen += $filenamelen + 1;
+            }
+            $commentlen = 0;
+            $comment = "";
+            if ($flags & 16) {
+                // C-style string COMMENT data in header
+                if ($len - $headerlen - 1 < 8) {
+                    return false; // invalid
+                }
+                $commentlen = strpos(substr($data, $headerlen), chr(0));
+                if ($commentlen === false || $len - $headerlen - $commentlen - 1 < 8) {
+                    return false; // Invalid header format
+                }
+                $comment = substr($data, $headerlen, $commentlen);
+                $headerlen += $commentlen + 1;
+            }
+            $headercrc = "";
+            if ($flags & 2) {
+                // 2-bytes (lowest order) of CRC32 on header present
+                if ($len - $headerlen - 2 < 8) {
+                    return false; // invalid
+                }
+                $calccrc = crc32(substr($data, 0, $headerlen)) & 0xffff;
+                $headercrc = unpack("v", substr($data, $headerlen, 2));
+                $headercrc = $headercrc[1];
+                if ($headercrc != $calccrc) {
+                    $error = "Header checksum failed.";
+                    return false; // Bad header CRC
+                }
+                $headerlen += 2;
+            }
+            // GZIP FOOTER
+            $datacrc = unpack("V", substr($data, -8, 4));
+            $datacrc = sprintf('%u', $datacrc[1] & 0xFFFFFFFF);
+            $isize = unpack("V", substr($data, -4));
+            $isize = $isize[1];
+            // decompression:
+            $bodylen = $len - $headerlen - 8;
+            if ($bodylen < 1) {
+                // IMPLEMENTATION BUG!
+                return null;
+            }
+            $body = substr($data, $headerlen, $bodylen);
+            $data = "";
+            if ($bodylen > 0) {
+                switch ($method) {
+                    case 8:
+                        // Currently the only supported compression method:
+                        $data = gzinflate($body, $maxlength);
+                        break;
+                    default:
+                        $error = "Unknown compression method.";
+                        return false;
+                }
+            } // zero-byte body content is allowed
+              // Verifiy CRC32
+            $crc = sprintf("%u", crc32($data));
+            $crcOK = $crc == $datacrc;
+            $lenOK = $isize == strlen($data);
+            if (!$lenOK || !$crcOK) {
+                $error = ($lenOK ? '' : 'Length check FAILED. ') . ($crcOK ? '' : 'Checksum FAILED.');
+                return false;
+            }
+            return $data;
+        }
     } // END class WP_Spreadplugin
 
     new WP_Spreadplugin();
