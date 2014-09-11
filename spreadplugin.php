@@ -221,6 +221,11 @@ if (!class_exists('WP_Spreadplugin')) {
                     print_r($articleData);
                 }
 
+                if (self::$shopOptions['shop_debug'] == 1) {
+                    echo "Stored Design Data RAW (0):<br>";
+                    print_r($designsData);
+                }
+
                 // built array with articles for sorting and filtering
                 if (is_array($designsData)) {
                     foreach ($designsData as $designId => $arrDesigns) {
@@ -238,22 +243,9 @@ if (!class_exists('WP_Spreadplugin')) {
                     }
                 }
 
-                // Add those articles which have no own designs
-                if (isset($articleData[0]) && is_array($articleData[0])) {
-                    foreach ($articleData[0] as $articleId => $arrArticle) {
-                        $articleCleanData[$articleId] = $arrArticle;
-                        $articleCleanDataComplete[$articleId] = $arrArticle;
-                    }
-
-                    if (self::$shopOptions['shop_debug'] == 1) {
-                        echo "With No own designs (2):<br>";
-                        print_r($articleCleanData);
-                    }
-                }
-
-                // Add those articles which should have designs, but no designs found - in some cases
-                if (empty($designsData) && !empty($articleData)) {
-                    foreach ($articleData as $designId => $arrDesigns) {
+                // Add all those articles with no own designs and other cases - maybe overwrite them
+                if (!empty($articleData)) {
+                    foreach ($articleData as $arrDesigns) {
                         if (!empty($arrDesigns)) {
                             foreach ($arrDesigns as $articleId => $arrArticle) {
                                 $articleCleanData[$articleId] = $arrArticle;
@@ -263,7 +255,7 @@ if (!class_exists('WP_Spreadplugin')) {
                     }
 
                     if (self::$shopOptions['shop_debug'] == 1) {
-                        echo "With some cases (3):<br>";
+                        echo "With some cases (2):<br>";
                         print_r($articleCleanData);
                     }
                 }
