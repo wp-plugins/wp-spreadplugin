@@ -216,6 +216,11 @@ if (!class_exists('WP_Spreadplugin')) {
                 // get designs data
                 $designsData = self::getCacheDesignsData();
 
+                if (self::$shopOptions['shop_debug'] == 1) {
+                    echo "Stored Article Data RAW (0):<br>";
+                    print_r($articleData);
+                }
+
                 // built array with articles for sorting and filtering
                 if (is_array($designsData)) {
                     foreach ($designsData as $designId => $arrDesigns) {
@@ -226,6 +231,11 @@ if (!class_exists('WP_Spreadplugin')) {
                             }
                         }
                     }
+
+                    if (self::$shopOptions['shop_debug'] == 1) {
+                        echo "With Design (1):<br>";
+                        print_r($articleCleanData);
+                    }
                 }
 
                 // Add those articles which have no own designs
@@ -233,6 +243,11 @@ if (!class_exists('WP_Spreadplugin')) {
                     foreach ($articleData[0] as $articleId => $arrArticle) {
                         $articleCleanData[$articleId] = $arrArticle;
                         $articleCleanDataComplete[$articleId] = $arrArticle;
+                    }
+
+                    if (self::$shopOptions['shop_debug'] == 1) {
+                        echo "With No own designs (2):<br>";
+                        print_r($articleCleanData);
                     }
                 }
 
@@ -245,6 +260,11 @@ if (!class_exists('WP_Spreadplugin')) {
                                 $articleCleanDataComplete[$articleId] = $arrArticle;
                             }
                         }
+                    }
+
+                    if (self::$shopOptions['shop_debug'] == 1) {
+                        echo "With some cases (3):<br>";
+                        print_r($articleCleanData);
                     }
                 }
 
