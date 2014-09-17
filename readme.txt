@@ -165,7 +165,7 @@ Activate by changing shop_display="0" to shop_display="1" or change it in the ad
 
 = It shows old articles =
 
-Please go to the settings page in the admin panel of the plugin and click "Clear cache". 
+Please go to the settings page in the admin panel of the plugin and click "Rebuild cache". 
 
 = I want to use more than one shop on the same website =
 
