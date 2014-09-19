@@ -580,6 +580,8 @@ if (!class_exists('WP_Spreadplugin')) {
             }
             if ($stringXmlShopBase['body'][0] != '<') die($stringXmlShopBase['body']);
             $stringXmlShopBase = wp_remote_retrieve_body($stringXmlShopBase);
+			// Quickfix for Namespace changes of Spreadshirt API
+			$stringXmlShopBase = str_replace('<ns3:','<',$stringXmlShopBase);
             $objArticlesBase = new SimpleXmlElement($stringXmlShopBase);
             if (!is_object($objArticlesBase)) {
                 if (self::$shopOptions['shop_debug'] == 1) {
@@ -606,6 +608,8 @@ if (!class_exists('WP_Spreadplugin')) {
                 'timeout' => 120
             ));
             $stringTypeXml = wp_remote_retrieve_body($stringTypeXml);
+			// Quickfix for Namespace changes of Spreadshirt API
+			$stringTypeXml = str_replace('<ns3:','<',$stringTypeXml);
             $objTypes = new SimpleXmlElement($stringTypeXml);
 
             if (is_object($objTypes)) {
@@ -639,6 +643,8 @@ if (!class_exists('WP_Spreadplugin')) {
                 'timeout' => 120
             ));
             $stringTypeXml = wp_remote_retrieve_body($stringTypeXml);
+			// Quickfix for Namespace changes of Spreadshirt API
+			$stringTypeXml = str_replace('<ns3:','<',$stringTypeXml);
             $objTypes = new SimpleXmlElement($stringTypeXml);
 
             $countryCode = explode("_", self::$shopOptions['shop_locale']);
@@ -706,6 +712,8 @@ if (!class_exists('WP_Spreadplugin')) {
             ));
             if ($stringXmlShop['body'][0] != '<') return 'Body error: ' . $stringXmlShop['body'];
             $stringXmlShop = wp_remote_retrieve_body($stringXmlShop);
+			// Quickfix for Namespace changes of Spreadshirt API
+			$stringXmlShop = str_replace('<ns3:','<',$stringXmlShop);
 
             if (substr($stringXmlShop, 0, 5) != "<?xml") {
                 return 'Error fetching URL: ' . $apiUrl;
@@ -720,6 +728,8 @@ if (!class_exists('WP_Spreadplugin')) {
                     'timeout' => 120
                 ));
                 $stringXmlArticle = wp_remote_retrieve_body($url);
+				// Quickfix for Namespace changes of Spreadshirt API
+				$stringXmlArticle = str_replace('<ns3:','<',$stringXmlArticle);
 
                 if (substr($stringXmlArticle, 0, 5) == "<?xml") {
                     $objArticleData = new SimpleXmlElement($stringXmlArticle);
@@ -728,7 +738,9 @@ if (!class_exists('WP_Spreadplugin')) {
                 $url = wp_remote_get((string)$article->price->currency->attributes('http://www.w3.org/1999/xlink'));
                 $stringXmlCurreny = wp_remote_retrieve_body($url);
                 if (substr($stringXmlCurreny, 0, 5) == "<?xml") {
-                    $objCurrencyData = new SimpleXmlElement($stringXmlCurreny);
+					// Quickfix for Namespace changes of Spreadshirt API
+					$stringXmlCurreny = str_replace('<ns3:','<',$stringXmlCurreny);
+					$objCurrencyData = new SimpleXmlElement($stringXmlCurreny);
                 }
 
                 $url = wp_remote_get((string)$article->product->attributes('http://www.w3.org/1999/xlink') . '?' . (!empty(self::$shopOptions['shop_locale']) ? 'locale=' . self::$shopOptions['shop_locale'] . '&noCache=true' : '&noCache=true'), array(
@@ -746,6 +758,8 @@ if (!class_exists('WP_Spreadplugin')) {
                         ));
                         $stringXmlPrint = wp_remote_retrieve_body($url);
                         if (substr($stringXmlPrint, 0, 5) == "<?xml") {
+							// Quickfix for Namespace changes of Spreadshirt API
+							$stringXmlPrint = str_replace('<ns3:','<',$stringXmlPrint);
                             $objPrintData = new SimpleXmlElement($stringXmlPrint);
                         }
                     }
@@ -897,6 +911,8 @@ if (!class_exists('WP_Spreadplugin')) {
             if (isset($stringXmlShop->errors) && count($stringXmlShop->errors) > 0) die('Error getting articles. Please check Shop-ID, API and secret.');
             if ($stringXmlShop['body'][0] != '<') die($stringXmlShop['body']);
             $stringXmlShop = wp_remote_retrieve_body($stringXmlShop);
+			// Quickfix for Namespace changes of Spreadshirt API
+			$stringXmlShop = str_replace('<ns3:','<',$stringXmlShop);
             $objArticles = new SimpleXmlElement($stringXmlShop);
             if (!isset($objArticles) || !is_object($objArticles)) die('Articles not loaded');
 
@@ -910,7 +926,9 @@ if (!class_exists('WP_Spreadplugin')) {
             if (isset($stringXmlShop->errors) && count($stringXmlShop->errors) > 0) die('Error getting articles. Please check your Shop-ID.');
             if ($stringXmlShop['body'][0] != '<') die($stringXmlShop['body']);
             $stringXmlShop = wp_remote_retrieve_body($stringXmlShop);
-            $objArticles = new SimpleXmlElement($stringXmlShop);
+ 			// Quickfix for Namespace changes of Spreadshirt API
+			$stringXmlShop = str_replace('<ns3:','<',$stringXmlShop);
+           $objArticles = new SimpleXmlElement($stringXmlShop);
             if (!is_object($objArticles)) die('Designs not loaded');
 
             if ($objArticles['count'] > 0) {
@@ -1449,6 +1467,8 @@ if (!class_exists('WP_Spreadplugin')) {
             $header[] = self::createAuthHeader("GET", $basketCheckoutUrl);
             $header[] = "Content-Type: application/xml";
             $result = self::oldHttpRequest($basketCheckoutUrl, $header, 'GET');
+			// Quickfix for Namespace changes of Spreadshirt API
+			$result = str_replace('<ns3:','<',$result);
 
             if ($result[0] == '<') {
                 $checkoutRef = new SimpleXMLElement($result);
@@ -1520,6 +1540,8 @@ if (!class_exists('WP_Spreadplugin')) {
                 $header[] = "Content-Type: application/xml";
                 $result = self::oldHttpRequest($basketUrl, $header, 'GET');
                 if ($result[0] == '<') {
+					// Quickfix for Namespace changes of Spreadshirt API
+					$result = str_replace('<ns3:','<',$result);
                     $basket = new SimpleXMLElement($result);
                 }
             }
@@ -1817,6 +1839,8 @@ if (!class_exists('WP_Spreadplugin')) {
                 if (count($stringXmlShop->errors) > 0) die('Error getting basket.');
                 if ($stringXmlShop['body'][0] != '<') die($stringXmlShop['body']);
                 $stringXmlShop = wp_remote_retrieve_body($stringXmlShop);
+				// Quickfix for Namespace changes of Spreadshirt API
+				$stringXmlShop = str_replace('<ns3:','<',$stringXmlShop);
                 $objShop = new SimpleXmlElement($stringXmlShop);
                 if (!is_object($objShop)) die('Basket not loaded');
 
@@ -2318,6 +2342,8 @@ if (!class_exists('WP_Spreadplugin')) {
                             if (isset($stringXmlShop->errors) && count($stringXmlShop->errors) > 0) die('Error getting articles. Please check Shop-ID, API and secret.');
                             if ($stringXmlShop['body'][0] != '<') die($stringXmlShop['body']);
                             $stringXmlShop = wp_remote_retrieve_body($stringXmlShop);
+							// Quickfix for Namespace changes of Spreadshirt API
+							$stringXmlShop = str_replace('<ns3:','<',$stringXmlShop);
                             $objArticles = new SimpleXmlElement($stringXmlShop);
                             if (!is_object($objArticles)) die('Articles not loaded');
 
@@ -2337,6 +2363,8 @@ if (!class_exists('WP_Spreadplugin')) {
                             if (isset($stringXmlShop->errors) && count($stringXmlShop->errors) > 0) die('Error getting articles. Please check Shop-ID, API and secret.');
                             if ($stringXmlShop['body'][0] != '<') die($stringXmlShop['body']);
                             $stringXmlShop = wp_remote_retrieve_body($stringXmlShop);
+							// Quickfix for Namespace changes of Spreadshirt API
+							$stringXmlShop = str_replace('<ns3:','<',$stringXmlShop);
                             $objArticles = new SimpleXmlElement($stringXmlShop);
                             if (!is_object($objArticles)) die('Articles not loaded');
 
