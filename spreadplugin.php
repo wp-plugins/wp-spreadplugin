@@ -28,7 +28,7 @@ if (!class_exists('WP_Spreadplugin')) {
             'shop_id' => '','shop_locale' => '','shop_api' => '','shop_source' => '','shop_secret' => '','shop_limit' => '','shop_category' => '','shop_social' => '','shop_enablelink' => '','shop_productcategory' => '','shop_productsubcategory' => '','shop_sortby' => '','shop_linktarget' => '','shop_checkoutiframe' => '','shop_designershop' => '','shop_display' => '','shop_designsbackground' => '','shop_showdescription' => '','shop_showproductdescription' => '','shop_imagesize' => '','shop_showextendprice' => '','shop_zoomimagebackground' => '','shop_infinitescroll' => '','shop_customcss' => '','shop_design' => '','shop_view' => '','shop_zoomtype' => '','shop_lazyload' => '','shop_language' => '','shop_basket_text_icon' => '','shop_debug' => '','shop_sleep' => '','shop_designer' => ''
         );
 
-        private static $shopCache = 8760; // Shop article cache in hours 24*365 => 1 year
+        private static $shopCache = 0; // Shop article cache - never expires
         public function __construct() {
             add_action('init', array(
                 &$this,'startSession'
@@ -956,7 +956,7 @@ if (!class_exists('WP_Spreadplugin')) {
                     $i++;
                 }
 
-                set_transient('spreadplugin2-designs-cache-' . $pageId, $articleData, self::$shopCache * 3600);
+                set_transient('spreadplugin2-designs-cache-' . $pageId, $articleData, self::$shopCache);
             }
         }
 
@@ -2215,7 +2215,7 @@ if (!class_exists('WP_Spreadplugin')) {
                             if (!empty($_SESSION['_tempArticleCache'][$_pageid])) {
 
                                 // build cache from session data
-                                set_transient('spreadplugin2-article-cache-' . $_pageid, $_SESSION['_tempArticleCache'][$_pageid], self::$shopCache * 3600);
+                                set_transient('spreadplugin2-article-cache-' . $_pageid, $_SESSION['_tempArticleCache'][$_pageid], self::$shopCache);
 
                                 die('Done');
                             }
