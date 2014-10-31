@@ -106,7 +106,7 @@ The currency bases on the currency you're using for your Spreadshirt Shop. So if
 
 = How do I get the category Id? =
 
-1. You must have already created a category in your spreadshirt shop, if not, please do so, now. Please refer to spreadshirt, if you don't know how.
+1. You must have already created a category in your spreadshirt shop (http://www.spreadshirt.com/help-C1328/categoryId/3/articleId/147), if not, please do so, now. Please refer to spreadshirt, if you don't know how.
 2. Please open your normal spreadshirt shop (shopid.spreadshirt.net). In my case: http://welovetee.spreadshirt.de/
 3. Choose a category from the category selection.
 4. The url of your shop has changed to `http://welovetee.spreadshirt.de/alsterwasser-C300890` in my case
