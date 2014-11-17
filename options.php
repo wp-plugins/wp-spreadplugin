@@ -338,7 +338,7 @@ if (is_user_logged_in() && is_admin()) {
           </h4>
           <p>[spreadplugin]</p>
           <h4>
-            <?php _e('Extended sample shortcode','spreadplugin'); ?>
+            <?php _e('Extended sample shortcode','spreadplugin'); ?> (only for experienced users)
           </h4>
           <p>
             <?php _e('The extended shortcodes will overwrite the default settings. You may use it to create a different shop with the same plugin.'); ?>
