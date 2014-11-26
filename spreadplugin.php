@@ -2280,7 +2280,8 @@ if (!class_exists('WP_Spreadplugin')) {
          * @TODO find a different way
          */
         public function reparseShortcodeData($pageId = 0) {
-            $pageData = get_page(($pageId == 0 ? intval($_GET['pageid']) : $pageId));
+			$pageId = ($pageId == 0 ? intval($_GET['pageid']) : $pageId);
+            $pageData = get_page($pageId);
             $pageContent = $pageData->post_content;
 
             // get admin options (default option set on admin page)
