@@ -1001,7 +1001,7 @@ if (!class_exists('WP_Spreadplugin')) {
                 $output .= '<div class="size-wrapper clearfix"><span>' . __('Size', $this->stringTextdomain) . ':</span> <select id="size-select" name="size">';
 
                 foreach ($article['sizes'] as $k => $v) {
-                    $output .= '<option value="' . $k . '">' . $v['name'] . '</option>';
+                    $output .= '<option value="' . $k . '">' . (!empty($v['name'])?$v['name']:$k) . '</option>';
                 }
 
                 $output .= '</select></div>';
@@ -1177,7 +1177,7 @@ if (!class_exists('WP_Spreadplugin')) {
                 $output .= '<div class="size-wrapper clearfix"><span>' . __('Size', $this->stringTextdomain) . ':</span> <select id="size-select" name="size">';
 
                 foreach ($article['sizes'] as $k => $v) {
-                    $output .= '<option value="' . $k . '">' . $v['name'] . '</option>';
+                    $output .= '<option value="' . $k . '">' . (!empty($v['name'])?$v['name']:$k) . '</option>';
                 }
 
                 $output .= '</select></div>';
@@ -1301,7 +1301,7 @@ if (!class_exists('WP_Spreadplugin')) {
                 $output .= '<div class="size-wrapper clearfix"><span>' . __('Size', $this->stringTextdomain) . ':</span> <select id="size-select" name="size">';
 
                 foreach ($article['sizes'] as $k => $v) {
-                    $output .= '<option value="' . $k . '">' . $v['name'] . '</option>';
+                    $output .= '<option value="' . $k . '">' . (!empty($v['name'])?$v['name']:$k) . '</option>';
                 }
 
                 $output .= '</select></div>';
@@ -1960,7 +1960,7 @@ if (!class_exists('WP_Spreadplugin')) {
                 $output .= '<div class="size-wrapper clearfix"><span>' . __('Size', $this->stringTextdomain) . ':</span> <select id="size-select" name="size">';
 
                 foreach ($article['sizes'] as $k => $v) {
-                    $output .= '<option value="' . $k . '">' . $v['name'] . '</option>';
+                    $output .= '<option value="' . $k . '">' . (!empty($v['name'])?$v['name']:$k) . '</option>';
                 }
 
                 $output .= '</select></div>';
@@ -2052,7 +2052,7 @@ if (!class_exists('WP_Spreadplugin')) {
 
             if (isset($article['sizes']) && is_array($article['sizes'])) {
                 foreach ($article['sizes'] as $k => $v) {
-                    $output .= '<th>' . $v['name'] . '</th>';
+                    $output .= '<th>' . (!empty($v['name'])?$v['name']:$k) . '</th>';
                 }
             }
 
@@ -2066,7 +2066,7 @@ if (!class_exists('WP_Spreadplugin')) {
 
             if (isset($article['sizes']) && is_array($article['sizes'])) {
                 foreach ($article['sizes'] as $k => $v) {
-                    $output .= '<td>' . ($_toInches ? self::mmToIn($v['measures'][0]['value']) : $v['measures'][0]['value']) . '</td>';
+                    $output .= '<td>' . (!empty($v['measures'][0]['value'])?($_toInches ? self::mmToIn($v['measures'][0]['value']) : $v['measures'][0]['value']):$k) . '</td>';
                 }
             }
 
@@ -2078,7 +2078,7 @@ if (!class_exists('WP_Spreadplugin')) {
 
             if (isset($article['sizes']) && is_array($article['sizes'])) {
                 foreach ($article['sizes'] as $k => $v) {
-                    $output .= '<td>' . ($_toInches ? self::mmToIn($v['measures'][1]['value']) : $v['measures'][1]['value']) . '</td>';
+                    $output .= '<td>' . (!empty($v['measures'][1]['value'])?($_toInches ? self::mmToIn($v['measures'][1]['value']) : $v['measures'][1]['value']):$k) . '</td>';
                 }
             }
 
