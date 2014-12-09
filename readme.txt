@@ -111,7 +111,7 @@ The currency bases on the currency you're using for your Spreadshirt Shop. So if
 3. Choose a category from the category selection.
 4. The url of your shop has changed to `http://welovetee.spreadshirt.de/alsterwasser-C300890` in my case
 5. The category Id in this case is `300890` (the numbers after the "-C" part)
-6. Paste this number in the `shop_category=""` variable. In my case `shop_cagegory="300890"`.
+6. Paste this number in the `shop_category=""` variable. In my case `shop_category="300890"`.
 7. Save and done.
 
 = How to display one category per page? (Custom categories) =
@@ -119,7 +119,7 @@ The currency bases on the currency you're using for your Spreadshirt Shop. So if
 1. Please see `How do I get the category Id?` 
 2. If you have got your category id, create a page in wordpress
 3. Go to text mode
-4. Paste extended shortcode (you don't need all values, just the one you want to overwrite) `[spreadplugin shop_cagegory="CATEGORYID"]`
+4. Paste extended shortcode (you don't need all values, just the one you want to overwrite) `[spreadplugin shop_category="CATEGORYID"]`
 5. Save and repeat by each category you want to display.
 
 = How to display one pre-defined category per page? =
