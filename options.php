@@ -2,6 +2,8 @@
 
 if (is_user_logged_in() && is_admin()) {
 	
+	load_plugin_textdomain($this->stringTextdomain, false, dirname(plugin_basename(__FILE__)) . '/translation');
+	
 	$adminSettings = $this->defaultOptions;
 
 	if (isset($_POST['update-splg_options'])) {//save option changes
@@ -102,22 +104,22 @@ if (is_user_logged_in() && is_admin()) {
                 <td valign="top"><?php _e('Product category:','spreadplugin'); ?></td>
                 <td><select name="shop_productcategory" id="shop_productcategory">
                     <option value="">
-                    <?php _e('All products'); ?>
+                    <?php _e('All products','spreadplugin'); ?>
                     </option>
-                    <option value="<?php _e('Men'); ?>"<?php echo ($adminOptions['shop_productcategory']==__('Men')?" selected":""); ?>>
-                    <?php _e('Men'); ?>
+                    <option value="<?php _e('Men','spreadplugin'); ?>"<?php echo ($adminOptions['shop_productcategory']==__('Men','spreadplugin')?" selected":""); ?>>
+                    <?php _e('Men','spreadplugin'); ?>
                     </option>
-                    <option value="<?php _e('Women'); ?>"<?php echo ($adminOptions['shop_productcategory']==__('Women')?" selected":""); ?>>
-                    <?php _e('Women'); ?>
+                    <option value="<?php _e('Women'); ?>"<?php echo ($adminOptions['shop_productcategory']==__('Women','spreadplugin')?" selected":""); ?>>
+                    <?php _e('Women','spreadplugin'); ?>
                     </option>
-                    <option value="<?php _e('Kids & Babies'); ?>"<?php echo ($adminOptions['shop_productcategory']==__('Kids & Babies')?" selected":""); ?>>
-                    <?php _e('Kids & Babies'); ?>
+                    <option value="<?php _e('Kids & Babies'); ?>"<?php echo ($adminOptions['shop_productcategory']==__('Kids & Babies','spreadplugin')?" selected":""); ?>>
+                    <?php _e('Kids & Babies','spreadplugin'); ?>
                     </option>
-                    <option value="<?php _e('Accessories'); ?>"<?php echo ($adminOptions['shop_productcategory']==__('Accessories')?" selected":""); ?>>
-                    <?php _e('Accessories'); ?>
+                    <option value="<?php _e('Accessories'); ?>"<?php echo ($adminOptions['shop_productcategory']==__('Accessories','spreadplugin')?" selected":""); ?>>
+                    <?php _e('Accessories','spreadplugin'); ?>
                     </option>
-                    <option value="<?php _e('New Products'); ?>"<?php echo ($adminOptions['shop_productcategory']==__('New Products')?" selected":""); ?>>
-                    <?php _e('New Products'); ?>
+                    <option value="<?php _e('New Products'); ?>"<?php echo ($adminOptions['shop_productcategory']==__('New Products','spreadplugin')?" selected":""); ?>>
+                    <?php _e('New Products','spreadplugin'); ?>
                     </option>
                   </select></td>
               </tr>
