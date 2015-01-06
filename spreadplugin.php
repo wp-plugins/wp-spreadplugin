@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.8.1
+ * Version: 3.8.2
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -1913,7 +1913,7 @@ if (!class_exists('WP_Spreadplugin')) {
 
             $output = '<div class="spreadplugin-article-detail" id="article_' . $id . '">';
             $output .= '<a name="' . $id . '"></a>';
-            $output .= '<form method="post" id="form_' . $id . '"><table><tr><td>';
+            $output .= '<form method="post" id="form_' . $id . '"><div class="articleContentLeft">';
 
             // edit article button
             if (self::$shopOptions['shop_designershop'] > 0) {
@@ -1945,7 +1945,7 @@ if (!class_exists('WP_Spreadplugin')) {
                 $output .= ' <div class="details-wrapper2"><a href="//' . self::$shopOptions['shop_id'] . '.spreadshirt.' . self::$shopOptions['shop_source'] . '/-A' . $id . '" target="_blank">' . __('Additional details', $this->stringTextdomain) . '</a></div>';
             }
 
-            $output .= '</td><td><h3>' . (!empty($article['name']) ? htmlspecialchars($article['name'], ENT_QUOTES) : '') . '</h3>';
+            $output .= '</div><div class="articleContentRight"><h3>' . (!empty($article['name']) ? htmlspecialchars($article['name'], ENT_QUOTES) : '') . '</h3>';
 
             // Show description link if not empty
             if (!empty($article['description'])) {
@@ -2014,9 +2014,7 @@ if (!class_exists('WP_Spreadplugin')) {
                  */
             }
             $output .= '
-			</td>
-			</tr>
-			</table>
+			</div>
 			</form>
 			';
 
