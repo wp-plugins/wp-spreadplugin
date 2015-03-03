@@ -191,7 +191,7 @@ if (is_user_logged_in() && is_admin()) {
                   <?php _e('Premium Designer Shop Id','spreadplugin'); ?>
                   <input type="text" name="shop_designershop" value="<?php echo $adminOptions['shop_designershop']; ?>" class="only-digit" />
                   <br />
-                  <?php _e('If you have a designer Shop (Spreadshirt premium account), enter the ID here. A new link will appear where the customer can change the design.','spreadplugin'); ?></div></td>
+                  <?php _e('If you have a designer Shop activated, enter the ID here. A new link will appear where the customer can change the design.','spreadplugin'); ?></div></td>
               </tr>
               <tr>
                 <td valign="top"><?php _e('Default display:','spreadplugin'); ?></td>

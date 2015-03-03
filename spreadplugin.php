@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.8.2
+ * Version: 3.8.3
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -977,7 +977,7 @@ if (!class_exists('WP_Spreadplugin')) {
 
             // edit article button
             if (self::$shopOptions['shop_designer'] == 1) {
-                $output .= ' <div class="edit-wrapper-integrated" data-designid="' . $article['designid'] . '" data-productid="' . $article['productid'] . '" data-viewid="' . $article['view'] . '" data-appearanceid="' . $article['appearance'] . '" data-producttypeid="' . $article['type'] . '"><img src="' . plugins_url('/img/edit.png', __FILE__) . '"></div>';
+                $output .= ' <div class="edit-wrapper-integrated" data-designid="' . $article['designid'] . '" data-productid="' . (!empty($article['productid'])?$article['productid']:'') . '" data-viewid="' . $article['view'] . '" data-appearanceid="' . $article['appearance'] . '" data-producttypeid="' . $article['type'] . '"><img src="' . plugins_url('/img/edit.png', __FILE__) . '"></div>';
             } else
                 if (self::$shopOptions['shop_designer'] == 2 && self::$shopOptions['shop_designershop'] > 0) {
                     $output .= ' <div class="edit-wrapper"><a href="//' . self::$shopOptions['shop_designershop'] . '.spreadshirt.' . self::$shopOptions['shop_source'] . '/-D1/customize/product/' . $article['productId'] . '?noCache=true" target="' . self::$shopOptions['shop_linktarget'] . '" title="' . __('Edit article', $this->stringTextdomain) . '"><img src="' . plugins_url('/img/edit.png', __FILE__) . '"></a></div>';
@@ -1133,7 +1133,7 @@ if (!class_exists('WP_Spreadplugin')) {
 
             // edit article button
             if (self::$shopOptions['shop_designer'] == 1) {
-                $output .= ' <div class="edit-wrapper-integrated" data-designid="' . $article['designid'] . '" data-productid="' . $article['productid'] . '" data-viewid="' . $article['view'] . '" data-appearanceid="' . $article['appearance'] . '" data-producttypeid="' . $article['type'] . '"><img src="' . plugins_url('/img/edit.png', __FILE__) . '"></div>';
+                $output .= ' <div class="edit-wrapper-integrated" data-designid="' . $article['designid'] . '" data-productid="' . (!empty($article['productid'])?$article['productid']:'') . '" data-viewid="' . $article['view'] . '" data-appearanceid="' . $article['appearance'] . '" data-producttypeid="' . $article['type'] . '"><img src="' . plugins_url('/img/edit.png', __FILE__) . '"></div>';
             } else
                 if (self::$shopOptions['shop_designer'] == 2 && self::$shopOptions['shop_designershop'] > 0) {
                     $output .= ' <div class="edit-wrapper"><a href="//' . self::$shopOptions['shop_designershop'] . '.spreadshirt.' . self::$shopOptions['shop_source'] . '/-D1/customize/product/' . $article['productId'] . '?noCache=true" target="' . self::$shopOptions['shop_linktarget'] . '" title="' . __('Edit article', $this->stringTextdomain) . '"><img src="' . plugins_url('/img/edit.png', __FILE__) . '"></a></div>';
@@ -1271,7 +1271,7 @@ if (!class_exists('WP_Spreadplugin')) {
 
             // edit article button
             if (self::$shopOptions['shop_designer'] == 1) {
-                $output .= ' <div class="edit-wrapper-integrated" data-designid="' . $article['designid'] . '" data-productid="' . $article['productid'] . '" data-viewid="' . $article['view'] . '" data-appearanceid="' . $article['appearance'] . '" data-producttypeid="' . $article['type'] . '"><img src="' . plugins_url('/img/edit.png', __FILE__) . '"></div>';
+                $output .= ' <div class="edit-wrapper-integrated" data-designid="' . $article['designid'] . '" data-productid="' . (!empty($article['productid'])?$article['productid']:'') . '" data-viewid="' . $article['view'] . '" data-appearanceid="' . $article['appearance'] . '" data-producttypeid="' . $article['type'] . '"><img src="' . plugins_url('/img/edit.png', __FILE__) . '"></div>';
             } else
                 if (self::$shopOptions['shop_designer'] == 2 && self::$shopOptions['shop_designershop'] > 0) {
                     $output .= ' <div class="edit-wrapper"><a href="//' . self::$shopOptions['shop_designershop'] . '.spreadshirt.' . self::$shopOptions['shop_source'] . '/-D1/customize/product/' . $article['productId'] . '?noCache=true" target="' . self::$shopOptions['shop_linktarget'] . '" title="' . __('Edit article', $this->stringTextdomain) . '"><img src="' . plugins_url('/img/edit.png', __FILE__) . '"></a></div>';
