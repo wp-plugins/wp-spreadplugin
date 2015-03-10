@@ -72,27 +72,15 @@ http://welovetee.spreadshirt.net or http://welovetee.spreadshirt.com
 == Installation ==
 
 1. Upload the spreadplugin directory to the `/wp-content/plugins/wp-spreadplugin` Directory (if not exists please create) or install using wordpress plugin installer
-2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Edit default settings using `http://YOURBLOGURL/wp-admin/options-general.php?page=splg_options`.
+2. Activate the plugin through the **Plugins** menu in WordPress
+3. Edit default settings using **Spreadplugin Options**
 4. Create a new site or edit an existing site
 5. Insert shortcode
 
-**Minimum**
-
 [spreadplugin]
 
-**Extended**
-
-US/NA:
-`[spreadplugin shop_id="414192" shop_limit="10" shop_locale="us_US" shop_source="com" shop_category="" shop_social="1" shop_enablelink="1" shop_productcategory="" shop_checkoutiframe="2" shop_sortby="" shop_designershop="0" shop_display="0" shop_api="" shop_secret=""]`
-
-EU:
-`[spreadplugin shop_id="732552" shop_limit="10" shop_locale="de_DE" shop_source="net" shop_category="" shop_social="1" shop_enablelink="1" shop_productcategory="" shop_checkoutiframe="2" shop_sortby="" shop_designershop="0" shop_display="0" shop_api="" shop_secret=""]`
-
-6. These values are required: Shop Id, Shop locale, Shop source, Shop API and Shop secret!
-7. When adding default settings, only the minimum shortcode is required. 
-(If you extend the shortcode with additional values, you can overwrite the default settings and use the plugin with an additional shop (add the extended shortcode to a different article/site)).
-8. Done
+6. Go back to **Spreadplugin Options** and click **Rebuild cache**. Please wait until the cache has been rebuild. 
+7. Done
 
 == Frequently asked questions ==
 
