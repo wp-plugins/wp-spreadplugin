@@ -79,7 +79,7 @@ if (is_user_logged_in() && is_admin()) {
                 <td valign="top"><?php _e('Shop source:','spreadplugin'); ?></td>
                 <td><select name="shop_source" id="shop_source" class="required">
                     <option value="net"<?php echo ($adminOptions['shop_source']=='net'?" selected":"") ?>>Europe</option>
-                    <option value="com"<?php echo ($adminOptions['shop_source']=='com'?" selected":"") ?>>US/Canada</option>
+                    <option value="com"<?php echo ($adminOptions['shop_source']=='com'?" selected":"") ?>>US/Canada/Australia/Brazil</option>
                   </select></td>
               </tr>
               <tr>
