@@ -187,13 +187,14 @@ if (is_user_logged_in() && is_admin()) {
                   <?php _e('Integrated [BETA] (All marketplace designs are shown on design tab)','spreadplugin'); ?>
                   <br />
                   <input type="radio" name="shop_designer" value="2"<?php echo ($adminOptions['shop_designer']==2?" checked":"") ?> />
-                  <?php _e('Premium (Only designs in your premium designer shop are shown)','spreadplugin'); ?><div id="premium-shop-span">
-                  <br />
-                  <br />
-                  <?php _e('Premium Designer Shop Id','spreadplugin'); ?>
-                  <input type="text" name="shop_designershop" value="<?php echo $adminOptions['shop_designershop']; ?>" class="only-digit" />
-                  <br />
-                  <?php _e('If you have a designer Shop activated, enter the ID here. A new link will appear where the customer can change the design.','spreadplugin'); ?></div></td>
+                  <?php _e('Premium (Only designs in your premium designer shop are shown)','spreadplugin'); ?>
+                  <div id="premium-shop-span"> <br />
+                    <br />
+                    <?php _e('Premium Designer Shop Id','spreadplugin'); ?>
+                    <input type="text" name="shop_designershop" value="<?php echo $adminOptions['shop_designershop']; ?>" class="only-digit" />
+                    <br />
+                    <?php _e('If you have a designer Shop activated, enter the ID here. A new link will appear where the customer can change the design.','spreadplugin'); ?>
+                  </div></td>
               </tr>
               <tr>
                 <td valign="top"><?php _e('Default display:','spreadplugin'); ?></td>
@@ -251,7 +252,8 @@ if (is_user_logged_in() && is_admin()) {
                   <?php _e('List view','spreadplugin'); ?>
                   <br />
                   <input type="radio" name="shop_view" value="2"<?php echo ($adminOptions['shop_view']==2?" checked":"") ?> />
-                  <?php _e('Min view','spreadplugin'); ?> (Disables Zoom, too)</td>
+                  <?php _e('Min view','spreadplugin'); ?>
+                  (Disables Zoom, too)</td>
               </tr>
               <tr>
                 <td valign="top"><?php _e('Basket text or icon:','spreadplugin'); ?></td>
@@ -286,7 +288,8 @@ if (is_user_logged_in() && is_admin()) {
                   <?php _e('Inner','spreadplugin'); ?>
                   <br />
                   <input type="radio" name="shop_zoomtype" value="1"<?php echo ($adminOptions['shop_zoomtype']==1?" checked":"") ?> />
-                  <?php _e('Lens','spreadplugin'); ?><br />
+                  <?php _e('Lens','spreadplugin'); ?>
+                  <br />
                   <input type="radio" name="shop_zoomtype" value="2"<?php echo ($adminOptions['shop_zoomtype']==2?" checked":"") ?> />
                   <?php _e('Disabled','spreadplugin'); ?></td>
               </tr>
@@ -299,6 +302,7 @@ if (is_user_logged_in() && is_admin()) {
                     <option value="da_DK"<?php echo ($adminOptions['shop_language']=='da_DK'?" selected":"") ?>>Dansk</option>
                     <option value="de_DE"<?php echo ($adminOptions['shop_language']=='de_DE'?" selected":"") ?>>Deutsch</option>
                     <option value="nl_NL"<?php echo ($adminOptions['shop_language']=='nl_NL'?" selected":"") ?>>Dutch (Nederlands)</option>
+                    <option value="es_ES"<?php echo ($adminOptions['shop_language']=='es_ES'?" selected":"") ?>>Español</option>
                     <option value="fr_FR"<?php echo ($adminOptions['shop_language']=='fr_FR'?" selected":"") ?>>Français</option>
                     <option value="it_IT"<?php echo ($adminOptions['shop_language']=='it_IT'?" selected":"") ?>>Italiano</option>
                     <option value="nb_NO"<?php echo ($adminOptions['shop_language']=='nb_NO'?" selected":"") ?>>Norsk (Bokmål)</option>
@@ -342,8 +346,8 @@ if (is_user_logged_in() && is_admin()) {
           </h4>
           <p>[spreadplugin]</p>
           <h4>
-            <?php _e('Extended sample shortcode','spreadplugin'); ?> (only for experienced users)
-          </h4>
+            <?php _e('Extended sample shortcode','spreadplugin'); ?>
+            (only for experienced users) </h4>
           <p>
             <?php _e('The extended shortcodes will overwrite the default settings. You may use it to create a different shop with the same plugin.'); ?>
           </p>
