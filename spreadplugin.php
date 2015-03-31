@@ -731,13 +731,13 @@ if (!class_exists('WP_Spreadplugin')) {
 				// Quickfix for Namespace changes of Spreadshirt API
 				$stringXmlArticle = str_replace('<ns3:','<',$stringXmlArticle);
 
-                if (substr($stringXmlArticle, 0, 5) == "<?xml" && substr($stringXmlShop, 0, 5) != "<arti") {
+                if (substr($stringXmlArticle, 0, 5) == "<?xml" && substr($stringXmlShop, 0, 5) != "<prod") {
                     $objArticleData = new SimpleXmlElement($stringXmlArticle);
                 }
 
                 $url = wp_remote_get((string)$article->price->currency->attributes('http://www.w3.org/1999/xlink'));
                 $stringXmlCurreny = wp_remote_retrieve_body($url);
-                if (substr($stringXmlCurreny, 0, 5) == "<?xml") {
+                if (substr($stringXmlCurreny, 0, 5) == "<?xml" || substr($stringXmlCurreny, 0, 5) == "<curr") {
 					// Quickfix for Namespace changes of Spreadshirt API
 					$stringXmlCurreny = str_replace('<ns3:','<',$stringXmlCurreny);
 					$objCurrencyData = new SimpleXmlElement($stringXmlCurreny);
@@ -747,7 +747,7 @@ if (!class_exists('WP_Spreadplugin')) {
                     'timeout' => 120
                 ));
                 $stringXmlProduct = wp_remote_retrieve_body($url);
-                if (substr($stringXmlProduct, 0, 5) == "<?xml") {
+                if (substr($stringXmlProduct, 0, 5) == "<?xml" || substr($stringXmlProduct, 0, 5) == "<prod") {
                     $objProductData = new SimpleXmlElement($stringXmlProduct);
                 }
 
@@ -757,7 +757,7 @@ if (!class_exists('WP_Spreadplugin')) {
                             'timeout' => 120
                         ));
                         $stringXmlPrint = wp_remote_retrieve_body($url);
-                        if (substr($stringXmlPrint, 0, 5) == "<?xml") {
+                        if (substr($stringXmlPrint, 0, 5) == "<?xml" || substr($stringXmlPrint, 0, 5) == "<prin") {
 							// Quickfix for Namespace changes of Spreadshirt API
 							$stringXmlPrint = str_replace('<ns3:','<',$stringXmlPrint);
                             $objPrintData = new SimpleXmlElement($stringXmlPrint);
