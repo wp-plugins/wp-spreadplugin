@@ -197,6 +197,7 @@ Please have a look here: http://themeforest.net/category/wordpress?ref=thimo
 
 = 3.8.5 =
 * Changes in Spreadshirt API
+* Added polish
 
 = 3.8.4 =
 * Added Brazil and Australia for US/Canada
