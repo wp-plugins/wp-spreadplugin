@@ -307,6 +307,7 @@ if (is_user_logged_in() && is_admin()) {
                     <option value="it_IT"<?php echo ($adminOptions['shop_language']=='it_IT'?" selected":"") ?>>Italiano</option>
                     <option value="nb_NO"<?php echo ($adminOptions['shop_language']=='nb_NO'?" selected":"") ?>>Norsk (Bokmål)</option>
                     <option value="nb_NO"<?php echo ($adminOptions['shop_language']=='nn_NO'?" selected":"") ?>>Nynorsk</option>
+                    <option value="pl_PL"<?php echo ($adminOptions['shop_language']=='pl_PL'?" selected":"") ?>>Jezyk polski</option>
                   </select></td>
               </tr>
               <tr>
