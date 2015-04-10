@@ -52,8 +52,8 @@ if (is_user_logged_in() && is_admin()) {
               </tr>
               <tr>
                 <td valign="top"><?php _e('Shop country:','spreadplugin'); ?></td>
-                <td><select name="shop_locale" id="shop_locale" class="required">
-                    <option value="de_DE"<?php echo ($adminOptions['shop_locale']=='de_DE' || empty($adminOptions['shop_locale'])?" selected":"") ?>>Deutschland</option>
+                <td><select name="shop_locale" id="shop_locale">
+                    <option value="de_DE"<?php echo ($adminOptions['shop_locale']=='de_DE'?" selected":"") ?>>Deutschland</option>
                     <option value="fr_FR"<?php echo ($adminOptions['shop_locale']=='fr_FR'?" selected":"") ?>>France</option>
                     <option value="en_GB"<?php echo ($adminOptions['shop_locale']=='en_GB'?" selected":"") ?>>United Kingdom</option>
                     <option value="nl_BE"<?php echo ($adminOptions['shop_locale']=='nl_BE'?" selected":"") ?>>Belgie (Nederlands)</option>
@@ -73,6 +73,7 @@ if (is_user_logged_in() && is_admin()) {
                     <option value="fr_CA"<?php echo ($adminOptions['shop_locale']=='fr_CA'?" selected":"") ?>>Canada (Fran&ccedil;ais)</option>
                     <option value="us_AU"<?php echo ($adminOptions['shop_locale']=='us_AU'?" selected":"") ?>>Australia</option>
                     <option value="us_BR"<?php echo ($adminOptions['shop_locale']=='us_BR'?" selected":"") ?>>Brazil</option>
+                    <option value=""<?php echo (empty($adminOptions['shop_locale'])?" selected":"") ?>>None/Please choose</option>
                   </select></td>
               </tr>
               <tr>
