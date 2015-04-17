@@ -21,14 +21,14 @@
 	padding: 0!important
 }
 .spreadplugin-article, .spreadplugin-article-detail, .spreadplugin-design {
-	float: left;
 	margin-top: 20px;
 	margin-right: 2px;
 	padding: 5px;
 	display: block;
 	min-height: 650px;
 	overflow: hidden;
-	white-space: normal
+	white-space: normal;
+	display:inline-block
 }
 .spreadplugin-article.list-view {
 	min-height: 450px;
@@ -75,7 +75,7 @@
 	list-style: none;
 	margin: 0;
 	padding: 0;
-	background: 0 0
+	background: none;
 }
 .spreadplugin-article input[type=text], .spreadplugin-article-detail input[type=text] {
 	clear: both;
@@ -659,12 +659,13 @@ spreadplugin-items img {
 	padding: 16px!important;
 	z-index: 10;
 	margin: -20px 0 -50px;
-	clear: none
+	display:inline-block
 }
 .spreadplugin-article.min-view {
 	padding: 15px!important;
 	position: relative;
-	z-index: 1
+	z-index: 1;
+	float:none
 }
 .spreadplugin-article.min-view .actions {
 	clear: both;
