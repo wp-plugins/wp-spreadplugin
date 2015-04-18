@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
