@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.8.6.1
+ * Version: 3.8.6.2
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -479,7 +479,7 @@ if (!class_exists('WP_Spreadplugin')) {
 
                         $output .= "<div id=\"pagination\">";
                         if ($cArticleNext > 0) {
-                            $output .= "<a href=\"" . add_query_arg('pagesp', $paged + 1) . "\">" . __('next', $this->stringTextdomain) . "</a>";
+                            $output .= "<a href=\"" . add_query_arg('pagesp', $paged + 1, get_permalink()) . "\">" . __('next', $this->stringTextdomain) . "</a>";
                         }
                         $output .= "</div>";
                     } else {
