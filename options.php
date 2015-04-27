@@ -1,5 +1,7 @@
 <?php 
 
+@define('DONOTCACHEPAGE', true);
+
 if (is_user_logged_in() && is_admin()) {
 	
 	load_plugin_textdomain($this->stringTextdomain, false, dirname(plugin_basename(__FILE__)) . '/translation');
@@ -389,7 +391,165 @@ if (is_user_logged_in() && is_admin()) {
   <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EZLKTKW8UR6PQ" target="_blank"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" alt="Jetzt einfach, schnell und sicher online bezahlen � mit PayPal." /></a>
   <p>All donations or backlinks to <a href="http://lovetee.de/" target="_blank">http://lovetee.de/</a> valued greatly</p>
 </div>
-<script language='javascript' type='text/javascript'>function setMessage(e){jQuery("#message").append(e);jQuery("#message").show()}function rebuildItem(e,t,n){if(n==0){if(typeof e[t].title!=="undefined"){setMessage("Rebuilding Page "+(t+1)+" of "+e.length+"...<br>")}else{setMessage("Rebuilding Page "+(t+1)+" of "+e.length+" ("+e[t].title+")...<br>")}}if(n>=e[t].items.length){setMessage("Done<br>");jQuery.ajax({url:"<?php echo admin_url('admin-ajax.php'); ?>",type:"POST",data:"action=rebuildCache&do=save&_pageid="+e[t].id,timeout:36e4,cache:false,success:function(e){setMessage("Successfully stored page "+t+"<br>")},error:function(e,n,r){setMessage("Error "+e.status+" storing page "+t+"<br>")}});t=t+1;if(e[t]){rebuildItem(e,t,0)}return}setMessage("Rebuilding Item "+(n+1)+" of "+e[t].items.length+" ("+e[t].items[n].articlename+") <img src='"+e[t].items[n].previewimage+"' width='32' height='32'>... ");jQuery.ajax({url:"<?php echo admin_url('admin-ajax.php'); ?>",type:"POST",data:"action=rebuildCache&do=rebuild&_pageid="+e[t].id+"&_articleid="+e[t].items[n].articleid+"&_pos="+e[t].items[n].place,success:function(r){setMessage(r+" <br>");n=n+1;rebuildItem(e,t,n)},error:function(r,i,s){setMessage("Request not performed error "+r.status+". Try next<br>");n=n+1;rebuildItem(e,t,n)}})}function rebuild(){jQuery("html, body").animate({scrollTop:0},800);setMessage("Reading pages. Please wait.<br>");jQuery.ajax({url:"<?php echo admin_url('admin-ajax.php'); ?>",type:"POST",data:"action=rebuildCache&do=getlist",timeout:36e4,cache:false,dataType:"json",success:function(e){var t=e;if(!t){setMessage("No pages found.<br>");return}var n=0;var r=0;rebuildItem(t,n,r)},error:function(e,t,n){setMessage("Get list not performed error "+e.status+"<br>")}})}jQuery("#premium-shop-span").hide();jQuery(".only-digit").keyup(function(){if(/\D/g.test(this.value)){this.value=this.value.replace(/\D/g,"")}});jQuery("#shop_locale").change(function(){var e=jQuery(this).val();if(e=="us_US"||e=="us_CA"||e=="fr_CA"){jQuery("#shop_source").val("com")}else{jQuery("#shop_source").val("net")}});jQuery("input[type=radio][name=shop_designer]").click(function(){jQuery("#premium-shop-span").hide()});jQuery("input[type=radio][name=shop_designer][value=2]").not(":selected").click(function(){jQuery("#premium-shop-span").show()});jQuery("#splg_options_form").submit(function(){var e=true;jQuery("#splg_options_form .required").each(function(){if(jQuery.trim(jQuery(this).val()).length==0){jQuery(this).parent().addClass("highlight");e=false}else{jQuery(this).parent().removeClass("highlight")}});if(!e){setMessage("<p><?php _e('Please fill in the highlighted fields!','spreadplugin'); ?></p>")}else{return true}return false});jQuery(document).ready(function(){jQuery(".colorpicker").wpColorPicker()})</script>
+<script language='javascript' type='text/javascript'>
+function setMessage(msg) {
+	jQuery("#message").append(msg); //.html(msg)
+	jQuery("#message").show();
+}
+
+function rebuildItem(listcontent,cur1,cur2) {
+	
+	if (cur2==0) {
+		if (typeof listcontent[cur1].title !== 'undefined') {
+			setMessage("Rebuilding Page " + (cur1+1) + " of " + listcontent.length + "...<br>");
+		} else {
+			setMessage("Rebuilding Page " + (cur1+1) + " of " + listcontent.length + " (" + listcontent[cur1].title + ")...<br>");
+		}
+	}
+	
+	
+	if (cur2 >= listcontent[cur1].items.length) {
+		setMessage("Done<br>");
+		
+		// storing items
+		jQuery.ajax({
+			url: "<?php echo admin_url('admin-ajax.php'); ?>",
+			type: "POST",
+			data: "action=rebuildCache&do=save&_pageid=" + listcontent[cur1].id + "&_ts=" + (new Date()).getTime(),
+			timeout: 360000,
+			cache: false,
+			success: function(result) {
+				//console.debug(result);
+				setMessage("Successfully stored page " + cur1 + "<br>");
+			},
+			error: function(request, status, error) {
+				setMessage("Error " + request.status + " storing page " + cur1 + "<br>");
+			}
+			
+		});
+		
+		// next page
+		cur1 = cur1 + 1;
+		
+		if (listcontent[cur1]) {
+			rebuildItem(listcontent,cur1,0);
+		}
+
+		return;
+	}
+	
+	
+	setMessage("Rebuilding Item " + (cur2+1) + " of " + listcontent[cur1].items.length + " (" + listcontent[cur1].items[cur2].articlename + ") <img src='" + listcontent[cur1].items[cur2].previewimage + "' width='32' height='32'>... ");
+
+	jQuery.ajax({
+		url: "<?php echo admin_url('admin-ajax.php'); ?>",
+		type: "POST",
+		data: "action=rebuildCache&do=rebuild&_pageid=" + listcontent[cur1].id + "&_articleid=" + listcontent[cur1].items[cur2].articleid + "&_pos=" + listcontent[cur1].items[cur2].place + "&_ts=" + (new Date()).getTime(),
+		success: function(result) {
+			setMessage(result + ' <br>');
+			
+			// next item
+			cur2 = cur2 + 1;
+			rebuildItem(listcontent,cur1,cur2);
+		},
+		error: function(request, status, error) {
+			setMessage("Request not performed error " + request.status + '. Try next<br>');
+			
+			// skip to next item
+			cur2 = cur2 + 1;
+			rebuildItem(listcontent,cur1,cur2);
+		}
+		
+	});
+}
+				
+function rebuild() {
+	
+	jQuery('html, body').animate({scrollTop: 0}, 800);
+	setMessage("Reading pages. Please wait.<br>");
+	
+	jQuery.ajax({
+		url: "<?php echo admin_url('admin-ajax.php'); ?>",
+		type: "POST",
+		data: "action=rebuildCache&do=getlist" + "&_ts=" + (new Date()).getTime(),
+		timeout: 360000,
+		cache: false,
+		dataType: 'json',
+		success: function(result) {
+			var list = result;
+
+			if (!list) {
+				setMessage("No pages found.<br>");
+				return;
+			}
+	
+			var curr1 = 0;				
+			var curr2 = 0;
+
+			rebuildItem(list,curr1,curr2);
+		},
+		error: function(request, status, error) {
+			setMessage("Get list not performed error " + request.status + '<br>');
+		}
+	});
+}
+			
+
+jQuery('.only-digit').keyup(function() {
+	if (/\D/g.test(this.value)) {
+		// Filter non-digits from input value.
+		this.value = this.value.replace(/\D/g, '');
+	}
+});
+
+// select different locale if north america is set
+jQuery('#shop_locale').change(function() {
+	var sel = jQuery(this).val();
+
+	if (sel == 'us_US' || sel == 'us_CA' || sel == 'fr_CA') {
+		jQuery('#shop_source').val('com');
+	} else {
+		jQuery('#shop_source').val('net');
+	}
+});
+jQuery('input[type=radio][name=shop_designer]').click(function() {
+	jQuery('#premium-shop-span').hide();	
+});
+jQuery('input[type=radio][name=shop_designer][value=2]').not(':selected').click(function() {
+	jQuery('#premium-shop-span').show();
+});
+
+
+// bind to the form's submit event
+jQuery('#splg_options_form').submit(function() {
+
+	var isFormValid = true;
+		
+	jQuery("#splg_options_form .required").each(function() { 
+		if (jQuery.trim(jQuery(this).val()).length == 0) {
+			jQuery(this).parent().addClass("highlight");
+			isFormValid = false;
+		} else {
+			jQuery(this).parent().removeClass("highlight");
+		}
+	});
+	
+	
+	// Formularprüfung
+	if (!isFormValid) { 	
+		setMessage("<p><?php _e('Please fill in the highlighted fields!','spreadplugin'); ?></p>");
+	} else {
+		return true;
+	}
+
+	return false;
+});
+
+// add color picker
+jQuery(document).ready(function() {  
+	jQuery('.colorpicker').wpColorPicker();  
+});
+</script>
 <?php 
 if (isset($_GET['saved'])) {
 	/*echo '<script language="javascript">rebuild();</script>';*/
