@@ -183,6 +183,10 @@ You can find it here: http://www.spreadshirt.net/user-data-C162 or http://www.sp
 
 If you change the language in your wordpress installation, the language of the plugin changes, too. Well, but you can change the language only for the plugin by selecting your language in the spreadplugin options, now. If you have multiple pages with different shops on it and want to use a different language on each page, please use the shortcode and extend your already used shortcode by - for example `shop_language="de_DE"` - possible values are: de_DE, en_GB, fr_FR, nl_NL, nn_NO, nb_NO, da_DK, it_IT. Your new shortcode could look like this: `[spreadplugin shop_language="de_DE"]`
 
+= "Rebuild cache" reads nothing, but Shop Id is correct! =
+
+Change "Shop country:" to "None/Please choose" and click "Rebuild cache" again.
+
 = Where do I find great website templates for wordpress? =
 
 Please have a look here: http://themeforest.net/category/wordpress?ref=thimo
