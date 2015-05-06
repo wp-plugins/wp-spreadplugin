@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.8.6.4
+ * Version: 3.8.6.5
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -333,13 +333,13 @@ if (!class_exists('WP_Spreadplugin')) {
                 // wrapper for integrated designer
                 if (self::$shopOptions['shop_designer'] == 1) {
                     $output .= '
-					<div id="spreadplugin-designer-wrapper"><div id="spreadplugin-designer" class="spreadplugin-designer clearfix"></div></div>
+					<div id="spreadplugin-designer-wrapper"><div id="spreadplugin-designer" class="spreadplugin-designer spreadplugin-clearfix"></div></div>
 					';
                 }
 
                 // Start div
                 $output .= '
-				<div id="spreadplugin-items" class="spreadplugin-items clearfix">
+				<div id="spreadplugin-items" class="spreadplugin-items spreadplugin-clearfix">
 				';
 
                 // display
@@ -418,7 +418,7 @@ if (!class_exists('WP_Spreadplugin')) {
 
                                         $output .= "<div class=\"spreadplugin-designs\">";
                                         $output .= $this->displayDesigns($designId, $arrDesigns, $articleData[$designId], $bgc);
-                                        $output .= "<div id=\"designContainer_" . $designId . "\" class=\"design-container clearfix\" " . $addStyle . ">";
+                                        $output .= "<div id=\"designContainer_" . $designId . "\" class=\"design-container spreadplugin-clearfix\" " . $addStyle . ">";
 
                                         if (!empty($articleData[$designId])) {
 
@@ -970,7 +970,7 @@ if (!class_exists('WP_Spreadplugin')) {
         private function displayArticles($id, $article, $backgroundColor = '') {
             $imgSrc = '//image.spreadshirt.' . self::$shopOptions['shop_source'] . '/image-server/v1/products/' . $article['productId'] . '/views/' . $article['view'] . ',width=' . self::$shopOptions['shop_imagesize'] . ',height=' . self::$shopOptions['shop_imagesize'];
 
-            $output = '<div class="spreadplugin-article clearfix grid-view" id="article_' . $id . '" style="width:' . (self::$shopOptions['shop_imagesize'] + 7) . 'px">';
+            $output = '<div class="spreadplugin-article spreadplugin-clearfix grid-view" id="article_' . $id . '" style="width:' . (self::$shopOptions['shop_imagesize'] + 7) . 'px">';
             $output .= '<a name="' . $id . '"></a>';
             $output .= '<h3>' . (!empty($article['name']) ? htmlspecialchars($article['name'], ENT_QUOTES) : '') . '</h3>';
             $output .= '<form method="post" id="form_' . $id . '">';
@@ -998,7 +998,7 @@ if (!class_exists('WP_Spreadplugin')) {
 
             // add a select with available sizes
             if (isset($article['sizes']) && is_array($article['sizes'])) {
-                $output .= '<div class="size-wrapper clearfix"><span>' . __('Size', $this->stringTextdomain) . ':</span> <select id="size-select" name="size">';
+                $output .= '<div class="size-wrapper spreadplugin-clearfix"><span>' . __('Size', $this->stringTextdomain) . ':</span> <select id="size-select" name="size">';
 
                 foreach ($article['sizes'] as $k => $v) {
                     $output .= '<option value="' . $k . '">' . (!empty($v['name'])?$v['name']:$k) . '</option>';
@@ -1008,14 +1008,14 @@ if (!class_exists('WP_Spreadplugin')) {
             }
 
             if (self::$shopOptions['shop_enablelink'] == 1) {
-                $output .= '<div class="details-wrapper2 clearfix"><a href="' . add_query_arg('splproduct', $id, get_permalink()) . '" target="' . self::$shopOptions['shop_linktarget'] . '">' . __('Details', $this->stringTextdomain) . '</a></div>';
+                $output .= '<div class="details-wrapper2 spreadplugin-clearfix"><a href="' . add_query_arg('splproduct', $id, get_permalink()) . '" target="' . self::$shopOptions['shop_linktarget'] . '">' . __('Details', $this->stringTextdomain) . '</a></div>';
             }
 
             $output .= '<div class="separator"></div>';
 
             // add a list with availabel product colors
             if (isset($article['appearances']) && is_array($article['appearances'])) {
-                $output .= '<div class="color-wrapper clearfix"><span>' . __('Color', $this->stringTextdomain) . ':</span> <ul class="colors" name="color">';
+                $output .= '<div class="color-wrapper spreadplugin-clearfix"><span>' . __('Color', $this->stringTextdomain) . ':</span> <ul class="colors" name="color">';
 
                 foreach ($article['appearances'] as $k => $v) {
                     $output .= '<li value="' . $k . '"><img src="' . $this->cleanURL($v) . '" alt="" /></li>';
@@ -1158,7 +1158,7 @@ if (!class_exists('WP_Spreadplugin')) {
             $output .= '</div>';
 
             if (self::$shopOptions['shop_enablelink'] == 1) {
-                $output .= '<div class="details-wrapper2 clearfix"><a href="' . add_query_arg('splproduct', $id, get_permalink()) . '" target="' . self::$shopOptions['shop_linktarget'] . '">' . __('Details', $this->stringTextdomain) . '</a></div>';
+                $output .= '<div class="details-wrapper2 spreadplugin-clearfix"><a href="' . add_query_arg('splproduct', $id, get_permalink()) . '" target="' . self::$shopOptions['shop_linktarget'] . '">' . __('Details', $this->stringTextdomain) . '</a></div>';
             }
 
             $output .= '</div><div class="articleContentRight"><h3>' . (!empty($article['name']) ? htmlspecialchars($article['name'], ENT_QUOTES) : '') . '</h3>';
@@ -1174,7 +1174,7 @@ if (!class_exists('WP_Spreadplugin')) {
 
             // add a select with available sizes
             if (isset($article['sizes']) && is_array($article['sizes'])) {
-                $output .= '<div class="size-wrapper clearfix"><span>' . __('Size', $this->stringTextdomain) . ':</span> <select id="size-select" name="size">';
+                $output .= '<div class="size-wrapper spreadplugin-clearfix"><span>' . __('Size', $this->stringTextdomain) . ':</span> <select id="size-select" name="size">';
 
                 foreach ($article['sizes'] as $k => $v) {
                     $output .= '<option value="' . $k . '">' . (!empty($v['name'])?$v['name']:$k) . '</option>';
@@ -1185,7 +1185,7 @@ if (!class_exists('WP_Spreadplugin')) {
 
             // add a list with availabel product colors
             if (isset($article['appearances']) && is_array($article['appearances'])) {
-                $output .= '<div class="color-wrapper clearfix"><span>' . __('Color', $this->stringTextdomain) . ':</span> <ul class="colors" name="color">';
+                $output .= '<div class="color-wrapper spreadplugin-clearfix"><span>' . __('Color', $this->stringTextdomain) . ':</span> <ul class="colors" name="color">';
 
                 foreach ($article['appearances'] as $k => $v) {
                     $output .= '<li value="' . $k . '"><img src="' . $this->cleanURL($v) . '" alt="" /></li>';
@@ -1196,7 +1196,7 @@ if (!class_exists('WP_Spreadplugin')) {
 
             // add a list with available product views
             if (isset($article['views']) && is_array($article['views'])) {
-                $output .= '<div class="views-wrapper clearfix"><ul class="views" name="views">';
+                $output .= '<div class="views-wrapper spreadplugin-clearfix"><ul class="views" name="views">';
 
                 $_vc = 0;
                 foreach ($article['views'] as $k => $v) {
@@ -1219,7 +1219,7 @@ if (!class_exists('WP_Spreadplugin')) {
             $output .= '<input type="hidden" value="' . $article['view'] . '" id="view" name="view" />';
             $output .= '<input type="hidden" value="' . $id . '" id="article" name="article" />';
 
-            $output .= '<div class="price-wrapper clearfix">';
+            $output .= '<div class="price-wrapper spreadplugin-clearfix">';
             if (self::$shopOptions['shop_showextendprice'] == 1) {
                 $output .= '<span id="price-without-tax">' . __('Price (without tax):', $this->stringTextdomain) . " " . self::formatPrice($article['pricenet'], $article['currencycode']) . "<br /></span>";
                 $output .= '<span id="price-with-tax">' . __('Price (with tax):', $this->stringTextdomain) . " " . self::formatPrice($article['pricebrut'], $article['currencycode']) . "</span>";
@@ -1265,7 +1265,7 @@ if (!class_exists('WP_Spreadplugin')) {
         private function displayMinArticles($id, $article, $backgroundColor = '') {
             $imgSrc = '//image.spreadshirt.' . self::$shopOptions['shop_source'] . '/image-server/v1/products/' . $article['productId'] . '/views/' . $article['view'] . ',width=' . self::$shopOptions['shop_imagesize'] . ',height=' . self::$shopOptions['shop_imagesize'];
 
-            $output = '<div class="spreadplugin-article clearfix min-view" id="article_' . $id . '" style="width:' . (self::$shopOptions['shop_imagesize'] + 7) . 'px">';
+            $output = '<div class="spreadplugin-article spreadplugin-clearfix min-view" id="article_' . $id . '" style="width:' . (self::$shopOptions['shop_imagesize'] + 7) . 'px">';
             $output .= '<a name="' . $id . '"></a>';
             $output .= '<form method="post" id="form_' . $id . '">';
 
@@ -1298,7 +1298,7 @@ if (!class_exists('WP_Spreadplugin')) {
 
             // add a select with available sizes
             if (isset($article['sizes']) && is_array($article['sizes'])) {
-                $output .= '<div class="size-wrapper clearfix"><span>' . __('Size', $this->stringTextdomain) . ':</span> <select id="size-select" name="size">';
+                $output .= '<div class="size-wrapper spreadplugin-clearfix"><span>' . __('Size', $this->stringTextdomain) . ':</span> <select id="size-select" name="size">';
 
                 foreach ($article['sizes'] as $k => $v) {
                     $output .= '<option value="' . $k . '">' . (!empty($v['name'])?$v['name']:$k) . '</option>';
@@ -1311,7 +1311,7 @@ if (!class_exists('WP_Spreadplugin')) {
             $output .= '<input type="hidden" value="' . $article['view'] . '" id="view" name="view" />';
             $output .= '<input type="hidden" value="' . $id . '" id="article" name="article" />';
 
-            $output .= '<div class="add-basket-wrapper clearfix"><input type="submit" name="submit" class="add-basket-button" value=""></div>';
+            $output .= '<div class="add-basket-wrapper spreadplugin-clearfix"><input type="submit" name="submit" class="add-basket-button" value=""></div>';
 
             // order buttons
             $output .= '<input type="hidden" value="1" id="quantity" name="quantity" />';
@@ -1342,7 +1342,7 @@ if (!class_exists('WP_Spreadplugin')) {
                 $dSrc = plugins_url('/img/blank.gif', __FILE__);
             }
 
-            $output = '<div class="spreadplugin-design clearfix" id="design_' . $id . '" style="width:187px">';
+            $output = '<div class="spreadplugin-design spreadplugin-clearfix" id="design_' . $id . '" style="width:187px">';
             $output .= '<a name="' . $id . '"></a>';
             $output .= '<h3>' . htmlspecialchars($designData['name'], ENT_QUOTES) . '</h3>';
             $output .= '<div class="image-wrapper" ' . $addStyle . '>';
@@ -1949,15 +1949,15 @@ if (!class_exists('WP_Spreadplugin')) {
 
             // Show description link if not empty
             if (!empty($article['description'])) {
-                $output .= '<div class="description-wrapper clearfix">' . htmlspecialchars($article['description'], ENT_QUOTES) . '</div>';
+                $output .= '<div class="description-wrapper spreadplugin-clearfix">' . htmlspecialchars($article['description'], ENT_QUOTES) . '</div>';
             }
 
             // Show product description
-            $output .= '<div class="product-description-wrapper clearfix"><h4>' . __('Product details', $this->stringTextdomain) . '</h4>' . $article['productshortdescription'] . '</div>';
+            $output .= '<div class="product-description-wrapper spreadplugin-clearfix"><h4>' . __('Product details', $this->stringTextdomain) . '</h4>' . $article['productshortdescription'] . '</div>';
 
             // add a select with available sizes
             if (isset($article['sizes']) && is_array($article['sizes'])) {
-                $output .= '<div class="size-wrapper clearfix"><span>' . __('Size', $this->stringTextdomain) . ':</span> <select id="size-select" name="size">';
+                $output .= '<div class="size-wrapper spreadplugin-clearfix"><span>' . __('Size', $this->stringTextdomain) . ':</span> <select id="size-select" name="size">';
 
                 foreach ($article['sizes'] as $k => $v) {
                     $output .= '<option value="' . $k . '">' . (!empty($v['name'])?$v['name']:$k) . '</option>';
@@ -1968,7 +1968,7 @@ if (!class_exists('WP_Spreadplugin')) {
 
             // add a list with availabel product colors
             if (isset($article['appearances']) && is_array($article['appearances'])) {
-                $output .= '<div class="color-wrapper clearfix"><span>' . __('Color', $this->stringTextdomain) . ':</span> <ul class="colors" name="color">';
+                $output .= '<div class="color-wrapper spreadplugin-clearfix"><span>' . __('Color', $this->stringTextdomain) . ':</span> <ul class="colors" name="color">';
 
                 foreach ($article['appearances'] as $k => $v) {
                     $output .= '<li value="' . $k . '"><img src="' . $this->cleanURL($v) . '" alt="" /></li>';
@@ -1982,7 +1982,7 @@ if (!class_exists('WP_Spreadplugin')) {
             $output .= '<input type="hidden" value="' . $id . '" id="article" name="article" />';
 
             // $output .= '<div class="separator"></div>';
-            $output .= '<div class="price-wrapper clearfix">';
+            $output .= '<div class="price-wrapper spreadplugin-clearfix">';
             if (self::$shopOptions['shop_showextendprice'] == 1) {
                 $output .= '<span id="price-without-tax">' . __('Price (without tax):', $this->stringTextdomain) . " " . self::formatPrice($article['pricenet'], $article['currencycode']) . "<br /></span>";
                 $output .= '<span id="price-with-tax">' . __('Price (with tax):', $this->stringTextdomain) . " " . self::formatPrice($article['pricebrut'], $article['currencycode']) . "</span>";

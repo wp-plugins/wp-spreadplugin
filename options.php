@@ -489,7 +489,8 @@ function rebuild() {
 			rebuildItem(list,curr1,curr2);
 		},
 		error: function(request, status, error) {
-			setMessage("Get list not performed error " + request.status + '<br>');
+			setMessage("Getlist not performed error '" + error + " (" + request.status + ")'. Please check the browser console for more informations." + '<br>');
+			console.log("Got following error message: " + request.responseText);
 		}
 	});
 }
