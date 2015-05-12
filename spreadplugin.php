@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.8.6.5
+ * Version: 3.8.6.6
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -45,12 +45,14 @@ if (!class_exists('WP_Spreadplugin')) {
             ));
 
             // Ajax actions
+			/*
             add_action('wp_ajax_nopriv_mergeBasket', array(
                 &$this,'mergeBaskets'
             ));
             add_action('wp_ajax_mergeBasket', array(
                 &$this,'mergeBaskets'
             ));
+			*/
             add_action('wp_ajax_nopriv_myAjax', array(
                 &$this,'doAjax'
             ));
@@ -1649,7 +1651,7 @@ if (!class_exists('WP_Spreadplugin')) {
         /**
          * call to merge the designer shop basket with the api basket
          * @TODO doesn't work yet - Spreadshirt's API is beta :(
-         */
+         *
         public function mergeBaskets() {
             $header = array();
             $basketId = "";
@@ -1670,6 +1672,7 @@ if (!class_exists('WP_Spreadplugin')) {
             echo $result;
             die();
         }
+		*/
 
         /**
          * Function loadHead
@@ -1860,19 +1863,21 @@ if (!class_exists('WP_Spreadplugin')) {
 
                 if (!empty($_langCode)) {
                     if ($_langCode == "us") {
-                        $_langCode = "en";
-                    }
+                        $_langCode = "spreadshirt.com";
+                    } else {
+                        $_langCode = "spreadshirt.".$_langCode;
+					}
 
-                    $_urlParts = explode("/", $checkoutUrl);
-                    $_urlParts[3] = $_langCode;
-                    $checkoutUrl = implode("/", $_urlParts);
+                    $checkoutUrl = str_replace(array("spreadshirt.net","spreadshirt.com"),$_langCode,$checkoutUrl);
                 }
+				
 
                 // saving to session
                 $_SESSION['basketUrl'][self::$shopOptions['shop_source'] . self::$shopOptions['shop_language']] = $basketUrl;
                 $_SESSION['namespaces'][self::$shopOptions['shop_source'] . self::$shopOptions['shop_language']] = $namespaces;
                 $_SESSION['checkoutUrl'][self::$shopOptions['shop_source'] . self::$shopOptions['shop_language']] = $checkoutUrl;
             }
+
 
             // add an article to the basket
             if (isset($_POST['size']) && isset($_POST['appearance']) && isset($_POST['quantity'])) {
@@ -2348,8 +2353,8 @@ if (!class_exists('WP_Spreadplugin')) {
 
                             echo '<div class="cart-row" data-id="' . (string)$item['id'] . '">
 							<div class="cart-delete"><a href="javascript:;" class="deleteCartItem" title="' . __('Remove', $this->stringTextdomain) . '"><img src="' . plugins_url('/img/delete.png', __FILE__) . '"></a></div>
-							<div class="cart-preview"><img src="//image.spreadshirt.' . self::$shopOptions['shop_source'] . '/image-server/v1/products/' . (string)$item->element['id'] . '/views/1,width=60,height=60,appearanceId=' . (string)$item->element->properties->property[1] . '"></div>
-							<div class="cart-description"><strong>' . htmlspecialchars((empty($objArticles->name) ? $item->description : $objArticles->name), ENT_QUOTES) . '</strong><br>' . __('Size', $this->stringTextdomain) . ': ' . (string)$item->element->properties->property[0] . '<br>' . __('Quantity', $this->stringTextdomain) . ': ' . (int)$item->quantity . '</div>
+							<div class="cart-preview"><img src="//image.spreadshirt.' . self::$shopOptions['shop_source'] . '/image-server/v1/products/' . (string)$item->element['id'] . '/views/1,width=60,height=60,appearanceId=' . (string)$item->element->properties->property[2] . '"></div>
+							<div class="cart-description"><strong>' . htmlspecialchars((empty($objArticles->name) ? $item->description : $objArticles->name), ENT_QUOTES) . '</strong><br>' . __('Size', $this->stringTextdomain) . ': ' . (string)$item->element->properties->property[1] . '<br>' . __('Quantity', $this->stringTextdomain) . ': ' . (int)$item->quantity . '</div>
 							<div class="cart-price"><strong>' . self::formatPrice((float)$item->price->vatIncluded * (int)$item->quantity, '') . '</strong></div>
 							</div>';
                         } else {
@@ -2369,8 +2374,8 @@ if (!class_exists('WP_Spreadplugin')) {
 
                             echo '<div class="cart-row" data-id="' . (string)$item['id'] . '">
 							<div class="cart-delete"><a href="javascript:;" class="deleteCartItem" title="' . __('Remove', $this->stringTextdomain) . '"><img src="' . plugins_url('/img/delete.png', __FILE__) . '"></a></div>
-							<div class="cart-preview"><img src="//image.spreadshirt.' . self::$shopOptions['shop_source'] . '/image-server/v1/products/' . (string)$objArticles->product['id'] . '/views/' . (string)$objArticles->product->defaultValues->defaultView['id'] . ',viewId=' . (string)$objArticles->product->defaultValues->defaultView['id'] . ',width=60,height=60,appearanceId=' . (string)$item->element->properties->property[1] . '"></div>
-							<div class="cart-description"><strong>' . htmlspecialchars((empty($objArticles->name) ? $item->description : $objArticles->name), ENT_QUOTES) . '</strong><br>' . __('Size', $this->stringTextdomain) . ': ' . (string)$item->element->properties->property[0] . '<br>' . __('Quantity', $this->stringTextdomain) . ': ' . (int)$item->quantity . '</div>
+							<div class="cart-preview"><img src="//image.spreadshirt.' . self::$shopOptions['shop_source'] . '/image-server/v1/products/' . (string)$objArticles->product['id'] . '/views/' . (string)$objArticles->product->defaultValues->defaultView['id'] . ',viewId=' . (string)$objArticles->product->defaultValues->defaultView['id'] . ',width=60,height=60,appearanceId=' . (string)$item->element->properties->property[2] . '"></div>
+							<div class="cart-description"><strong>' . htmlspecialchars((empty($objArticles->name) ? $item->description : $objArticles->name), ENT_QUOTES) . '</strong><br>' . __('Size', $this->stringTextdomain) . ': ' . (string)$item->element->properties->property[1] . '<br>' . __('Quantity', $this->stringTextdomain) . ': ' . (int)$item->quantity . '</div>
 							<div class="cart-price"><strong>' . self::formatPrice((float)$item->price->vatIncluded * (int)$item->quantity, '') . '</strong></div>
 							</div>';
                         }

@@ -1,7 +1,5 @@
 <?php 
 
-@define('DONOTCACHEPAGE', true);
-
 if (is_user_logged_in() && is_admin()) {
 	
 	load_plugin_textdomain($this->stringTextdomain, false, dirname(plugin_basename(__FILE__)) . '/translation');
