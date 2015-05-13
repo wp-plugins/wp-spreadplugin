@@ -1857,13 +1857,15 @@ if (!class_exists('WP_Spreadplugin')) {
                 // get the checkout url
                 $checkoutUrl = self::checkout($basketUrl, $namespaces);
 
-                // Workaround for checkout language
+                // Workaround for checkout language | the new checkout needs locale urgently
                 $_langCode = @explode("_", (empty(self::$shopOptions['shop_language']) ? self::$shopOptions['shop_locale'] : self::$shopOptions['shop_language']));
                 $_langCode = $_langCode[0];
 
                 if (!empty($_langCode)) {
                     if ($_langCode == "us") {
                         $_langCode = "spreadshirt.com";
+                    } elseif ($_langCode == "en" && $_langCode[1] == "GB") {
+                        $_langCode = "spreadshirt.co.uk";
                     } else {
                         $_langCode = "spreadshirt.".$_langCode;
 					}
