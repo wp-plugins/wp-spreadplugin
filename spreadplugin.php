@@ -1862,7 +1862,9 @@ if (!class_exists('WP_Spreadplugin')) {
                 $_langCode = $_langCodeArr[0];
 
                 if (!empty($_langCode)) {
-                    if ($_langCode == "us") {
+					if ($_langCodeArr[1] == "CA") {
+						$_langCode = "spreadshirt.ca";
+					} elseif ($_langCode == "us") {
                         $_langCode = "spreadshirt.com";
                     } elseif ($_langCode == "en" && $_langCodeArr[1] == "GB") {
                         $_langCode = "spreadshirt.co.uk";
