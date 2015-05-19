@@ -53,6 +53,7 @@ if (is_user_logged_in() && is_admin()) {
               <tr>
                 <td valign="top"><?php _e('Shop country:','spreadplugin'); ?></td>
                 <td><select name="shop_locale" id="shop_locale">
+                    <option value=""<?php echo (empty($adminOptions['shop_locale'])?" selected":"") ?>>None/Unknown</option>
                     <option value="de_DE"<?php echo ($adminOptions['shop_locale']=='de_DE'?" selected":"") ?>>Deutschland</option>
                     <option value="fr_FR"<?php echo ($adminOptions['shop_locale']=='fr_FR'?" selected":"") ?>>France</option>
                     <option value="en_GB"<?php echo ($adminOptions['shop_locale']=='en_GB'?" selected":"") ?>>United Kingdom</option>
@@ -73,7 +74,6 @@ if (is_user_logged_in() && is_admin()) {
                     <option value="fr_CA"<?php echo ($adminOptions['shop_locale']=='fr_CA'?" selected":"") ?>>Canada (Fran&ccedil;ais)</option>
                     <option value="us_AU"<?php echo ($adminOptions['shop_locale']=='us_AU'?" selected":"") ?>>Australia</option>
                     <option value="us_BR"<?php echo ($adminOptions['shop_locale']=='us_BR'?" selected":"") ?>>Brazil</option>
-                    <option value=""<?php echo (empty($adminOptions['shop_locale'])?" selected":"") ?>>None/Please choose</option>
                   </select></td>
               </tr>
               <tr>
@@ -188,7 +188,7 @@ if (is_user_logged_in() && is_admin()) {
                   <?php _e('Integrated [BETA] (All marketplace designs are shown on design tab)','spreadplugin'); ?>
                   <br />
                   <input type="radio" name="shop_designer" value="2"<?php echo ($adminOptions['shop_designer']==2?" checked":"") ?> />
-                  <?php _e('Premium (Only designs in your premium designer shop are shown)','spreadplugin'); ?>
+                  <?php _e('Premium (Contents of your designer shop are shown - Tablomat)','spreadplugin'); ?>
                   <div id="premium-shop-span"> <br />
                     <br />
                     <?php _e('Premium Designer Shop Id','spreadplugin'); ?>
@@ -511,12 +511,17 @@ jQuery('#shop_locale').change(function() {
 		jQuery('#shop_source').val('net');
 	}
 });
+jQuery('#premium-shop-span').hide();	
 jQuery('input[type=radio][name=shop_designer]').click(function() {
-	jQuery('#premium-shop-span').hide();	
+	jQuery('#premium-shop-span').hide();
 });
 jQuery('input[type=radio][name=shop_designer][value=2]').not(':selected').click(function() {
 	jQuery('#premium-shop-span').show();
 });
+
+if (jQuery('#premium-shop-span input').val().length >0) {
+	jQuery('#premium-shop-span').show();
+}
 
 
 // bind to the form's submit event
