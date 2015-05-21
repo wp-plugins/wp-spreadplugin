@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Spreadplugin\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-08-23 15:50+0100\n"
-"PO-Revision-Date: 2014-08-23 15:51+0100\n"
+"PO-Revision-Date: 2015-05-21 20:41+0100\n"
 "Last-Translator: Thimo Grauerholz <thimo@grauerholz.de>\n"
 "Language-Team: \n"
 "Language: it_IT\n"
@@ -360,7 +360,7 @@ msgstr "Avanti"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:509 spreadplugin.php:469
 msgid "Back"
-msgstr ""
+msgstr "Indietro"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:539 spreadplugin.php:496
 msgid "Order Value"
@@ -389,7 +389,7 @@ msgstr "Modifica articolo"
 #: spreadplugin.php:1913 spreadplugin.php:2003 spreadplugin.php:2304
 #: spreadplugin.php:2323
 msgid "Size"
-msgstr ""
+msgstr "Taglia"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:1008
 #: 1und1/spreadplugin.php:1157 spreadplugin.php:970 spreadplugin.php:1120
@@ -400,7 +400,7 @@ msgstr "Dettagli"
 #: 1und1/spreadplugin.php:1184 1und1/spreadplugin.php:1973
 #: spreadplugin.php:977 spreadplugin.php:1147 spreadplugin.php:1924
 msgid "Color"
-msgstr ""
+msgstr "Colore"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:1056
 #: 1und1/spreadplugin.php:1165 1und1/spreadplugin.php:1702
@@ -486,11 +486,11 @@ msgstr "Dettagli prodotti"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:2029 spreadplugin.php:1980
 msgid "Product images"
-msgstr ""
+msgstr "Immagini prodotto"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:2030 spreadplugin.php:1981
 msgid "Sizes"
-msgstr ""
+msgstr "Taglie"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:2031 spreadplugin.php:1982
 msgid "Description"
@@ -517,16 +517,16 @@ msgstr ""
 #: _sources/spreadplugin - 1und1/spreadplugin.php:2374
 #: 1und1/spreadplugin.php:2393 spreadplugin.php:2304 spreadplugin.php:2323
 msgid "Quantity"
-msgstr ""
+msgstr "Quantità"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:2404 spreadplugin.php:2334
 msgid "Total (excl. Shipping)"
-msgstr ""
+msgstr "Totale (esclusa spedizione)"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:2407
 #: 1und1/spreadplugin.php:2409
 msgid "Proceed checkout"
-msgstr ""
+msgstr "Procedi all'acquisto"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:2409 spreadplugin.php:2339
 msgid "Basket is empty"
@@ -538,7 +538,7 @@ msgstr ""
 
 #: spreadplugin.php:2337 spreadplugin.php:2339
 msgid "Proceed to checkout"
-msgstr ""
+msgstr "Procedi all'acquisto"
 
 #~ msgid "zzgl. Versandkosten"
 #~ msgstr "excl. Shipping"
