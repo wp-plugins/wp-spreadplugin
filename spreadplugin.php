@@ -1,9 +1,9 @@
-<?php
+﻿<?php
 /**
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.8.7
+ * Version: 3.8.7.1
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -970,6 +970,7 @@ if (!class_exists('WP_Spreadplugin')) {
          * @return html
          */
         private function displayArticles($id, $article, $backgroundColor = '') {
+					
             $imgSrc = '//image.spreadshirt.' . self::$shopOptions['shop_source'] . '/image-server/v1/products/' . $article['productId'] . '/views/' . $article['view'] . ',width=' . self::$shopOptions['shop_imagesize'] . ',height=' . self::$shopOptions['shop_imagesize'];
 
             $output = '<div class="spreadplugin-article spreadplugin-clearfix grid-view" id="article_' . $id . '" style="width:' . (self::$shopOptions['shop_imagesize'] + 7) . 'px">';
@@ -982,7 +983,7 @@ if (!class_exists('WP_Spreadplugin')) {
                 $output .= ' <div class="edit-wrapper-integrated" data-designid="' . $article['designid'] . '" data-productid="' . (!empty($article['productid'])?$article['productid']:'') . '" data-viewid="' . $article['view'] . '" data-appearanceid="' . $article['appearance'] . '" data-producttypeid="' . $article['type'] . '"><img src="' . plugins_url('/img/edit.png', __FILE__) . '"></div>';
             } else
                 if (self::$shopOptions['shop_designer'] == 2 && self::$shopOptions['shop_designershop'] > 0) {
-                    $output .= ' <div class="edit-wrapper"><a href="//' . self::$shopOptions['shop_designershop'] . '.spreadshirt.' . self::$shopOptions['shop_source'] . '/tablomat/-D1/customize/product/' . $article['productId'] . '?noCache=true" target="' . self::$shopOptions['shop_linktarget'] . '" title="' . __('Edit article', $this->stringTextdomain) . '"><img src="' . plugins_url('/img/edit.png', __FILE__) . '"></a></div>';
+                    $output .= ' <div class="edit-wrapper"><a href="//' . self::$shopOptions['shop_designershop'] . self::workaroundLangUrl('.spreadshirt.' . self::$shopOptions['shop_source']) . '/tablomat/-D1/customize/product/' . $article['productId'] . '?noCache=true" target="' . self::$shopOptions['shop_linktarget'] . '" title="' . __('Edit article', $this->stringTextdomain) . '"><img src="' . plugins_url('/img/edit.png', __FILE__) . '"></a></div>';
                 }
 
             // display preview image
@@ -1138,7 +1139,7 @@ if (!class_exists('WP_Spreadplugin')) {
                 $output .= ' <div class="edit-wrapper-integrated" data-designid="' . $article['designid'] . '" data-productid="' . (!empty($article['productid'])?$article['productid']:'') . '" data-viewid="' . $article['view'] . '" data-appearanceid="' . $article['appearance'] . '" data-producttypeid="' . $article['type'] . '"><img src="' . plugins_url('/img/edit.png', __FILE__) . '"></div>';
             } else
                 if (self::$shopOptions['shop_designer'] == 2 && self::$shopOptions['shop_designershop'] > 0) {
-                    $output .= ' <div class="edit-wrapper"><a href="//' . self::$shopOptions['shop_designershop'] . '.spreadshirt.' . self::$shopOptions['shop_source'] . '/tablomat/-D1/customize/product/' . $article['productId'] . '?noCache=true" target="' . self::$shopOptions['shop_linktarget'] . '" title="' . __('Edit article', $this->stringTextdomain) . '"><img src="' . plugins_url('/img/edit.png', __FILE__) . '"></a></div>';
+                    $output .= ' <div class="edit-wrapper"><a href="//' . self::$shopOptions['shop_designershop'] . self::workaroundLangUrl('.spreadshirt.' . self::$shopOptions['shop_source']) . '/tablomat/-D1/customize/product/' . $article['productId'] . '?noCache=true" target="' . self::$shopOptions['shop_linktarget'] . '" title="' . __('Edit article', $this->stringTextdomain) . '"><img src="' . plugins_url('/img/edit.png', __FILE__) . '"></a></div>';
                 }
 
             // display preview image
@@ -1276,7 +1277,7 @@ if (!class_exists('WP_Spreadplugin')) {
                 $output .= ' <div class="edit-wrapper-integrated" data-designid="' . $article['designid'] . '" data-productid="' . (!empty($article['productid'])?$article['productid']:'') . '" data-viewid="' . $article['view'] . '" data-appearanceid="' . $article['appearance'] . '" data-producttypeid="' . $article['type'] . '"><img src="' . plugins_url('/img/edit.png', __FILE__) . '"></div>';
             } else
                 if (self::$shopOptions['shop_designer'] == 2 && self::$shopOptions['shop_designershop'] > 0) {
-                    $output .= ' <div class="edit-wrapper"><a href="//' . self::$shopOptions['shop_designershop'] . '.spreadshirt.' . self::$shopOptions['shop_source'] . '/tablomat/-D1/customize/product/' . $article['productId'] . '?noCache=true" target="' . self::$shopOptions['shop_linktarget'] . '" title="' . __('Edit article', $this->stringTextdomain) . '"><img src="' . plugins_url('/img/edit.png', __FILE__) . '"></a></div>';
+                    $output .= ' <div class="edit-wrapper"><a href="//' . self::$shopOptions['shop_designershop'] . self::workaroundLangUrl('.spreadshirt.' . self::$shopOptions['shop_source']) . '/tablomat/-D1/customize/product/' . $article['productId'] . '?noCache=true" target="' . self::$shopOptions['shop_linktarget'] . '" title="' . __('Edit article', $this->stringTextdomain) . '"><img src="' . plugins_url('/img/edit.png', __FILE__) . '"></a></div>';
                 }
 
             // display preview image
@@ -1856,25 +1857,9 @@ if (!class_exists('WP_Spreadplugin')) {
 
                 // get the checkout url
                 $checkoutUrl = self::checkout($basketUrl, $namespaces);
-
-                // Workaround for checkout language | the new checkout needs locale urgently
-                $_langCodeArr = @explode("_", (empty(self::$shopOptions['shop_language']) ? self::$shopOptions['shop_locale'] : self::$shopOptions['shop_language']));
-                $_langCode = $_langCodeArr[0];
-
-                if (!empty($_langCode)) {
-					if ($_langCodeArr[1] == "CA") {
-						$_langCode = "spreadshirt.ca";
-					} elseif ($_langCode == "us") {
-                        $_langCode = "spreadshirt.com";
-                    } elseif ($_langCode == "en" && $_langCodeArr[1] == "GB") {
-                        $_langCode = "spreadshirt.co.uk";
-                    } else {
-                        $_langCode = "spreadshirt.".$_langCode;
-					}
-
-                    $checkoutUrl = str_replace(array("spreadshirt.net","spreadshirt.com"),$_langCode,$checkoutUrl);
-                }
 				
+		// Workaround
+		$checkoutUrl = self::workaroundLangUrl($checkoutUrl);
 
                 // saving to session
                 $_SESSION['basketUrl'][self::$shopOptions['shop_source'] . self::$shopOptions['shop_language']] = $basketUrl;
@@ -1926,7 +1911,7 @@ if (!class_exists('WP_Spreadplugin')) {
 
             // edit article button
             if (self::$shopOptions['shop_designershop'] > 0) {
-                $output .= ' <div class="edit-wrapper"><a href="//' . self::$shopOptions['shop_designershop'] . '.spreadshirt.' . self::$shopOptions['shop_source'] . '/tablomat/-D1/customize/product/' . $article['productId'] . '?noCache=true" target="' . self::$shopOptions['shop_linktarget'] . '" title="' . __('Edit article', $this->stringTextdomain) . '"><img src="' . plugins_url('/img/edit.png', __FILE__) . '"></a></div>';
+                $output .= ' <div class="edit-wrapper"><a href="//' . self::$shopOptions['shop_designershop'] . self::workaroundLangUrl('.spreadshirt.' . self::$shopOptions['shop_source']) . '/tablomat/-D1/customize/product/' . $article['productId'] . '?noCache=true" target="' . self::$shopOptions['shop_linktarget'] . '" title="' . __('Edit article', $this->stringTextdomain) . '"><img src="' . plugins_url('/img/edit.png', __FILE__) . '"></a></div>';
             }
 
             // display preview image
@@ -2534,6 +2519,31 @@ if (!class_exists('WP_Spreadplugin')) {
             }
             return $data;
         }
+		
+		
+		// Workaround for checkout language | the new checkout needs locale urgently
+		private function workaroundLangUrl($url) {
+			
+			$_langCodeArr = @explode("_", (empty(self::$shopOptions['shop_language']) ? self::$shopOptions['shop_locale'] : self::$shopOptions['shop_language']));
+			$_langCode = $_langCodeArr[0];
+
+			if (!empty($_langCode)) {
+				if ($_langCodeArr[1] == "CA") {
+					$_langCode = "spreadshirt.ca";
+				} elseif ($_langCode == "us") {
+					$_langCode = "spreadshirt.com";
+				} elseif ($_langCode == "en" && $_langCodeArr[1] == "GB") {
+					$_langCode = "spreadshirt.co.uk";
+				} else {
+					$_langCode = "spreadshirt.".$_langCode;
+				}
+			}
+			
+			$checkoutUrl = str_replace(array("spreadshirt.net","spreadshirt.com"),$_langCode,$url);
+			
+			return $checkoutUrl;
+		}
+		
     } // END class WP_Spreadplugin
 
     new WP_Spreadplugin();
