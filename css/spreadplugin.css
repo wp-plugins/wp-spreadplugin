@@ -28,7 +28,11 @@
 	min-height: 650px;
 	overflow: hidden;
 	white-space: normal;
-	display:inline-block
+	display: inline-block
+}
+.spreadplugin-designs {
+	min-height: inherit;
+	float: left;
 }
 .spreadplugin-article.list-view {
 	min-height: 450px;
@@ -659,13 +663,13 @@ spreadplugin-items img {
 	padding: 16px!important;
 	z-index: 10;
 	margin: -20px 0 -50px;
-	display:inline-block
+	display: inline-block
 }
 .spreadplugin-article.min-view {
 	padding: 15px!important;
 	position: relative;
 	z-index: 1;
-	float:none
+	float: none
 }
 .spreadplugin-article.min-view .actions {
 	clear: both;
