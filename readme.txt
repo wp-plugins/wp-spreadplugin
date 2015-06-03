@@ -5,7 +5,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: spreadshirt,wordpress,plugin,shop,store,shirt,t-shirt,integration,online store,online shop
 Requires at least: 3.3
 Tested up to: 4.2
-Stable tag: 3.8.7.1c
+Stable tag: 3.8.7.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -198,6 +198,9 @@ Please have a look here: http://themeforest.net/category/wordpress?ref=thimo
 3. Settings page
 
 == Changelog ==
+
+= 3.8.7.2 =
+* Minor Bugfixes
 
 = 3.8.7 =
 * Switched to tablomat to use with designer shop (premium). Please choose "Show Spreadshirt designs in the designer" in "Apperance" -> "Settings", if you don't want to display Spreadshirt Marketplace designs.
