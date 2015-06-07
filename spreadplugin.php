@@ -1029,7 +1029,7 @@ if (!class_exists('WP_Spreadplugin')) {
 
             // add a list with available product views
             if (isset($article['views']) && is_array($article['views'])) {
-                $output .= '<ul class="views" name="views">';
+                $output .= '<div class="views-wrapper"><ul class="views" name="views">';
 
                 $_vc = 0;
                 foreach ($article['views'] as $k => $v) {
@@ -1045,7 +1045,7 @@ if (!class_exists('WP_Spreadplugin')) {
                     $_vc++;
                 }
 
-                $output .= '</ul>';
+                $output .= '</ul></div>';
             }
 
             // Short product description
