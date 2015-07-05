@@ -30,7 +30,7 @@ if (is_user_logged_in() && is_admin()) {
   screen_icon(); 
   ?>
   <h2>Spreadplugin Plugin Options &raquo; Settings</h2>
-  <div id="message" class="updated fade" style="display:none"></div>
+  <div id="sprdplg-message" class="updated fade" style="display:none"></div>
   <div class="metabox-holder">
     <div class="meta-box-sortables ui-sortable">
       <div class="postbox">
@@ -392,8 +392,8 @@ if (is_user_logged_in() && is_admin()) {
 </div>
 <script language='javascript' type='text/javascript'>
 function setMessage(msg) {
-	jQuery("#message").append(msg); //.html(msg)
-	jQuery("#message").show();
+	jQuery("#sprdplg-message").append(msg); //.html(msg)
+	jQuery("#sprdplg-message").show();
 }
 
 function rebuildItem(listcontent,cur1,cur2) {
