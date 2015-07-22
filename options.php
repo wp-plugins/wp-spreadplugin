@@ -304,7 +304,7 @@ if (is_user_logged_in() && is_admin()) {
                     <option value="de_DE"<?php echo ($adminOptions['shop_language']=='de_DE'?" selected":"") ?>>Deutsch</option>
                     <option value="nl_NL"<?php echo ($adminOptions['shop_language']=='nl_NL'?" selected":"") ?>>Dutch (Nederlands)</option>
                     <option value="fi_FI"<?php echo ($adminOptions['shop_language']=='fi_FI'?" selected":"") ?>>Suomi</option>
-                    <option value="es_ES"<?php echo ($adminOptions['shop_language']=='es_ES'?" selected":"") ?>>Spanish</option>
+                    <option value="es_ES"<?php echo ($adminOptions['shop_language']=='es_ES'?" selected":"") ?>>Español)</option>
                     <option value="fr_FR"<?php echo ($adminOptions['shop_language']=='fr_FR'?" selected":"") ?>>French</option>
                     <option value="it_IT"<?php echo ($adminOptions['shop_language']=='it_IT'?" selected":"") ?>>Italiano</option>
                     <option value="nb_NO"<?php echo ($adminOptions['shop_language']=='nb_NO'?" selected":"") ?>>Norsk</option>
