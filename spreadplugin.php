@@ -651,7 +651,7 @@ if (!class_exists('WP_Spreadplugin')) {
 
             $countryCode = explode("_", self::$shopOptions['shop_locale']);
 
-            if (is_object($objTypes)) {
+            if (is_object($objTypes) && !empty($countryCode[1])) {
                 foreach ($objTypes->shippingType as $row) {
                     foreach ($row->shippingCountries as $subrow) {
                         foreach ($subrow->shippingCountry as $subrow2) {
