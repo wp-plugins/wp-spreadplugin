@@ -200,7 +200,7 @@ Please have a look here: http://themeforest.net/category/wordpress?ref=thimo
 == Changelog ==
 
 = 3.8.7.7 =
-* Added spanish translation, thanks to schlafcola.de
+* Added spanish, portuguese translation, thanks to schlafcola.de
 
 = 3.8.7.6 =
 * bugfixes
