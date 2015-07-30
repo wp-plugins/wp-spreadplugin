@@ -311,6 +311,7 @@ if (is_user_logged_in() && is_admin()) {
                     <option value="nn_NO"<?php echo ($adminOptions['shop_language']=='nn_NO'?" selected":"") ?>>Nynorsk</option>
                     <option value="pl_PL"<?php echo ($adminOptions['shop_language']=='pl_PL'?" selected":"") ?>>Jezyk polski</option>
                     <option value="pt_PT"<?php echo ($adminOptions['shop_language']=='pt_PT'?" selected":"") ?>>Português</option>
+                    <option value="jp_JP"<?php echo ($adminOptions['shop_language']=='jp_JP'?" selected":"") ?>>Japanese</option>
                   </select></td>
               </tr>
               <tr>
@@ -349,6 +350,14 @@ if (is_user_logged_in() && is_admin()) {
             <?php _e('Minimum required shortcode','spreadplugin'); ?>
           </h4>
           <p>[spreadplugin]</p>
+          <h4>
+            <?php _e('Sample shortcode with category','spreadplugin'); ?>
+          </h4>
+          <p>[spreadplugin shop_category="CATEGORYID"]</p>
+          <h4>
+            <?php _e('Sample shortcode with only Men products','spreadplugin'); ?>
+          </h4>
+          <p>[spreadplugin shop_productcategory="Men"]</p>
           <h4>
             <?php _e('Extended sample shortcode','spreadplugin'); ?>
             (only for experienced users) </h4>

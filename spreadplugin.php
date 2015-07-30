@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.8.7.7
+ * Version: 3.8.7.8
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -1705,7 +1705,7 @@ if (!class_exists('WP_Spreadplugin')) {
 					var textProdHideDesc = '" . esc_attr__('Hide product description', $this->stringTextdomain) . "';
 					var textProdShowDesc = '" . esc_attr__('Show product description', $this->stringTextdomain) . "';
 					var loadingImage = '" . plugins_url('/img/loading.gif', __FILE__) . "';
-					var loadingMessage = '" . esc_attr__('Loading new articles...', $this->stringTextdomain) . "';
+					var loadingMessage = 'Loading...';
 					var loadingFinishedMessage = '" . esc_attr__('You have reached the end', $this->stringTextdomain) . "';
 					var pageLink = '" . get_page_link() . "';
 					var pageCheckoutUseIframe = '" . self::$shopOptions['shop_checkoutiframe'] . "';
@@ -1718,7 +1718,7 @@ if (!class_exists('WP_Spreadplugin')) {
 					var lazyLoad = '" . (self::$shopOptions['shop_lazyload'] == 1 || self::$shopOptions['shop_lazyload'] == '' ? 1 : 0) . "';
 					var zoomConfig = {
 						";
-
+			// " . esc_attr__('Loading new articles...', $this->stringTextdomain) . "
             if (self::$shopOptions['shop_zoomtype'] == 0) {
                 echo '
 						zoomType : "inner",
