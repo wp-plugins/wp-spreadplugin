@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spreadplugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-23 21:17+0200\n"
-"PO-Revision-Date: 2015-07-23 21:21+0200\n"
+"POT-Creation-Date: 2015-08-03 19:48+0200\n"
+"PO-Revision-Date: 2015-08-03 19:49+0200\n"
 "Last-Translator: Thimo Grauerholz <thimo@grauerholz.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -14,11 +14,11 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_e;esc_attr__\n"
 "X-Poedit-Basepath: ..\n"
 "X-Textdomain-Support: yes\n"
-"X-Generator: Poedit 1.8.3\n"
+"X-Generator: Poedit 1.8.4\n"
 "X-Poedit-SearchPath-0: .\n"
 
 #: _sources/spreadplugin - 1und1/options.php:38 1und1/spreadplugin.php:2255
-#: _sources/SPREAD~1.PHP:2271 options.php:40 spreadplugin.php:2228
+#: _sources/SPREAD~1.PHP:2271 options.php:40 spreadplugin.php:2231
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -281,39 +281,39 @@ msgstr "Shop Sprache:"
 msgid "Wordpress installation language (default)"
 msgstr "Wordpress Installation (Standard)"
 
-#: _sources/spreadplugin - 1und1/options.php:305 options.php:316
+#: _sources/spreadplugin - 1und1/options.php:305 options.php:318
 msgid "Custom CSS"
 msgstr "Custom CSS"
 
-#: _sources/spreadplugin - 1und1/options.php:309 options.php:320
+#: _sources/spreadplugin - 1und1/options.php:309 options.php:322
 msgid "Debug mode:"
 msgstr "Debug Modus:"
 
-#: _sources/spreadplugin - 1und1/options.php:311 options.php:322
+#: _sources/spreadplugin - 1und1/options.php:311 options.php:324
 msgid "Off"
 msgstr "Deaktiviert"
 
-#: _sources/spreadplugin - 1und1/options.php:314 options.php:325
+#: _sources/spreadplugin - 1und1/options.php:314 options.php:327
 msgid "On"
 msgstr "Aktiviert"
 
-#: _sources/spreadplugin - 1und1/options.php:320 options.php:331
+#: _sources/spreadplugin - 1und1/options.php:320 options.php:333
 msgid "Sleep timer:"
 msgstr "Wartezeit:"
 
-#: _sources/spreadplugin - 1und1/options.php:327 options.php:338
+#: _sources/spreadplugin - 1und1/options.php:327 options.php:340
 msgid "Update settings"
 msgstr "Einstellungen aktualisieren"
 
-#: _sources/spreadplugin - 1und1/options.php:337 options.php:348
+#: _sources/spreadplugin - 1und1/options.php:337 options.php:350
 msgid "Minimum required shortcode"
 msgstr "Minimal erforderlicher Shortcode"
 
-#: _sources/spreadplugin - 1und1/options.php:341 options.php:352
+#: _sources/spreadplugin - 1und1/options.php:341 options.php:362
 msgid "Extended sample shortcode"
 msgstr "Beispiel erweiterter Shortcode"
 
-#: _sources/spreadplugin - 1und1/options.php:344 options.php:355
+#: _sources/spreadplugin - 1und1/options.php:344 options.php:365
 msgid ""
 "The extended shortcodes will overwrite the default settings. You may use it "
 "to create a different shop with the same plugin."
@@ -322,15 +322,15 @@ msgstr ""
 "Seite, wo dieser eingegeben wurde. Sie können den Shortcode verändern, um "
 "bspw. einen anderen Shop einzubinden."
 
-#: _sources/spreadplugin - 1und1/options.php:366 options.php:377
+#: _sources/spreadplugin - 1und1/options.php:366 options.php:387
 msgid "Options"
 msgstr "Optionen"
 
-#: _sources/spreadplugin - 1und1/options.php:370 options.php:381
+#: _sources/spreadplugin - 1und1/options.php:370 options.php:391
 msgid "Rebuild cache"
 msgstr "Cache neu erstellen"
 
-#: _sources/spreadplugin - 1und1/options.php:383 options.php:545
+#: _sources/spreadplugin - 1und1/options.php:383 options.php:555
 msgid "Please fill in the highlighted fields!"
 msgstr "Bitte füllen Sie die hinterlegten Felder aus!"
 
@@ -403,8 +403,8 @@ msgstr "bis zu"
 #: 1und1/spreadplugin.php:1135 1und1/spreadplugin.php:1272
 #: 1und1/spreadplugin.php:1922 _sources/SPREAD~1.PHP:1014
 #: _sources/SPREAD~1.PHP:1176 _sources/SPREAD~1.PHP:1314
-#: _sources/SPREAD~1.PHP:1957 spreadplugin.php:986 spreadplugin.php:1142
-#: spreadplugin.php:1280 spreadplugin.php:1914
+#: _sources/SPREAD~1.PHP:1957 spreadplugin.php:986 spreadplugin.php:1143
+#: spreadplugin.php:1282 spreadplugin.php:1916
 msgid "Edit article"
 msgstr "Artikel anpassen"
 
@@ -415,69 +415,69 @@ msgstr "Artikel anpassen"
 #: _sources/SPREAD~1.PHP:1032 _sources/SPREAD~1.PHP:1214
 #: _sources/SPREAD~1.PHP:1338 _sources/SPREAD~1.PHP:1997
 #: _sources/SPREAD~1.PHP:2085 _sources/SPREAD~1.PHP:2389
-#: _sources/SPREAD~1.PHP:2410 spreadplugin.php:1004 spreadplugin.php:1180
-#: spreadplugin.php:1304 spreadplugin.php:1954 spreadplugin.php:2042
-#: spreadplugin.php:2346 spreadplugin.php:2367
+#: _sources/SPREAD~1.PHP:2410 spreadplugin.php:1004 spreadplugin.php:1181
+#: spreadplugin.php:1306 spreadplugin.php:1956 spreadplugin.php:2045
+#: spreadplugin.php:2349 spreadplugin.php:2370
 msgid "Size"
 msgstr "Größe"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:1008
 #: 1und1/spreadplugin.php:1157 _sources/SPREAD~1.PHP:1042
-#: _sources/SPREAD~1.PHP:1198 spreadplugin.php:1014 spreadplugin.php:1164
+#: _sources/SPREAD~1.PHP:1198 spreadplugin.php:1014 spreadplugin.php:1165
 msgid "Details"
 msgstr "Details"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:1015
 #: 1und1/spreadplugin.php:1184 1und1/spreadplugin.php:1973
 #: _sources/SPREAD~1.PHP:1049 _sources/SPREAD~1.PHP:1225
-#: _sources/SPREAD~1.PHP:2008 spreadplugin.php:1021 spreadplugin.php:1191
-#: spreadplugin.php:1965
+#: _sources/SPREAD~1.PHP:2008 spreadplugin.php:1021 spreadplugin.php:1192
+#: spreadplugin.php:1967
 msgid "Color"
 msgstr "Farbe"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:1056
 #: 1und1/spreadplugin.php:1165 1und1/spreadplugin.php:1702
 #: _sources/SPREAD~1.PHP:1090 _sources/SPREAD~1.PHP:1206
-#: _sources/SPREAD~1.PHP:1737 spreadplugin.php:1062 spreadplugin.php:1172
-#: spreadplugin.php:1704
+#: _sources/SPREAD~1.PHP:1737 spreadplugin.php:1062 spreadplugin.php:1173
+#: spreadplugin.php:1706
 msgid "Show article description"
 msgstr "Zeige Artikelbeschreibung"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:1067
 #: 1und1/spreadplugin.php:1704 _sources/SPREAD~1.PHP:1101
-#: _sources/SPREAD~1.PHP:1739 spreadplugin.php:1073 spreadplugin.php:1706
+#: _sources/SPREAD~1.PHP:1739 spreadplugin.php:1073 spreadplugin.php:1708
 msgid "Show product description"
 msgstr "Zeige Produktbeschreibung"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:1080
 #: 1und1/spreadplugin.php:1220 1und1/spreadplugin.php:1989
 #: _sources/SPREAD~1.PHP:1114 _sources/SPREAD~1.PHP:1261
-#: _sources/SPREAD~1.PHP:2024 spreadplugin.php:1086 spreadplugin.php:1227
-#: spreadplugin.php:1981
+#: _sources/SPREAD~1.PHP:2024 spreadplugin.php:1086 spreadplugin.php:1228
+#: spreadplugin.php:1985
 msgid "Price (without tax):"
 msgstr "Preis (exkl. MwSt.):"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:1081
 #: 1und1/spreadplugin.php:1221 1und1/spreadplugin.php:1990
 #: _sources/SPREAD~1.PHP:1115 _sources/SPREAD~1.PHP:1262
-#: _sources/SPREAD~1.PHP:2025 spreadplugin.php:1087 spreadplugin.php:1228
-#: spreadplugin.php:1982
+#: _sources/SPREAD~1.PHP:2025 spreadplugin.php:1087 spreadplugin.php:1229
+#: spreadplugin.php:1986
 msgid "Price (with tax):"
 msgstr "Preis (inkl. MwSt.):"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:1083
 #: 1und1/spreadplugin.php:1223 1und1/spreadplugin.php:1992
 #: _sources/SPREAD~1.PHP:1117 _sources/SPREAD~1.PHP:1264
-#: _sources/SPREAD~1.PHP:2027 spreadplugin.php:1089 spreadplugin.php:1230
-#: spreadplugin.php:1984
+#: _sources/SPREAD~1.PHP:2027 spreadplugin.php:1089 spreadplugin.php:1231
+#: spreadplugin.php:1988
 msgid "excl. <a class=\"shipping-window\">Shipping</a>"
 msgstr "zzgl. <a class=\"shipping-window\">Versandkosten</a>"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:1086
 #: 1und1/spreadplugin.php:1226 1und1/spreadplugin.php:1995
 #: _sources/SPREAD~1.PHP:1120 _sources/SPREAD~1.PHP:1267
-#: _sources/SPREAD~1.PHP:2030 spreadplugin.php:1092 spreadplugin.php:1233
-#: spreadplugin.php:1987
+#: _sources/SPREAD~1.PHP:2030 spreadplugin.php:1092 spreadplugin.php:1234
+#: spreadplugin.php:1991
 msgid "Price:"
 msgstr "Preis:"
 
@@ -485,106 +485,106 @@ msgstr "Preis:"
 #: 1und1/spreadplugin.php:1232 1und1/spreadplugin.php:1710
 #: 1und1/spreadplugin.php:2001 _sources/SPREAD~1.PHP:1126
 #: _sources/SPREAD~1.PHP:1273 _sources/SPREAD~1.PHP:1745
-#: _sources/SPREAD~1.PHP:2036 spreadplugin.php:1098 spreadplugin.php:1239
-#: spreadplugin.php:1712 spreadplugin.php:1993
+#: _sources/SPREAD~1.PHP:2036 spreadplugin.php:1099 spreadplugin.php:1241
+#: spreadplugin.php:1714 spreadplugin.php:1996
 msgid "Add to basket"
 msgstr "In den Warenkorb"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:1346
-#: _sources/SPREAD~1.PHP:1387 spreadplugin.php:1353
+#: _sources/SPREAD~1.PHP:1387 spreadplugin.php:1355
 msgid "Click to view the articles"
 msgstr "Klicken Sie hier, um die Artikel anzusehen"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:1353
-#: _sources/SPREAD~1.PHP:1394 spreadplugin.php:1360
+#: _sources/SPREAD~1.PHP:1394 spreadplugin.php:1362
 msgid "Show description"
 msgstr "Zeige Beschreibung"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:1701
-#: _sources/SPREAD~1.PHP:1736 spreadplugin.php:1703
+#: _sources/SPREAD~1.PHP:1736 spreadplugin.php:1705
 msgid "Hide article description"
 msgstr "Verstecke Artikelbeschreibung"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:1703
-#: _sources/SPREAD~1.PHP:1738 spreadplugin.php:1705
+#: _sources/SPREAD~1.PHP:1738 spreadplugin.php:1707
 msgid "Hide product description"
 msgstr "Verstecke Produktbeschreibung"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:1706
-#: _sources/SPREAD~1.PHP:1741 spreadplugin.php:1708
+#: _sources/SPREAD~1.PHP:1741
 msgid "Loading new articles..."
 msgstr "Artikel werden geladen..."
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:1707
-#: _sources/SPREAD~1.PHP:1742 spreadplugin.php:1709
+#: _sources/SPREAD~1.PHP:1742 spreadplugin.php:1711
 msgid "You have reached the end"
 msgstr "Keine weiteren Artikel verfügbar"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:1711
-#: _sources/SPREAD~1.PHP:1746 spreadplugin.php:1713
+#: _sources/SPREAD~1.PHP:1746 spreadplugin.php:1715
 msgid "Adding..."
 msgstr "Füge ein..."
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:1712
-#: _sources/SPREAD~1.PHP:1747 spreadplugin.php:1714
+#: _sources/SPREAD~1.PHP:1747 spreadplugin.php:1716
 msgid "Add failed"
 msgstr "Hinzufügen fehlgeschlagen"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:1947
-#: _sources/SPREAD~1.PHP:1982 spreadplugin.php:1939
+#: _sources/SPREAD~1.PHP:1982 spreadplugin.php:1941
 msgid "Additional details"
 msgstr "Weitere Informationen"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:1958
-#: _sources/SPREAD~1.PHP:1993 spreadplugin.php:1950
+#: _sources/SPREAD~1.PHP:1993 spreadplugin.php:1952
 msgid "Product details"
 msgstr "Produkt Informationen"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:2029
-#: _sources/SPREAD~1.PHP:2062 spreadplugin.php:2019
+#: _sources/SPREAD~1.PHP:2062 spreadplugin.php:2022
 msgid "Product images"
 msgstr "Produkt Fotos"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:2030
-#: _sources/SPREAD~1.PHP:2063 spreadplugin.php:2020
+#: _sources/SPREAD~1.PHP:2063 spreadplugin.php:2023
 msgid "Sizes"
 msgstr "Größen"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:2031
-#: _sources/SPREAD~1.PHP:2064 spreadplugin.php:2021
+#: _sources/SPREAD~1.PHP:2064 spreadplugin.php:2024
 msgid "Description"
 msgstr "Beschreibung"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:2035
-#: _sources/SPREAD~1.PHP:2068 spreadplugin.php:2025
+#: _sources/SPREAD~1.PHP:2068 spreadplugin.php:2028
 msgid "Print Technique"
 msgstr "Druckart"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:2066
 #: 1und1/spreadplugin.php:2078 _sources/SPREAD~1.PHP:2099
-#: _sources/SPREAD~1.PHP:2111 spreadplugin.php:2056 spreadplugin.php:2068
+#: _sources/SPREAD~1.PHP:2111 spreadplugin.php:2059 spreadplugin.php:2071
 msgid "Dimension"
 msgstr "Maß"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:2131
-#: _sources/SPREAD~1.PHP:2163 spreadplugin.php:2120
+#: _sources/SPREAD~1.PHP:2163 spreadplugin.php:2123
 msgid "You do not have sufficient permissions to access this page."
 msgstr "Permissions missing!"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:2372
 #: 1und1/spreadplugin.php:2391 _sources/SPREAD~1.PHP:2387
-#: _sources/SPREAD~1.PHP:2408 spreadplugin.php:2344 spreadplugin.php:2365
+#: _sources/SPREAD~1.PHP:2408 spreadplugin.php:2347 spreadplugin.php:2368
 msgid "Remove"
 msgstr "Entfernen"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:2374
 #: 1und1/spreadplugin.php:2393 _sources/SPREAD~1.PHP:2389
-#: _sources/SPREAD~1.PHP:2410 spreadplugin.php:2346 spreadplugin.php:2367
+#: _sources/SPREAD~1.PHP:2410 spreadplugin.php:2349 spreadplugin.php:2370
 msgid "Quantity"
 msgstr "Menge"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:2404
-#: _sources/SPREAD~1.PHP:2421 spreadplugin.php:2378
+#: _sources/SPREAD~1.PHP:2421 spreadplugin.php:2381
 msgid "Total (excl. Shipping)"
 msgstr "Gesamt (ohne Versand)"
 
@@ -594,12 +594,12 @@ msgid "Proceed checkout"
 msgstr "Zur Kasse"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:2409
-#: _sources/SPREAD~1.PHP:2426 spreadplugin.php:2383
+#: _sources/SPREAD~1.PHP:2426 spreadplugin.php:2386
 msgid "Basket is empty"
 msgstr "Warenkorb ist leer"
 
-#: _sources/SPREAD~1.PHP:2424 _sources/SPREAD~1.PHP:2426 spreadplugin.php:2381
-#: spreadplugin.php:2383
+#: _sources/SPREAD~1.PHP:2424 _sources/SPREAD~1.PHP:2426 spreadplugin.php:2384
+#: spreadplugin.php:2386
 msgid "Proceed to checkout"
 msgstr "Zur Kasse"
 
@@ -616,11 +616,23 @@ msgstr ""
 "neuer Link wird dann bei den Artikeln sichtbar, damit die Kunden die Artikel "
 "anpassen können."
 
-#: options.php:561
+#: options.php:354
+msgid "Sample shortcode with category"
+msgstr ""
+
+#: options.php:358
+msgid "Sample shortcode with only Men products"
+msgstr ""
+
+#: options.php:571
 msgid "Successfully saved settings. Please click rebuild cache if necessary."
 msgstr ""
 "Einstellungen erfolgreich gespeichert. Sie können den Cache nun neu "
 "erstellen."
+
+#: spreadplugin.php:1976
+msgid "Quantity:"
+msgstr "Menge:"
 
 #~ msgid "Clear cache"
 #~ msgstr "Cache leeren"
