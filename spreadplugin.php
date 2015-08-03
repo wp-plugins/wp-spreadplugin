@@ -1093,8 +1093,9 @@ if (!class_exists('WP_Spreadplugin')) {
             }
             $output .= '</div>';
 
-            // order buttons
             $output .= '<input type="text" value="1" id="quantity" name="quantity" maxlength="4" />';
+			
+            // order buttons
             $output .= '<input type="submit" name="submit" value="' . __('Add to basket', $this->stringTextdomain) . '" /><br>';
 
             // Social buttons
@@ -1233,9 +1234,10 @@ if (!class_exists('WP_Spreadplugin')) {
                 $output .= '<span id="price">' . __('Price:', $this->stringTextdomain) . " " . self::formatPrice($article['pricebrut'], $article['currencycode']) . "</span>";
             }
             $output .= '</div>';
+			
+            $output .= '<input type="text" value="1" id="quantity" name="quantity" maxlength="4" />';
 
             // order buttons
-            $output .= '<input type="text" value="1" id="quantity" name="quantity" maxlength="4" />';
             $output .= '<input type="submit" name="submit" value="' . __('Add to basket', $this->stringTextdomain) . '" /><br>';
 
             // Social buttons
@@ -1970,7 +1972,9 @@ if (!class_exists('WP_Spreadplugin')) {
 
                 $output .= '</ul></div>';
             }
-
+			
+			$output .= '<div class="quantity-wrapper spreadplugin-clearfix"><span>'.__('Quantity:', $this->stringTextdomain).'</span> <input type="text" value="1" id="quantity" name="quantity" maxlength="4" /></div>';
+			
             $output .= '<input type="hidden" value="' . $article['appearance'] . '" id="appearance" name="appearance" />';
             $output .= '<input type="hidden" value="' . $article['view'] . '" id="view" name="view" />';
             $output .= '<input type="hidden" value="' . $id . '" id="article" name="article" />';
@@ -1989,7 +1993,6 @@ if (!class_exists('WP_Spreadplugin')) {
             $output .= '</div>';
 
             // order buttons
-            $output .= '<input type="text" value="1" id="quantity" name="quantity" maxlength="4" />';
             $output .= '<input type="submit" name="submit" value="' . __('Add to basket', $this->stringTextdomain) . '" /><br>';
 
             // Social buttons
