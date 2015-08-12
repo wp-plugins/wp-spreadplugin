@@ -336,6 +336,19 @@ if (is_user_logged_in() && is_admin()) {
                   <br />
                   <strong>Don't change this value, if you have no problems rebuilding your article cache otherwise it would take very long!</strong> Changing this value is only neccessary if you are experiencing problems when rebuilding cache. Some webspaces (e.g. godaddy.com) have request limits, which you can avoid by setting this value to for example 10.</td>
               </tr>
+              <tr>
+                <td valign="top"><?php _e('Read quantity of articles (max):','spreadplugin'); ?></td>
+                <td><select name="shop_max_quantity_articles" id="shop_max_quantity_articles">
+                    <option value="1"<?php echo ($adminOptions['shop_max_quantity_articles']==1?" selected":"") ?>>1</option>
+                    <option value="5"<?php echo ($adminOptions['shop_max_quantity_articles']==5?" selected":"") ?>>5</option>
+                    <option value="10"<?php echo ($adminOptions['shop_max_quantity_articles']==10?" selected":"") ?>>10</option>
+                    <option value="100"<?php echo ($adminOptions['shop_max_quantity_articles']==100?" selected":"") ?>>100</option>
+                    <option value="200"<?php echo ($adminOptions['shop_max_quantity_articles']==200?" selected":"") ?>>200</option>
+                    <option value="1000"<?php echo (empty($adminOptions['shop_max_quantity_articles']) || $adminOptions['shop_max_quantity_articles']==1000?" selected":"") ?>>1000 (default)</option>
+                  </select><br />
+<br />
+<?php _e('Limit the quantity of articles which will be read. Use a lower value if you have problems saving the articles.','spreadplugin'); ?></td>
+              </tr>
             </table>
             <input type="submit" name="update-splg_options" id="update-splg_options" class="button-primary" value="<?php _e('Update settings','spreadplugin'); ?>" />
           </form>

@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.8.7.8
+ * Version: 3.8.7.9
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -25,7 +25,7 @@ if (!class_exists('WP_Spreadplugin')) {
         );
 
         public $defaultOptions = array(
-            'shop_id' => '','shop_locale' => '','shop_api' => '','shop_source' => '','shop_secret' => '','shop_limit' => '','shop_category' => '','shop_social' => '','shop_enablelink' => '','shop_productcategory' => '','shop_productsubcategory' => '','shop_sortby' => '','shop_linktarget' => '','shop_checkoutiframe' => '','shop_designershop' => '','shop_display' => '','shop_designsbackground' => '','shop_showdescription' => '','shop_showproductdescription' => '','shop_imagesize' => '','shop_showextendprice' => '','shop_zoomimagebackground' => '','shop_infinitescroll' => '','shop_customcss' => '','shop_design' => '','shop_view' => '','shop_zoomtype' => '','shop_lazyload' => '','shop_language' => '','shop_basket_text_icon' => '','shop_debug' => '','shop_sleep' => '','shop_designer' => ''
+            'shop_id' => '','shop_locale' => '','shop_api' => '','shop_source' => '','shop_secret' => '','shop_limit' => '','shop_category' => '','shop_social' => '','shop_enablelink' => '','shop_productcategory' => '','shop_productsubcategory' => '','shop_sortby' => '','shop_linktarget' => '','shop_checkoutiframe' => '','shop_designershop' => '','shop_display' => '','shop_designsbackground' => '','shop_showdescription' => '','shop_showproductdescription' => '','shop_imagesize' => '','shop_showextendprice' => '','shop_zoomimagebackground' => '','shop_infinitescroll' => '','shop_customcss' => '','shop_design' => '','shop_view' => '','shop_zoomtype' => '','shop_lazyload' => '','shop_language' => '','shop_basket_text_icon' => '','shop_debug' => '','shop_sleep' => '','shop_designer' => '', 'shop_max_quantity_articles' => ''
         );
 
         private static $shopCache = 0; // Shop article cache - never expires
@@ -151,6 +151,7 @@ if (!class_exists('WP_Spreadplugin')) {
             self::$shopOptions['shop_zoomtype'] = ($conOp['shop_zoomtype'] == '' ? 0 : $conOp['shop_zoomtype']);
             self::$shopOptions['shop_lazyload'] = ($conOp['shop_lazyload'] == '' ? 1 : $conOp['shop_lazyload']);
             self::$shopOptions['shop_debug'] = ($conOp['shop_debug'] == '' ? 0 : $conOp['shop_debug']);
+            self::$shopOptions['shop_max_quantity_articles'] = ($conOp['shop_max_quantity_articles'] == '' ? 1000 : $conOp['shop_max_quantity_articles']);
 
             // Disable Zoom on min view, because of the new view - not on details page
             if (self::$shopOptions['shop_view'] == 2 && empty($_GET['splproduct'])) {
@@ -557,9 +558,6 @@ if (!class_exists('WP_Spreadplugin')) {
          */
         private function getRawArticleData($pageId) {
 
-            // Limit to read max articles
-            $_maxlimit = 1000;
-
             $articleData = array();
             $articleDataObj = array();
 
@@ -568,7 +566,7 @@ if (!class_exists('WP_Spreadplugin')) {
             $apiUrlBase .= '/articles?' . (!empty(self::$shopOptions['shop_locale']) ? 'locale=' . self::$shopOptions['shop_locale'] . '&' : '') . 'fullData=true&noCache=true';
 
             // call first to get count of articles
-            $apiUrl = $apiUrlBase . '&limit=' . $_maxlimit;
+            $apiUrl = $apiUrlBase . '&limit=' . self::$shopOptions['shop_max_quantity_articles'];
 
             $stringXmlShopBase = wp_remote_get($apiUrl, array(
                 'timeout' => 120
@@ -919,8 +917,8 @@ if (!class_exists('WP_Spreadplugin')) {
             if (!isset($objArticles) || !is_object($objArticles)) die('Articles not loaded');
 
             // re-call to read articles with count
-            // read max 1000 articles because of spreadshirt max. limit
-            $apiUrl = $apiUrlBase . '&limit=' . ($objArticles['count'] <= 1 ? 2 : ($objArticles['count'] < 1000 ? $objArticles['count'] : 1000));
+            // read max self::$shopOptions['shop_max_quantity_articles'] articles because of spreadshirt max. limit
+            $apiUrl = $apiUrlBase . '&limit=' . ($objArticles['count'] <= 1 ? 2 : ($objArticles['count'] < self::$shopOptions['shop_max_quantity_articles'] ? $objArticles['count'] : self::$shopOptions['shop_max_quantity_articles']));
 
             $stringXmlShop = wp_remote_get($apiUrl, array(
                 'timeout' => 120
@@ -2141,7 +2139,7 @@ if (!class_exists('WP_Spreadplugin')) {
                 $wpdb->query("DELETE FROM `" . $wpdb->options . "` WHERE `option_name` LIKE '_transient_%spreadplugin%cache%'");
 
                 // read posts/pages,... with shortcode
-                $result = $wpdb->get_results("SELECT id,post_title FROM `" . $wpdb->posts . "` WHERE post_type <> 'revision' and post_content like '%[spreadplugin%'");
+                $result = $wpdb->get_results("SELECT " . $wpdb->posts . ".id,post_title FROM `" . $wpdb->posts . "` left join `" . $wpdb->postmeta . "` on `" . $wpdb->postmeta . "`.post_id =`" . $wpdb->posts . "`.id WHERE post_type <> 'revision' and (post_content like '%[spreadplugin%' or (meta_value like '%[spreadplugin%' and meta_key not like '%preview%'))");
 
                 if ($result) {
                     foreach ($result as $item) {
@@ -2278,6 +2276,15 @@ if (!class_exists('WP_Spreadplugin')) {
 			$pageId = ($pageId == 0 ? intval($_GET['pageid']) : $pageId);
             $pageData = get_page($pageId);
             $pageContent = $pageData->post_content;
+			
+			if (empty($pageContent) && $pageId > 0) {
+				$pageData = get_post_meta($pageId,"panels_data",true);
+				if (!empty($pageData['widgets'][0]['text'])) {
+					$pageContent = $pageData['widgets'][0]['text'];
+				} else {
+					$pageContent = "";	
+				}
+			}
 
             // get admin options (default option set on admin page)
             $conOp = $this->getAdminOptions();
