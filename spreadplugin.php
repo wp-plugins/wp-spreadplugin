@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.8.7.9
+ * Version: 3.8.8
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -2139,7 +2139,7 @@ if (!class_exists('WP_Spreadplugin')) {
                 $wpdb->query("DELETE FROM `" . $wpdb->options . "` WHERE `option_name` LIKE '_transient_%spreadplugin%cache%'");
 
                 // read posts/pages,... with shortcode
-                $result = $wpdb->get_results("SELECT " . $wpdb->posts . ".id,post_title FROM `" . $wpdb->posts . "` left join `" . $wpdb->postmeta . "` on `" . $wpdb->postmeta . "`.post_id =`" . $wpdb->posts . "`.id WHERE post_type <> 'revision' and (post_content like '%[spreadplugin%' or (meta_value like '%[spreadplugin%' and meta_key not like '%preview%'))");
+                $result = $wpdb->get_results("SELECT distinct " . $wpdb->posts . ".id,post_title FROM `" . $wpdb->posts . "` left join `" . $wpdb->postmeta . "` on `" . $wpdb->postmeta . "`.post_id =`" . $wpdb->posts . "`.id WHERE post_type <> 'revision' and (post_content like '%[spreadplugin%' or (meta_value like '%[spreadplugin%' and meta_key = 'panels_data'))");
 
                 if ($result) {
                     foreach ($result as $item) {
