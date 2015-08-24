@@ -2279,7 +2279,7 @@ if (!class_exists('WP_Spreadplugin')) {
 			
 			if (empty($pageContent) && $pageId > 0) {
 				$pageData = get_post_meta($pageId,"panels_data",true);
-				if (!empty($pageData['widgets'][0]['text'])) {
+				if (!empty($pageData) && !empty($pageData['widgets'][0]['text'])) {
 					$pageContent = $pageData['widgets'][0]['text'];
 				} else {
 					$pageContent = "";	
