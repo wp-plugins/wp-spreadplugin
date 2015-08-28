@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.8.9
+ * Version: 3.9.1
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -25,7 +25,7 @@ if (!class_exists('WP_Spreadplugin')) {
         );
 
         public $defaultOptions = array(
-            'shop_id' => '','shop_locale' => '','shop_api' => '','shop_source' => '','shop_secret' => '','shop_limit' => '','shop_category' => '','shop_social' => '','shop_enablelink' => '','shop_productcategory' => '','shop_productsubcategory' => '','shop_sortby' => '','shop_linktarget' => '','shop_checkoutiframe' => '','shop_designershop' => '','shop_display' => '','shop_designsbackground' => '','shop_showdescription' => '','shop_showproductdescription' => '','shop_imagesize' => '','shop_showextendprice' => '','shop_zoomimagebackground' => '','shop_infinitescroll' => '','shop_customcss' => '','shop_design' => '','shop_view' => '','shop_zoomtype' => '','shop_lazyload' => '','shop_language' => '','shop_basket_text_icon' => '','shop_debug' => '','shop_sleep' => '','shop_designer' => '','shop_max_quantity_articles' => ''
+            'shop_id' => '','shop_locale' => '','shop_api' => '','shop_source' => '','shop_secret' => '','shop_limit' => '','shop_category' => '','shop_social' => '','shop_enablelink' => '','shop_productcategory' => '','shop_productsubcategory' => '','shop_sortby' => '','shop_linktarget' => '','shop_checkoutiframe' => '','shop_designershop' => '','shop_display' => '','shop_designsbackground' => '','shop_showdescription' => '','shop_showproductdescription' => '','shop_imagesize' => '','shop_showextendprice' => '','shop_zoomimagebackground' => '','shop_infinitescroll' => '','shop_customcss' => '','shop_design' => '','shop_article' => '','shop_view' => '','shop_zoomtype' => '','shop_lazyload' => '','shop_language' => '','shop_basket_text_icon' => '','shop_debug' => '','shop_sleep' => '','shop_designer' => '','shop_max_quantity_articles' => ''
         );
 
         private static $shopCache = 0; // Shop article cache - never expires
@@ -264,20 +264,29 @@ if (!class_exists('WP_Spreadplugin')) {
 
                 // filter
                 if (is_array($articleCleanData)) {
-                    foreach ($articleCleanData as $id => $article) {
+					
+                    // Single product
+					if (isset(self::$shopOptions['shop_article']) && self::$shopOptions['shop_article'] > 0 && array_key_exists(self::$shopOptions['shop_article'],$articleCleanData)) {
+						$articleCleanData = array(self::$shopOptions['shop_article'] => $articleCleanData[self::$shopOptions['shop_article']]);
 
-                        // designs
-                        if (self::$shopOptions['shop_design'] > 0 && self::$shopOptions['shop_design'] != $articleCleanData[$id]['designid']) {
-                            unset($articleCleanData[$id]);
-                        }
+					} else {
 
-                        // product categories
-                        if (!empty(self::$shopOptions['shop_productcategory']) && isset($typesData[self::$shopOptions['shop_productcategory']][self::$shopOptions['shop_productsubcategory']])) {
-                            if (!isset($typesData[self::$shopOptions['shop_productcategory']][self::$shopOptions['shop_productsubcategory']][$article['type']])) {
-                                unset($articleCleanData[$id]);
-                            }
-                        }
-                    }
+						// All products
+						foreach ($articleCleanData as $id => $article) {
+	
+							// designs
+							if (self::$shopOptions['shop_design'] > 0 && self::$shopOptions['shop_design'] != $articleCleanData[$id]['designid']) {
+								unset($articleCleanData[$id]);
+							}
+	
+							// product categories
+							if (!empty(self::$shopOptions['shop_productcategory']) && isset($typesData[self::$shopOptions['shop_productcategory']][self::$shopOptions['shop_productsubcategory']])) {
+								if (!isset($typesData[self::$shopOptions['shop_productcategory']][self::$shopOptions['shop_productsubcategory']][$article['type']])) {
+									unset($articleCleanData[$id]);
+								}
+							}
+						}
+					}
                 }
 
                 // default sort
@@ -563,7 +572,9 @@ if (!class_exists('WP_Spreadplugin')) {
 
             $apiUrlBase = 'http://api.spreadshirt.' . self::$shopOptions['shop_source'] . '/api/v1/shops/' . self::$shopOptions['shop_id'];
             $apiUrlBase .= (!empty(self::$shopOptions['shop_category']) ? '/articleCategories/' . self::$shopOptions['shop_category'] : '');
-            $apiUrlBase .= '/articles?' . (!empty(self::$shopOptions['shop_locale']) ? 'locale=' . self::$shopOptions['shop_locale'] . '&' : '') . 'fullData=true&noCache=true';
+            $apiUrlBase .= '/articles';
+			$apiUrlBase .=  (!empty(self::$shopOptions['shop_article']) ? '/' . intval(self::$shopOptions['shop_article']) : '');
+			$apiUrlBase .= '?' . (!empty(self::$shopOptions['shop_locale']) ? 'locale=' . self::$shopOptions['shop_locale'] . '&' : '') . 'fullData=true&noCache=true';
 
             // call first to get count of articles
             $apiUrl = $apiUrlBase . '&limit=' . self::$shopOptions['shop_max_quantity_articles'];
@@ -582,6 +593,13 @@ if (!class_exists('WP_Spreadplugin')) {
             $stringXmlShopBase = wp_remote_retrieve_body($stringXmlShopBase);
             // Quickfix for Namespace changes of Spreadshirt API
             $stringXmlShopBase = str_replace('<ns3:', '<', $stringXmlShopBase);
+			
+			// Quick (dirty) Workaround for Single Article using shop_article
+			if (!empty(self::$shopOptions['shop_article'])) {
+				$stringXmlShopBase = str_replace('<article ', '<articles><article ', str_replace('</article>', '</article></articles>', $stringXmlShopBase)); 
+			}
+			
+			// Interprete XML
             $objArticlesBase = new SimpleXmlElement($stringXmlShopBase);
             if (!is_object($objArticlesBase)) {
                 if (self::$shopOptions['shop_debug'] == 1) {
