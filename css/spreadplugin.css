@@ -440,9 +440,10 @@ Use "Custom CSS" in Spreadplugin Options only
 }
 .spreadplugin-cart-checkout {
 	text-align: right;
-	padding: 10px
+	padding: 10px;
+	float:right
 }
-.spreadplugin-cart-checkout a, .spreadplugin-cart-checkout a:hover {
+.spreadplugin-cart-checkout a, .spreadplugin-cart-checkout a:hover, .spreadplugin-cart-close a, .spreadplugin-cart-close a:hover {
 	color: #fff;
 	text-decoration: none
 }
@@ -720,4 +721,16 @@ spreadplugin-items img {
 	background-color: #47a276;
 	top: 127px;
 	position: absolute
+}
+.spreadplugin-cart-close {
+	text-align: right;
+	padding: 10px;
+	float: left
+}
+.spreadplugin-cart-close a {
+	background-color: #666;
+	padding: 15px 30px
+}
+.spreadplugin-cart-close a:hover {
+	background-color: #999
 }

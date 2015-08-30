@@ -2291,7 +2291,11 @@ if (!class_exists('WP_Spreadplugin')) {
         public function reparseShortcodeData($pageId = 0) {
             $pageId = ($pageId == 0 && !empty($GLOBALS['wp_query']->query_vars['pageid']) ? intval($GLOBALS['wp_query']->query_vars['pageid']) : $pageId);
             $pageData = get_page($pageId);
-            $pageContent = $pageData->post_content;
+			$pageContent = "";
+			
+			if (!empty($pageData->post_content)) {
+            	$pageContent = $pageData->post_content;
+			}
 
             if (empty($pageContent) && $pageId > 0) {
                 $pageData = get_post_meta($pageId, "panels_data", true);
@@ -2402,6 +2406,7 @@ if (!class_exists('WP_Spreadplugin')) {
 
                 echo '</div>';
                 echo '<div class="spreadplugin-cart-total">' . __('Total (excl. Shipping)', $this->stringTextdomain) . '<strong class="price">' . self::formatPrice($priceSum, '') . '</strong></div>';
+                echo '<div class="spreadplugin-cart-close"><a href="#">' . __('Close', $this->stringTextdomain) . '</a></div>';
 
                 if ($intSumQuantity > 0) {
                     echo '<div id="cart-checkout" class="spreadplugin-cart-checkout"><a href="' . $_SESSION['checkoutUrl'][self::$shopOptions['shop_source'] . self::$shopOptions['shop_language']] . '" target="' . self::$shopOptions['shop_linktarget'] . '">' . __('Proceed to checkout', $this->stringTextdomain) . '</a></div>';
