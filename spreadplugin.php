@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.9.1
+ * Version: 3.9.3
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -153,7 +153,7 @@ if (!class_exists('WP_Spreadplugin')) {
             self::$shopOptions['shop_max_quantity_articles'] = ($conOp['shop_max_quantity_articles'] == '' ? 1000 : $conOp['shop_max_quantity_articles']);
 
             // Disable Zoom on min view, because of the new view - not on details page
-            if (self::$shopOptions['shop_view'] == 2 && empty($GLOBALS['wp_query']->query_vars['splproduct'])) {
+            if (self::$shopOptions['shop_view'] == 2 && get_query_var('splproduct')) {
                 self::$shopOptions['shop_zoomtype'] = 2;
             }
 
@@ -167,13 +167,13 @@ if (!class_exists('WP_Spreadplugin')) {
                 load_plugin_textdomain($this->stringTextdomain, false, dirname(plugin_basename(__FILE__)) . '/translation');
             }
 
-            if (!empty($GLOBALS['wp_query']->query_vars['productCategory'])) {
-                $c = $GLOBALS['wp_query']->query_vars['productCategory'];
+            if (get_query_var('productCategory')) {
+                $c = get_query_var('productCategory');
                 self::$shopOptions['shop_productcategory'] = $c;
                 self::$shopOptions['shop_productsubcategory'] = 'all';
 
-                if (!empty($GLOBALS['wp_query']->query_vars['productSubCategory'])) {
-                    $c = $GLOBALS['wp_query']->query_vars['productSubCategory'];
+                if (get_query_var('productSubCategory')) {
+                    $c = get_query_var('productSubCategory');
                     self::$shopOptions['shop_productsubcategory'] = $c;
                 }
             }
@@ -189,8 +189,8 @@ if (!class_exists('WP_Spreadplugin')) {
                 self::$shopOptions['shop_productsubcategory'] = "all";
             }
 
-            if (!empty($GLOBALS['wp_query']->query_vars['articleSortBy'])) {
-                $c = urldecode($GLOBALS['wp_query']->query_vars['articleSortBy']);
+            if (get_query_var('articleSortBy')) {
+                $c = urldecode(get_query_var('articleSortBy'));
                 self::$shopOptions['shop_sortby'] = $c;
             }
 
@@ -202,7 +202,7 @@ if (!class_exists('WP_Spreadplugin')) {
             // check
             if (!empty(self::$shopOptions['shop_id']) && !empty(self::$shopOptions['shop_api']) && !empty(self::$shopOptions['shop_secret'])) {
 
-                $paged = (!empty($GLOBALS['wp_query']->query_vars['pagesp']) ? $GLOBALS['wp_query']->query_vars['pagesp'] : 1);
+                $paged = (get_query_var('pagesp') ? get_query_var('pagesp') : 1);
 
                 $offset = ($paged - 1) * self::$shopOptions['shop_limit'];
 
@@ -359,7 +359,7 @@ if (!class_exists('WP_Spreadplugin')) {
                     $output .= '<br>No articles in Shop. Please rebuild cache.';
                 } else {
                     // Listing product
-                    if (empty($GLOBALS['wp_query']->query_vars['splproduct'])) {
+                    if (!get_query_var('splproduct')) {
 
                         // add spreadplugin-menu
                         $output .= '<div id="spreadplugin-menu" class="spreadplugin-menu">';
@@ -376,7 +376,7 @@ if (!class_exists('WP_Spreadplugin')) {
 
                         // simple sub categories
                         // @TODO Javascript
-                        if (!empty($GLOBALS['wp_query']->query_vars['productCategory'])) {
+                        if (get_query_var('productCategory')) {
                             $output .= '<select name="productSubCategory" id="productSubCategory">';
                             $output .= '<option value="all"></option>';
                             if (isset($typesData[self::$shopOptions['shop_productcategory']])) {
@@ -491,7 +491,7 @@ if (!class_exists('WP_Spreadplugin')) {
                         $output .= "<div id=\"pagination\">";
                         if ($cArticleNext > 0) {
                             $output .= "<a href=\"" . add_query_arg(array(
-                                'pagesp' => $paged + 1,'productCategory' => (isset($GLOBALS['wp_query']->query_vars['productCategory']) ? $GLOBALS['wp_query']->query_vars['productCategory'] : ''),'articleSortBy' => (isset($GLOBALS['wp_query']->query_vars['articleSortBy']) ? $GLOBALS['wp_query']->query_vars['articleSortBy'] : '')
+                                'pagesp' => $paged + 1,'productCategory' => (get_query_var('productCategory') ? get_query_var('productCategory') : ''),'articleSortBy' => (get_query_var('articleSortBy') ? get_query_var('articleSortBy') : '')
                             ), get_permalink()) . "\">" . __('next', $this->stringTextdomain) . "</a>";
                         }
                         $output .= "</div>";
@@ -509,8 +509,8 @@ if (!class_exists('WP_Spreadplugin')) {
                         $output .= '</div>';
 
                         // product
-                        if (!empty($articleCleanDataComplete[intval($GLOBALS['wp_query']->query_vars['splproduct'])])) {
-                            $output .= $this->displayDetailPage(intval($GLOBALS['wp_query']->query_vars['splproduct']), $articleCleanDataComplete[intval($GLOBALS['wp_query']->query_vars['splproduct'])], self::$shopOptions['shop_zoomimagebackground']);
+                        if (!empty($articleCleanDataComplete[intval(get_query_var('splproduct'))])) {
+                            $output .= $this->displayDetailPage(intval(get_query_var('splproduct')), $articleCleanDataComplete[intval(get_query_var('splproduct'))], self::$shopOptions['shop_zoomimagebackground']);
                         }
 
                         $output .= '</div>';
@@ -748,6 +748,7 @@ if (!class_exists('WP_Spreadplugin')) {
                 $stringXmlArticle = wp_remote_retrieve_body($url);
                 // Quickfix for Namespace changes of Spreadshirt API
                 $stringXmlArticle = str_replace('<ns3:', '<', $stringXmlArticle);
+
 
                 if (substr($stringXmlArticle, 0, 5) == "<?xml" && substr($stringXmlShop, 0, 5) != "<prod") {
                     $objArticleData = new SimpleXmlElement($stringXmlArticle);
@@ -1004,6 +1005,7 @@ if (!class_exists('WP_Spreadplugin')) {
             // display preview image
             $output .= '<div class="image-wrapper">';
             $output .= '<img src="';
+
 
             if (self::$shopOptions['shop_lazyload'] == 0) {
                 $output .= $imgSrc;
@@ -2289,7 +2291,7 @@ if (!class_exists('WP_Spreadplugin')) {
          * @TODO find a different way
          */
         public function reparseShortcodeData($pageId = 0) {
-            $pageId = ($pageId == 0 && !empty($GLOBALS['wp_query']->query_vars['pageid']) ? intval($GLOBALS['wp_query']->query_vars['pageid']) : $pageId);
+            $pageId = ($pageId == 0 && get_query_var('pageid') ? intval(get_query_var('pageid')) : $pageId);
             $pageData = get_page($pageId);
 			$pageContent = "";
 			
