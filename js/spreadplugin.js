@@ -625,7 +625,26 @@
 				appearanceId: desiredAppearanceId,
 				viewId: desiredViewId,
 				productTypeId: desiredProducttypeId,
+				/*
+				* Currently disabled - apiBasketId not taken?
+				
+				apiBasketId: designerBasketId,
+				basketId: designerBasketId,
   
+				addToBasket: function(item, callback) {
+				
+					 // implement how to get the item to your basket
+					 // e.g. do some AJAX request
+				
+					 // invoke callback function when you're done
+				
+					 var err = null; // set to a js truly type for showing an error in tabloat,
+					 // see http://www.sitepoint.com/javascript-truthy-falsy/
+				
+					 callback && callback(err);
+				
+				}
+				*/
                 addToBasket: function(basketItem, callback) {
 					
 					var data = {
