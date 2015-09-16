@@ -2,7 +2,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.9.3
+ * Version: 3.9.4
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -271,10 +271,10 @@
 					},
 					resize: function () {
 						$('.mfp-iframe-holder .mfp-content').css('height',$(window).height()-200);
-					} /*,
+					},
 					close: function() {
-						$('.spreadplugin-checkout-link').trigger('click');
-					}*/
+						$('#spreadplugin-designer').html("");
+					}
 				}
 			});
 		});
@@ -611,16 +611,12 @@
 
 	// integrated designer shop // conformat
 	function callIntegratedDesigner(desiredDesignId, desiredProductId, desiredViewId, desiredAppearanceId, desiredProducttypeId) {
-
-			if ($('#Confomat').length) {
-				designerTargetId = 'Confomat';
-			}
 		
-			// @see https://developer.spreadshirt.net/display/APPS/Embed+Spreadshirt+T-Shirt+Designer+into+your+shop+system
-            confomat.create({
+			// @see http://spreadshirt.github.io/apps/tablomat
+            spreadshirt.create("tablomat",{
 
                 shopId: designerShopId,
-				targetId: designerTargetId,
+				target: document.getElementById(designerTargetId),
 				platform: designerPlatform,
 				locale: designerLocale,
 				width: designerWidth,
@@ -628,18 +624,14 @@
 				productId: desiredProductId,
 				appearanceId: desiredAppearanceId,
 				viewId: desiredViewId,
-				productTypeId : desiredProducttypeId,
-
-                calculatePriceFunction: function (product, callback) {
-					return product.price * 1.5;				
-				},
-
-                addToBasketFunction: function(basketItem, callback) {
+				productTypeId: desiredProducttypeId,
+  
+                addToBasket: function(basketItem, callback) {
 					
 					var data = {
-						article: basketItem.productId,
-						size: basketItem.sizeId,
-						appearance: basketItem.appearanceId,
+						article: basketItem.product.id,
+						size: basketItem.size.id,
+						appearance: basketItem.appearance.id,
 						quantity: basketItem.quantity,
 						shopId: basketItem.shopId,
 						action: 'myAjax',
@@ -648,32 +640,28 @@
 
 					$.post(ajaxLocation,data,function(json) {
 						
-						if (json.c.m==1) {
+						if (json.c.m == 1) {
 							// return success to confomat
-							callback(true);
+							callback && callback();
 						} else {
 							// return failure to confomat
-							callback(false);
+							callback && callback(true);
 						}
+
 						
 					refreshCart(json);
 					}, 'json');
-                },
-
-                checkoutFunction: function() {
-                    $('.spreadplugin-checkout-link').trigger('click');
                 }
 
-            }, {className: "conformat-designer"}, function(err, confomatInstance) {
-
-                if (err) {
-                    err = (err === true ? "Some error occurred" : err);
-                    alert(err);
-                } else {
-                    _instance = confomatInstance;
-                }
-
-            });
+			}, function(err, app) {
+			 if (err) {
+				// something went wrong
+				console.log(err);
+			} else {
+				// cool I can control the application (see below)
+				app.setProductTypeId(6);
+			}
+			});
 	}
 	
 	

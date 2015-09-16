@@ -184,17 +184,14 @@ if (is_user_logged_in() && is_admin()) {
                 <td><input type="radio" name="shop_designer" value="0"<?php echo ($adminOptions['shop_designer']==0?" checked":"") ?> />
                   <?php _e('None','spreadplugin'); ?>
                   <br />
-                  <input type="radio" name="shop_designer" value="1"<?php echo ($adminOptions['shop_designer']==1?" checked":"") ?> />
-                  <?php _e('Integrated [BETA] (All marketplace designs are shown on design tab)','spreadplugin'); ?>
-                  <br />
-                  <input type="radio" name="shop_designer" value="2"<?php echo ($adminOptions['shop_designer']==2?" checked":"") ?> />
-                  <?php _e('Premium (Contents of your designer shop are shown - Tablomat)','spreadplugin'); ?>
+                  <input type="radio" name="shop_designer" value="1"<?php echo ($adminOptions['shop_designer']==1||$adminOptions['shop_designer']==2?" checked":"") ?> />
+                  <?php _e('Designer (Spreadshirt Tablomat)','spreadplugin'); ?>
                   <div id="premium-shop-span"> <br />
                     <br />
-                    <?php _e('Premium Designer Shop Id','spreadplugin'); ?>
+                    <?php _e('Designer Shop Id','spreadplugin'); ?>
                     <input type="text" name="shop_designershop" value="<?php echo $adminOptions['shop_designershop']; ?>" class="only-digit" />
                     <br />
-                    <?php _e('If you have a designer Shop activated, enter the ID here. A new link will appear where the customer can change the design.','spreadplugin'); ?>
+                    <?php _e('If you have a Designer Shop at Spreadshirt then enter its ID here to only show the designs of your Designer Shop, otherwise all Spreadshirt Marketplace designs are shown.','spreadplugin'); ?>
                   </div></td>
               </tr>
               <tr>
