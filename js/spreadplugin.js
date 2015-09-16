@@ -647,9 +647,9 @@
 							// return failure to confomat
 							callback && callback(true);
 						}
-
 						
-					refreshCart(json);
+						// Refresh shopping cart
+						refreshCart(json);
 					}, 'json');
                 }
 
