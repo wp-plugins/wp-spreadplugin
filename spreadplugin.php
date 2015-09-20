@@ -505,7 +505,7 @@ if (!class_exists('WP_Spreadplugin')) {
                         // checkout
                         // add simple spreadplugin-menu
                         $output .= '<div id="spreadplugin-menu" class="spreadplugin-menu">';
-                        $output .= '<a href="' . get_page_link() . '">' . __('Back', $this->stringTextdomain);
+                        $output .= '<a href="javascript:history.back();">' . __('Back', $this->stringTextdomain);
                         $output .= '<div id="checkout" class="spreadplugin-checkout"><span></span> <a href="' . (!empty($_SESSION['checkoutUrl'][self::$shopOptions['shop_source'] . self::$shopOptions['shop_language']]) ? $_SESSION['checkoutUrl'][self::$shopOptions['shop_source'] . self::$shopOptions['shop_language']] : '') . '" target="' . self::$shopOptions['shop_linktarget'] . '" id="basketLink" class="spreadplugin-checkout-link' . (self::$shopOptions['shop_basket_text_icon'] == 1 ? ' button' : '') . '">' . (self::$shopOptions['shop_basket_text_icon'] == 0 ? __('Basket', $this->stringTextdomain) : '') . '</a></div>';
                         $output .= '<div id="cart" class="spreadplugin-cart"></div>';
                         $output .= '</div>';
