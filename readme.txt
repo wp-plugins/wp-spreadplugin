@@ -1,11 +1,11 @@
-=== WP-Spreadplugin ===
+﻿=== WP-Spreadplugin ===
 Contributors: Thimo Grauerholz
 Author: Thimo Grauerholz
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EZLKTKW8UR6PQ
 Tags: spreadshirt,wordpress,plugin,shop,store,shirt,t-shirt,integration,online store,online shop
 Requires at least: 3.3
 Tested up to: 4.3
-Stable tag: 3.9.4
+Stable tag: 3.9.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -198,6 +198,12 @@ Please have a look here: http://themeforest.net/category/wordpress?ref=thimo
 3. Settings page
 
 == Changelog ==
+
+= 3.9.5 =
+* Bugfix in Tablomat
+
+= 3.9.4.1 =
+* Bugfix
 
 = 3.9.4 =
 * Updated integrated designer "Tablomat" to use the shop basket. 
