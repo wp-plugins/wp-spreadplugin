@@ -735,5 +735,5 @@ spreadplugin-items img {
 	background-color: #999
 }
 .spreadplugin-article input[type="submit"], .spreadplugin-article button[type="submit"], .spreadplugin-article input[type="button"] {
-	background-color: transparent;
+	background-color: #47a276;
 }
