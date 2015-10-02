@@ -1883,7 +1883,7 @@ if (!class_exists('WP_Spreadplugin')) {
 
                 // Workaround
                 $checkoutUrl = self::workaroundLangUrl($checkoutUrl);
-				
+
 				// BasketId
 				if (preg_match("/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}/", $basketUrl, $found)) {
 					$basketId = $found[0];
@@ -2310,7 +2310,7 @@ if (!class_exists('WP_Spreadplugin')) {
 			$pageContent = "";
 			
 			if (!empty($pageData->post_content)) {
-            	$pageContent = $pageData->post_content;
+            $pageContent = $pageData->post_content;
 			}
 
             if (empty($pageContent) && $pageId > 0) {
