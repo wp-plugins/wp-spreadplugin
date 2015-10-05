@@ -1715,8 +1715,7 @@ if (!class_exists('WP_Spreadplugin')) {
          * Function loadFoot
          */
         public function loadFoot() {
-			global $wp;
-			
+						
             echo "
 					<script language='javascript' type='text/javascript'>
 					/**
@@ -1730,7 +1729,7 @@ if (!class_exists('WP_Spreadplugin')) {
 					var loadingImage = '" . plugins_url('/img/loading.gif', __FILE__) . "';
 					var loadingMessage = 'Loading...';
 					var loadingFinishedMessage = '" . esc_attr__('You have reached the end', $this->stringTextdomain) . "';
-					var pageLink = '" . home_url(add_query_arg(array(),$wp->request)) . "';
+					var pageLink = '" . get_page_link() . "';
 					var pageCheckoutUseIframe = '" . self::$shopOptions['shop_checkoutiframe'] . "';
 					var textButtonAdd = '" . esc_attr__('Add to basket', $this->stringTextdomain) . "';
 					var textButtonAdded = '" . esc_attr__('Adding...', $this->stringTextdomain) . "';
