@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.9.5.2
+ * Version: 3.9.5.3
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -1729,7 +1729,7 @@ if (!class_exists('WP_Spreadplugin')) {
 					var loadingImage = '" . plugins_url('/img/loading.gif', __FILE__) . "';
 					var loadingMessage = 'Loading...';
 					var loadingFinishedMessage = '" . esc_attr__('You have reached the end', $this->stringTextdomain) . "';
-					var pageLink = '" . get_page_link() . "';
+					var pageLink = '" . $this->currentPageURL() . "';
 					var pageCheckoutUseIframe = '" . self::$shopOptions['shop_checkoutiframe'] . "';
 					var textButtonAdd = '" . esc_attr__('Add to basket', $this->stringTextdomain) . "';
 					var textButtonAdded = '" . esc_attr__('Adding...', $this->stringTextdomain) . "';
@@ -2605,6 +2605,26 @@ if (!class_exists('WP_Spreadplugin')) {
             $wp->add_query_var('pagesp');
             $wp->add_query_var('splproduct');
         }
+		
+		
+		private function currentPageURL() {
+			$pageURL = 'http';
+			$pageURI = $_SERVER["REQUEST_URI"];
+			
+			$pageURI = preg_replace(array('/&?productCategory=[^&]*/','/&?productSubCategory=[^&]*/','/&?articleSortBy=[^&]*/','/&?pagesp=[^&]*/'), '', $pageURI);
+			
+			if ($_SERVER["HTTPS"] == "on") {
+				$pageURL .= "s";
+			}
+			
+			$pageURL .= "://";
+			if ($_SERVER["SERVER_PORT"] != "80") {
+				$pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$pageURI;
+			} else {
+				$pageURL .= $_SERVER["SERVER_NAME"].$pageURI;
+			}
+			return $pageURL;
+		}
     } // END class WP_Spreadplugin
 
     new WP_Spreadplugin();
