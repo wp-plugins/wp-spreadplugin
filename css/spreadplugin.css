@@ -3,9 +3,9 @@ Don't edit this file!
 Use "Custom CSS" in Spreadplugin Options only
 */
 .spreadplugin-items ul {
-	margin: 0;
-	padding: 0;
-	list-style: none
+	margin: 0 !important;
+	padding: 0 !important;
+	list-style: none !important
 }
 .spreadplugin-items code, .spreadplugin-items pre {
 	font-family: Arial, Helvetica, Tahoma, sans-serif;
