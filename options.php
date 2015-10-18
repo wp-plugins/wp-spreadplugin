@@ -50,7 +50,7 @@ if (is_user_logged_in() && is_admin()) {
                 <td valign="top"><?php _e('Shop id:','spreadplugin'); ?></td>
                 <td><input type="text" name="shop_id" value="<?php echo (empty($adminOptions['shop_id'])?0:$adminOptions['shop_id']); ?>" class="only-digit required" /></td>
               </tr>
-              <tr>
+              <!--<tr>
                 <td valign="top"><?php _e('Shop country:','spreadplugin'); ?></td>
                 <td><select name="shop_locale" id="shop_locale">
                     <option value=""<?php echo (empty($adminOptions['shop_locale'])?" selected":"") ?>>None/Unknown</option>
@@ -75,7 +75,7 @@ if (is_user_logged_in() && is_admin()) {
                     <option value="us_AU"<?php echo ($adminOptions['shop_locale']=='us_AU'?" selected":"") ?>>Australia</option>
                     <option value="us_BR"<?php echo ($adminOptions['shop_locale']=='us_BR'?" selected":"") ?>>Brazil</option>
                   </select></td>
-              </tr>
+              </tr>-->
               <tr>
                 <td valign="top"><?php _e('Shop source:','spreadplugin'); ?></td>
                 <td><select name="shop_source" id="shop_source" class="required">
@@ -301,7 +301,7 @@ if (is_user_logged_in() && is_admin()) {
                     <option value="de_DE"<?php echo ($adminOptions['shop_language']=='de_DE'?" selected":"") ?>>Deutsch</option>
                     <option value="nl_NL"<?php echo ($adminOptions['shop_language']=='nl_NL'?" selected":"") ?>>Dutch (Nederlands)</option>
                     <option value="fi_FI"<?php echo ($adminOptions['shop_language']=='fi_FI'?" selected":"") ?>>Suomi</option>
-                    <option value="es_ES"<?php echo ($adminOptions['shop_language']=='es_ES'?" selected":"") ?>>Español)</option>
+                    <option value="es_ES"<?php echo ($adminOptions['shop_language']=='es_ES'?" selected":"") ?>>Español</option>
                     <option value="fr_FR"<?php echo ($adminOptions['shop_language']=='fr_FR'?" selected":"") ?>>French</option>
                     <option value="it_IT"<?php echo ($adminOptions['shop_language']=='it_IT'?" selected":"") ?>>Italiano</option>
                     <option value="nb_NO"<?php echo ($adminOptions['shop_language']=='nb_NO'?" selected":"") ?>>Norsk</option>
