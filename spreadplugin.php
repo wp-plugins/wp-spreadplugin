@@ -1925,7 +1925,7 @@ if (!class_exists('WP_Spreadplugin')) {
 				die('Security check');
 			
 			$this->reparseShortcodeData();
-			
+
 			// create an new basket if not exist
 			if (!isset($_SESSION['basketUrl'][self::$shopOptions['shop_source'] . self::$shopOptions['shop_language']])) {
 				
@@ -2668,7 +2668,7 @@ if (!class_exists('WP_Spreadplugin')) {
 		private function workaroundLangUrl($url){
 			$_langCodeArr = @explode("_", (empty(self::$shopOptions['shop_language']) ? self::$shopOptions['shop_locale'] : self::$shopOptions['shop_language']));
 			$_langCode = $_langCodeArr[0];
-			
+
 			if (!empty($_langCode)) {
 				if ($_langCodeArr[1] == "CA") {
 					$_langCode = "spreadshirt.ca";
