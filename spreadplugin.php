@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.9.6.2
+ * Version: 3.9.6.3
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -2398,7 +2398,7 @@ if (!class_exists('WP_Spreadplugin')) {
 			$pageId = ($pageId == 0 && get_query_var('pageid') ? intval(get_query_var('pageid')) : $pageId);
 			$pageData = get_page($pageId);
 			$pageContent = "";
-			
+
 			if (!empty($pageData->post_content)) {
 				$pageContent = $pageData->post_content;
 			}
@@ -2417,7 +2417,7 @@ if (!class_exists('WP_Spreadplugin')) {
 			
 			// shortcode overwrites admin options (default option set on admin page) if available
 			$arrSc = shortcode_parse_atts(str_replace("[spreadplugin", '', str_replace("]", "", $pageContent)));
-			
+
 			// replace options by shortcode if set
 			if (!empty($arrSc)) {
 				foreach ($arrSc as $key => $option) {
@@ -2429,16 +2429,15 @@ if (!class_exists('WP_Spreadplugin')) {
 			
 			self::$shopOptions = $conOp;
 			self::$shopOptions['shop_locale'] = (($conOp['shop_locale'] == '' || $conOp['shop_locale'] == 'de_DE') && $conOp['shop_source'] == 'com' ? 'us_US' : $conOp['shop_locale']); // Workaround for older versions of this plugin
-			self::$shopOptions['shop_source'] = (empty($conOp['shop_source']) ? 'net' : $conOp['shop_source']);
+			//self::$shopOptions['shop_source'] = (empty($conOp['shop_source']) ? 'net' : $conOp['shop_source']);
 		}
 		
 		// build cart
 		public function doCart(){
-			if (!wp_verify_nonce($_GET['nonce'], 'spreadplugin'))
-				die('Security check');
+			if (!wp_verify_nonce($_GET['nonce'], 'spreadplugin')) die('Security check');
 			
-			$this->reparseShortcodeData();
-			
+			$this->reparseShortcodeData(get_query_var('pageid') ? intval(get_query_var('pageid')) : intval($_GET['pageid']));
+
 			// overwrite translation if language available and set
 			if (!empty(self::$shopOptions['shop_language'])) {
 				$_ol = dirname(__FILE__) . '/translation/' . $this->stringTextdomain . '-' . self::$shopOptions['shop_language'] . '.mo';
