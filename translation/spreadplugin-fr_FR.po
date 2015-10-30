@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Spreadplugin\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-08-23 15:51+0100\n"
-"PO-Revision-Date: 2014-08-23 15:52+0100\n"
+"PO-Revision-Date: 2015-10-30 08:55+0100\n"
 "Last-Translator: Thimo Grauerholz <thimo@grauerholz.de>\n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -14,7 +14,7 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_e;esc_attr__\n"
 "X-Poedit-Basepath: ../\n"
 "X-Textdomain-Support: yes\n"
-"X-Generator: Poedit 1.6.7\n"
+"X-Generator: Poedit 1.5.5\n"
 "X-Poedit-SearchPath-0: .\n"
 
 #: _sources/spreadplugin - 1und1/options.php:38 1und1/spreadplugin.php:2255
@@ -154,23 +154,26 @@ msgstr "Ouvrir une iframe dans une lightbox"
 
 #: _sources/spreadplugin - 1und1/options.php:178 options.php:178
 msgid "Use designer:"
-msgstr ""
+msgstr "Utiliser le designer:"
 
 #: _sources/spreadplugin - 1und1/options.php:180 options.php:180
 msgid "None"
-msgstr ""
+msgstr "Aucun"
 
 #: _sources/spreadplugin - 1und1/options.php:183 options.php:183
 msgid "Integrated [BETA] (All marketplace designs are shown on design tab)"
 msgstr ""
+"Integré [BETA] (Tous les designs du marketplace apparaissent sur l'onglet "
+"design)"
 
 #: _sources/spreadplugin - 1und1/options.php:186 options.php:186
 msgid "Premium (Only designs in your premium designer shop are shown)"
 msgstr ""
+"Pretium (Seuls apparaissent les designs de votre boutique premium designer)"
 
 #: _sources/spreadplugin - 1und1/options.php:189 options.php:189
 msgid "Premium Designer Shop Id"
-msgstr ""
+msgstr "ID de votre boutique Premium Designer"
 
 #: _sources/spreadplugin - 1und1/options.php:192 options.php:192
 msgid ""
@@ -221,31 +224,31 @@ msgstr "Couleur d'arrière-plan du zoom:"
 
 #: _sources/spreadplugin - 1und1/options.php:242 options.php:242
 msgid "View:"
-msgstr ""
+msgstr "Affichage:"
 
 #: _sources/spreadplugin - 1und1/options.php:244 options.php:244
 msgid "Grid view"
-msgstr ""
+msgstr "Affichage en grille"
 
 #: _sources/spreadplugin - 1und1/options.php:247 options.php:247
 msgid "List view"
-msgstr ""
+msgstr "Affichage en liste"
 
 #: _sources/spreadplugin - 1und1/options.php:250 options.php:250
 msgid "Min view"
-msgstr ""
+msgstr "Affichage mini"
 
 #: _sources/spreadplugin - 1und1/options.php:253 options.php:253
 msgid "Basket text or icon:"
-msgstr ""
+msgstr "Texte ou icone pour le panier:"
 
 #: _sources/spreadplugin - 1und1/options.php:255 options.php:255
 msgid "Text"
-msgstr ""
+msgstr "Texte"
 
 #: _sources/spreadplugin - 1und1/options.php:258 options.php:258
 msgid "Icon"
-msgstr ""
+msgstr "Icone"
 
 #: _sources/spreadplugin - 1und1/options.php:261 options.php:261
 msgid "Infinity scrolling:"
@@ -258,6 +261,8 @@ msgstr "Lazy load:"
 #: _sources/spreadplugin - 1und1/options.php:277 options.php:277
 msgid "If active, load images on view (speed up page load)."
 msgstr ""
+"Si actif, les images se chargent lors de l'affichage (augmente la rapidité "
+"du chargement de la page)"
 
 #: _sources/spreadplugin - 1und1/options.php:280 options.php:280
 msgid "Zoom type:"
@@ -273,11 +278,11 @@ msgstr ""
 
 #: _sources/spreadplugin - 1und1/options.php:290 options.php:290
 msgid "Shop language:"
-msgstr ""
+msgstr "Langue de la boutique:"
 
 #: _sources/spreadplugin - 1und1/options.php:293 options.php:293
 msgid "Wordpress installation language (default)"
-msgstr ""
+msgstr "Installation de la langue de Wordpress (par défaut)"
 
 #: _sources/spreadplugin - 1und1/options.php:305 options.php:305
 msgid "Custom CSS"
@@ -285,15 +290,15 @@ msgstr "CSS Perso"
 
 #: _sources/spreadplugin - 1und1/options.php:309 options.php:309
 msgid "Debug mode:"
-msgstr ""
+msgstr "Mode debug:"
 
 #: _sources/spreadplugin - 1und1/options.php:311 options.php:311
 msgid "Off"
-msgstr ""
+msgstr "Off"
 
 #: _sources/spreadplugin - 1und1/options.php:314 options.php:314
 msgid "On"
-msgstr ""
+msgstr "On"
 
 #: _sources/spreadplugin - 1und1/options.php:320 options.php:320
 msgid "Sleep timer:"
@@ -325,7 +330,7 @@ msgstr "Options"
 
 #: _sources/spreadplugin - 1und1/options.php:370 options.php:370
 msgid "Rebuild cache"
-msgstr ""
+msgstr "Rafraîchir le cache"
 
 #: _sources/spreadplugin - 1und1/options.php:383 options.php:382
 msgid "Please fill in the highlighted fields!"
@@ -378,11 +383,11 @@ msgstr ""
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:541 spreadplugin.php:498
 msgid "over"
-msgstr ""
+msgstr "au-dessus"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:547 spreadplugin.php:504
 msgid "up to"
-msgstr ""
+msgstr "jusqu'à"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:980
 #: 1und1/spreadplugin.php:1135 1und1/spreadplugin.php:1272
@@ -416,12 +421,12 @@ msgstr "Couleur"
 #: 1und1/spreadplugin.php:1165 1und1/spreadplugin.php:1702
 #: spreadplugin.php:1018 spreadplugin.php:1128 spreadplugin.php:1655
 msgid "Show article description"
-msgstr "Voir la description"
+msgstr "Voir la description de l'article"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:1067
 #: 1und1/spreadplugin.php:1704 spreadplugin.php:1029 spreadplugin.php:1657
 msgid "Show product description"
-msgstr "Voir la description"
+msgstr "Voir la description du produit"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:1080
 #: 1und1/spreadplugin.php:1220 1und1/spreadplugin.php:1989
@@ -484,7 +489,7 @@ msgstr "Ajouter..."
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:1712 spreadplugin.php:1665
 msgid "Add failed"
-msgstr ""
+msgstr "Non ajouté"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:1947 spreadplugin.php:1898
 msgid "Additional details"
@@ -500,7 +505,7 @@ msgstr "Images de produits"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:2030 spreadplugin.php:1981
 msgid "Sizes"
-msgstr "Taille"
+msgstr "Tailles"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:2031 spreadplugin.php:1982
 msgid "Description"
@@ -508,12 +513,12 @@ msgstr "Description"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:2035 spreadplugin.php:1986
 msgid "Print Technique"
-msgstr ""
+msgstr "Technique d'impression"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:2066
 #: 1und1/spreadplugin.php:2078 spreadplugin.php:2017 spreadplugin.php:2029
 msgid "Dimension"
-msgstr ""
+msgstr "Dimensions"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:2131 spreadplugin.php:2081
 msgid "You do not have sufficient permissions to access this page."
@@ -540,11 +545,13 @@ msgstr "Commander"
 
 #: _sources/spreadplugin - 1und1/spreadplugin.php:2409 spreadplugin.php:2339
 msgid "Basket is empty"
-msgstr "Panier est vide"
+msgstr "Le panier est vide"
 
 #: options.php:386
 msgid "Successfully saved settings. Please click rebuild cache if necessary."
 msgstr ""
+"Réglages sauvés avec succès. Merci de rafraîchir le cache si cela est "
+"nécessaire."
 
 #: spreadplugin.php:2337 spreadplugin.php:2339
 msgid "Proceed to checkout"
