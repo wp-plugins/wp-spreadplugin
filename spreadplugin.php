@@ -2711,7 +2711,7 @@ if (!class_exists('WP_Spreadplugin')) {
 					'/&?pagesp=[^&]*/' 
 			), '', $pageURI);
 			
-			if ($_SERVER["HTTPS"] == "on") {
+			if (array_key_exists('HTTPS',$_SERVER) && $_SERVER["HTTPS"] == "on") {
 				$pageURL .= "s";
 			}
 			
