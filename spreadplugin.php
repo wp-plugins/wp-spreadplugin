@@ -1653,7 +1653,7 @@ if (!class_exists('WP_Spreadplugin')) {
 		 */
 		private static function getInBasketQuantity($source){
 			$intInBasket = 0;
-			
+
 			if (isset($_SESSION['basketUrl'][$source])) {
 				
 				$basketItems = self::getBasket($_SESSION['basketUrl'][$source]);
@@ -1924,7 +1924,7 @@ if (!class_exists('WP_Spreadplugin')) {
 			if (!wp_verify_nonce($_GET['nonce'], 'spreadplugin'))
 				die('Security check');
 			
-			$this->reparseShortcodeData();
+			$this->reparseShortcodeData(get_query_var('pageid') ? intval(get_query_var('pageid')) : intval($_GET['pageid']));
 
 			// create an new basket if not exist
 			if (!isset($_SESSION['basketUrl'][self::$shopOptions['shop_source'] . self::$shopOptions['shop_language']])) {
@@ -2535,7 +2535,7 @@ if (!class_exists('WP_Spreadplugin')) {
 			if (!wp_verify_nonce($_GET['nonce'], 'spreadplugin'))
 				die('Security check');
 			
-			$this->reparseShortcodeData();
+			$this->reparseShortcodeData(get_query_var('pageid') ? intval(get_query_var('pageid')) : intval($_GET['pageid']));
 			
 			// create an new basket if not exist
 			if (isset($_SESSION['basketUrl'][self::$shopOptions['shop_source'] . self::$shopOptions['shop_language']])) {
