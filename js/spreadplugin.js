@@ -2,11 +2,13 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.9.6.4
+ * Version: 3.9.7
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
- 
+
+var ajax_object;
+
 jQuery(function($) {
 
 	var sep = '?';
@@ -19,11 +21,11 @@ jQuery(function($) {
 	var _instance;
 //	var sid = document.cookie.match(/PHPSESSID=[^;]+/);
 
-	if (display == 1) {
+	if (ajax_object.display == 1) {
 		infiniteItemSel = '.spreadplugin-designs';
 	}
 
-	if (pageLink.indexOf('?') > -1) {
+	if (ajax_object.pageLink.indexOf('?') > -1) {
 		sep = '&';
 	}
 	
@@ -152,11 +154,11 @@ jQuery(function($) {
 					if (field.is(':hidden')) {
 						par.addClass('activeDescription');
 						field.show();
-						$(this).children('a').html(textHideDesc);
+						$(this).children('a').html(ajax_object.textHideDesc);
 					} else {
 						par.removeClass('activeDescription');
 						$('.description-wrapper div.description').hide();
-						$('.description-wrapper div.header a').html(	textShowDesc);
+						$('.description-wrapper div.header a').html(ajax_object.textShowDesc);
 					}
 				});
 		$('.spreadplugin-article .product-description-wrapper div.header,.spreadplugin-article-detail .description-wrapper div.header').click(function() {
@@ -166,11 +168,11 @@ jQuery(function($) {
 					if (field.is(':hidden')) {
 						par.addClass('activeDescription');
 						field.show();
-						$(this).children('a').html(textProdHideDesc);
+						$(this).children('a').html(ajax_object.textProdHideDesc);
 					} else {
 						par.removeClass('activeDescription');
 						$('.product-description-wrapper div.description').hide();
-						$('.product-description-wrapper div.header a').html(textProdShowDesc);
+						$('.product-description-wrapper div.header a').html(ajax_object.textProdShowDesc);
 					}
 				});
 
@@ -195,7 +197,7 @@ jQuery(function($) {
 							var gotoY = basketY - productY;
 												
 						
-							button.val(textButtonAdded);
+							button.val(ajax_object.textButtonAdded);
 							$("#article_" + productIdVal + ' img.preview')
 								.clone()
 								.prependTo("#article_" + productIdVal)
@@ -203,12 +205,12 @@ jQuery(function($) {
 								.css({'z-index' : '1008'})
 								.animate({opacity: 0.9}, 100 )
 								.animate({opacity: 0.1, marginLeft: gotoX, marginTop: gotoY, width: newImageWidth, height: newImageHeight}, 1200, function() { 
-									$.post(ajaxLocation,data,function(json) {
+									$.post(ajax_object.ajaxLocation,data,function(json) {
 										
 															if (json.c.m==1) {
-																button.val(textButtonAdd);
+																button.val(ajax_object.textButtonAdd);
 															} else {
-																button.val(textButtonFailed);
+																button.val(ajax_object.textButtonFailed);
 															}
 															
 															refreshCart(json);	
@@ -264,7 +266,7 @@ jQuery(function($) {
 				callbacks: {
 					open: function() {
 						$('.mfp-iframe-holder .mfp-content').css('height',$(window).height()-200);
-						callIntegratedDesigner(designid, productid, viewid, appearanceid, producttypeid);
+						callIntegratedDesigner(productid, producttypeid);
 					},
 					resize: function () {
 						$('.mfp-iframe-holder .mfp-content').css('height',$(window).height()-200);
@@ -278,7 +280,7 @@ jQuery(function($) {
 
 
 
-		if (pageCheckoutUseIframe == 2) {
+		if (ajax_object.pageCheckoutUseIframe == 2) {
 			// premium edit wrapper (inline)
 			$('.spreadplugin-article .edit-wrapper a,.spreadplugin-article-detail .edit-wrapper a').magnificPopup({
 			type: 'iframe',
@@ -349,9 +351,9 @@ jQuery(function($) {
 				});
 
 		// Articles zoom image
-		if (zoomActivated==1) {
+		if (ajax_object.zoomActivated==1) {
 			$(".spreadplugin-article img.preview,.spreadplugin-article-detail img.preview").hover(function() {
-				$(this).elevateZoom(zoomConfig);
+				$(this).elevateZoom(ajax_object.zoomConfig);
 			});
 		}
 
@@ -412,16 +414,16 @@ jQuery(function($) {
 		$(".img-caption").hide();
 	});
 
-	if (infiniteScroll == 1) {
+	if (ajax_object.infiniteScroll == 1) {
 		// infinity scroll
 		$('#spreadplugin-list').infinitescroll({
 			nextSelector : '#spreadplugin-items #pagination a',
 			navSelector : '#spreadplugin-items #pagination',
 			itemSelector : '#spreadplugin-list ' + infiniteItemSel,
 			loading : {
-				img : loadingImage,
-				msgText : loadingMessage,
-				finishedMsg : loadingFinishedMessage
+				img : ajax_object.loadingImage,
+				msgText : ajax_object.loadingMessage,
+				finishedMsg : ajax_object.loadingFinishedMessage
 			},
 			animate : true,
 			debug : false,
@@ -430,7 +432,7 @@ jQuery(function($) {
 			bindClick();
 			bindHover();
 			
-			if (lazyLoad == 1) {
+			if (ajax_object.lazyLoad == 1) {
 				$("img.lazyimg").lazyload({effect : "fadeIn"});
 			}
 		});
@@ -438,16 +440,16 @@ jQuery(function($) {
 
 	$('#spreadplugin-items #productCategory').change(function() {
 				prod = $(this).val();
-				document.location = pageLink + sep + 'productCategory=' + prod + '&articleSortBy=' + sor;
+				document.location = ajax_object.pageLink + sep + 'productCategory=' + prod + '&articleSortBy=' + sor;
 			});
 	$('#spreadplugin-items #productSubCategory').change(function() {
 				prod2 = $(this).val();
-				document.location = pageLink + sep + 'productCategory=' + prod + '&productSubCategory=' + prod2 + '&articleSortBy=' + sor;
+				document.location = ajax_object.pageLink + sep + 'productCategory=' + prod + '&productSubCategory=' + prod2 + '&articleSortBy=' + sor;
 			});
 
 	$('#spreadplugin-items #articleSortBy').change(function() {
 				sor = $(this).val();
-				document.location = pageLink + sep + 'productCategory=' + prod + '&productSubCategory=' + prod2 + '&articleSortBy=' + sor;
+				document.location = ajax_object.pageLink + sep + 'productCategory=' + prod + '&productSubCategory=' + prod2 + '&articleSortBy=' + sor;
 			});
 
 
@@ -490,12 +492,12 @@ jQuery(function($) {
 		$('.spreadplugin-cart-checkout a').attr('href', json.c.u);
 		
 		// &'+sid
-		$.get(ajaxLocation,'action=myCart',function (data) {
+		$.get(ajax_object.ajaxLocation,'action=myCart',function (data) {
 			$('.spreadplugin-cart').html(data);
 			
 			
 			// checkout in an iframe in page
-			if (pageCheckoutUseIframe == 1) {
+			if (ajax_object.pageCheckoutUseIframe == 1) {
 						$('.spreadplugin-cart-checkout a').click(function(event) {
 									event.preventDefault();
 		
@@ -520,7 +522,7 @@ jQuery(function($) {
 			}
 		
 			// checkout in an iframe with modal window (magnific)
-			if (pageCheckoutUseIframe == 2) {
+			if (ajax_object.pageCheckoutUseIframe == 2) {
 					var checkoutLink = $('.spreadplugin-cart-checkout a').attr('href');
 		
 					if (typeof checkoutLink !== "undefined" && checkoutLink.length > 0) {
@@ -543,7 +545,7 @@ jQuery(function($) {
 				$(this).closest('.cart-row').show().fadeOut('slow');
 				
 				// &'+sid+'
-				$.post(ajaxLocation,'action=myDelete&id='+$(this).closest('.cart-row').data('id'),function() {});
+				$.post(ajax_object.ajaxLocation,'action=myDelete&id='+$(this).closest('.cart-row').data('id'),function() {});
 
 			});
 			
@@ -558,21 +560,14 @@ jQuery(function($) {
 
 	
 	// &'+sid
-	$.post(ajaxLocation,	'action=myAjax',function(json) {
+	$.post(ajax_object.ajaxLocation,'action=myAjax',function(json) {
 		refreshCart(json);
 	}, 'json');	
-			
-/*	setInterval(function() {
-		$.post(ajaxLocation,	'action=myAjax',function(json) {
-			refreshCart(json);
-		}, 'json');	
-	}, 10000);
-*/	
 	
 
 	bindClick();
 	bindHover();
-	if (lazyLoad == 1) {
+	if (ajax_object.lazyLoad == 1) {
 		$("img.lazyimg").lazyload({effect : "fadeIn"});
 	}
 	
@@ -603,28 +598,23 @@ jQuery(function($) {
 
 
 	// integrated designer shop // conformat
-	function callIntegratedDesigner(desiredDesignId, desiredProductId, desiredViewId, desiredAppearanceId, desiredProducttypeId) {
+	function callIntegratedDesigner(desiredProductId, desiredProducttypeId) {
 		
 			// @see http://spreadshirt.github.io/apps/tablomat
             spreadshirt.create("tablomat",{
 
-                shopId: designerShopId,
-				target: document.getElementById(designerTargetId),
-				platform: designerPlatform,
-				locale: designerLocale,
-				width: designerWidth,
+                shopId: ajax_object.designerShopId,
+				target: document.getElementById(ajax_object.designerTargetId),
+				platform: ajax_object.designerPlatform,
+				locale: ajax_object.designerLocale,
+				width: ajax_object.designerWidth,
 				productId: desiredProductId,
 				setProductType: desiredProducttypeId,
-				/*designId: desiredDesignId,
-				appearanceId: desiredAppearanceId,
-				viewId: desiredViewId,
-				productTypeId: desiredProducttypeId,
-				*/
 				/*
 				* Currently disabled - apiBasketId not taken?
 				
-				apiBasketId: designerBasketId,
-				basketId: designerBasketId,
+				apiBasketId: ajax_object.designerBasketId,
+				basketId: ajax_object.designerBasketId,
   
 				addToBasket: function(item, callback) {
 				
@@ -652,7 +642,7 @@ jQuery(function($) {
 						type: '1' // type switch for using articleId as productId
 					}
 
-					$.post(ajaxLocation,data,function(json) {
+					$.post(ajax_object.ajaxLocation,data,function(json) {
 						
 						if (json.c.m == 1) {
 							// return success to confomat

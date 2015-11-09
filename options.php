@@ -50,32 +50,6 @@ if (is_user_logged_in() && is_admin()) {
                 <td valign="top"><?php _e('Shop id:','spreadplugin'); ?></td>
                 <td><input type="text" name="shop_id" value="<?php echo (empty($adminOptions['shop_id'])?0:$adminOptions['shop_id']); ?>" class="only-digit required" /></td>
               </tr>
-              <!--<tr>
-                <td valign="top"><?php _e('Shop country:','spreadplugin'); ?></td>
-                <td><select name="shop_locale" id="shop_locale">
-                    <option value=""<?php echo (empty($adminOptions['shop_locale'])?" selected":"") ?>>None/Unknown</option>
-                    <option value="de_DE"<?php echo ($adminOptions['shop_locale']=='de_DE'?" selected":"") ?>>Deutschland</option>
-                    <option value="fr_FR"<?php echo ($adminOptions['shop_locale']=='fr_FR'?" selected":"") ?>>France</option>
-                    <option value="en_GB"<?php echo ($adminOptions['shop_locale']=='en_GB'?" selected":"") ?>>United Kingdom</option>
-                    <option value="nl_BE"<?php echo ($adminOptions['shop_locale']=='nl_BE'?" selected":"") ?>>Belgie (Nederlands)</option>
-                    <option value="fr_BE"<?php echo ($adminOptions['shop_locale']=='fr_BE'?" selected":"") ?>>Belgique (Fran&ccedil;ais)</option>
-                    <option value="dk_DK"<?php echo ($adminOptions['shop_locale']=='dk_DK'?" selected":"") ?>>Danmark</option>
-                    <option value="es_ES"<?php echo ($adminOptions['shop_locale']=='es_ES'?" selected":"") ?>>Espa&ntilde;a</option>
-                    <option value="en_IE"<?php echo ($adminOptions['shop_locale']=='en_IE'?" selected":"") ?>>Ireland</option>
-                    <option value="it_IT"<?php echo ($adminOptions['shop_locale']=='it_IT'?" selected":"") ?>>Italia</option>
-                    <option value="nl_NL"<?php echo ($adminOptions['shop_locale']=='nl_NL'?" selected":"") ?>>Nederland</option>
-                    <option value="no_NO"<?php echo ($adminOptions['shop_locale']=='no_NO'?" selected":"") ?>>Norge</option>
-                    <option value="pl_PL"<?php echo ($adminOptions['shop_locale']=='pl_PL'?" selected":"") ?>>Polska</option>
-                    <option value="fi_FI"<?php echo ($adminOptions['shop_locale']=='fi_FI'?" selected":"") ?>>Suomi</option>
-                    <option value="se_SE"<?php echo ($adminOptions['shop_locale']=='se_SE'?" selected":"") ?>>Sverige</option>
-                    <option value="de_AT"<?php echo ($adminOptions['shop_locale']=='de_AT'?" selected":"") ?>>&Ouml;sterreich</option>
-                    <option value="us_US"<?php echo ($adminOptions['shop_locale']=='us_US'?" selected":"") ?>>United States</option>
-                    <option value="us_CA"<?php echo ($adminOptions['shop_locale']=='us_CA'?" selected":"") ?>>Canada (English)</option>
-                    <option value="fr_CA"<?php echo ($adminOptions['shop_locale']=='fr_CA'?" selected":"") ?>>Canada (Fran&ccedil;ais)</option>
-                    <option value="us_AU"<?php echo ($adminOptions['shop_locale']=='us_AU'?" selected":"") ?>>Australia</option>
-                    <option value="us_BR"<?php echo ($adminOptions['shop_locale']=='us_BR'?" selected":"") ?>>Brazil</option>
-                  </select></td>
-              </tr>-->
               <tr>
                 <td valign="top"><?php _e('Shop source:','spreadplugin'); ?></td>
                 <td><select name="shop_source" id="shop_source" class="required">
@@ -310,6 +284,7 @@ if (is_user_logged_in() && is_admin()) {
                     <option value="pt_PT"<?php echo ($adminOptions['shop_language']=='pt_PT'?" selected":"") ?>>Português</option>
                     <option value="jp_JP"<?php echo ($adminOptions['shop_language']=='jp_JP'?" selected":"") ?>>Japanese</option>
                     <option value="be_FR"<?php echo ($adminOptions['shop_language']=='be_FR'?" selected":"") ?>>Belgium / French</option>
+                    <option value="en_GB"<?php echo ($adminOptions['shop_language']=='en_GB'?" selected":"") ?>>English (GB)</option>
                   </select></td>
               </tr>
               <tr>
@@ -346,6 +321,12 @@ if (is_user_logged_in() && is_admin()) {
                   </select><br />
 <br />
 <?php _e('Limit the quantity of articles which will be read. Use a lower value if you have problems saving the articles.','spreadplugin'); ?></td>
+              </tr>
+              <tr>
+                <td valign="top"><?php _e('Anchor:','spreadplugin'); ?></td>
+                <td>#<input type="text" name="shop_url_anchor" value="<?php echo (empty($adminOptions['shop_url_anchor'])?"":$adminOptions['shop_url_anchor']); ?>" /><br />
+<br />
+<?php _e('If you are using one page themes or want to specify an anchor to add with url, enter it here.','spreadplugin'); ?></td>
               </tr>
             </table>
             <input type="submit" name="update-splg_options" id="update-splg_options" class="button-primary" value="<?php _e('Update settings','spreadplugin'); ?>" />

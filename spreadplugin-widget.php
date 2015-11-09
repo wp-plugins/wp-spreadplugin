@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin Basket Widget
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.9.6.4
+ * Version: 3.9.7
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -16,7 +16,7 @@ class SpreadpluginBasketWidget extends WP_Widget {
 	function widget($args, $instance){
 		load_plugin_textdomain($this->stringTextdomain, false, dirname(plugin_basename(__FILE__)) . '/translation');
 		
-		$output = '<div class="spreadplugin-checkout"><span></span> <a class="spreadplugin-checkout-link">' . __("Basket", $this->stringTextdomain) . '</a></div>
+		$output = '<div class="spreadplugin-checkout"><span></span> <a class="spreadplugin-checkout-link' . (WP_Spreadplugin::$shopOptions['shop_basket_text_icon'] == 1 ? ' button' : '') . '">' . (WP_Spreadplugin::$shopOptions['shop_basket_text_icon'] == 0 ? __('Basket', $this->stringTextdomain) : '') . '</a></div>
 <div id="spreadplugin-widget-cart" class="spreadplugin-cart"></div>';
 		
 		echo $output;
