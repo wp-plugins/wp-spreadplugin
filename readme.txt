@@ -1,4 +1,4 @@
-﻿=== WP-Spreadplugin ===
+=== WP-Spreadplugin ===
 Contributors: Thimo Grauerholz
 Author: Thimo Grauerholz
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EZLKTKW8UR6PQ
@@ -204,6 +204,10 @@ Please have a look here: http://themeforest.net/category/wordpress?ref=thimo
 * Having problems with wrong url for checkout, let me know please.
 
 == Changelog ==
+
+= 3.9.7.2 =
+* Checkout fixes
+* Checkout uses shopId now for some users having customized spreadshirt checkout with logo on top
 
 = 3.9.7.1 =
 * Anchor added so you can jump directly to spreadplugin shop if set

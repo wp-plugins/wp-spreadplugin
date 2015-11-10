@@ -2635,6 +2635,11 @@ if (!class_exists('WP_Spreadplugin')) {
 				$checkoutUrl = $url;
 			}
 			
+			// Spreadshirt offers an customized checkout for some users, heres the workaround
+			if (stripos($url,'shopId') === false) {
+				$checkoutUrl .= "&shopId=".(int)self::$shopOptions['shop_id'];
+			}
+			
 			return $checkoutUrl;
 		}
 		public function addQueryVars(){
