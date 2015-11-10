@@ -291,6 +291,16 @@ if (is_user_logged_in() && is_admin()) {
                   </select></td>
               </tr>
               <tr>
+                <td valign="top"><?php _e('Anchor:','spreadplugin'); ?></td>
+                <td>#<input type="text" name="shop_url_anchor" placeholder="<?php _e('splshop or similar','spreadplugin'); ?>" value="<?php echo (empty($adminOptions['shop_url_anchor'])?"":$adminOptions['shop_url_anchor']); ?>" /><br />
+<?php _e('If you are using one page themes or want to specify an anchor to add with url, enter it here. Please avoid using the same anchor name as in your menu - some themes are blocking it.','spreadplugin'); ?></td>
+              </tr>
+              <tr>
+                <td valign="top"><?php _e('Product detail slug:','spreadplugin'); ?></td>
+                <td><input type="text" name="shop_url_productdetail_slug" placeholder="<?php _e('splproduct or similar','spreadplugin'); ?>" value="<?php echo (empty($adminOptions['shop_url_productdetail_slug'])?"splproduct":$adminOptions['shop_url_productdetail_slug']); ?>" class="only-letters" /><br />
+<?php _e('Don\'t change if unknown! You could harm your site - dangerous.<br>Anyway, you could change the product detail link name here (SEO, Permalink).','spreadplugin'); ?></td>
+              </tr>
+              <tr>
                 <td valign="top"><?php _e('Custom CSS'); ?></td>
                 <td><textarea style="width: 300px; height: 215px; background: #EEE;" name="shop_customcss" class="custom-css"><?php echo stripslashes(htmlspecialchars($adminOptions['shop_customcss'], ENT_QUOTES)); ?></textarea></td>
               </tr>
@@ -302,15 +312,13 @@ if (is_user_logged_in() && is_admin()) {
                   <input type="radio" name="shop_debug" value="1"<?php echo ($adminOptions['shop_debug']==1?" checked":"") ?> />
                   <?php _e('On','spreadplugin'); ?>
                   <br />
-                  <br />
                   If active, all your spreadshirt/spreadplugin data could be exposed, so please be carefull with this option!</td>
               </tr>
               <tr>
                 <td valign="top"><?php _e('Sleep timer:','spreadplugin'); ?></td>
                 <td><input type="text" name="shop_sleep" value="<?php echo (empty($adminOptions['shop_sleep'])?0:intval($adminOptions['shop_sleep'])); ?>" class="only-digit" />
                   <br />
-                  <br />
-                  <strong>Don't change this value, if you have no problems rebuilding your article cache otherwise it would take very long!</strong> Changing this value is only neccessary if you are experiencing problems when rebuilding cache. Some webspaces (e.g. godaddy.com) have request limits, which you can avoid by setting this value to for example 10.</td>
+                  <strong>Don't change this value, if you have no problems rebuilding your article cache, otherwise it would take very long!</strong> Changing this value is only neccessary if you are experiencing problems when rebuilding cache. Some webspaces (e.g. godaddy.com) have request limits, which you can avoid by setting this value to for example 10.</td>
               </tr>
               <tr>
                 <td valign="top"><?php _e('Read quantity of articles (max):','spreadplugin'); ?></td>
@@ -322,16 +330,9 @@ if (is_user_logged_in() && is_admin()) {
                     <option value="200"<?php echo ($adminOptions['shop_max_quantity_articles']==200?" selected":"") ?>>200</option>
                     <option value="1000"<?php echo (empty($adminOptions['shop_max_quantity_articles']) || $adminOptions['shop_max_quantity_articles']==1000?" selected":"") ?>>1000 (default)</option>
                   </select><br />
-<br />
 <?php _e('Limit the quantity of articles which will be read. Use a lower value if you have problems saving the articles.','spreadplugin'); ?></td>
               </tr>
-              <tr>
-                <td valign="top"><?php _e('Anchor:','spreadplugin'); ?></td>
-                <td>#<input type="text" name="shop_url_anchor" placeholder="<?php _e('splshop or similar','spreadplugin'); ?>" value="<?php echo (empty($adminOptions['shop_url_anchor'])?"":$adminOptions['shop_url_anchor']); ?>" /><br />
-<br />
-<?php _e('If you are using one page themes or want to specify an anchor to add with url, enter it here. Please avoid using the same anchor name as in your menu - some themes are blocking it.','spreadplugin'); ?></td>
-              </tr>
-            </table><!-- shop_url_productdetail_slug => input hidden feature - edit only if you know what you're doing / disable and enlable plugin if value changed --><input type="hidden" name="shop_url_productdetail_slug" value="<?php echo (empty($adminOptions['shop_url_productdetail_slug'])?"splproduct":$adminOptions['shop_url_productdetail_slug']); ?>" />
+            </table>
             <input type="submit" name="update-splg_options" id="update-splg_options" class="button-primary" value="<?php _e('Update settings','spreadplugin'); ?>" />
           </form>
         </div>
@@ -353,18 +354,18 @@ if (is_user_logged_in() && is_admin()) {
             <?php _e('Sample shortcode with only Men products','spreadplugin'); ?>
           </h4>
           <p>[spreadplugin shop_productcategory="Men"]</p>
-          <h4>
+          <!--<h4>
             <?php _e('Extended sample shortcode','spreadplugin'); ?>
             (only for experienced users) </h4>
           <p>
-            <?php _e('The extended shortcodes will overwrite the default settings. You may use it to create a different shop with the same plugin.'); ?>
+            <?php _e('The extended shortcodes will overwrite the default settings. You may use it to create a different shop with the same plugin.','spreadplugin'); ?>
           </p>
           <p>
             <?php
   
   $_plgop = '[spreadplugin ';
   foreach ($adminOptions as $k => $v) {
-	  if ($k != 'shop_infinitescroll' && $k != 'shop_customcss' && $k != 'shop_debug' && $k != 'shop_sleep') {	
+	  if (!in_array($k,array('shop_infinitescroll','shop_customcss','shop_debug','shop_sleep','shop_url_productdetail_slug'))) {	
 		$_plgop .= $k.'="'.$v.'" ';
 	  }
   }
@@ -372,7 +373,11 @@ if (is_user_logged_in() && is_admin()) {
   echo trim($_plgop).']';
   
   ?>
-          </p>
+          </p>-->
+          <p>&nbsp;</p>
+         <p><?php _e('All field names from this formular possible as shortcode.<br />
+Again, only for experienced users, that\'s why I don\'t list them here anymore :)<br />
+On question, just ask.','spreadplugin'); ?></p>
         </div>
       </div>
       <div class="postbox">
@@ -504,6 +509,12 @@ jQuery('.only-digit').keyup(function() {
 	if (/\D/g.test(this.value)) {
 		// Filter non-digits from input value.
 		this.value = this.value.replace(/\D/g, '');
+	}
+});
+jQuery('.only-letters').keyup(function() {
+	if (/[^a-z]/gi.test(this.value)) {
+		// Filter non-letters from input value.
+		this.value = this.value.replace(/[^a-z]/gi, '');
 	}
 });
 
