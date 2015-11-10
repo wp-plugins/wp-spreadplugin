@@ -646,7 +646,7 @@ if (!class_exists('WP_Spreadplugin')) {
 			$apiUrlBase .= (!empty(self::$shopOptions['shop_category']) ? '/articleCategories/' . self::$shopOptions['shop_category'] : '');
 			$apiUrlBase .= '/articles';
 			$apiUrlBase .= (!empty(self::$shopOptions['shop_article']) ? '/' . intval(self::$shopOptions['shop_article']) : '');
-			$apiUrlBase .= '?' . (!empty(self::$shopOptions['shop_locale']) ? 'locale=' . self::$shopOptions['shop_locale'] . '&' : '') . 'fullData=true&noCache=true';
+			$apiUrlBase .= '?' . 'fullData=true&noCache=true'; // removed, because not needed anymore -  . (!empty(self::$shopOptions['shop_locale']) ? 'locale=' . self::$shopOptions['shop_locale'] . '&' : '')
 			
 			// call first to get count of articles
 			$apiUrl = $apiUrlBase . '&limit=' . self::$shopOptions['shop_max_quantity_articles'];
@@ -694,7 +694,7 @@ if (!class_exists('WP_Spreadplugin')) {
 			$arrTypes = array ();
 			
 			// Get ProductTypeDepartments
-			$stringTypeApiUrl = 'http://api.spreadshirt.' . self::$shopOptions['shop_source'] . '/api/v1/shops/' . self::$shopOptions['shop_id'] . '/productTypeDepartments?' . (!empty(self::$shopOptions['shop_locale']) ? 'locale=' . self::$shopOptions['shop_locale'] . '&' : '') . 'fullData=true&noCache=true';
+			$stringTypeApiUrl = 'http://api.spreadshirt.' . self::$shopOptions['shop_source'] . '/api/v1/shops/' . self::$shopOptions['shop_id'] . '/productTypeDepartments?locale=' . (empty(self::$shopOptions['shop_language'])?get_locale():self::$shopOptions['shop_language']) . '&fullData=true&noCache=true';
 			$stringTypeXml = wp_remote_get($stringTypeApiUrl, array (
 					'timeout' => 120 
 			));
@@ -729,7 +729,7 @@ if (!class_exists('WP_Spreadplugin')) {
 			$region = '';
 			
 			// Get ProductTypeDepartments
-			$stringTypeApiUrl = 'http://api.spreadshirt.' . self::$shopOptions['shop_source'] . '/api/v1/shops/' . self::$shopOptions['shop_id'] . '/shippingTypes?' . (!empty(self::$shopOptions['shop_locale']) ? 'locale=' . self::$shopOptions['shop_locale'] . '&' : '') . 'fullData=true&noCache=true';
+			$stringTypeApiUrl = 'http://api.spreadshirt.' . self::$shopOptions['shop_source'] . '/api/v1/shops/' . self::$shopOptions['shop_id'] . '/shippingTypes?locale=' . (empty(self::$shopOptions['shop_language'])?get_locale():self::$shopOptions['shop_language']) . '&fullData=true&noCache=true';
 			$stringTypeXml = wp_remote_get($stringTypeApiUrl, array (
 					'timeout' => 120 
 			));
@@ -738,7 +738,7 @@ if (!class_exists('WP_Spreadplugin')) {
 			$stringTypeXml = str_replace('<ns3:', '<', $stringTypeXml);
 			$objTypes = new SimpleXmlElement($stringTypeXml);
 			
-			$countryCode = explode("_", self::$shopOptions['shop_locale']);
+			$countryCode = explode("_", (empty(self::$shopOptions['shop_language'])?get_locale():self::$shopOptions['shop_language']));
 			
 			if (is_object($objTypes) && !empty($countryCode[1])) {
 				foreach ($objTypes->shippingType as $row) {
@@ -796,7 +796,7 @@ if (!class_exists('WP_Spreadplugin')) {
 			$objProductData = array ();
 			
 			$apiUrlBase = 'http://api.spreadshirt.' . self::$shopOptions['shop_source'] . '/api/v1/shops/' . self::$shopOptions['shop_id'];
-			$apiUrlBase .= '/articles/' . $articleId . '?' . (!empty(self::$shopOptions['shop_locale']) ? 'locale=' . self::$shopOptions['shop_locale'] . '&' : '') . 'fullData=true&noCache=true';
+			$apiUrlBase .= '/articles/' . $articleId . '?' . 'fullData=true&noCache=true'; // . (!empty(self::$shopOptions['shop_locale']) ? 'locale=' . self::$shopOptions['shop_locale'] . '&' : '')
 			
 			$apiUrl = $apiUrlBase;
 			
@@ -819,7 +819,7 @@ if (!class_exists('WP_Spreadplugin')) {
 			
 			if ((int)$article['id'] > 0) {
 				
-				$url = wp_remote_get((string)$article->product->productType->attributes('http://www.w3.org/1999/xlink') . '?' . (!empty(self::$shopOptions['shop_locale']) ? 'locale=' . self::$shopOptions['shop_locale'] . '&noCache=true' : '&noCache=true'), array (
+				$url = wp_remote_get((string)$article->product->productType->attributes('http://www.w3.org/1999/xlink') . '?locale=' . (empty(self::$shopOptions['shop_language'])?get_locale():self::$shopOptions['shop_language']) . '&noCache=true', array (
 						'timeout' => 120 
 				));
 				$stringXmlArticle = wp_remote_retrieve_body($url);
@@ -838,7 +838,7 @@ if (!class_exists('WP_Spreadplugin')) {
 					$objCurrencyData = new SimpleXmlElement($stringXmlCurreny);
 				}
 				
-				$url = wp_remote_get((string)$article->product->attributes('http://www.w3.org/1999/xlink') . '?' . (!empty(self::$shopOptions['shop_locale']) ? 'locale=' . self::$shopOptions['shop_locale'] . '&noCache=true' : '&noCache=true'), array (
+				$url = wp_remote_get((string)$article->product->attributes('http://www.w3.org/1999/xlink') . '?locale=' . (empty(self::$shopOptions['shop_language'])?get_locale():self::$shopOptions['shop_language']) . '&noCache=true', array (
 						'timeout' => 120 
 				));
 				$stringXmlProduct = wp_remote_retrieve_body($url);
@@ -848,7 +848,7 @@ if (!class_exists('WP_Spreadplugin')) {
 				
 				if (is_object($objProductData)) {
 					if (!empty($objProductData->configurations->configuration->printType)) {
-						$url = wp_remote_get((string)$objProductData->configurations->configuration->printType->attributes('http://www.w3.org/1999/xlink') . '?' . (!empty(self::$shopOptions['shop_locale']) ? 'locale=' . self::$shopOptions['shop_locale'] . '&noCache=true' : '&noCache=true'), array (
+						$url = wp_remote_get((string)$objProductData->configurations->configuration->printType->attributes('http://www.w3.org/1999/xlink') . '?locale=' . (empty(self::$shopOptions['shop_language'])?get_locale():self::$shopOptions['shop_language']) . '&noCache=true', array (
 								'timeout' => 120 
 						));
 						$stringXmlPrint = wp_remote_retrieve_body($url);
@@ -995,7 +995,7 @@ if (!class_exists('WP_Spreadplugin')) {
 			$arrTypes = array ();
 			$apiUrlBase = 'http://api.spreadshirt.' . self::$shopOptions['shop_source'] . '/api/v1/shops/' . self::$shopOptions['shop_id'];
 			// $apiUrlBase .= (!empty(self::$shopOptions['shop_category'])?'/articleCategories/'.self::$shopOptions['shop_category']:'');
-			$apiUrlBase .= '/designs?' . (!empty(self::$shopOptions['shop_locale']) ? 'locale=' . self::$shopOptions['shop_locale'] . '&' : '') . 'fullData=true&noCache=true';
+			$apiUrlBase .= '/designs?fullData=true&noCache=true'; // ' . (!empty(self::$shopOptions['shop_locale']) ? 'locale=' . self::$shopOptions['shop_locale'] . '&' : '') . '
 			
 			// call first to get count of articles
 			$apiUrl = $apiUrlBase . '&limit=' . rand(2, 999); // randomize to avoid spreadshirt caching issues

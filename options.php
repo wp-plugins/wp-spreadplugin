@@ -287,6 +287,7 @@ if (is_user_logged_in() && is_admin()) {
                     <option value="jp_JP"<?php echo ($adminOptions['shop_language']=='jp_JP'?" selected":"") ?>>Japanese</option>
                     <option value="be_FR"<?php echo ($adminOptions['shop_language']=='be_FR'?" selected":"") ?>>Belgium / French</option>
                     <option value="en_GB"<?php echo ($adminOptions['shop_language']=='en_GB'?" selected":"") ?>>English (GB)</option>
+                    <option value="us_US"<?php echo ($adminOptions['shop_language']=='us_US'?" selected":"") ?>>English (US)</option>
                   </select></td>
               </tr>
               <tr>
