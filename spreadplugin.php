@@ -2608,31 +2608,27 @@ if (!class_exists('WP_Spreadplugin')) {
 		private function workaroundLangUrl($url){
 			$_langCodeArr = @explode("_", (empty(self::$shopOptions['shop_language']) ? get_locale() : self::$shopOptions['shop_language']));
 			$_langCode = $_langCodeArr[0];
+			$langUrl = "";
+			$checkoutUrl = $url; // failover, if no checkout url set
 
 			if (!empty($_langCode)) {
 				if (strpos($url,'spreadshirt.com') === false) {
 					
 					if ($_langCode == "en" && $_langCodeArr[1] == "GB") {
-						$_langCode = "spreadshirt.co.uk";
+						$langUrl = "spreadshirt.co.uk";
 					} elseif ($_langCode == "nb") {
-						$_langCode = "spreadshirt.no";
-					} else {
-						$_langCode = "spreadshirt." . $_langCode;
+						$langUrl = "spreadshirt.no";
 					}
 					
 				} else {					
 					if ($_langCodeArr[1] == "CA") {
-						$_langCode = "spreadshirt.ca";
-					} else {
-						$_langCode = "spreadshirt.com";
+						$langUrl = "spreadshirt.ca";
 					}
 				}
 
-				
-				$checkoutUrl = str_replace(array("spreadshirt.net","spreadshirt.com"), $_langCode, $url);
-			} else {
-				// failover, if no checkout url set
-				$checkoutUrl = $url;
+				if (!empty($langUrl)) {
+					$checkoutUrl = str_replace(array("spreadshirt.net","spreadshirt.com"), $langUrl, $url);
+				}
 			}
 			
 			// Spreadshirt offers an customized checkout for some users, heres the workaround
