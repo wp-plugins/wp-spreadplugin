@@ -1106,7 +1106,7 @@ if (!class_exists('WP_Spreadplugin')) {
 			}
 			
 			if (self::$shopOptions['shop_enablelink'] == 1) {
-				$output .= '<div class="details-wrapper2 spreadplugin-clearfix"><a href="' . $this->prettyProductUrl($id) . '" target="' . self::$shopOptions['shop_linktarget'] . '">' . __('Details', $this->stringTextdomain) . '</a></div>';
+				$output .= '<div class="details-wrapper2 spreadplugin-clearfix"><a href="' . $this->prettyProductUrl($id) . '">' . __('Details', $this->stringTextdomain) . '</a></div>';
 			}
 			
 			$output .= '<div class="separator"></div>';
@@ -1255,7 +1255,7 @@ if (!class_exists('WP_Spreadplugin')) {
 			$output .= '</div>';
 			
 			if (self::$shopOptions['shop_enablelink'] == 1) {
-				$output .= '<div class="details-wrapper2 spreadplugin-clearfix"><a href="' . $this->prettyProductUrl($id) . '" target="' . self::$shopOptions['shop_linktarget'] . '">' . __('Details', $this->stringTextdomain) . '</a></div>';
+				$output .= '<div class="details-wrapper2 spreadplugin-clearfix"><a href="' . $this->prettyProductUrl($id) . '">' . __('Details', $this->stringTextdomain) . '</a></div>';
 			}
 			
 			$output .= '</div><div class="articleContentRight"><h3>' . (!empty($article['name']) ? htmlspecialchars($article['name'], ENT_QUOTES) : '') . '</h3>';
@@ -1375,7 +1375,7 @@ if (!class_exists('WP_Spreadplugin')) {
 			
 			// display preview image
 			$output .= '<div class="image-wrapper">';
-			$output .= '<a href="' . $this->prettyProductUrl($id) . '" target="' . self::$shopOptions['shop_linktarget'] . '"><img src="';
+			$output .= '<a href="' . $this->prettyProductUrl($id) . '"><img src="';
 			
 			if (self::$shopOptions['shop_lazyload'] == 0) {
 				$output .= $imgSrc;
