@@ -200,7 +200,8 @@ Please have a look here: http://themeforest.net/category/wordpress?ref=thimo
 
 == Known Bugs ==
 
-* When Plugin on static front page, product filters aren't working correctly.
+* Filters and sorting disabled, but will return.
+* Having problems with wrong url for checkout, let me know please.
 
 == Changelog ==
 
