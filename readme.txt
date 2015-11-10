@@ -5,7 +5,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: spreadshirt,wordpress,plugin,shop,store,shirt,t-shirt,integration,online store,online shop
 Requires at least: 3.3
 Tested up to: 4.3
-Stable tag: 3.9.7
+Stable tag: 3.9.7.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -203,6 +203,11 @@ Please have a look here: http://themeforest.net/category/wordpress?ref=thimo
 * When Plugin on static front page, product filters aren't working correctly.
 
 == Changelog ==
+
+= 3.9.7.1 =
+* Anchor added so you can jump directly to spreadplugin shop if set
+* Basket Widget integrated and not display separatly in plugin list
+* Temporarly removed category and sorting boxes, sorry but will return later
 
 = 3.9.7 =
 * Code optimizations

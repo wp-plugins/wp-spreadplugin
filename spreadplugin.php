@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.9.7
+ * Version: 3.9.7.1
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -58,7 +58,8 @@ if (!class_exists('WP_Spreadplugin')) {
 				'shop_sleep' => '',
 				'shop_designer' => '',
 				'shop_max_quantity_articles' => '',
-				'shop_url_anchor' => ''
+				'shop_url_anchor' => '',
+				'shop_url_productdetail_slug' => ''
 		);
 		private static $shopCache = 0; // Shop article cache - never expires
 		
@@ -193,7 +194,7 @@ if (!class_exists('WP_Spreadplugin')) {
 
 			// get admin options (default option set on admin page)
 			$conOp = $this->getAdminOptions();
-			
+
 			// shortcode overwrites admin options (default option set on admin page) if available
 			$arrSc = shortcode_atts($this->defaultOptions, $atts);
 			
@@ -220,9 +221,9 @@ if (!class_exists('WP_Spreadplugin')) {
 			self::$shopOptions['shop_max_quantity_articles'] = ($conOp['shop_max_quantity_articles'] == '' ? 1000 : $conOp['shop_max_quantity_articles']);
 			// Overwrite defaults if set (old vals)
 			self::$shopOptions['shop_designer'] = (self::$shopOptions['shop_designer'] == 2 ? self::$shopOptions['shop_designer'] = 1 : self::$shopOptions['shop_designer']);
-			
+
 			// Disable Zoom on min view, because of the new view - not on details page
-			if (self::$shopOptions['shop_view'] == 2 && !get_query_var('splproduct')) {
+			if (self::$shopOptions['shop_view'] == 2 && !get_query_var(self::$shopOptions['shop_url_productdetail_slug'])) {
 				self::$shopOptions['shop_zoomtype'] = 2;
 			}
 			
@@ -409,7 +410,7 @@ if (!class_exists('WP_Spreadplugin')) {
 				}
 				
 				// Start output
-				$output = '';
+				$output = (!empty($conOp['shop_url_anchor'])?'<a name="' . $conOp['shop_url_anchor'] . '"></a>':"");
 				
 				// check if curl is enabled
 				$output .= (function_exists('curl_version') ? '' : '<span class="error">Curl seems to be disabled. In order to use Shop functionality, it should be enabled</span>');
@@ -432,17 +433,17 @@ if (!class_exists('WP_Spreadplugin')) {
 				} else {
 					// Listing product
 					
-					if (!get_query_var('splproduct')) {
+					if (!get_query_var(self::$shopOptions['shop_url_productdetail_slug'])) {
 						
 						// add spreadplugin-menu
 						$output .= '<div id="spreadplugin-menu" class="spreadplugin-menu">';
-						
+						/*
 						// add product categories
 						$output .= '<select name="productCategory" id="productCategory">';
 						$output .= '<option value="">' . __('Product category', $this->stringTextdomain) . '</option>';
 						if (isset($typesData)) {
 							foreach ($typesData as $t => $v) {
-								$output .= '<option value="' . urlencode($t) . '"' . ($t == self::$shopOptions['shop_productcategory'] ? ' selected' : '') . '>' . $t . '</option>';
+								$output .= '<option value="' . str_replace('+','%20',urlencode($t)) . '"' . ($t == self::$shopOptions['shop_productcategory'] ? ' selected' : '') . '>' . $t . '</option>';
 							}
 						}
 						$output .= '</select> ';
@@ -456,21 +457,21 @@ if (!class_exists('WP_Spreadplugin')) {
 								@ksort($typesData[self::$shopOptions['shop_productcategory']]);
 								unset($typesData[self::$shopOptions['shop_productcategory']]['all']);
 								foreach ($typesData[self::$shopOptions['shop_productcategory']] as $t => $v) {
-									$output .= '<option value="' . urlencode($t) . '"' . ($t == self::$shopOptions['shop_productsubcategory'] ? ' selected' : '') . '>' . $t . '</option>';
+									$output .= '<option value="' . str_replace('+','%20',urlencode($t)) . '"' . ($t == self::$shopOptions['shop_productsubcategory'] ? ' selected' : '') . '>' . $t . '</option>';
 								}
 							}
 							$output .= '</select> ';
 						}
-						
+						*/
 						// add sorting
-						$output .= '<select name="articleSortBy" id="articleSortBy">';
+						/*$output .= '<select name="articleSortBy" id="articleSortBy">';
 						$output .= '<option value="">' . __('Sort by', $this->stringTextdomain) . '</option>';
 						$output .= '<option value="name"' . ('name' == self::$shopOptions['shop_sortby'] ? ' selected' : '') . '>' . __('name', $this->stringTextdomain) . '</option>';
 						$output .= '<option value="price"' . ('price' == self::$shopOptions['shop_sortby'] ? ' selected' : '') . '>' . __('price', $this->stringTextdomain) . '</option>';
 						$output .= '<option value="recent"' . ('recent' == self::$shopOptions['shop_sortby'] ? ' selected' : '') . '>' . __('recent', $this->stringTextdomain) . '</option>';
 						$output .= '<option value="weight"' . ('weight' == self::$shopOptions['shop_sortby'] ? ' selected' : '') . '>' . __('weight', $this->stringTextdomain) . '</option>';
 						$output .= '</select>';
-						
+						*/
 						// url not needed here, but just in case if js won't work for some reason
 						$output .= '<div id="checkout" class="spreadplugin-checkout"><span></span> <a href="' . (!empty($_SESSION['checkoutUrl'][self::$shopOptions['shop_source'] . self::$shopOptions['shop_language']]) ? $_SESSION['checkoutUrl'][self::$shopOptions['shop_source'] . self::$shopOptions['shop_language']] : '') . '" target="' . self::$shopOptions['shop_linktarget'] . '" id="basketLink" class="spreadplugin-checkout-link' . (self::$shopOptions['shop_basket_text_icon'] == 1 ? ' button' : '') . '">' . (self::$shopOptions['shop_basket_text_icon'] == 0 ? __('Basket', $this->stringTextdomain) : '') . '</a></div>';
 						$output .= '<div id="spreadplugin-cart" class="spreadplugin-cart"></div>';
@@ -563,11 +564,7 @@ if (!class_exists('WP_Spreadplugin')) {
 						
 						$output .= "<div id=\"pagination\">";
 						if ($cArticleNext > 0) {
-							$output .= "<a href=\"" . add_query_arg(array (
-									'pagesp' => $paged + 1,
-									'productCategory' => (get_query_var('productCategory') ? get_query_var('productCategory') : ''),
-									'articleSortBy' => (get_query_var('articleSortBy') ? get_query_var('articleSortBy') : '') 
-							), self::prettyPermalink()) . "\">" . __('next', $this->stringTextdomain) . "</a>";
+							$output .= "<a href=\"" . $this->prettyPagesUrl() . "\">" . __('next', $this->stringTextdomain) . "</a>";
 						}
 						$output .= "</div>";
 					} else {
@@ -584,8 +581,8 @@ if (!class_exists('WP_Spreadplugin')) {
 						$output .= '</div>';
 						
 						// product
-						if (!empty($articleCleanDataComplete[intval(get_query_var('splproduct'))])) {
-							$output .= $this->displayDetailPage(intval(get_query_var('splproduct')), $articleCleanDataComplete[intval(get_query_var('splproduct'))], self::$shopOptions['shop_zoomimagebackground']);
+						if (!empty($articleCleanDataComplete[intval(get_query_var(self::$shopOptions['shop_url_productdetail_slug']))])) {
+							$output .= $this->displayDetailPage(intval(get_query_var(self::$shopOptions['shop_url_productdetail_slug'])), $articleCleanDataComplete[intval(get_query_var(self::$shopOptions['shop_url_productdetail_slug']))], self::$shopOptions['shop_zoomimagebackground']);
 						}
 						
 						$output .= '</div>';
@@ -1081,13 +1078,8 @@ if (!class_exists('WP_Spreadplugin')) {
 			
 			// edit article button
 			if (self::$shopOptions['shop_designer'] == 1) {
-				$output .= ' <div class="edit-wrapper-integrated" data-designid="' . $article['designid'] . '" data-productid="' . (!empty($article['productId']) ? $article['productId'] : '') . '" data-viewid="' . $article['view'] . '" data-appearanceid="' . $article['appearance'] . '" data-producttypeid="' . $article['type'] . '"><img src="' . plugins_url('/img/edit.png', __FILE__) . '"></div>';
-			} /*
-			   * else
-			   * if (self::$shopOptions['shop_designer'] == 2 && self::$shopOptions['shop_designershop'] > 0) {
-			   * $output .= ' <div class="edit-wrapper"><a href="//' . self::$shopOptions['shop_designershop'] . self::workaroundLangUrl('.spreadshirt.' . self::$shopOptions['shop_source']) . '/tablomat/-D1/customize/product/' . $article['productId'] . '?noCache=true&basketId='.$_SESSION['basketId'][self::$shopOptions['shop_source'] . self::$shopOptions['shop_language']].'" target="' . self::$shopOptions['shop_linktarget'] . '" title="' . __('Edit article', $this->stringTextdomain) . '"><img src="' . plugins_url('/img/edit.png', __FILE__) . '"></a></div>';
-			   * }
-			   */
+				$output .= ' <div class="edit-wrapper-integrated" data-designid="' . $article['designid'] . '" data-productid="' . (!empty($article['productId']) ? $article['productId'] : '') . '" data-viewid="' . $article['view'] . '" data-appearanceid="' . $article['appearance'] . '" data-producttypeid="' . $article['type'] . '"><i></i></div>';
+			}
 			
 			// display preview image
 			$output .= '<div class="image-wrapper">';
@@ -1114,7 +1106,7 @@ if (!class_exists('WP_Spreadplugin')) {
 			}
 			
 			if (self::$shopOptions['shop_enablelink'] == 1) {
-				$output .= '<div class="details-wrapper2 spreadplugin-clearfix"><a href="' . self::prettyProductUrl($id) . '" target="' . self::$shopOptions['shop_linktarget'] . '">' . __('Details', $this->stringTextdomain) . '</a></div>';
+				$output .= '<div class="details-wrapper2 spreadplugin-clearfix"><a href="' . $this->prettyProductUrl($id) . '" target="' . self::$shopOptions['shop_linktarget'] . '">' . __('Details', $this->stringTextdomain) . '</a></div>';
 			}
 			
 			$output .= '<div class="separator"></div>';
@@ -1206,10 +1198,10 @@ if (!class_exists('WP_Spreadplugin')) {
 			if (self::$shopOptions['shop_social'] == true) {
 				$output .= '
 				<ul class="soc-icons">
-				<li><a target="_blank" data-color="#5481de" class="fb" href="//www.facebook.com/sharer.php?u=' . urlencode(self::prettyProductUrl($id)) . '&t=' . rawurlencode(get_the_title()) . '" title="Facebook"></a></li>
-				<li><a target="_blank" data-color="#06ad18" class="goog" href="//plus.google.com/share?url=' . urlencode(self::prettyProductUrl($id)) . '" title="Google"></a></li>
-				<li><a target="_blank" data-color="#2cbbea" class="twt" href="//twitter.com/home?status=' . rawurlencode(get_the_title()) . ' - ' . urlencode(self::prettyProductUrl($id)) . '" title="Twitter"></a></li>
-				<li><a target="_blank" data-color="#e84f61" class="pin" href="//pinterest.com/pin/create/button/?url=' . rawurlencode(self::prettyProductUrl($id)) . '&media=' . rawurlencode('http://image.spreadshirt.' . self::$shopOptions['shop_source'] . '/image-server/v1/products/' . $article['productId'] . '/views/' . $article['view'] . ',width=' . self::$shopOptions['shop_imagesize'] . ',height=' . self::$shopOptions['shop_imagesize'] . '') . ',width=' . self::$shopOptions['shop_imagesize'] . ',height=' . self::$shopOptions['shop_imagesize'] . '&description=' . (!empty($article['description']) ? htmlspecialchars($article['description'], ENT_QUOTES) : 'Product') . '" title="Pinterest"></a></li>
+				<li><a target="_blank" data-color="#5481de" class="fb" href="//www.facebook.com/sharer.php?u=' . urlencode($this->prettyProductUrl($id)) . '&t=' . rawurlencode(get_the_title()) . '" title="Facebook"><i></i></a></li>
+				<li><a target="_blank" data-color="#06ad18" class="goog" href="//plus.google.com/share?url=' . urlencode($this->prettyProductUrl($id)) . '" title="Google"><i></i></a></li>
+				<li><a target="_blank" data-color="#2cbbea" class="twt" href="//twitter.com/home?status=' . rawurlencode(get_the_title()) . ' - ' . urlencode($this->prettyProductUrl($id)) . '" title="Twitter"><i></i></a></li>
+				<li><a target="_blank" data-color="#e84f61" class="pin" href="//pinterest.com/pin/create/button/?url=' . rawurlencode($this->prettyProductUrl($id)) . '&media=' . rawurlencode('http://image.spreadshirt.' . self::$shopOptions['shop_source'] . '/image-server/v1/products/' . $article['productId'] . '/views/' . $article['view'] . ',width=' . self::$shopOptions['shop_imagesize'] . ',height=' . self::$shopOptions['shop_imagesize'] . '') . ',width=' . self::$shopOptions['shop_imagesize'] . ',height=' . self::$shopOptions['shop_imagesize'] . '&description=' . (!empty($article['description']) ? htmlspecialchars($article['description'], ENT_QUOTES) : 'Product') . '" title="Pinterest"><i></i></a></li>
 				</ul>
 				';
 				
@@ -1241,13 +1233,8 @@ if (!class_exists('WP_Spreadplugin')) {
 			
 			// edit article button
 			if (self::$shopOptions['shop_designer'] == 1) {
-				$output .= ' <div class="edit-wrapper-integrated" data-designid="' . $article['designid'] . '" data-productid="' . (!empty($article['productId']) ? $article['productId'] : '') . '" data-viewid="' . $article['view'] . '" data-appearanceid="' . $article['appearance'] . '" data-producttypeid="' . $article['type'] . '"><img src="' . plugins_url('/img/edit.png', __FILE__) . '"></div>';
-			} /*
-			   * else
-			   * if (self::$shopOptions['shop_designer'] == 2 && self::$shopOptions['shop_designershop'] > 0) {
-			   * $output .= ' <div class="edit-wrapper"><a href="//' . self::$shopOptions['shop_designershop'] . self::workaroundLangUrl('.spreadshirt.' . self::$shopOptions['shop_source']) . '/tablomat/-D1/customize/product/' . $article['productId'] . '?noCache=true&basketId='.$_SESSION['basketId'][self::$shopOptions['shop_source'] . self::$shopOptions['shop_language']].'" target="' . self::$shopOptions['shop_linktarget'] . '" title="' . __('Edit article', $this->stringTextdomain) . '"><img src="' . plugins_url('/img/edit.png', __FILE__) . '"></a></div>';
-			   * }
-			   */
+				$output .= ' <div class="edit-wrapper-integrated" data-designid="' . $article['designid'] . '" data-productid="' . (!empty($article['productId']) ? $article['productId'] : '') . '" data-viewid="' . $article['view'] . '" data-appearanceid="' . $article['appearance'] . '" data-producttypeid="' . $article['type'] . '"><i></i></div>';
+			}
 			
 			// display preview image
 			$output .= '<div class="image-wrapper">';
@@ -1268,7 +1255,7 @@ if (!class_exists('WP_Spreadplugin')) {
 			$output .= '</div>';
 			
 			if (self::$shopOptions['shop_enablelink'] == 1) {
-				$output .= '<div class="details-wrapper2 spreadplugin-clearfix"><a href="' . self::prettyProductUrl($id) . '" target="' . self::$shopOptions['shop_linktarget'] . '">' . __('Details', $this->stringTextdomain) . '</a></div>';
+				$output .= '<div class="details-wrapper2 spreadplugin-clearfix"><a href="' . $this->prettyProductUrl($id) . '" target="' . self::$shopOptions['shop_linktarget'] . '">' . __('Details', $this->stringTextdomain) . '</a></div>';
 			}
 			
 			$output .= '</div><div class="articleContentRight"><h3>' . (!empty($article['name']) ? htmlspecialchars($article['name'], ENT_QUOTES) : '') . '</h3>';
@@ -1351,10 +1338,10 @@ if (!class_exists('WP_Spreadplugin')) {
 			if (self::$shopOptions['shop_social'] == true) {
 				$output .= '
 				<ul class="soc-icons">
-				<li><a target="_blank" data-color="#5481de" class="fb" href="//www.facebook.com/sharer.php?u=' . urlencode(self::prettyProductUrl($id)) . '&t=' . rawurlencode(get_the_title()) . '" title="Facebook"></a></li>
-				<li><a target="_blank" data-color="#06ad18" class="goog" href="//plus.google.com/share?url=' . urlencode(self::prettyProductUrl($id)) . '" title="Google"></a></li>
-				<li><a target="_blank" data-color="#2cbbea" class="twt" href="//twitter.com/home?status=' . rawurlencode(get_the_title()) . ' - ' . urlencode(self::prettyProductUrl($id)) . '" title="Twitter"></a></li>
-				<li><a target="_blank" data-color="#e84f61" class="pin" href="//pinterest.com/pin/create/button/?url=' . rawurlencode(self::prettyProductUrl($id)) . '&media=' . rawurlencode('http://image.spreadshirt.' . self::$shopOptions['shop_source'] . '/image-server/v1/products/' . $article['productId'] . '/views/' . $article['view'] . ',width=' . self::$shopOptions['shop_imagesize'] . ',height=' . self::$shopOptions['shop_imagesize'] . '') . ',width=' . self::$shopOptions['shop_imagesize'] . ',height=' . self::$shopOptions['shop_imagesize'] . '&description=' . (!empty($article['description']) ? htmlspecialchars($article['description'], ENT_QUOTES) : 'Product') . '" title="Pinterest"></a></li>
+				<li><a target="_blank" data-color="#5481de" class="fb" href="//www.facebook.com/sharer.php?u=' . urlencode($this->prettyProductUrl($id)) . '&t=' . rawurlencode(get_the_title()) . '" title="Facebook"><i></i></a></li>
+				<li><a target="_blank" data-color="#06ad18" class="goog" href="//plus.google.com/share?url=' . urlencode($this->prettyProductUrl($id)) . '" title="Google"><i></i></a></li>
+				<li><a target="_blank" data-color="#2cbbea" class="twt" href="//twitter.com/home?status=' . rawurlencode(get_the_title()) . ' - ' . urlencode($this->prettyProductUrl($id)) . '" title="Twitter"><i></i></a></li>
+				<li><a target="_blank" data-color="#e84f61" class="pin" href="//pinterest.com/pin/create/button/?url=' . rawurlencode($this->prettyProductUrl($id)) . '&media=' . rawurlencode('http://image.spreadshirt.' . self::$shopOptions['shop_source'] . '/image-server/v1/products/' . $article['productId'] . '/views/' . $article['view'] . ',width=' . self::$shopOptions['shop_imagesize'] . ',height=' . self::$shopOptions['shop_imagesize'] . '') . ',width=' . self::$shopOptions['shop_imagesize'] . ',height=' . self::$shopOptions['shop_imagesize'] . '&description=' . (!empty($article['description']) ? htmlspecialchars($article['description'], ENT_QUOTES) : 'Product') . '" title="Pinterest"><i></i></a></li>
 				</ul>
 				';
 			}
@@ -1383,17 +1370,12 @@ if (!class_exists('WP_Spreadplugin')) {
 			
 			// edit article button
 			if (self::$shopOptions['shop_designer'] == 1) {
-				$output .= ' <div class="edit-wrapper-integrated" data-designid="' . $article['designid'] . '" data-productid="' . (!empty($article['productId']) ? $article['productId'] : '') . '" data-viewid="' . $article['view'] . '" data-appearanceid="' . $article['appearance'] . '" data-producttypeid="' . $article['type'] . '"><img src="' . plugins_url('/img/edit.png', __FILE__) . '"></div>';
-			} /*
-			   * else
-			   * if (self::$shopOptions['shop_designer'] == 2 && self::$shopOptions['shop_designershop'] > 0) {
-			   * $output .= ' <div class="edit-wrapper"><a href="//' . self::$shopOptions['shop_designershop'] . self::workaroundLangUrl('.spreadshirt.' . self::$shopOptions['shop_source']) . '/tablomat/-D1/customize/product/' . $article['productId'] . '?noCache=true&basketId='.$_SESSION['basketId'][self::$shopOptions['shop_source'] . self::$shopOptions['shop_language']].'" target="' . self::$shopOptions['shop_linktarget'] . '" title="' . __('Edit article', $this->stringTextdomain) . '"><img src="' . plugins_url('/img/edit.png', __FILE__) . '"></a></div>';
-			   * }
-			   */
+				$output .= ' <div class="edit-wrapper-integrated" data-designid="' . $article['designid'] . '" data-productid="' . (!empty($article['productId']) ? $article['productId'] : '') . '" data-viewid="' . $article['view'] . '" data-appearanceid="' . $article['appearance'] . '" data-producttypeid="' . $article['type'] . '"><i></i></div>';
+			}
 			
 			// display preview image
 			$output .= '<div class="image-wrapper">';
-			$output .= '<a href="' . self::prettyProductUrl($id) . '" target="' . self::$shopOptions['shop_linktarget'] . '"><img src="';
+			$output .= '<a href="' . $this->prettyProductUrl($id) . '" target="' . self::$shopOptions['shop_linktarget'] . '"><img src="';
 			
 			if (self::$shopOptions['shop_lazyload'] == 0) {
 				$output .= $imgSrc;
@@ -1425,7 +1407,7 @@ if (!class_exists('WP_Spreadplugin')) {
 			$output .= '<input type="hidden" value="' . $article['view'] . '" id="view" name="view" />';
 			$output .= '<input type="hidden" value="' . $id . '" id="article" name="article" />';
 			
-			$output .= '<div class="add-basket-wrapper spreadplugin-clearfix"><input type="submit" name="submit" class="add-basket-button" value=""></div>';
+			$output .= '<div class="add-basket-wrapper spreadplugin-clearfix"><button type="submit" name="submit" class="add-basket-button" value=""><i></i></button></div>';
 			
 			// order buttons
 			$output .= '<input type="hidden" value="1" id="quantity" name="quantity" />';
@@ -1764,33 +1746,7 @@ if (!class_exists('WP_Spreadplugin')) {
 			
 			return false;
 		}
-		
-		/**
-		 * call to merge the designer shop basket with the api basket
-		 * @TODO doesn't work yet - Spreadshirt's API is beta :(
-		 *
-		 * public function mergeBaskets() {
-		 * $header = array();
-		 * $basketId = "";
-		 * $coolUrl = "";
-		 *
-		 * if (!empty($_SESSION['basketUrl'][self::$shopOptions['shop_source'] . self::$shopOptions['shop_language']])) {
-		 *
-		 * if (preg_match("/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}/", $_SESSION['basketUrl'][self::$shopOptions['shop_source'] . self::$shopOptions['shop_language']], $found)) {
-		 * $basketId = $found[0];
-		 * }
-		 *
-		 * // cool widget url
-		 * $coolUrl = "http://www.spreadshirt.de/de/DE/Widget/Www/synchronizeBasket/basket/" . $basketId . "/toApi/true";
-		 *
-		 * $result = self::oldHttpRequest($coolUrl, $header, 'GET');
-		 * }
-		 *
-		 * echo $result;
-		 * die();
-		 * }
-		 */
-		
+
 		/**
 		 * Function loadHead
 		 */
@@ -1821,6 +1777,8 @@ if (!class_exists('WP_Spreadplugin')) {
 			// Respects SSL, Style.css is relative to the current file
 			wp_enqueue_style('spreadplugin', plugins_url('/css/spreadplugin.css', __FILE__));
 			wp_enqueue_style('magnific_popup_css', plugins_url('/css/magnific-popup.css', __FILE__));
+			
+			wp_enqueue_style('dashicons');
 			
 			// Scrolling
 			wp_enqueue_script('infinite_scroll', plugins_url('/js/jquery.infinitescroll.min.js', __FILE__), array('jquery'));
@@ -1863,9 +1821,10 @@ if (!class_exists('WP_Spreadplugin')) {
 				'designerShopId' => (self::$shopOptions['shop_designershop'] > 0 ? self::$shopOptions['shop_designershop'] : self::$shopOptions['shop_id']),
 				'designerTargetId' => 'spreadplugin-designer',
 				'designerPlatform' => (self::$shopOptions['shop_source'] == 'net' ? 'EU' : 'NA'),
-				'designerLocale' => self::$shopOptions['shop_locale'],
+				'designerLocale' => (empty(self::$shopOptions['shop_language'])?get_locale():self::$shopOptions['shop_language']),
 				'designerWidth' => 750,
-				'designerBasketId' => (!empty($_SESSION['basketId'][self::$shopOptions['shop_source'] . self::$shopOptions['shop_language']]) ? $_SESSION['basketId'][self::$shopOptions['shop_source'] . self::$shopOptions['shop_language']] : "")
+				'designerBasketId' => (!empty($_SESSION['basketId'][self::$shopOptions['shop_source'] . self::$shopOptions['shop_language']]) ? $_SESSION['basketId'][self::$shopOptions['shop_source'] . self::$shopOptions['shop_language']] : ""),
+				'prettyUrl' => (get_option('permalink_structure') != ''?1:0)
 			));
 
 		}
@@ -1989,7 +1948,7 @@ if (!class_exists('WP_Spreadplugin')) {
 		 */
 		private function displayDetailPage($id, $article, $backgroundColor = ''){
 			$_toInches = false;
-			if (self::$shopOptions['shop_locale'] == 'en_US' || self::$shopOptions['shop_locale'] == 'en_GB' || self::$shopOptions['shop_locale'] == 'us_US' || self::$shopOptions['shop_locale'] == 'us_CA' || self::$shopOptions['shop_locale'] == 'fr_CA') {
+			if (self::$shopOptions['shop_language'] == 'en_US' || self::$shopOptions['shop_language'] == 'en_GB' || self::$shopOptions['shop_language'] == 'us_US' || self::$shopOptions['shop_language'] == 'us_CA' || self::$shopOptions['shop_language'] == 'fr_CA') {
 				$_toInches = true;
 			}
 			
@@ -1999,13 +1958,8 @@ if (!class_exists('WP_Spreadplugin')) {
 			
 			// edit article button
 			if (self::$shopOptions['shop_designer'] == 1) {
-				$output .= ' <div class="edit-wrapper-integrated" data-designid="' . $article['designid'] . '" data-productid="' . (!empty($article['productId']) ? $article['productId'] : '') . '" data-viewid="' . $article['view'] . '" data-appearanceid="' . $article['appearance'] . '" data-producttypeid="' . $article['type'] . '"><img src="' . plugins_url('/img/edit.png', __FILE__) . '"></div>';
-			} /*
-			   * else
-			   * if (self::$shopOptions['shop_designer'] == 2 && self::$shopOptions['shop_designershop'] > 0) {
-			   * $output .= ' <div class="edit-wrapper"><a href="//' . self::$shopOptions['shop_designershop'] . self::workaroundLangUrl('.spreadshirt.' . self::$shopOptions['shop_source']) . '/tablomat/-D1/customize/product/' . $article['productId'] . '?noCache=true&basketId='.$_SESSION['basketId'][self::$shopOptions['shop_source'] . self::$shopOptions['shop_language']].'" target="' . self::$shopOptions['shop_linktarget'] . '" title="' . __('Edit article', $this->stringTextdomain) . '"><img src="' . plugins_url('/img/edit.png', __FILE__) . '"></a></div>';
-			   * }
-			   */
+				$output .= ' <div class="edit-wrapper-integrated" data-designid="' . $article['designid'] . '" data-productid="' . (!empty($article['productId']) ? $article['productId'] : '') . '" data-viewid="' . $article['view'] . '" data-appearanceid="' . $article['appearance'] . '" data-producttypeid="' . $article['type'] . '"><i></i></div>';
+			}
 			
 			// display preview image
 			$output .= '<div class="image-wrapper">';
@@ -2090,10 +2044,10 @@ if (!class_exists('WP_Spreadplugin')) {
 			if (self::$shopOptions['shop_social'] == true) {
 				$output .= '
 				<ul class="soc-icons">
-				<li><a target="_blank" data-color="#5481de" class="fb" href="//www.facebook.com/sharer.php?u=' . urlencode(self::prettyProductUrl($id)) . '&t=' . rawurlencode(get_the_title()) . '" title="Facebook"></a></li>
-				<li><a target="_blank" data-color="#06ad18" class="goog" href="//plus.google.com/share?url=' . urlencode(self::prettyProductUrl($id)) . '" title="Google"></a></li>
-				<li><a target="_blank" data-color="#2cbbea" class="twt" href="//twitter.com/home?status=' . rawurlencode(get_the_title()) . ' - ' . urlencode(self::prettyProductUrl($id)) . '" title="Twitter"></a></li>
-				<li><a target="_blank" data-color="#e84f61" class="pin" href="//pinterest.com/pin/create/button/?url=' . rawurlencode(self::prettyProductUrl($id)) . '&media=' . rawurlencode('http://image.spreadshirt.' . self::$shopOptions['shop_source'] . '/image-server/v1/products/' . $article['productId'] . '/views/' . $article['view'] . ',width=280,height=280') . ',width=' . self::$shopOptions['shop_imagesize'] . ',height=' . self::$shopOptions['shop_imagesize'] . '&description=' . (!empty($article['description']) ? htmlspecialchars($article['description'], ENT_QUOTES) : 'Product') . '" title="Pinterest"></a></li>
+				<li><a target="_blank" data-color="#5481de" class="fb" href="//www.facebook.com/sharer.php?u=' . urlencode($this->prettyProductUrl($id)) . '&t=' . rawurlencode(get_the_title()) . '" title="Facebook"><i></i></a></li>
+				<li><a target="_blank" data-color="#06ad18" class="goog" href="//plus.google.com/share?url=' . urlencode($this->prettyProductUrl($id)) . '" title="Google"><i></i></a></li>
+				<li><a target="_blank" data-color="#2cbbea" class="twt" href="//twitter.com/home?status=' . rawurlencode(get_the_title()) . ' - ' . urlencode($this->prettyProductUrl($id)) . '" title="Twitter"><i></i></a></li>
+				<li><a target="_blank" data-color="#e84f61" class="pin" href="//pinterest.com/pin/create/button/?url=' . rawurlencode($this->prettyProductUrl($id)) . '&media=' . rawurlencode('http://image.spreadshirt.' . self::$shopOptions['shop_source'] . '/image-server/v1/products/' . $article['productId'] . '/views/' . $article['view'] . ',width=280,height=280') . ',width=' . self::$shopOptions['shop_imagesize'] . ',height=' . self::$shopOptions['shop_imagesize'] . '&description=' . (!empty($article['description']) ? htmlspecialchars($article['description'], ENT_QUOTES) : 'Product') . '" title="Pinterest"><i></i></a></li>
 				</ul>
 				';
 				
@@ -2349,7 +2303,7 @@ if (!class_exists('WP_Spreadplugin')) {
 			return $rgb; // returns an array with the rgb values
 		}
 		private static function formatPrice($price, $currency){
-			return (empty(self::$shopOptions['shop_locale']) || self::$shopOptions['shop_locale'] == 'en_US' || self::$shopOptions['shop_locale'] == 'en_GB' || self::$shopOptions['shop_locale'] == 'us_US' || self::$shopOptions['shop_locale'] == 'us_CA' || self::$shopOptions['shop_locale'] == 'fr_CA' ? $currency . " " . number_format($price, 2, '.', '') : number_format($price, 2, ',', '.') . " " . $currency);
+			return (empty(self::$shopOptions['shop_language']) || self::$shopOptions['shop_language'] == 'en_US' || self::$shopOptions['shop_language'] == 'en_GB' || self::$shopOptions['shop_language'] == 'us_US' || self::$shopOptions['shop_language'] == 'us_CA' || self::$shopOptions['shop_language'] == 'fr_CA' ? $currency . " " . number_format($price, 2, '.', '') : number_format($price, 2, ',', '.') . " " . $currency);
 		}
 		
 		// read admin options
@@ -2360,6 +2314,11 @@ if (!class_exists('WP_Spreadplugin')) {
 				foreach ($splgOptions as $key => $option) {
 					$scOptions[$key] = $option;
 				}
+			}
+			
+			// set defaults
+			if (empty($scOptions['shop_url_productdetail_slug'])) {
+				$scOptions['shop_url_productdetail_slug'] = 'splproduct';
 			}
 			
 			return $scOptions;
@@ -2404,11 +2363,11 @@ if (!class_exists('WP_Spreadplugin')) {
 			}
 			
 			self::$shopOptions = $conOp;
-			self::$shopOptions['shop_locale'] = (($conOp['shop_locale'] == '' || $conOp['shop_locale'] == 'de_DE') && $conOp['shop_source'] == 'com' ? 'us_US' : $conOp['shop_locale']); // Workaround for older versions of this plugin
+			//self::$shopOptions['shop_locale'] = (($conOp['shop_locale'] == '' || $conOp['shop_locale'] == 'de_DE') && $conOp['shop_source'] == 'com' ? 'us_US' : $conOp['shop_locale']); // Workaround for older versions of this plugin
 			//self::$shopOptions['shop_source'] = (empty($conOp['shop_source']) ? 'net' : $conOp['shop_source']);
-						
+
 			// Disable Zoom on min view, because of the new view - not on details page
-			if (self::$shopOptions['shop_view'] == 2 && !get_query_var('splproduct')) {
+			if (self::$shopOptions['shop_view'] == 2 && !get_query_var($conOp['shop_url_productdetail_slug'])) {
 				self::$shopOptions['shop_zoomtype'] = 2;
 			}
 
@@ -2462,7 +2421,7 @@ if (!class_exists('WP_Spreadplugin')) {
 								die('Articles not loaded');
 							
 							echo '<div class="cart-row" data-id="' . (string)$item['id'] . '">
-							<div class="cart-delete"><a href="javascript:;" class="deleteCartItem" title="' . __('Remove', $this->stringTextdomain) . '"><img src="' . plugins_url('/img/delete.png', __FILE__) . '"></a></div>
+							<div class="cart-delete"><a href="javascript:;" class="deleteCartItem" title="' . __('Remove', $this->stringTextdomain) . '"><i></i></a></div>
 							<div class="cart-preview"><img src="//image.spreadshirt.' . self::$shopOptions['shop_source'] . '/image-server/v1/products/' . (string)$item->element['id'] . '/views/1,width=60,height=60,appearanceId=' . (string)$item->element->properties->property[2] . '"></div>
 							<div class="cart-description"><strong>' . htmlspecialchars((empty($objArticles->name) ? $item->description : $objArticles->name), ENT_QUOTES) . '</strong><br>' . __('Size', $this->stringTextdomain) . ': ' . (string)$item->element->properties->property[1] . '<br>' . __('Quantity', $this->stringTextdomain) . ': ' . (int)$item->quantity . '</div>
 							<div class="cart-price"><strong>' . self::formatPrice((float)$item->price->vatIncluded * (int)$item->quantity, '') . '</strong></div>
@@ -2486,7 +2445,7 @@ if (!class_exists('WP_Spreadplugin')) {
 								die('Articles not loaded');
 							
 							echo '<div class="cart-row" data-id="' . (string)$item['id'] . '">
-							<div class="cart-delete"><a href="javascript:;" class="deleteCartItem" title="' . __('Remove', $this->stringTextdomain) . '"><img src="' . plugins_url('/img/delete.png', __FILE__) . '"></a></div>
+							<div class="cart-delete"><a href="javascript:;" class="deleteCartItem" title="' . __('Remove', $this->stringTextdomain) . '"><i></i></a></div>
 							<div class="cart-preview"><img src="//image.spreadshirt.' . self::$shopOptions['shop_source'] . '/image-server/v1/products/' . (string)$objArticles->product['id'] . '/views/' . (string)$objArticles->product->defaultValues->defaultView['id'] . ',viewId=' . (string)$objArticles->product->defaultValues->defaultView['id'] . ',width=60,height=60,appearanceId=' . (string)$item->element->properties->property[2] . '"></div>
 							<div class="cart-description"><strong>' . htmlspecialchars((empty($objArticles->name) ? $item->description : $objArticles->name), ENT_QUOTES) . '</strong><br>' . __('Size', $this->stringTextdomain) . ': ' . (string)$item->element->properties->property[1] . '<br>' . __('Quantity', $this->stringTextdomain) . ': ' . (int)$item->quantity . '</div>
 							<div class="cart-price"><strong>' . self::formatPrice((float)$item->price->vatIncluded * (int)$item->quantity, '') . '</strong></div>
@@ -2647,7 +2606,7 @@ if (!class_exists('WP_Spreadplugin')) {
 		
 		// Workaround for checkout language | the new checkout needs locale urgently
 		private function workaroundLangUrl($url){
-			$_langCodeArr = @explode("_", (empty(self::$shopOptions['shop_language']) ? self::$shopOptions['shop_locale'] : self::$shopOptions['shop_language']));
+			$_langCodeArr = @explode("_", (empty(self::$shopOptions['shop_language']) ? get_locale() : self::$shopOptions['shop_language']));
 			$_langCode = $_langCodeArr[0];
 
 			if (!empty($_langCode)) {
@@ -2675,12 +2634,14 @@ if (!class_exists('WP_Spreadplugin')) {
 			return $checkoutUrl;
 		}
 		public function addQueryVars(){
-			global $wp,$wp_rewrite;
+			global $wp;
+			$slugOptions = $this->getAdminOptions();
+			
 			$wp->add_query_var('productCategory');
 			$wp->add_query_var('articleSortBy');
 			$wp->add_query_var('productSubCategory');
 			$wp->add_query_var('pagesp');			
-			$wp->add_query_var('splproduct');			
+			$wp->add_query_var($slugOptions['shop_url_productdetail_slug']);			
 		}
 		
 //		Used for JS pagelink
@@ -2729,22 +2690,50 @@ if (!class_exists('WP_Spreadplugin')) {
 			
 			$frontPageId = get_option('page_on_front');
 			
-			add_rewrite_tag('%splproduct%','([^&]+)');
-			add_rewrite_rule("(.?.+?)/splproduct/([^&]+)/?$", "index.php?pagename=\$matches[1]&splproduct=\$matches[2]", 'top');
-			add_rewrite_rule("splproduct/([^&]+)/?$", "index.php?page_id=". $frontPageId . "&splproduct=\$matches[1]", 'top');
+			$slugOptions = $this->getAdminOptions();
+			
+			add_rewrite_tag('%'.$slugOptions['shop_url_productdetail_slug'].'%','([^&]+)');
+			add_rewrite_rule("(.?.+?)/".$slugOptions['shop_url_productdetail_slug']."/([^&]+)/?$", "index.php?pagename=\$matches[1]&".$slugOptions['shop_url_productdetail_slug']."=\$matches[2]", 'top');
+			add_rewrite_rule($slugOptions['shop_url_productdetail_slug']."/([^&]+)/?$", "index.php?page_id=". $frontPageId . "&".$slugOptions['shop_url_productdetail_slug']."=\$matches[1]", 'top');
+			
+			add_rewrite_tag('%pagesp%','([0-9]{1,})');
+			add_rewrite_rule("(.?.+?)/pagesp/([0-9]{1,})/?$", "index.php?pagename=\$matches[1]&pagesp=\$matches[2]", 'top');
+			add_rewrite_rule("pagesp/([0-9]{1,})/?$", "index.php?page_id=". $frontPageId . "&pagesp=\$matches[1]", 'top');
+			
+//			add_rewrite_rule("(.?.+?)/pagesp/([0-9]{1,})/productCategory/([^/]+)/productSubCategory/([^/]+)/articleSortBy/([^/]+)/?$", "index.php?pagename=\$matches[1]&pagesp=\$matches[2]&productCategory=\$matches[3]&productSubCategory=\$matches[4]&articleSortBy=\$matches[5]", 'top');
+//			add_rewrite_rule("pagesp/([0-9]{1,})/productCategory/([^/]+)/productSubCategory/([^/]+)/articleSortBy/([^/]+)/?$", "index.php?page_id=". $frontPageId . "&pagesp=\$matches[1]&productCategory=\$matches[2]&productSubCategory=\$matches[3]&articleSortBy=\$matches[4]", 'top');
+//			add_rewrite_rule("(.?.+?)/pagesp/([0-9]{1,})/productCategory/([^/]+)/productSubCategory/([^/]+)/articleSortBy/([^/]+)/?$", "index.php?pagename=\$matches[1]&pagesp=\$matches[2]&productCategory=\$matches[3]&productSubCategory=\$matches[4]&articleSortBy=\$matches[5]", 'top');
+//			add_rewrite_rule("pagesp/([0-9]{1,})/productCategory/([^/]+)/productSubCategory/([^/]+)/articleSortBy/([^/]+)/?$", "index.php?page_id=". $frontPageId . "&pagesp=\$matches[1]&productCategory=\$matches[2]&productSubCategory=\$matches[3]&articleSortBy=\$matches[4]", 'top');
+//			add_rewrite_rule("(.?.+?)/pagesp/([0-9]{1,})/productCategory/([^/]+)/productSubCategory/([^/]+)/articleSortBy/([^/]+)/?$", "index.php?pagename=\$matches[1]&pagesp=\$matches[2]&productCategory=\$matches[3]&productSubCategory=\$matches[4]&articleSortBy=\$matches[5]", 'top');
+//			add_rewrite_rule("pagesp/([0-9]{1,})/productCategory/([^/]+)/productSubCategory/([^/]+)/articleSortBy/([^/]+)/?$", "index.php?page_id=". $frontPageId . "&pagesp=\$matches[1]&productCategory=\$matches[2]&productSubCategory=\$matches[3]&articleSortBy=\$matches[4]", 'top');
 
 			$wp_rewrite->flush_rules();
 		}
 		
-		private static function prettyProductUrl($id) {
+		private function prettyProductUrl($id) {
 			
 			$myPermalink = self::prettyPermalink();
+			$slugOptions = $this->getAdminOptions();
 			
 			if (get_option('permalink_structure') != '') {
 				// using pretty permalinks, append to url
-				$url = user_trailingslashit(get_permalink() . 'splproduct/'.$id).(!empty(self::$shopOptions['shop_url_anchor'])?'#'.self::$shopOptions['shop_url_anchor']:"");
+				$url = user_trailingslashit(get_permalink() . $slugOptions['shop_url_productdetail_slug'].'/'.$id).(!empty($slugOptions['shop_url_anchor'])?'#'.$slugOptions['shop_url_anchor']:"");
 			} else {
-				$url = add_query_arg('splproduct', $id, $myPermalink).(!empty(self::$shopOptions['shop_url_anchor'])?'#'.self::$shopOptions['shop_url_anchor']:"");
+				$url = add_query_arg($slugOptions['shop_url_productdetail_slug'], $id, $myPermalink).(!empty($slugOptions['shop_url_anchor'])?'#'.$slugOptions['shop_url_anchor']:"");
+			}
+			return $url;
+		}
+		private function prettyPagesUrl() {
+			
+			$myPermalink = self::prettyPermalink();
+			$slugOptions = $this->getAdminOptions();
+			$paged = (get_query_var('pagesp') ? get_query_var('pagesp') : 1);
+			
+			if (get_option('permalink_structure') != '') {
+				// using pretty permalinks, append to url
+				$url = user_trailingslashit(get_permalink() . 'pagesp/' . ($paged + 1)).(!empty($slugOptions['shop_url_anchor'])?'#'.$slugOptions['shop_url_anchor']:"");
+			} else {
+				$url = add_query_arg(array('pagesp' => $paged + 1), $myPermalink).(!empty($slugOptions['shop_url_anchor'])?'#'.$slugOptions['shop_url_anchor']:"");
 			}
 			return $url;
 		}
@@ -2767,5 +2756,40 @@ if (!class_exists('WP_Spreadplugin')) {
 	
 	new WP_Spreadplugin();
 }
+
+
+// Widget
+class SpreadpluginBasketWidget extends WP_Widget {
+	private $stringTextdomain = 'spreadplugin';
+	function __construct(){
+		// Instantiate the parent object
+		parent::__construct(
+			'spreadplugin_basket_widget',
+			__('Spreadplugin Basket', $stringTextdomain),
+			array('description' => __('Widget to display basket contents everywhere', $stringTextdomain) )
+		);
+
+	}
+	function widget($args, $instance){
+		load_plugin_textdomain($this->stringTextdomain, false, dirname(plugin_basename(__FILE__)) . '/translation');
+		
+		$output = '<div class="spreadplugin-checkout"><span></span> <a class="spreadplugin-checkout-link' . (WP_Spreadplugin::$shopOptions['shop_basket_text_icon'] == 1 ? ' button' : '') . '">' . (WP_Spreadplugin::$shopOptions['shop_basket_text_icon'] == 0 ? __('Basket', $this->stringTextdomain) : '') . '</a></div>
+<div id="spreadplugin-widget-cart" class="spreadplugin-cart"></div>';
+		
+		echo $output;
+	}
+	function update($new_instance, $old_instance){
+		// Save widget options
+	}
+	function form($instance){
+		// Output admin widget options form
+	}
+}
+
+function register_SpreadpluginBasketWidget() {
+    register_widget('SpreadpluginBasketWidget');
+}
+add_action('widgets_init', 'register_SpreadpluginBasketWidget');
+
 
 ?>

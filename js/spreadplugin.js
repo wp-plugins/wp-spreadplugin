@@ -2,7 +2,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.9.7
+ * Version: 3.9.7.1
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -15,6 +15,7 @@ jQuery(function($) {
 	var prod = getParameterByName('productCategory');
 	var prod2 = getParameterByName('productSubCategory');
 	var sor = getParameterByName('articleSortBy');
+	var paged = getParameterByName('pagesp');
 	var infiniteItemSel = '.spreadplugin-article';
 	var appearance = '';
 	var view = '';
@@ -440,16 +441,29 @@ jQuery(function($) {
 
 	$('#spreadplugin-items #productCategory').change(function() {
 				prod = $(this).val();
-				document.location = ajax_object.pageLink + sep + 'productCategory=' + prod + '&articleSortBy=' + sor;
+				if (ajax_object.prettyUrl==1) {
+					//document.location = ajax_object.pageLink + 'pagesp/' + (paged!=''?paged + '/' : '') + 'productCategory/' + (prod!=''?prod + '/':'') + 'productSubCategory/' + (prod2!=''?prod2 + '/' : '') + 'articleSortBy/' + (sor!=''?sor + '/':'');
+					document.location = ajax_object.pageLink + (paged?'pagesp/' + paged + '/' : '') + 'productCategory/' + prod;
+				} else {
+					document.location = ajax_object.pageLink + sep + 'pagesp=' + paged + '&productCategory=' + prod + '&productSubCategory=' + prod2 + '&articleSortBy=' + sor;
+				}
 			});
 	$('#spreadplugin-items #productSubCategory').change(function() {
 				prod2 = $(this).val();
-				document.location = ajax_object.pageLink + sep + 'productCategory=' + prod + '&productSubCategory=' + prod2 + '&articleSortBy=' + sor;
+				if (ajax_object.prettyUrl==1) {
+					document.location = ajax_object.pageLink + (paged?'pagesp/' + paged + '/' : '') + 'productCategory/' + prod + '/productSubCategory/' + prod2;
+				} else {
+					document.location = ajax_object.pageLink + sep + 'pagesp=' + paged + '&productCategory=' + prod + '&productSubCategory=' + prod2 + '&articleSortBy=' + sor;
+				}
 			});
 
 	$('#spreadplugin-items #articleSortBy').change(function() {
 				sor = $(this).val();
-				document.location = ajax_object.pageLink + sep + 'productCategory=' + prod + '&productSubCategory=' + prod2 + '&articleSortBy=' + sor;
+				if (ajax_object.prettyUrl==1) {
+					document.location = ajax_object.pageLink + (paged?'pagesp/' + paged + '/' : '') + 'productCategory/' + prod + '/productSubCategory/' + prod2 + '/articleSortBy/' + sor + '/';
+				} else {
+					document.location = ajax_object.pageLink + sep + 'pagesp=' + paged + '&productCategory=' + prod + '&productSubCategory=' + prod2 + '&articleSortBy=' + sor;
+				}
 			});
 
 

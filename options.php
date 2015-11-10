@@ -18,6 +18,8 @@ if (is_user_logged_in() && is_admin()) {
 	
 	$adminOptions = $this->getAdminOptions();
 	
+	$this->registerRewriteRules();
+	
 
 ?>
 <style>
@@ -160,13 +162,13 @@ if (is_user_logged_in() && is_admin()) {
                   <br />
                   <input type="radio" name="shop_designer" value="1"<?php echo ($adminOptions['shop_designer']==1||$adminOptions['shop_designer']==2?" checked":"") ?> />
                   <?php _e('Designer (Spreadshirt Tablomat)','spreadplugin'); ?>
-                  <div id="premium-shop-span"> <br />
+                  <br />
                     <br />
                     <?php _e('Designer Shop Id','spreadplugin'); ?>
                     <input type="text" name="shop_designershop" value="<?php echo $adminOptions['shop_designershop']; ?>" class="only-digit" />
                     <br />
                     <?php _e('If you have a Designer Shop at Spreadshirt then enter its ID here to only show the designs of your Designer Shop, otherwise all Spreadshirt Marketplace designs are shown.','spreadplugin'); ?>
-                  </div></td>
+                  </td>
               </tr>
               <tr>
                 <td valign="top"><?php _e('Default display:','spreadplugin'); ?></td>
@@ -324,11 +326,11 @@ if (is_user_logged_in() && is_admin()) {
               </tr>
               <tr>
                 <td valign="top"><?php _e('Anchor:','spreadplugin'); ?></td>
-                <td>#<input type="text" name="shop_url_anchor" value="<?php echo (empty($adminOptions['shop_url_anchor'])?"":$adminOptions['shop_url_anchor']); ?>" /><br />
+                <td>#<input type="text" name="shop_url_anchor" placeholder="<?php _e('splshop or similar','spreadplugin'); ?>" value="<?php echo (empty($adminOptions['shop_url_anchor'])?"":$adminOptions['shop_url_anchor']); ?>" /><br />
 <br />
-<?php _e('If you are using one page themes or want to specify an anchor to add with url, enter it here.','spreadplugin'); ?></td>
+<?php _e('If you are using one page themes or want to specify an anchor to add with url, enter it here. Please avoid using the same anchor name as in your menu - some themes are blocking it.','spreadplugin'); ?></td>
               </tr>
-            </table>
+            </table><!-- shop_url_productdetail_slug => input hidden feature - edit only if you know what you're doing / disable and enlable plugin if value changed --><input type="hidden" name="shop_url_productdetail_slug" value="<?php echo (empty($adminOptions['shop_url_productdetail_slug'])?"splproduct":$adminOptions['shop_url_productdetail_slug']); ?>" />
             <input type="submit" name="update-splg_options" id="update-splg_options" class="button-primary" value="<?php _e('Update settings','spreadplugin'); ?>" />
           </form>
         </div>
@@ -514,18 +516,6 @@ jQuery('#shop_locale').change(function() {
 		jQuery('#shop_source').val('net');
 	}
 });
-jQuery('#premium-shop-span').hide();	
-jQuery('input[type=radio][name=shop_designer]').click(function() {
-	jQuery('#premium-shop-span').hide();
-});
-jQuery('input[type=radio][name=shop_designer][value=2]').not(':selected').click(function() {
-	jQuery('#premium-shop-span').show();
-});
-
-if (jQuery('#premium-shop-span input').val().length >0) {
-	jQuery('#premium-shop-span').show();
-}
-
 
 // bind to the form's submit event
 jQuery('#splg_options_form').submit(function() {
