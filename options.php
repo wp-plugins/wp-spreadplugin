@@ -138,7 +138,7 @@ if (is_user_logged_in() && is_admin()) {
                   </select></td>
               </tr>
               <tr>
-                <td valign="top"><?php _e('Target of links:','spreadplugin'); ?></td>
+                <td valign="top"><?php _e('Target of checkout links:','spreadplugin'); ?></td>
                 <td><?php _e('Enter the name of your target iframe or frame, if available. Default is _blank (new window).','spreadplugin'); ?>
                   <br />
                   <br />
