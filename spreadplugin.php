@@ -1803,6 +1803,7 @@ if (!class_exists('WP_Spreadplugin')) {
 
 		}
 		public function enqueueAdminJs(){
+			wp_enqueue_style('wp-color-picker');
 			wp_enqueue_script('wp-color-picker');
 		}
 		public function startSession(){
