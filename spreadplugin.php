@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.9.7.2
+ * Version: 3.9.7.3
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -16,6 +16,7 @@ if (!class_exists('WP_Spreadplugin')) {
 	class WP_Spreadplugin {
 		private $stringTextdomain = 'spreadplugin';
 		public static $shopOptions;
+		private static $worksWithLocale = true;
 		public static $shopArticleSortOptions = array (
 				'name',
 				'price',
@@ -646,43 +647,12 @@ if (!class_exists('WP_Spreadplugin')) {
 			$apiUrlBase .= (!empty(self::$shopOptions['shop_category']) ? '/articleCategories/' . self::$shopOptions['shop_category'] : '');
 			$apiUrlBase .= '/articles';
 			$apiUrlBase .= (!empty(self::$shopOptions['shop_article']) ? '/' . intval(self::$shopOptions['shop_article']) : '');
-			$apiUrlBase .= '?' . 'fullData=true&noCache=true'; // removed, because not needed anymore -  . (!empty(self::$shopOptions['shop_locale']) ? 'locale=' . self::$shopOptions['shop_locale'] . '&' : '')
+			$apiUrlBase .= '?' . 'fullData=true&noCache=true';
 			
 			// call first to get count of articles
 			$apiUrl = $apiUrlBase . '&limit=' . self::$shopOptions['shop_max_quantity_articles'];
-			
-			$stringXmlShopBase = wp_remote_get($apiUrl, array (
-					'timeout' => 120 
-			));
-			if (isset($stringXmlShopBase->errors) && count($stringXmlShopBase->errors) > 0) {
-				if (self::$shopOptions['shop_debug'] == 1) {
-					echo '<br>Base read error: <br>';
-					print_r($stringXmlShopBase->errors);
-				}
-				die('Error getting articles. Please check Shop-ID, API and secret.');
-			}
-			if ($stringXmlShopBase['body'][0] != '<')
-				die($stringXmlShopBase['body']);
-			$stringXmlShopBase = wp_remote_retrieve_body($stringXmlShopBase);
-			// Quickfix for Namespace changes of Spreadshirt API
-			$stringXmlShopBase = str_replace('<ns3:', '<', $stringXmlShopBase);
-			
-			// Quick (dirty) Workaround for Single Article using shop_article
-			if (!empty(self::$shopOptions['shop_article'])) {
-				$stringXmlShopBase = str_replace('<article ', '<articles><article ', str_replace('</article>', '</article></articles>', $stringXmlShopBase));
-			}
-			
-			// Interprete XML
-			$objArticlesBase = new SimpleXmlElement($stringXmlShopBase);
-			if (!is_object($objArticlesBase)) {
-				if (self::$shopOptions['shop_debug'] == 1) {
-					echo '<br>Base articles error: <br>';
-					print_r($objArticlesBase);
-				}
-				
-				die('Articles not loaded');
-			}
-			
+			$objArticlesBase = $this->runTestApiUrlWithLocaleReturnObject($apiUrl,true);
+						
 			return $objArticlesBase;
 		}
 		
@@ -694,14 +664,8 @@ if (!class_exists('WP_Spreadplugin')) {
 			$arrTypes = array ();
 			
 			// Get ProductTypeDepartments
-			$stringTypeApiUrl = 'http://api.spreadshirt.' . self::$shopOptions['shop_source'] . '/api/v1/shops/' . self::$shopOptions['shop_id'] . '/productTypeDepartments?locale=' . (empty(self::$shopOptions['shop_language'])?get_locale():self::$shopOptions['shop_language']) . '&fullData=true&noCache=true';
-			$stringTypeXml = wp_remote_get($stringTypeApiUrl, array (
-					'timeout' => 120 
-			));
-			$stringTypeXml = wp_remote_retrieve_body($stringTypeXml);
-			// Quickfix for Namespace changes of Spreadshirt API
-			$stringTypeXml = str_replace('<ns3:', '<', $stringTypeXml);
-			$objTypes = new SimpleXmlElement($stringTypeXml);
+			$stringTypeApiUrl = 'http://api.spreadshirt.' . self::$shopOptions['shop_source'] . '/api/v1/shops/' . self::$shopOptions['shop_id'] . '/productTypeDepartments?fullData=true&noCache=true';
+			$objTypes = $this->runTestApiUrlWithLocaleReturnObject($stringTypeApiUrl);
 			
 			if (is_object($objTypes)) {
 				foreach ($objTypes->productTypeDepartment as $row) {
@@ -719,6 +683,61 @@ if (!class_exists('WP_Spreadplugin')) {
 			return $arrTypes;
 		}
 		
+		
+		private function runTestApiUrlWithLocaleReturnObject($url,$singleArticleWa = false) {
+			$objTypes = "";
+			
+			if (self::$worksWithLocale == true) {
+				
+				$testUrl = $url.(strpos($url,'&') === false?'?':'&').'locale=' . (empty(self::$shopOptions['shop_language'])?get_locale():self::$shopOptions['shop_language']);
+				
+				if (self::$shopOptions['shop_debug'] == 1) {
+					echo "try url $testUrl <br>";
+				}
+				
+				$stringTypeXml = wp_remote_get($testUrl, array('timeout' => 120));
+				$stringTypeXml = wp_remote_retrieve_body($stringTypeXml);
+				// Quickfix for Namespace changes of Spreadshirt API
+				$stringTypeXml = str_replace('<ns3:', '<', $stringTypeXml);
+				
+				// Quick (dirty) Workaround for Single Article using shop_article
+				if (!empty(self::$shopOptions['shop_article']) && $singleArticleWa) {
+					$stringTypeXml = str_replace('<article ', '<articles><article ', str_replace('</article>', '</article></articles>', $stringTypeXml));
+				}
+	
+				$objTypes = new SimpleXmlElement($stringTypeXml);
+			}
+			
+			if (empty($objTypes) || @$objTypes->count == 0) {
+				
+				if (self::$shopOptions['shop_debug'] == 1) {
+					echo "failed url, try $url <br>";
+				}
+
+				$stringTypeXml = wp_remote_get($url, array (
+						'timeout' => 120 
+				));
+				$stringTypeXml = wp_remote_retrieve_body($stringTypeXml);
+				// Quickfix for Namespace changes of Spreadshirt API
+				$stringTypeXml = str_replace('<ns3:', '<', $stringTypeXml);
+				
+				if (substr($stringTypeXml, 0, 5) != "<?xml") return 'Error fetching URL: ' . $testUrl;
+
+				// Quick (dirty) Workaround for Single Article using shop_article
+				if (!empty(self::$shopOptions['shop_article']) && $singleArticleWa === true) {
+					$stringTypeXml = str_replace('<article ', '<articles><article ', str_replace('</article>', '</article></articles>', $stringTypeXml));
+				}
+
+				$objTypes = new SimpleXmlElement($stringTypeXml);
+				
+				self::$worksWithLocale=false;
+			}
+
+			return $objTypes;
+		}
+		
+		
+		
 		/**
 		 * function getShipmentData
 		 * Retrieves types data
@@ -729,14 +748,8 @@ if (!class_exists('WP_Spreadplugin')) {
 			$region = '';
 			
 			// Get ProductTypeDepartments
-			$stringTypeApiUrl = 'http://api.spreadshirt.' . self::$shopOptions['shop_source'] . '/api/v1/shops/' . self::$shopOptions['shop_id'] . '/shippingTypes?locale=' . (empty(self::$shopOptions['shop_language'])?get_locale():self::$shopOptions['shop_language']) . '&fullData=true&noCache=true';
-			$stringTypeXml = wp_remote_get($stringTypeApiUrl, array (
-					'timeout' => 120 
-			));
-			$stringTypeXml = wp_remote_retrieve_body($stringTypeXml);
-			// Quickfix for Namespace changes of Spreadshirt API
-			$stringTypeXml = str_replace('<ns3:', '<', $stringTypeXml);
-			$objTypes = new SimpleXmlElement($stringTypeXml);
+			$stringTypeApiUrl = 'http://api.spreadshirt.' . self::$shopOptions['shop_source'] . '/api/v1/shops/' . self::$shopOptions['shop_id'] . '/shippingTypes?fullData=true&noCache=true';
+			$objTypes = $this->runTestApiUrlWithLocaleReturnObject($stringTypeApiUrl);
 			
 			$countryCode = explode("_", (empty(self::$shopOptions['shop_language'])?get_locale():self::$shopOptions['shop_language']));
 			
@@ -796,67 +809,28 @@ if (!class_exists('WP_Spreadplugin')) {
 			$objProductData = array ();
 			
 			$apiUrlBase = 'http://api.spreadshirt.' . self::$shopOptions['shop_source'] . '/api/v1/shops/' . self::$shopOptions['shop_id'];
-			$apiUrlBase .= '/articles/' . $articleId . '?' . 'fullData=true&noCache=true'; // . (!empty(self::$shopOptions['shop_locale']) ? 'locale=' . self::$shopOptions['shop_locale'] . '&' : '')
-			
-			$apiUrl = $apiUrlBase;
-			
-			$stringXmlShop = wp_remote_get($apiUrl, array (
-					'timeout' => 120 
-			));
-			if ($stringXmlShop['body'][0] != '<')
-				return 'Body error: ' . $stringXmlShop['body'];
-			$stringXmlShop = wp_remote_retrieve_body($stringXmlShop);
-			// Quickfix for Namespace changes of Spreadshirt API
-			$stringXmlShop = str_replace('<ns3:', '<', $stringXmlShop);
-			
-			if (substr($stringXmlShop, 0, 5) != "<?xml" && substr($stringXmlShop, 0, 5) != "<arti") {
-				return 'Error fetching URL: ' . $apiUrl;
-			}
-			
-			$article = new SimpleXmlElement($stringXmlShop);
+			$apiUrlBase .= '/articles/' . $articleId . '?' . 'fullData=true&noCache=true';
+			$article = $this->runTestApiUrlWithLocaleReturnObject($apiUrlBase);
+
 			if (!is_object($article))
 				return 'Article empty (object)';
 			
 			if ((int)$article['id'] > 0) {
-				
-				$url = wp_remote_get((string)$article->product->productType->attributes('http://www.w3.org/1999/xlink') . '?locale=' . (empty(self::$shopOptions['shop_language'])?get_locale():self::$shopOptions['shop_language']) . '&noCache=true', array (
-						'timeout' => 120 
-				));
-				$stringXmlArticle = wp_remote_retrieve_body($url);
-				// Quickfix for Namespace changes of Spreadshirt API
-				$stringXmlArticle = str_replace('<ns3:', '<', $stringXmlArticle);
-				
-				if (substr($stringXmlArticle, 0, 5) == "<?xml" && substr($stringXmlShop, 0, 5) != "<prod") {
-					$objArticleData = new SimpleXmlElement($stringXmlArticle);
-				}
-				
-				$url = wp_remote_get((string)$article->price->currency->attributes('http://www.w3.org/1999/xlink'));
-				$stringXmlCurreny = wp_remote_retrieve_body($url);
-				if (substr($stringXmlCurreny, 0, 5) == "<?xml" || substr($stringXmlCurreny, 0, 5) == "<curr") {
-					// Quickfix for Namespace changes of Spreadshirt API
-					$stringXmlCurreny = str_replace('<ns3:', '<', $stringXmlCurreny);
-					$objCurrencyData = new SimpleXmlElement($stringXmlCurreny);
-				}
-				
-				$url = wp_remote_get((string)$article->product->attributes('http://www.w3.org/1999/xlink') . '?locale=' . (empty(self::$shopOptions['shop_language'])?get_locale():self::$shopOptions['shop_language']) . '&noCache=true', array (
-						'timeout' => 120 
-				));
-				$stringXmlProduct = wp_remote_retrieve_body($url);
-				if (substr($stringXmlProduct, 0, 5) == "<?xml" || substr($stringXmlProduct, 0, 5) == "<prod") {
-					$objProductData = new SimpleXmlElement($stringXmlProduct);
-				}
+							
+				$url = (string)$article->product->productType->attributes('http://www.w3.org/1999/xlink') . '?noCache=true';
+				$objArticleData = $this->runTestApiUrlWithLocaleReturnObject($url);
+
+				$url = (string)$article->price->currency->attributes('http://www.w3.org/1999/xlink');
+				$objCurrencyData = $this->runTestApiUrlWithLocaleReturnObject($url);
+
+				$url = (string)$article->product->attributes('http://www.w3.org/1999/xlink') . '?noCache=true';
+				$objProductData = $this->runTestApiUrlWithLocaleReturnObject($url);
+			
 				
 				if (is_object($objProductData)) {
 					if (!empty($objProductData->configurations->configuration->printType)) {
-						$url = wp_remote_get((string)$objProductData->configurations->configuration->printType->attributes('http://www.w3.org/1999/xlink') . '?locale=' . (empty(self::$shopOptions['shop_language'])?get_locale():self::$shopOptions['shop_language']) . '&noCache=true', array (
-								'timeout' => 120 
-						));
-						$stringXmlPrint = wp_remote_retrieve_body($url);
-						if (substr($stringXmlPrint, 0, 5) == "<?xml" || substr($stringXmlPrint, 0, 5) == "<prin") {
-							// Quickfix for Namespace changes of Spreadshirt API
-							$stringXmlPrint = str_replace('<ns3:', '<', $stringXmlPrint);
-							$objPrintData = new SimpleXmlElement($stringXmlPrint);
-						}
+						$url = (string)$objProductData->configurations->configuration->printType->attributes('http://www.w3.org/1999/xlink') . '?noCache=true';
+						$objPrintData = $this->runTestApiUrlWithLocaleReturnObject($url);
 					}
 				}
 				
@@ -995,7 +969,7 @@ if (!class_exists('WP_Spreadplugin')) {
 			$arrTypes = array ();
 			$apiUrlBase = 'http://api.spreadshirt.' . self::$shopOptions['shop_source'] . '/api/v1/shops/' . self::$shopOptions['shop_id'];
 			// $apiUrlBase .= (!empty(self::$shopOptions['shop_category'])?'/articleCategories/'.self::$shopOptions['shop_category']:'');
-			$apiUrlBase .= '/designs?fullData=true&noCache=true'; // ' . (!empty(self::$shopOptions['shop_locale']) ? 'locale=' . self::$shopOptions['shop_locale'] . '&' : '') . '
+			$apiUrlBase .= '/designs?fullData=true&noCache=true';
 			
 			// call first to get count of articles
 			$apiUrl = $apiUrlBase . '&limit=' . rand(2, 999); // randomize to avoid spreadshirt caching issues
@@ -2770,8 +2744,8 @@ class SpreadpluginBasketWidget extends WP_Widget {
 		// Instantiate the parent object
 		parent::__construct(
 			'spreadplugin_basket_widget',
-			__('Spreadplugin Basket', $stringTextdomain),
-			array('description' => __('Widget to display basket contents everywhere', $stringTextdomain) )
+			__('Spreadplugin Basket', $this->stringTextdomain),
+			array('description' => __('Widget to display basket contents everywhere', $this->stringTextdomain) )
 		);
 
 	}
