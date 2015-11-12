@@ -687,6 +687,8 @@ if (!class_exists('WP_Spreadplugin')) {
 		private function runTestApiUrlWithLocaleReturnObject($url,$singleArticleWa = false) {
 			$objTypes = "";
 			
+			$this->reparseShortcodeData(get_query_var('pageid') ? intval(get_query_var('pageid')) : null);
+			
 			if (self::$worksWithLocale == true) {
 				
 				$testUrl = $url.(strpos($url,'&') === false?'?':'&').'locale=' . (empty(self::$shopOptions['shop_language'])?get_locale():self::$shopOptions['shop_language']);
@@ -700,6 +702,8 @@ if (!class_exists('WP_Spreadplugin')) {
 				// Quickfix for Namespace changes of Spreadshirt API
 				$stringTypeXml = str_replace('<ns3:', '<', $stringTypeXml);
 				
+				if (substr($stringTypeXml, 0, 5) != "<?xml") return 'Error fetching URL: ' . $testUrl;
+
 				// Quick (dirty) Workaround for Single Article using shop_article
 				if (!empty(self::$shopOptions['shop_article']) && $singleArticleWa) {
 					$stringTypeXml = str_replace('<article ', '<articles><article ', str_replace('</article>', '</article></articles>', $stringTypeXml));
