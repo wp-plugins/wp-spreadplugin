@@ -11,7 +11,7 @@ var ajax_object;
 
 jQuery(function($) {
 
-	var sep = '?';
+	//var sep = '?';
 	var prod = getParameterByName('productCategory');
 	var prod2 = getParameterByName('productSubCategory');
 	var sor = getParameterByName('articleSortBy');
@@ -26,9 +26,9 @@ jQuery(function($) {
 		infiniteItemSel = '.spreadplugin-designs';
 	}
 
-	if (ajax_object.pageLink.indexOf('?') > -1) {
+	/*if (ajax_object.pageLink.indexOf('?') > -1) {
 		sep = '&';
-	}
+	}*/
 	
 	
 	$('.spreadplugin-cart').hide();
@@ -439,6 +439,7 @@ jQuery(function($) {
 		});
 	}
 
+/*
 	$('#spreadplugin-items #productCategory').change(function() {
 				prod = $(this).val();
 				if (ajax_object.prettyUrl==1) {
@@ -466,7 +467,7 @@ jQuery(function($) {
 				}
 			});
 
-
+*/
 	$('.spreadplugin-checkout-link').click(function(e) {
 		e.preventDefault();
 		
