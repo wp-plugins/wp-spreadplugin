@@ -2701,7 +2701,7 @@ if (!class_exists('WP_Spreadplugin')) {
 			
 			if (get_option('permalink_structure') != '') {
 				// using pretty permalinks, append to url
-				$url = user_trailingslashit(get_permalink() . $slugOptions['shop_url_productdetail_slug'].'/'.$id).(!empty($slugOptions['shop_url_anchor'])?'#'.$slugOptions['shop_url_anchor']:"");
+				$url = user_trailingslashit(get_permalink() . (substr(get_permalink(),-1) != '/'?'/':'') . $slugOptions['shop_url_productdetail_slug'].'/'.$id).(!empty($slugOptions['shop_url_anchor'])?'#'.$slugOptions['shop_url_anchor']:"");
 			} else {
 				$url = add_query_arg($slugOptions['shop_url_productdetail_slug'], $id, $myPermalink).(!empty($slugOptions['shop_url_anchor'])?'#'.$slugOptions['shop_url_anchor']:"");
 			}
@@ -2715,7 +2715,7 @@ if (!class_exists('WP_Spreadplugin')) {
 			
 			if (get_option('permalink_structure') != '') {
 				// using pretty permalinks, append to url
-				$url = user_trailingslashit(get_permalink() . 'pagesp/' . ($paged + 1)).(!empty($slugOptions['shop_url_anchor'])?'#'.$slugOptions['shop_url_anchor']:"");
+				$url = user_trailingslashit(get_permalink() . (substr(get_permalink(),-1) != '/'?'/':'') . 'pagesp/' . ($paged + 1)).(!empty($slugOptions['shop_url_anchor'])?'#'.$slugOptions['shop_url_anchor']:"");
 			} else {
 				$url = add_query_arg(array('pagesp' => $paged + 1), $myPermalink).(!empty($slugOptions['shop_url_anchor'])?'#'.$slugOptions['shop_url_anchor']:"");
 			}
