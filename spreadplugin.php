@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.9.7.3
+ * Version: 3.9.7.4
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -2593,12 +2593,46 @@ if (!class_exists('WP_Spreadplugin')) {
 			if (!empty($_langCode)) {
 				if (strpos($url,'spreadshirt.com') === false) {
 					
-					if ($_langCode == "en" && $_langCodeArr[1] == "GB") {
-						$langUrl = "spreadshirt.co.uk";
-					} elseif ($_langCode == "nb") {
-						$langUrl = "spreadshirt.no";
+					switch($_langCode) {						
+						case 'en':
+							$langUrl = "spreadshirt.co.uk";
+							break;
+						case 'nb':
+							$langUrl = "spreadshirt.no";
+							break;
+						case 'fr':
+							$langUrl = "spreadshirt.fr";
+							break;
+						case 'de':
+							$langUrl = "spreadshirt.de";
+							break;
+						case 'nl':
+							$langUrl = "spreadshirt.nl";
+							break;
+						case 'fi':
+							$langUrl = "spreadshirt.fi";
+							break;
+						case 'es':
+							$langUrl = "spreadshirt.es";
+							break;
+						case 'it':
+							$langUrl = "spreadshirt.it";
+							break;
+						case 'nn':
+							$langUrl = "spreadshirt.no";
+							break;
+						case 'pl':
+							$langUrl = "spreadshirt.pl";
+							break;
+						case 'pt':
+							break;
+						case 'pl':
+							break;
+						case 'be':
+							$langUrl = "spreadshirt.be";
+							break;
 					}
-					
+															
 				} else {					
 					if ($_langCodeArr[1] == "CA") {
 						$langUrl = "spreadshirt.ca";
