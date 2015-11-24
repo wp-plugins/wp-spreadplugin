@@ -201,7 +201,7 @@ Please have a look here: http://themeforest.net/category/wordpress?ref=thimo
 == Known Bugs ==
 
 * Filters and sorting disabled, but will return.
-* Having problems with wrong url for checkout, let me know please.
+* When having problems with wrong url for checkout, let me know please.
 
 == Changelog ==
 
