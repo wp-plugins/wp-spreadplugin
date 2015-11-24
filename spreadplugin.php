@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.9.7.4
+ * Version: 3.9.7.5
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -689,8 +689,13 @@ if (!class_exists('WP_Spreadplugin')) {
 			
 			$this->reparseShortcodeData(get_query_var('pageid') ? intval(get_query_var('pageid')) : null);
 			
+			/*
+			* Run test with locale if previous test was successfull
+			*
+			* 2015-11-24 always run test with locale - state not changed anymore. See below
+			*/
 			if (self::$worksWithLocale == true) {
-				
+				 
 				$testUrl = $url.(strpos($url,'&') === false?'?':'&').'locale=' . (empty(self::$shopOptions['shop_language'])?get_locale():self::$shopOptions['shop_language']);
 				
 				if (self::$shopOptions['shop_debug'] == 1) {
@@ -703,7 +708,7 @@ if (!class_exists('WP_Spreadplugin')) {
 				$stringTypeXml = str_replace('<ns3:', '<', $stringTypeXml);
 				
 				if (substr($stringTypeXml, 0, 5) != "<?xml") return 'Error fetching URL: ' . $testUrl;
-
+	
 				// Quick (dirty) Workaround for Single Article using shop_article
 				if (!empty(self::$shopOptions['shop_article']) && $singleArticleWa) {
 					$stringTypeXml = str_replace('<article ', '<articles><article ', str_replace('</article>', '</article></articles>', $stringTypeXml));
@@ -712,6 +717,7 @@ if (!class_exists('WP_Spreadplugin')) {
 				$objTypes = new SimpleXmlElement($stringTypeXml);
 			}
 			
+			// Run test without locale / fallback
 			if (empty($objTypes) || @$objTypes->count == 0) {
 				
 				if (self::$shopOptions['shop_debug'] == 1) {
@@ -734,7 +740,12 @@ if (!class_exists('WP_Spreadplugin')) {
 
 				$objTypes = new SimpleXmlElement($stringTypeXml);
 				
-				self::$worksWithLocale=false;
+				/* 
+				* Save test state
+				* 2015-11-24 disabled, always run test with locale
+				
+				self::$worksWithLocale = false;
+				*/
 			}
 
 			return $objTypes;
