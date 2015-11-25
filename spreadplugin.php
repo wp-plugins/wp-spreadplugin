@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.9.7.5
+ * Version: 3.9.7.6
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -927,10 +927,10 @@ if (!class_exists('WP_Spreadplugin')) {
 					foreach ($objArticleData->resources as $val) {
 						foreach ($val->resource as $vr) {
 							if ($vr['type'] == 'size') {
-								$articleData['product-resource-size'] = (string)$vr->attributes('http://www.w3.org/1999/xlink');
+								$articleData['product-resource-size'] = self::getRidOfHttp((string)$vr->attributes('http://www.w3.org/1999/xlink'));
 							}
 							if ($vr['type'] == 'detail') {
-								$articleData['product-resource-detail'] = (string)$vr->attributes('http://www.w3.org/1999/xlink');
+								$articleData['product-resource-detail'] = self::getRidOfHttp((string)$vr->attributes('http://www.w3.org/1999/xlink'));
 							}
 						}
 					}
@@ -943,7 +943,7 @@ if (!class_exists('WP_Spreadplugin')) {
 						}
 						
 						if ($article->product->restrictions->freeColorSelection == 'true' || (int)$article->product->appearance['id'] == (int)$appearance['id']) {
-							$articleData['appearances'][(int)$appearance['id']] = (string)$appearance->resources->resource->attributes('http://www.w3.org/1999/xlink');
+							$articleData['appearances'][(int)$appearance['id']] = self::getRidOfHttp((string)$appearance->resources->resource->attributes('http://www.w3.org/1999/xlink'));
 						}
 					}
 				}
@@ -951,7 +951,7 @@ if (!class_exists('WP_Spreadplugin')) {
 				
 				if (!empty($objArticleData->views->view)) {
 					foreach ($objArticleData->views->view as $view) {
-						$articleData['views'][(int)$view['id']] = (string)$article->resources->resource->attributes('http://www.w3.org/1999/xlink');
+						$articleData['views'][(int)$view['id']] = self::getRidOfHttp((string)$article->resources->resource->attributes('http://www.w3.org/1999/xlink'));
 					}
 				}
 				
@@ -1036,8 +1036,8 @@ if (!class_exists('WP_Spreadplugin')) {
 					$articleData[(int)$article['id']]['pricenet'] = (float)$article->price->vatExcluded;
 					$articleData[(int)$article['id']]['pricebrut'] = (float)$article->price->vatIncluded;
 					// $articleData[(int)$article['id']]['currencycode']=(string)$objCurrencyData->isoCode; // @TODO Check
-					$articleData[(int)$article['id']]['resource0'] = (string)$article->resources->resource[0]->attributes('http://www.w3.org/1999/xlink');
-					$articleData[(int)$article['id']]['resource2'] = (string)$article->resources->resource[1]->attributes('http://www.w3.org/1999/xlink');
+					$articleData[(int)$article['id']]['resource0'] = self::getRidOfHttp((string)$article->resources->resource[0]->attributes('http://www.w3.org/1999/xlink'));
+					$articleData[(int)$article['id']]['resource2'] = self::getRidOfHttp((string)$article->resources->resource[1]->attributes('http://www.w3.org/1999/xlink'));
 					// $articleData[(int)$article['id']]['productdescription']=(string)$objArticleData->description;
 					$articleData[(int)$article['id']]['weight'] = (float)$article['weight'];
 					$articleData[(int)$article['id']]['place'] = $i;
@@ -2779,6 +2779,10 @@ if (!class_exists('WP_Spreadplugin')) {
 			}
 			
 			return $myPermalink;	
+		}
+		
+		private static function getRidOfHttp($s) {
+			return str_replace("http://","//",$s);
 		}
 		
 	} // END class WP_Spreadplugin

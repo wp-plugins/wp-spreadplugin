@@ -5,7 +5,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: spreadshirt,wordpress,plugin,shop,store,shirt,t-shirt,integration,online store,online shop
 Requires at least: 3.3
 Tested up to: 4.3
-Stable tag: 3.9.7.5
+Stable tag: 3.9.7.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -204,6 +204,9 @@ Please have a look here: http://themeforest.net/category/wordpress?ref=thimo
 * When having problems with wrong url for checkout, let me know please.
 
 == Changelog ==
+
+= 3.9.7.6 =
+* SSL restrictions removed
 
 = 3.9.7.2 =
 * Checkout fixes
