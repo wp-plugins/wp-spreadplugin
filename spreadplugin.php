@@ -1105,7 +1105,7 @@ if (!class_exists('WP_Spreadplugin')) {
 				$output .= '<div class="color-wrapper spreadplugin-clearfix"><span>' . __('Color', $this->stringTextdomain) . ':</span> <ul class="colors" name="color">';
 				
 				foreach ($article['appearances'] as $k => $v) {
-					$output .= '<li value="' . $k . '"><img src="' . $this->cleanURL($v) . '" alt="" /></li>';
+					$output .= '<li value="' . $k . '"><img src="' . $v . '" alt="" /></li>';
 				}
 				
 				$output .= '</ul></div>';
@@ -1119,12 +1119,12 @@ if (!class_exists('WP_Spreadplugin')) {
 				foreach ($article['views'] as $k => $v) {
 					
 					if (self::$shopOptions['shop_lazyload'] == 0) {
-						$liSrc = $this->cleanURL($v) . ',viewId=' . $k . ',width=42,height=42';
+						$liSrc = $v . ',viewId=' . $k . ',width=42,height=42';
 					} else {
 						$liSrc = plugins_url('/img/blank.gif', __FILE__);
 					}
 					
-					$output .= '<li value="' . $k . '"><img src="' . $liSrc . '" data-original="' . $this->cleanURL($v) . ',viewId=' . $k . ',width=42,height=42" class="previewview lazyimg" alt="" id="viewimg_' . $id . '" /></li>';
+					$output .= '<li value="' . $k . '"><img src="' . $liSrc . '" data-original="' . $v . ',viewId=' . $k . ',width=42,height=42" class="previewview lazyimg" alt="" id="viewimg_' . $id . '" /></li>';
 					if ($_vc == 3)
 						break;
 					$_vc++;
@@ -1274,7 +1274,7 @@ if (!class_exists('WP_Spreadplugin')) {
 				$output .= '<div class="color-wrapper spreadplugin-clearfix"><span>' . __('Color', $this->stringTextdomain) . ':</span> <ul class="colors" name="color">';
 				
 				foreach ($article['appearances'] as $k => $v) {
-					$output .= '<li value="' . $k . '"><img src="' . $this->cleanURL($v) . '" alt="" /></li>';
+					$output .= '<li value="' . $k . '"><img src="' . $v . '" alt="" /></li>';
 				}
 				
 				$output .= '</ul></div>';
@@ -1288,12 +1288,12 @@ if (!class_exists('WP_Spreadplugin')) {
 				foreach ($article['views'] as $k => $v) {
 					
 					if (self::$shopOptions['shop_lazyload'] == 0) {
-						$liSrc = $this->cleanURL($v) . ',viewId=' . $k . ',width=42,height=42';
+						$liSrc = $v . ',viewId=' . $k . ',width=42,height=42';
 					} else {
 						$liSrc = plugins_url('/img/blank.gif', __FILE__);
 					}
 					
-					$output .= '<li value="' . $k . '"><img src="' . $liSrc . '" data-original="' . $this->cleanURL($v) . ',viewId=' . $k . ',width=42,height=42" class="previewview lazyimg" alt="" id="viewimg_' . $id . '" /></li>';
+					$output .= '<li value="' . $k . '"><img src="' . $liSrc . '" data-original="' . $v . ',viewId=' . $k . ',width=42,height=42" class="previewview lazyimg" alt="" id="viewimg_' . $id . '" /></li>';
 					if ($_vc == 3)
 						break;
 					$_vc++;
@@ -1423,7 +1423,7 @@ if (!class_exists('WP_Spreadplugin')) {
 				$addStyle = 'style="background-color:rgba(' . $bgc[0] . ',' . $bgc[1] . ',' . $bgc[2] . ',0.4);"';
 			
 			if (self::$shopOptions['shop_lazyload'] == 0) {
-				$dSrc = $this->cleanURL($designData['resource2']) . ',width=' . self::$shopOptions['shop_imagesize'] . ',height=' . self::$shopOptions['shop_imagesize'];
+				$dSrc = $designData['resource2'] . ',width=' . self::$shopOptions['shop_imagesize'] . ',height=' . self::$shopOptions['shop_imagesize'];
 			} else {
 				$dSrc = plugins_url('/img/blank.gif', __FILE__);
 			}
@@ -1432,7 +1432,7 @@ if (!class_exists('WP_Spreadplugin')) {
 			$output .= '<a name="' . $id . '"></a>';
 			$output .= '<h3>' . htmlspecialchars($designData['name'], ENT_QUOTES) . '</h3>';
 			$output .= '<div class="image-wrapper" ' . $addStyle . '>';
-			$output .= '<img src="' . $dSrc . '" class="lazyimg" data-original="' . $this->cleanURL($designData['resource2']) . ',width=' . self::$shopOptions['shop_imagesize'] . ',height=' . self::$shopOptions['shop_imagesize'] . '" alt="' . htmlspecialchars($designData['name'], ENT_QUOTES) . '" id="compositedesignimg_' . $id . '" />'; // style="display:none;" // title="'.htmlspecialchars($designData['productdescription'],ENT_QUOTES).'"
+			$output .= '<img src="' . $dSrc . '" class="lazyimg" data-original="' . $designData['resource2'] . ',width=' . self::$shopOptions['shop_imagesize'] . ',height=' . self::$shopOptions['shop_imagesize'] . '" alt="' . htmlspecialchars($designData['name'], ENT_QUOTES) . '" id="compositedesignimg_' . $id . '" />'; // style="display:none;" // title="'.htmlspecialchars($designData['productdescription'],ENT_QUOTES).'"
 			$output .= '<span class="img-caption">' . __('Click to view the articles', $this->stringTextdomain) . '</em></span>';
 			$output .= '</div>';
 			
@@ -1830,11 +1830,6 @@ if (!class_exists('WP_Spreadplugin')) {
 			@session_destroy();
 		}
 		
-		// prepare for https
-		private function cleanURL($url){
-			return $url;
-		}
-		
 		/**
 		 * Function doAjax
 		 *
@@ -1961,7 +1956,7 @@ if (!class_exists('WP_Spreadplugin')) {
 				$output .= '<div class="views-wrapper"><ul class="views" name="views">';
 				
 				foreach ($article['views'] as $k => $v) {
-					$output .= '<li value="' . $k . '"><img src="' . $this->cleanURL($v) . ',viewId=' . $k . ',width=42,height=42" class="previewview" alt="" id="viewimg_' . $id . '" /></li>';
+					$output .= '<li value="' . $k . '"><img src="' . $v . ',viewId=' . $k . ',width=42,height=42" class="previewview" alt="" id="viewimg_' . $id . '" /></li>';
 				}
 				
 				$output .= '</ul></div>';
@@ -2002,7 +1997,7 @@ if (!class_exists('WP_Spreadplugin')) {
 				$output .= '<div class="color-wrapper spreadplugin-clearfix"><span>' . __('Color', $this->stringTextdomain) . ':</span> <ul class="colors" name="color">';
 				
 				foreach ($article['appearances'] as $k => $v) {
-					$output .= '<li value="' . $k . '"><img src="' . $this->cleanURL($v) . '" alt="" /></li>';
+					$output .= '<li value="' . $k . '"><img src="' . $v . '" alt="" /></li>';
 				}
 				
 				$output .= '</ul></div>';
