@@ -3,7 +3,7 @@
  * Plugin Name: WP-Spreadplugin
  * Plugin URI: http://wordpress.org/extend/plugins/wp-spreadplugin/
  * Description: This plugin uses the Spreadshirt API to list articles and let your customers order articles of your Spreadshirt shop using Spreadshirt order process.
- * Version: 3.9.7.6
+ * Version: 3.9.7.7
  * Author: Thimo Grauerholz
  * Author URI: http://www.spreadplugin.de
  */
@@ -651,7 +651,7 @@ if (!class_exists('WP_Spreadplugin')) {
 			
 			// call first to get count of articles
 			$apiUrl = $apiUrlBase . '&limit=' . self::$shopOptions['shop_max_quantity_articles'];
-			$objArticlesBase = $this->runTestApiUrlWithLocaleReturnObject($apiUrl,true);
+			$objArticlesBase = $this->runTestApiUrlWithLocaleReturnObject($apiUrl,$pageId);
 						
 			return $objArticlesBase;
 		}
@@ -684,10 +684,10 @@ if (!class_exists('WP_Spreadplugin')) {
 		}
 		
 		
-		private function runTestApiUrlWithLocaleReturnObject($url,$singleArticleWa = false) {
+		private function runTestApiUrlWithLocaleReturnObject($url,$pageId = 0) {
 			$objTypes = "";
 			
-			$this->reparseShortcodeData(get_query_var('pageid') ? intval(get_query_var('pageid')) : null);
+			$this->reparseShortcodeData(($pageId>0?$pageId:(get_query_var('pageid') ? intval(get_query_var('pageid')) : null)));
 			
 			/*
 			* Run test with locale if previous test was successfull
@@ -708,9 +708,9 @@ if (!class_exists('WP_Spreadplugin')) {
 				$stringTypeXml = str_replace('<ns3:', '<', $stringTypeXml);
 				
 				if (substr($stringTypeXml, 0, 5) != "<?xml") return 'Error fetching URL: ' . $testUrl;
-	
+
 				// Quick (dirty) Workaround for Single Article using shop_article
-				if (!empty(self::$shopOptions['shop_article']) && $singleArticleWa) {
+				if (!empty(self::$shopOptions['shop_article']) && strpos($stringTypeXml,'<articles>') === false) {
 					$stringTypeXml = str_replace('<article ', '<articles><article ', str_replace('</article>', '</article></articles>', $stringTypeXml));
 				}
 	
@@ -724,9 +724,7 @@ if (!class_exists('WP_Spreadplugin')) {
 					echo "failed url, try $url <br>";
 				}
 
-				$stringTypeXml = wp_remote_get($url, array (
-						'timeout' => 120 
-				));
+				$stringTypeXml = wp_remote_get($url, array('timeout' => 120));
 				$stringTypeXml = wp_remote_retrieve_body($stringTypeXml);
 				// Quickfix for Namespace changes of Spreadshirt API
 				$stringTypeXml = str_replace('<ns3:', '<', $stringTypeXml);
@@ -734,7 +732,7 @@ if (!class_exists('WP_Spreadplugin')) {
 				if (substr($stringTypeXml, 0, 5) != "<?xml") return 'Error fetching URL: ' . $testUrl;
 
 				// Quick (dirty) Workaround for Single Article using shop_article
-				if (!empty(self::$shopOptions['shop_article']) && $singleArticleWa === true) {
+				if (!empty(self::$shopOptions['shop_article']) && strpos($stringTypeXml,'<articles>') === false) {
 					$stringTypeXml = str_replace('<article ', '<articles><article ', str_replace('</article>', '</article></articles>', $stringTypeXml));
 				}
 
@@ -747,7 +745,7 @@ if (!class_exists('WP_Spreadplugin')) {
 				self::$worksWithLocale = false;
 				*/
 			}
-
+			
 			return $objTypes;
 		}
 		
@@ -825,27 +823,29 @@ if (!class_exists('WP_Spreadplugin')) {
 			
 			$apiUrlBase = 'http://api.spreadshirt.' . self::$shopOptions['shop_source'] . '/api/v1/shops/' . self::$shopOptions['shop_id'];
 			$apiUrlBase .= '/articles/' . $articleId . '?' . 'fullData=true&noCache=true';
-			$article = $this->runTestApiUrlWithLocaleReturnObject($apiUrlBase);
+			$article = $this->runTestApiUrlWithLocaleReturnObject($apiUrlBase,$pageId);
+			
+			// 2015-11-27 Workaround with single article
+			if (!empty($article->article)) $article = $article->article;
 
-			if (!is_object($article))
-				return 'Article empty (object)';
+			if (!is_object($article)) return 'Article empty (object)';
 			
 			if ((int)$article['id'] > 0) {
 							
 				$url = (string)$article->product->productType->attributes('http://www.w3.org/1999/xlink') . '?noCache=true';
-				$objArticleData = $this->runTestApiUrlWithLocaleReturnObject($url);
+				$objArticleData = $this->runTestApiUrlWithLocaleReturnObject($url,$pageId);
 
 				$url = (string)$article->price->currency->attributes('http://www.w3.org/1999/xlink');
-				$objCurrencyData = $this->runTestApiUrlWithLocaleReturnObject($url);
+				$objCurrencyData = $this->runTestApiUrlWithLocaleReturnObject($url,$pageId);
 
 				$url = (string)$article->product->attributes('http://www.w3.org/1999/xlink') . '?noCache=true';
-				$objProductData = $this->runTestApiUrlWithLocaleReturnObject($url);
+				$objProductData = $this->runTestApiUrlWithLocaleReturnObject($url,$pageId);
 			
 				
 				if (is_object($objProductData)) {
 					if (!empty($objProductData->configurations->configuration->printType)) {
 						$url = (string)$objProductData->configurations->configuration->printType->attributes('http://www.w3.org/1999/xlink') . '?noCache=true';
-						$objPrintData = $this->runTestApiUrlWithLocaleReturnObject($url);
+						$objPrintData = $this->runTestApiUrlWithLocaleReturnObject($url,$pageId);
 					}
 				}
 				
@@ -1857,16 +1857,13 @@ if (!class_exists('WP_Spreadplugin')) {
 				$stringXmlShop = wp_remote_get($apiUrl, array (
 						'timeout' => 120 
 				));
-				if (!empty($stringXmlShop->errors))
-					die('Error getting basket.');
-				if ($stringXmlShop['body'][0] != '<')
-					die($stringXmlShop['body']);
+				if (!empty($stringXmlShop->errors)) die('Error getting basket.');
+				if ($stringXmlShop['body'][0] != '<') die($stringXmlShop['body']);
 				$stringXmlShop = wp_remote_retrieve_body($stringXmlShop);
 				// Quickfix for Namespace changes of Spreadshirt API
 				$stringXmlShop = str_replace('<ns3:', '<', $stringXmlShop);
 				$objShop = new SimpleXmlElement($stringXmlShop);
-				if (!is_object($objShop))
-					die('Basket not loaded');
+				if (!is_object($objShop)) die('Basket not loaded');
 					
 					// create the basket
 				$namespaces = $objShop->getNamespaces(true);
@@ -2222,7 +2219,7 @@ if (!class_exists('WP_Spreadplugin')) {
 				$this->reparseShortcodeData($_pageid);
 				
 				$_articleData = $this->getSingleArticleData($_pageid, $_articleid, $_pos);
-				
+
 				// sleep timer, for some users reaching their request limits - 20 sec will avoid it.
 				if (!empty(self::$shopOptions['shop_sleep']) && self::$shopOptions['shop_sleep'] > 0) {
 					sleep(self::$shopOptions['shop_sleep']);
