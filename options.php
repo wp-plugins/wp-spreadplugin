@@ -354,30 +354,24 @@ if (is_user_logged_in() && is_admin()) {
             <?php _e('Sample shortcode with only Men products','spreadplugin'); ?>
           </h4>
           <p>[spreadplugin shop_productcategory="Men"]</p>
-          <!--<h4>
-            <?php _e('Extended sample shortcode','spreadplugin'); ?>
+          <h4>
+            <?php _e('Use one of the following shortcode extensions to overwrite or extend each single page.','spreadplugin'); ?>
             (only for experienced users) </h4>
-          <p>
-            <?php _e('The extended shortcodes will overwrite the default settings. You may use it to create a different shop with the same plugin.','spreadplugin'); ?>
-          </p>
           <p>
             <?php
   
-  $_plgop = '[spreadplugin ';
+  $_plgop = '';
   foreach ($adminOptions as $k => $v) {
 	  if (!in_array($k,array('shop_infinitescroll','shop_customcss','shop_debug','shop_sleep','shop_url_productdetail_slug'))) {	
-		$_plgop .= $k.'="'.$v.'" ';
+		$_plgop .= $k.'="'.$v.'"<br>';
 	  }
   }
   
-  echo trim($_plgop).']';
+  echo trim($_plgop);
   
   ?>
-          </p>-->
+          </p>
           <p>&nbsp;</p>
-         <p><?php _e('All field names from this formular possible as shortcode.<br />
-Again, only for experienced users, that\'s why I don\'t list them here anymore :)<br />
-On question, just ask.','spreadplugin'); ?></p>
         </div>
       </div>
       <div class="postbox">
