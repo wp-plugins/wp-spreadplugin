@@ -163,12 +163,11 @@ if (is_user_logged_in() && is_admin()) {
                   <input type="radio" name="shop_designer" value="1"<?php echo ($adminOptions['shop_designer']==1||$adminOptions['shop_designer']==2?" checked":"") ?> />
                   <?php _e('Designer (Spreadshirt Tablomat)','spreadplugin'); ?>
                   <br />
-                    <br />
-                    <?php _e('Designer Shop Id','spreadplugin'); ?>
-                    <input type="text" name="shop_designershop" value="<?php echo $adminOptions['shop_designershop']; ?>" class="only-digit" />
-                    <br />
-                    <?php _e('If you have a Designer Shop at Spreadshirt then enter its ID here to only show the designs of your Designer Shop, otherwise all Spreadshirt Marketplace designs are shown.','spreadplugin'); ?>
-                  </td>
+                  <br />
+                  <?php _e('Designer Shop Id','spreadplugin'); ?>
+                  <input type="text" name="shop_designershop" value="<?php echo $adminOptions['shop_designershop']; ?>" class="only-digit" />
+                  <br />
+                  <?php _e('If you have a Designer Shop at Spreadshirt then enter its ID here to only show the designs of your Designer Shop, otherwise all Spreadshirt Marketplace designs are shown.','spreadplugin'); ?></td>
               </tr>
               <tr>
                 <td valign="top"><?php _e('Default display:','spreadplugin'); ?></td>
@@ -292,13 +291,16 @@ if (is_user_logged_in() && is_admin()) {
               </tr>
               <tr>
                 <td valign="top"><?php _e('Anchor:','spreadplugin'); ?></td>
-                <td>#<input type="text" name="shop_url_anchor" placeholder="<?php _e('splshop or similar','spreadplugin'); ?>" value="<?php echo (empty($adminOptions['shop_url_anchor'])?"":$adminOptions['shop_url_anchor']); ?>" /><br />
-<?php _e('If you are using one page themes or want to specify an anchor to add with url, enter it here. Please avoid using the same anchor name as in your menu - some themes are blocking it.','spreadplugin'); ?></td>
+                <td>#
+                  <input type="text" name="shop_url_anchor" placeholder="<?php _e('splshop or similar','spreadplugin'); ?>" value="<?php echo (empty($adminOptions['shop_url_anchor'])?"":$adminOptions['shop_url_anchor']); ?>" />
+                  <br />
+                  <?php _e('If you are using one page themes or want to specify an anchor to add with url, enter it here. Please avoid using the same anchor name as in your menu - some themes are blocking it.','spreadplugin'); ?></td>
               </tr>
               <tr>
                 <td valign="top"><?php _e('Product detail slug:','spreadplugin'); ?></td>
-                <td><input type="text" name="shop_url_productdetail_slug" placeholder="<?php _e('splproduct or similar','spreadplugin'); ?>" value="<?php echo (empty($adminOptions['shop_url_productdetail_slug'])?"splproduct":$adminOptions['shop_url_productdetail_slug']); ?>" class="only-letters" /><br />
-<?php _e('Don\'t change if unknown! You could harm your site - dangerous.<br>Anyway, you could change the product detail link name here (SEO, Permalink).','spreadplugin'); ?></td>
+                <td><input type="text" name="shop_url_productdetail_slug" placeholder="<?php _e('splproduct or similar','spreadplugin'); ?>" value="<?php echo (empty($adminOptions['shop_url_productdetail_slug'])?"splproduct":$adminOptions['shop_url_productdetail_slug']); ?>" class="only-letters" />
+                  <br />
+                  <?php _e('Don\'t change if unknown! You could harm your site - dangerous.<br>Anyway, you could change the product detail link name here (SEO, Permalink).','spreadplugin'); ?></td>
               </tr>
               <tr>
                 <td valign="top"><?php _e('Custom CSS'); ?></td>
@@ -329,8 +331,9 @@ if (is_user_logged_in() && is_admin()) {
                     <option value="100"<?php echo ($adminOptions['shop_max_quantity_articles']==100?" selected":"") ?>>100</option>
                     <option value="200"<?php echo ($adminOptions['shop_max_quantity_articles']==200?" selected":"") ?>>200</option>
                     <option value="1000"<?php echo (empty($adminOptions['shop_max_quantity_articles']) || $adminOptions['shop_max_quantity_articles']==1000?" selected":"") ?>>1000 (default)</option>
-                  </select><br />
-<?php _e('Limit the quantity of articles which will be read. Use a lower value if you have problems saving the articles.','spreadplugin'); ?></td>
+                  </select>
+                  <br />
+                  <?php _e('Limit the quantity of articles which will be read. Use a lower value if you have problems saving the articles.','spreadplugin'); ?></td>
               </tr>
             </table>
             <input type="submit" name="update-splg_options" id="update-splg_options" class="button-primary" value="<?php _e('Update settings','spreadplugin'); ?>" />
@@ -349,11 +352,25 @@ if (is_user_logged_in() && is_admin()) {
           <h4>
             <?php _e('Sample shortcode with category','spreadplugin'); ?>
           </h4>
-          <p>[spreadplugin shop_category="CATEGORYID"]</p>
+          <p>[spreadplugin shop_category=&quot;CATEGORYID&quot;]</p>
           <h4>
             <?php _e('Sample shortcode with only Men products','spreadplugin'); ?>
           </h4>
-          <p>[spreadplugin shop_productcategory="Men"]</p>
+          <p>[spreadplugin shop_productcategory=&quot;Men&quot;]<br />
+            <br />
+            or with subcategory T-Shirts<br />
+            <br />
+            [spreadplugin shop_productcategory=&quot;Men&quot; shop_productsubcategory=&quot;T-Shirts&quot;] <br />
+            <br />
+possible values for Men sub-category are Big                                           &amp;amp; Tall,
+            Tank Tops,
+            Eco-Friendly Tees,
+            Sportswear,
+            Zip Hoodies &amp;amp; Jackets,
+            Hoodies,
+            Polo Shirts,
+            Long Sleeve Shirts,
+            T-Shirts</p>
           <h4>
             <?php _e('Use one of the following shortcode extensions to overwrite or extend each single page.','spreadplugin'); ?>
             (only for experienced users) </h4>
